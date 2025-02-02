@@ -71,7 +71,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'aam.wsgi.application'
 
-#test
+#test coba sdnaksda
 
 
 # Database
