@@ -25,3 +25,5 @@ Risal : Ok sudah, untuk mysql ada sudah saya masukkan, coba saja import nanti
 - `git pull origin main` 
 - `git add .`
 - `git commit -m "Merge main and resolve conflicts"`
+
+# 
