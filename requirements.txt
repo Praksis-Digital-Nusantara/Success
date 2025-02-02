@@ -1,5 +1,6 @@
 asgiref==3.8.1
 Django==4.2
+mysqlclient==2.2.6
 pillow==11.1.0
 pytz==2024.2
 setuptools==75.6.0
