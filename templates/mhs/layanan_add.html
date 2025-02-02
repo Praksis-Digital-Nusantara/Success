@@ -1,0 +1,129 @@
+{% extends "mhs/base.html" %}
+
+ {% block header %}
+	<h1 class="display-4">{{ web_name }}</h1>
+	<p class="lead">Halo <b>{{user}}</b> Selamat datang di {{ web_name }}</p>
+	<button class="btn btn-light btn-lg" id="btnHome" role="button">Get Started</button>
+{% endblock header %}
+
+{% block content1 %}
+<div class="container">
+	<div class="page-inner">
+	  <div class="page-header">
+		<h3 class="fw-bold mb-3">{{ title }}</h3>
+		<ul class="breadcrumbs mb-3">
+		  <li class="nav-home">
+			<a href="{% url 'acd:dashboard' %}">
+			  <i class="icon-home"></i>
+			</a>
+		  </li>
+		  <li class="separator">
+			<i class="icon-arrow-right"></i>
+		  </li>
+		  <li class="nav-item">
+			<a href="{% url 'acd:layanan_me' %}">layanan</a>
+		  </li>	  
+		  <li class="separator">
+			<i class="icon-arrow-right"></i>
+		  </li>
+		  <li class="nav-item">
+			<a href="{% url 'acd:layanan_add' %}">tambah</a>
+		  </li>	  
+		</ul>
+	  </div>	  
+	  <div class="row">
+		<div class="col-md-12">
+		  <div class="card">
+			<div class="card-header">
+			  <h4 class="card-title">Pengajuan Layanan Baru</h4>
+			</div>
+			<div class="card-body">
+				 {% comment %} <form method="post">
+					{% csrf_token %}
+					{{ form.as_p }}
+					<button class="btn btn-success" type="submit">Update</button>
+				</form> {% endcomment %}
+				<form method="post"  enctype="multipart/form-data">
+					{% csrf_token %}					
+					<div class="row g-3 align-items-center mb-5">
+						<div class="col-md-2">
+							<label for="id_layanan_jenis" class="col-form-label">layanan_jenis</label>
+						</div>
+						<div class="col-md-4">
+							{{ form.layanan_jenis }} 							
+						</div>
+						<div  class="col-md-4" id="prasyarat-container" style="margin-top: 20px;">
+							<label><strong>Prasyarat Layanan:</strong></label>
+							<p id="prasyarat-layanan">Pilih jenis layanan untuk melihat prasyarat.</p>
+						</div>
+					</div>
+					
+					<div class="row g-3 align-items-center mb-5">
+						<div class="col-md-2">
+							<label for="id_layanan_isi" class="col-form-label">Layanan Isi</label>
+						</div>
+						<div class="col-md-10">
+							{{ form.layanan_isi }}  <!-- Form input untuk email -->
+						</div>
+					</div>
+					
+					<div class="row g-3 align-items-center mb-5">
+						<div class="col-md-2">
+							<label for="id_layanan_file" class="col-form-label">File jika ada</label>
+						</div>
+						<div class="col-md-4">
+							{{ form.layanan_file }}  <!-- Form input untuk first name -->
+						</div>
+					</div>
+
+					
+					<button type="submit" class="btn btn-primary">Update</button>
+				</form> 
+		  </div>
+		</div>
+
+		
+	  </div>
+	</div>
+  </div>
+
+
+  
+{% endblock content1 %} 
+
+
+
+{% block script_costum %} 
+
+	<script>
+		// Ambil elemen dropdown dan container prasyarat
+		const layananJenisDropdown = document.querySelector('#id_layanan_jenis');
+		const prasyaratContainer = document.querySelector('#prasyarat-container');
+		const prasyaratLayanan = document.querySelector('#prasyarat-layanan');
+	
+		// Tambahkan event listener pada dropdown
+		layananJenisDropdown.addEventListener('change', function () {
+			const layananId = this.value; // Ambil ID dari pilihan dropdown
+			if (layananId) {
+				// Lakukan AJAX request ke endpoint
+				fetch(`/acd/get-prasyarat-layanan/?layanan_id=${layananId}`)
+					.then(response => response.json())
+					.then(data => {
+						if (data.prasyarat_layanan) {
+							prasyaratLayanan.textContent = data.prasyarat_layanan; // Tampilkan prasyarat
+						} else {
+							prasyaratLayanan.textContent = 'Prasyarat tidak ditemukan.';
+						}
+					})
+					.catch(error => {
+						console.error('Error fetching prasyarat:', error);
+						prasyaratLayanan.textContent = 'Terjadi kesalahan saat mengambil prasyarat.';
+					});
+			} else {
+				prasyaratLayanan.textContent = 'Pilih jenis layanan untuk melihat prasyarat.';
+			}
+		});
+	</script>
+
+{% endblock script_costum %} 
+

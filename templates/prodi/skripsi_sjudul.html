@@ -1,0 +1,213 @@
+{% extends "prodi/base.html" %}
+
+{% block content1 %}
+<div class="container">
+	<div class="page-inner">
+	  <div class="page-header">
+		<h3 class="fw-bold mb-3">{{ title }}</h3>
+		<ul class="breadcrumbs mb-3">
+		  <li class="nav-home">
+			<a href="{% url 'acd:dashboard' %}">
+			  <i class="icon-home"></i>
+			</a>
+		  </li>
+		  <li class="separator">
+			<i class="icon-arrow-right"></i>
+		  </li>
+		  <li class="nav-item">
+			<a href="">{{heading}}</a>
+		  </li>	  		  	  
+		</ul>
+	  </div>
+	  <div class="row">
+		<div class="col-md-12">
+		  <div class="card">
+			<div class="card-header">
+			  <h4 class="card-title">Multi Filter Select</h4>
+			</div>
+			<div class="card-body">
+			  <div class="table-responsive">
+				<table
+				  id="multi-filter-select"
+				  class="display table table-striped table-hover"
+				>
+				  <thead>
+					<tr>
+					  <th>No</th>
+					  <th>Date In</th>
+					  <th>Mahasiswa</th>
+					  <th>Prodi</th>
+					  <th>Dosen PA</th>
+					  <th>Judul</th>
+					  <th>Aksi</th>
+					</tr>
+				  </thead>
+				  <tfoot>
+					<tr>
+						<th>No</th>
+						<th>Date In</th>
+						<th>Mahasiswa</th>
+						<th>Prodi</th>
+						<th>Dosen PA</th>
+						<th>Judul</th>
+						<th>Aksi</th>
+					</tr>
+				  </tfoot>
+				  <tbody>
+					{% for datatb in data %}
+						<tr>
+						<td>{{ forloop.counter }}</td>
+						<td>{{ datatb.date_in }}</td>
+						<td>{{ datatb.user }}</td>					  
+						<td>{{ datatb.prodi }}</td>					  
+						<td>{{ datatb.penasehat_akademik }}</td>					  
+						<td>1. {{ datatb.judul_1 }}					  
+								<br>2. {{ datatb.judul_2}}					  
+								<br>3. {{ datatb.judul_3}}
+								</td>					  
+						<td>{% if datatb.status == 'Waiting'  %}
+								<span class="badge badge-warning">{{ datatb.status }}</span>
+								<br>
+								<button 
+								class="btn btn-secondary btn-xs" 
+								data-bs-toggle="modal" 
+								data-bs-target="#prosesJudulModal" 
+								data-skripsi-id="{{ datatb.id }}"
+								data-judul1="{{ datatb.judul_1 }}"
+								data-judul1des="{{ datatb.deskripsi_judul_1 }}"
+								data-judul2="{{ datatb.judul_2 }}"
+								data-judul2des="{{ datatb.deskripsi_judul_2 }}"
+								data-judul3="{{ datatb.judul_3 }}"
+								data-judul3des="{{ datatb.deskripsi_judul_3 }}"
+								>
+								<i class="fa fa-highlighter"></i> Proses
+								</button>
+							{% elif skripsi.status == 'Revision'  %}
+								<span class="badge badge-primary">{{ skripsi.status }}</span>
+							{% elif skripsi.status == 'Approved'  %}
+								<span class="badge badge-success">{{ skripsi.status }}</span>
+							{% endif %}
+							
+							</td>					
+						</tr>
+					{% endfor %}
+				  </tbody>
+				</table>
+			  </div>
+			</div>
+		  </div>
+		</div>
+
+		
+	  </div>
+	</div>
+  </div>
+
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="prosesJudulModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modalLabel">Proses Judul</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="mb-3">
+					<h5 id="judul1Display" class="form-control-plaintext"></h5>
+					<p id="judul1desDisplay" class="form-control-plaintext"></p>
+				 </div>
+				<div class="mb-3">
+					<h5 id="judul2Display" class="form-control-plaintext"></h5>
+					<p id="judul2desDisplay" class="form-control-plaintext"></p>
+				 </div>
+				<div class="mb-3">
+					<h5 id="judul3Display" class="form-control-plaintext"></h5>
+					<p id="judul3desDisplay" class="form-control-plaintext"></p>
+				 </div>
+
+				<form method="post">
+					{% csrf_token %}
+					<input type="hidden" name="skripsi_id" id="skripsiId">
+					<div class="mb-3">
+						<label for="status" class="form-label">Status</label>
+						<select class="form-control" id="status" name="status" required>
+							<option value="">Pilih Status</option>
+							<option value="Approved" >Diterima</option>
+							<option value="Revision" >Ditolak</option>
+						</select>						
+					</div>
+					<div class="mb-3">
+						<label for="status_ket" class="form-label">Keterangan / Komentar / Alasan Penolakan</label>
+						<input type="text" class="form-control" id="status_ket" name="status_ket" required>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+						<button type="submit" class="btn btn-primary">Simpan</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+  
+{% endblock content1 %} 
+
+
+{% block script_costum %} 
+
+{% if messages %}
+    {% for message in messages %}
+        <script>
+            swal({
+                title: "{% if message.tags == 'success' %}Good job!{% else %}Gagal Menyimpan!{% endif %}",
+                text: "{{ message }}",
+                icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
+                buttons: {
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "{% if message.tags == 'success' %}btn btn-success{% else %}btn btn-danger{% endif %}",
+                        closeModal: true,
+                    },
+                },
+            });
+        </script>
+    {% endfor %}
+{% endif %}
+
+<script>
+	// Ambil data pengguna untuk diisi di modal
+	var prosesJudulModal = document.getElementById('prosesJudulModal');
+	prosesJudulModal.addEventListener('show.bs.modal', function (event) {
+		var button = event.relatedTarget;
+		var skripsiId = button.getAttribute('data-skripsi-id');
+		var judul1 = button.getAttribute('data-judul1');
+		var judul1des = button.getAttribute('data-judul1des');
+		var judul2 = button.getAttribute('data-judul2');
+		var judul2des = button.getAttribute('data-judul2des');
+		var judul3 = button.getAttribute('data-judul3');
+		var judul3des = button.getAttribute('data-judul3des');
+		
+		// Isi form di modal
+		var skripsiIdInput = prosesJudulModal.querySelector('#skripsiId');
+		skripsiIdInput.value = skripsiId;
+
+		var judul1Display = prosesJudulModal.querySelector('#judul1Display');
+    	judul1Display.textContent = judul1;
+		var judul1desDisplay = prosesJudulModal.querySelector('#judul1desDisplay');
+    	judul1desDisplay.textContent = judul1des;
+		var judul2Display = prosesJudulModal.querySelector('#judul2Display');
+    	judul2Display.textContent = judul2;
+		var judul2desDisplay = prosesJudulModal.querySelector('#judul2desDisplay');
+    	judul2desDisplay.textContent = judul2des;
+		var judul3Display = prosesJudulModal.querySelector('#judul3Display');
+    	judul3Display.textContent = judul3;
+		var judul3desDisplay = prosesJudulModal.querySelector('#judul3desDisplay');
+    	judul3desDisplay.textContent = judul3des;
+	});
+</script>
+{% endblock script_costum %} 

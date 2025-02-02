@@ -1,0 +1,132 @@
+{% extends "prodi/base.html" %}
+
+{% block content1 %}
+<div class="container">
+	<div class="page-inner">
+	  <div class="page-header">
+		<h3 class="fw-bold mb-3">{{ title }}</h3>
+		<ul class="breadcrumbs mb-3">
+		  <li class="nav-home">
+			<a href="{% url 'acd:dashboard' %}">
+			  <i class="icon-home"></i>
+			</a>
+		  </li>
+		  	<li class="separator">
+				<i class="icon-arrow-right"></i>
+		  	</li>
+		  	<li class="nav-item">
+				<a href="{% url 'acd:user_list' %}?role={{usermaster.last_name}}">User List</a>
+		  	</li>	  
+		  	<li class="separator">
+				<i class="icon-arrow-right"></i>
+		  	</li>  
+			<li class="nav-item">
+				<a href="">User Edit</a>
+		    </li>	
+		</ul>
+	  </div>	  
+	  <div class="row">
+		<div class="col-md-12">
+		  <div class="card">
+			<div class="card-header">
+			  <h4 class="card-title">Edit User </h4>
+			  <div class="row">
+				<div class="col-md-1">
+					<div class="avatar avatar-xxl p-3">
+						<img src="/{{ userselect.photo }}" alt="..." class="avatar-img rounded-circle">
+					</div>
+				</div>
+				<div class="col-md-10">
+					<div class="align-items-left p-3">
+						<h4>{{usermaster.username}}</h4>
+						<h5>{{usermaster.first_name}}</h5>
+					</div>
+				</div>
+			  </div>
+			</div>
+			<div class="card-body">
+				 {% comment %} <form method="post">
+					{% csrf_token %}
+					{{ form.as_p }}
+					<button class="btn btn-success" type="submit">Update</button>
+				</form> {% endcomment %}
+				<form method="post"  enctype="multipart/form-data">
+					{% csrf_token %}
+					<div class="row g-3 align-items-center mb-5">
+						<div class="col-md-2">
+							<label for="id_prodi" class="col-form-label">Prodi</label>
+						</div>
+						<div class="col-md-4">
+							{{ form.prodi }}  <!-- Form input untuk username -->
+						</div>
+					</div>
+					
+					<div class="row g-3 align-items-center mb-5">
+						<div class="col-md-2">
+							<label for="id_gender" class="col-form-label">Jenis Kelamin</label>
+						</div>
+						<div class="col-md-4">
+							{{ form.gender }}  <!-- Form input untuk email -->
+						</div>
+					</div>
+					
+					<div class="row g-3 align-items-center mb-5">
+						<div class="col-md-2">
+							<label for="id_telp" class="col-form-label">No Telp.</label>
+						</div>
+						<div class="col-md-4">
+							{{ form.telp }}  <!-- Form input untuk first name -->
+						</div>
+					</div>
+
+					<div class="row g-3 align-items-center mb-5">
+						<div class="col-md-2">
+							<label for="id_photo" class="col-form-label">Photo</label>
+						</div>
+						<div class="col-md-4">
+							{{ form.photo }}  <!-- Form input untuk first name -->
+						</div>
+					</div>
+
+					
+					<button type="submit" class="btn btn-primary">Update</button>
+				</form>
+		  </div>
+		</div>
+
+		
+	  </div>
+	</div>
+  </div>
+
+
+  
+{% endblock content1 %} 
+
+
+
+{% block script_costum %} 
+
+{% if messages %}
+    {% for message in messages %}
+        <script>
+            swal({
+                title: "{% if message.tags == 'success' %}Good job!{% else %}Gagal Menyimpan!{% endif %}",
+                text: "{{ message }}",
+                icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
+                buttons: {
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "{% if message.tags == 'success' %}btn btn-success{% else %}btn btn-danger{% endif %}",
+                        closeModal: true,
+                    },
+                },
+            });
+        </script>
+    {% endfor %}
+{% endif %}
+
+{% endblock script_costum %} 
+

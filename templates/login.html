@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block header %}
+	<h3 class="display-4">{{webname}}</h3>
+	<p class="lead">{{web_name}}</p>
+  <div class="container login-container">
+    <div class="login-box">
+        <h2 class="text-center mb-4">Login</h2>
+        <form method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" name="username" id="username" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" id="password">
+          </div>
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>  
+  </div>
+
+{% endblock header %}
+

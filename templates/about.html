@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block header %}
+	<h1 class="display-4">{{ heading }}</h1>
+	<p class="lead">Halo <b>{{user}}</b> Selamat datang di {{ web_name }}</p>
+{% endblock header %}
+
+{% block content1 %}
+<div class="row p-5">
+	<p>SATU (Sistem Akademik Terpadu) adalah aplikasi layanan akademik berbasis digital yang dirancang untuk mempermudah mahasiswa dalam mengelola berbagai kebutuhan akademik mereka. Dengan fitur-fitur yang terintegrasi, SATU memungkinkan pengguna untuk mengakses jadwal perkuliahan, melihat hasil nilai, melakukan pendaftaran mata kuliah, hingga mengelola administrasi akademik lainnya secara efisien. Aplikasi ini juga dirancang dengan antarmuka yang ramah pengguna dan mendukung akses melalui berbagai perangkat, sehingga mahasiswa dapat dengan mudah mengelola informasi akademiknya kapan saja dan di mana saja.</p>
+
+	<p>Selain memberikan kemudahan bagi mahasiswa, SATU juga memfasilitasi dosen dan staf akademik untuk mengelola data secara terpusat. Dengan integrasi data yang canggih, SATU memastikan transparansi dan akurasi dalam pengelolaan informasi akademik, mulai dari perekaman presensi hingga evaluasi kinerja mahasiswa. Sebagai solusi terpadu, SATU tidak hanya mendukung kelancaran proses akademik, tetapi juga mendorong efisiensi operasional perguruan tinggi dalam memberikan layanan pendidikan yang berkualitas.</p>
+
+</div>
+{% endblock content1 %}
+
+{% comment %} {% block content2 %}
+<div class="row" style="height: 400px;">
+	<h1>konten 2</h1>
+</div>
+{% endblock content2 %} {% endcomment %}

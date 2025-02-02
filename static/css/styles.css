@@ -1,0 +1,23 @@
+.custom-jumbotron{
+    background-image: url('/static/img/bg-unm.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+}
+.login-container {
+    min-height: 100px; /* Tinggi penuh viewport */
+    display: flex;
+    justify-content: center; /* Horizontally centered */
+    align-items: top; /* Vertically centered */
+}
+.login-box {
+    max-width: 400px;
+    width: 100vh;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    background-color: #fff;
+    color: #000; /* Warna teks hitam */
+    text-align: left; /* Teks rata kiri */
+}

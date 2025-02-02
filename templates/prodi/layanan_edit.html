@@ -1,0 +1,119 @@
+{% extends "prodi/base.html" %}
+
+{% block content1 %}
+<div class="container">
+	<div class="page-inner">
+	  <div class="page-header">
+		<h3 class="fw-bold mb-3">{{ title }}</h3>
+		<ul class="breadcrumbs mb-3">
+		  <li class="nav-home">
+			<a href="{% url 'acd:dashboard' %}">
+			  <i class="icon-home"></i>
+			</a>
+		  </li>
+		  <li class="separator">
+			<i class="icon-arrow-right"></i>
+		  </li>
+		  <li class="nav-item">
+			<a href="{% url 'acd:layanan' %}">layanan</a>
+		  </li>	
+		  <li class="separator">
+			<i class="icon-arrow-right"></i>
+		  </li>
+		  <li class="nav-item">
+			<a href="">kelolah</a>
+		  </li>  
+		</ul>
+	  </div>	  
+	  <div class="row">
+		<div class="col-md-12">
+		  <div class="card">
+			<div class="card-header">
+			  <h4 class="card-title">Edit Layanan</h4>
+			</div>
+			<div class="card-body">
+				 {% comment %} <form method="post">
+					{% csrf_token %}
+					{{ form.as_p }}
+					<button class="btn btn-success" type="submit">Update</button>
+				</form> {% endcomment %}
+				<form method="post"  enctype="multipart/form-data">
+					{% csrf_token %}
+					<div class="row g-3 align-items-center mb-5">
+						<div class="col-md-2">
+							<label for="id_hasil_test" class="col-form-label">Balasan Layanan</label>
+						</div>
+						<div class="col-md-4">
+							{{ form.hasil_test }}  <!-- Form input untuk username -->
+						</div>
+					</div>
+					
+					<div class="row g-3 align-items-center mb-5">
+						<div class="col-md-2">
+							<label for="id_hasil_link" class="col-form-label">Link</label>
+						</div>
+						<div class="col-md-4">
+							{{ form.hasil_link }}  <!-- Form input untuk email -->
+						</div>
+					</div>
+					
+					<div class="row g-3 align-items-center mb-5">
+						<div class="col-md-2">
+							<label for="id_hasil_file" class="col-form-label">File</label>
+						</div>
+						<div class="col-md-4">
+							{{ form.hasil_file }}  <!-- Form input untuk first name -->
+						</div>
+					</div>
+
+					<div class="row g-3 align-items-center mb-5">
+						<div class="col-md-2">
+							<label for="id_status" class="col-form-label">Status</label>
+						</div>
+						<div class="col-md-4">
+							{{ form.status }}  <!-- Form input untuk first name -->
+						</div>
+					</div>
+
+					
+					<button type="submit" class="btn btn-primary">Update</button>
+				</form> 
+		  </div>
+		</div>
+
+		
+	  </div>
+	</div>
+  </div>
+
+
+  
+{% endblock content1 %} 
+
+
+
+{% block script_costum %} 
+
+{% if messages %}
+    {% for message in messages %}
+        <script>
+            swal({
+                title: "{% if message.tags == 'success' %}Good job!{% else %}Gagal Menyimpan!{% endif %}",
+                text: "{{ message }}",
+                icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
+                buttons: {
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "{% if message.tags == 'success' %}btn btn-success{% else %}btn btn-danger{% endif %}",
+                        closeModal: true,
+                    },
+                },
+            });
+        </script>
+    {% endfor %}
+{% endif %}
+
+{% endblock script_costum %} 
+

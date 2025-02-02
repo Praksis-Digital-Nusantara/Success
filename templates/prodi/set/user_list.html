@@ -1,0 +1,167 @@
+{% extends "prodi/base.html" %}
+
+{% block content1 %}
+<div class="container">
+	<div class="page-inner">
+	  <div class="page-header">
+		<h3 class="fw-bold mb-3">{{ title }} {{ user_role }}</h3>
+		<ul class="breadcrumbs mb-3">
+		  <li class="nav-home">
+			<a href="{% url 'acd:dashboard' %}">
+			  <i class="icon-home"></i>
+			</a>
+		  </li>
+		  <li class="separator">
+			<i class="icon-arrow-right"></i>
+		  </li>
+		  <li class="nav-item">
+			<a href="">Users</a>
+		  </li>	  		  	  
+		</ul>
+	  </div>
+	  <div class="row">
+		<div class="col-md-12">
+		  <div class="card">
+			<div class="card-header">
+			  <h4 class="card-title">Role = {{heading}}</h4>
+			</div>
+			<div class="card-body">
+			  <div class="table-responsive">
+				<table
+				  id="multi-filter-select"
+				  class="display table table-striped table-hover"
+				>
+				  <thead>
+					<tr>
+					  <th>No</th>
+					  <th>No Induk</th>
+					  <th>Nama Lengkap</th>
+					  <th>Email</th>
+					  <th>Last Login</th>
+					  <th>Aksi</th>
+					</tr>
+				  </thead>
+				  <tfoot>
+					<tr>
+						<th>No</th>
+						<th>No Induk</th>
+						<th>Nama Lengkap</th>
+						<th>Email</th>
+						<th>Last Login</th>
+						<th>Aksi</th>
+					</tr>
+				  </tfoot>
+				  <tbody>
+					{% for datatb in user_data %}
+					<tr>
+					  <td>{{ forloop.counter }}</td>
+					  <td>{{ datatb.username }}</td>
+					  <td>{{ datatb.first_name }}</td>
+					  <td>{{ datatb.email }}</td>
+					  <td>{{ datatb.last_login }}</td>
+					  <td><a href="{% url 'acd:user_edit' datatb.id heading %}">
+						<button class="btn btn-xs btn-secondary">
+							<span class="btn-label"><i class="fa fa-edit"></i></span>
+						</button>
+					 	</a>
+						 <button 
+							class="btn btn-danger btn-xs" 
+							data-bs-toggle="modal" 
+							data-bs-target="#changePasswordModal" 
+							data-user-id="{{ datatb.id }}" 
+							data-username="{{ datatb.username }}">
+							<i class="fa fa-key"></i>
+					 	</button>
+						</td>
+					</tr>
+					{% endfor %}
+				  </tbody>
+				</table>
+			  </div>
+			</div>
+		  </div>
+		</div>
+
+		
+	  </div>
+	</div>
+  </div>
+
+
+
+
+   <!-- Modal -->
+   <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modalLabel">Ganti Password</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form id="changePasswordForm" method="post">
+					{% csrf_token %}
+					<input type="hidden" name="user_id" id="userId">
+					<div class="mb-3">
+						<label for="newPassword" class="form-label">Password Baru</label>
+						<input type="password" class="form-control" id="newPassword" name="new_password" required>
+					</div>
+					<div class="mb-3">
+						<label for="confirmPassword" class="form-label">Konfirmasi Password</label>
+						<input type="password" class="form-control" id="confirmPassword" name="confirm_password" required>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+						<button type="submit" class="btn btn-primary">Simpan</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+  
+{% endblock content1 %} 
+
+
+
+
+
+{% block script_costum %} 
+
+{% if messages %}
+    {% for message in messages %}
+        <script>
+            swal({
+                title: "{% if message.tags == 'success' %}Good job!{% else %}Gagal Menyimpan!{% endif %}",
+                text: "{{ message }}",
+                icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
+                buttons: {
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "{% if message.tags == 'success' %}btn btn-success{% else %}btn btn-danger{% endif %}",
+                        closeModal: true,
+                    },
+                },
+            });
+        </script>
+    {% endfor %}
+{% endif %}
+
+
+<script>
+	// Ambil data pengguna untuk diisi di modal
+	var changePasswordModal = document.getElementById('changePasswordModal');
+	changePasswordModal.addEventListener('show.bs.modal', function (event) {
+		var button = event.relatedTarget;
+		var userId = button.getAttribute('data-user-id');
+		var username = button.getAttribute('data-username');
+		
+		// Isi form di modal
+		var userIdInput = changePasswordModal.querySelector('#userId');
+		userIdInput.value = userId;
+	});
+</script>
+{% endblock script_costum %} 
