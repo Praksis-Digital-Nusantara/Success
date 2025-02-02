@@ -1,6 +1,6 @@
 # IMPORTANT! 
 Anto : PULL dulu kak, baru kita push perubahan ta' :)
-Risal : Ok sudah, untuk mysql ada sudah saya masukkan, coba saya import nanti
+Risal : Ok sudah, untuk mysql ada sudah saya masukkan, coba saja import nanti
 
 # Cara Pull
 `git pull origin main` 
