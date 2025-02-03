@@ -1,91 +1,78 @@
 {% extends "prodi/base.html" %}
 
 {% block content1 %}
-<div class="container">
-	<div class="page-inner">
-	  <div class="page-header">
-		<h3 class="fw-bold mb-3">{{ title }} {{ user_role }}</h3>
-		<ul class="breadcrumbs mb-3">
-		  <li class="nav-home">
-			<a href="{% url 'acd:dashboard' %}">
-			  <i class="icon-home"></i>
-			</a>
-		  </li>
-		  <li class="separator">
-			<i class="icon-arrow-right"></i>
-		  </li>
-		  <li class="nav-item">
-			<a href="">Users</a>
-		  </li>	  		  	  
-		</ul>
-	  </div>
-	  <div class="row">
-		<div class="col-md-12">
-		  <div class="card">
-			<div class="card-header">
-			  <h4 class="card-title">Role = {{heading}}</h4>
+<div class="dashboard-content">
+	<div class="student-list-container">
+		<div class="list-header">
+			<div class="list-title">
+				<h2>{{ heading }}</h2>
+				<p>{{web_name}}</p>
 			</div>
-			<div class="card-body">
-			  <div class="table-responsive">
-				<table
-				  id="multi-filter-select"
-				  class="display table table-striped table-hover"
-				>
-				  <thead>
-					<tr>
-					  <th>No</th>
-					  <th>No Induk</th>
-					  <th>Nama Lengkap</th>
-					  <th>Email</th>
-					  <th>Last Login</th>
-					  <th>Aksi</th>
-					</tr>
-				  </thead>
-				  <tfoot>
-					<tr>
-						<th>No</th>
-						<th>No Induk</th>
-						<th>Nama Lengkap</th>
-						<th>Email</th>
-						<th>Last Login</th>
-						<th>Aksi</th>
-					</tr>
-				  </tfoot>
-				  <tbody>
-					{% for datatb in user_data %}
-					<tr>
-					  <td>{{ forloop.counter }}</td>
-					  <td>{{ datatb.username }}</td>
-					  <td>{{ datatb.first_name }}</td>
-					  <td>{{ datatb.email }}</td>
-					  <td>{{ datatb.last_login }}</td>
-					  <td><a href="{% url 'acd:user_edit' datatb.id heading %}">
-						<button class="btn btn-xs btn-secondary">
-							<span class="btn-label"><i class="fa fa-edit"></i></span>
-						</button>
-					 	</a>
-						 <button 
-							class="btn btn-danger btn-xs" 
-							data-bs-toggle="modal" 
-							data-bs-target="#changePasswordModal" 
-							data-user-id="{{ datatb.id }}" 
-							data-username="{{ datatb.username }}">
-							<i class="fa fa-key"></i>
-					 	</button>
-						</td>
-					</tr>
-					{% endfor %}
-				  </tbody>
-				</table>
-			  </div>
+			<div class="list-filters">
+				<div class="filter-dropdown">
+					<button class="filter-btn">
+						Filter Mata Kuliah <i class="ri-arrow-down-s-line"></i>
+					</button>
+				</div>
+				<div class="date-filter">
+					<div class="date-input">
+						<i class="ri-calendar-line"></i>
+						<input type="text" placeholder="Semester">
+					</div>
+				</div>
 			</div>
-		  </div>
 		</div>
 
-		
-	  </div>
+		<div class="student-table">
+			<table>
+				<thead>
+				<tr>
+					<th>No</th>
+					<th>No Induk</th>
+					<th>Nama Lengkap</th>
+					<th>Email</th>
+					<th>Last Login</th>
+					<th>Aksi</th>
+				</tr>
+				</thead>
+				<tfoot>
+				<tr>
+					<th>No</th>
+					<th>No Induk</th>
+					<th>Nama Lengkap</th>
+					<th>Email</th>
+					<th>Last Login</th>
+					<th>Aksi</th>
+				</tr>
+				</tfoot>
+				<tbody>
+				{% for datatb in user_data %}
+				<tr>
+					<td>{{ forloop.counter }}</td>
+					<td>{{ datatb.username }}</td>
+					<td>{{ datatb.first_name }}</td>
+					<td>{{ datatb.email }}</td>
+					<td>{{ datatb.last_login }}</td>
+					<td><a href="{% url 'acd:user_edit' datatb.id heading %}">
+						<button class="action-btn"><i class="ri-pencil-fill"></i></button>
+						</a>
+						<button 
+						class="action-btn" 
+						data-bs-toggle="modal" 
+						data-bs-target="#changePasswordModal" 
+						data-user-id="{{ datatb.id }}" 
+						data-username="{{ datatb.username }}">
+						<i class="ri-lock-fill"></i>
+					</button>
+					</td>
+				</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
 	</div>
-  </div>
+</div>
+
 
 
 

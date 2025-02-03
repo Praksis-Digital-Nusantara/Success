@@ -26,11 +26,7 @@ def loginView(request):
         print (request.POST)
         username_in = request.POST['username']
         password_in = request.POST['password']
-        # username_in = 'risal' 
-        # password_in = '@ahmad123'
-
         user = authenticate(request, username=username_in, password=password_in)        
-
         if user is not None:
             login(request, user)
             print(user)

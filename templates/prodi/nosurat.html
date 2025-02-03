@@ -1,77 +1,63 @@
 {% extends "prodi/base.html" %}
 
 {% block content1 %}
-<div class="container">
-	<div class="page-inner">
-	  <div class="page-header">
-		<h3 class="fw-bold mb-3">{{ title }}</h3>
-		<ul class="breadcrumbs mb-3">
-		  <li class="nav-home">
-			<a href="{% url 'acd:dashboard' %}">
-			  <i class="icon-home"></i>
-			</a>
-		  </li>
-		  <li class="separator">
-			<i class="icon-arrow-right"></i>
-		  </li>
-		  <li class="nav-item">
-			<a href="">{{heading}}</a>
-		  </li>	  		  	  
-		</ul>
-	  </div>
-	  <div class="row">
-		<div class="col-md-12">
-		  <div class="card">
-			<div class="card-header">
-				<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formModal">
-					Nomor Surat Baru
-				</button>
+<div class="dashboard-content">
+	<div class="student-list-container">
+		<div class="list-header">
+			<div class="list-title">
+				<h2>{{ heading }}</h2>
+				<p>{{web_name}}</p>
 			</div>
-			<div class="card-body">
-			  <div class="table-responsive">
-				<table
-				  id="multi-filter-select"
-				  class="display table table-striped table-hover"
-				>
-				  <thead>
-					<tr>
-					  <th>No</th>
-					  <th>Date In</th>
-					  <th>Nomor Surat</th>
-					  <th>Perihal</th>
-					  <th>Tujuan</th>
-					</tr>
-				  </thead>
-				  <tfoot>
-					<tr>
-						<th>No</th>
-						<th>Date In</th>
-						<th>Nomor Surat</th>
-						<th>Perihal</th>
-						<th>Tujuan</th>
-					</tr>
-				  </tfoot>
-				  <tbody>
-					{% for datatb in data %}
-						<tr>
-							<td>{{ forloop.counter }}</td>
-							<td>{{ datatb.date_in }}</td>
-							<td>{{ datatb.nomor }}/{{datatb.jurusan.kode_surat}}</td>
-							<td>{{ datatb.perihal }}</td>							  				
-							<td>{{ datatb.tujuan }}</td>					  
-						</tr>
-					{% endfor %}
-				  </tbody>
-				</table>
-			  </div>
+			<div class="list-filters">
+				<div class="filter-dropdown">
+					<button class="filter-btn">
+						Filter Mata Kuliah <i class="ri-arrow-down-s-line"></i>
+					</button>
+				</div>
+				<div class="date-filter">
+					<div class="date-input">
+						<i class="ri-calendar-line"></i>
+						<input type="text" placeholder="Semester">
+					</div>
+				</div>
 			</div>
-		  </div>
 		</div>
 
-		
-	  </div>
+		<div class="student-table">
+			<table>
+				<thead>
+				<tr>
+					<th>No</th>
+					<th>Date In</th>
+					<th>Nomor Surat</th>
+					<th>Perihal</th>
+					<th>Tujuan</th>
+				</tr>
+				</thead>
+				<tfoot>
+				<tr>
+					<th>No</th>
+					<th>Date In</th>
+					<th>Nomor Surat</th>
+					<th>Perihal</th>
+					<th>Tujuan</th>
+				</tr>
+				</tfoot>
+				<tbody>
+				{% for datatb in data %}
+					<tr>
+						<td>{{ forloop.counter }}</td>
+						<td>{{ datatb.date_in }}</td>
+						<td>{{ datatb.nomor }}/{{datatb.jurusan.kode_surat}}</td>
+						<td>{{ datatb.perihal }}</td>							  				
+						<td>{{ datatb.tujuan }}</td>					  
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
 	</div>
-  </div>
+</div>
 
 
 <!-- Modal -->
@@ -79,7 +65,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="formModalLabel">Form Perihal dan Tujuan</h5>
+				<h5 class="modal-title" id="formModalLabel">Modal Form Perihal dan Tujuan</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">

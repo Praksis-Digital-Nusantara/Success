@@ -1,16 +1,26 @@
-{% extends "mhs/base.html" %}
+{% extends "base_login.html" %}
 
- {% block header %}
-	<h1 class="display-4">{{ web_name }}</h1>
-	<p class="lead">Halo <b>{{user}}</b> Selamat datang di {{ web_name }}</p>
-	<button class="btn btn-light btn-lg" id="btnHome" role="button">Get Started</button>
-{% endblock header %}
+
+{% block content %}
+<!-- Login Page -->
+  <div class="container">
+      <i id="theme-toggle" class="ri-moon-line"></i>
+      <div class="logo">
+          <img src="https://unm.ac.id/wp-content/uploads/2022/02/logo-unm-blu-800x186.png" alt="Success">
+      </div>
+      <p class="info">{{ title }} | {{web_name}}</p>
+	  <form method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<button type="submit">Ganti Password</button>
+  </div>
+{% endblock content %}
 
 {% block content1 %}
 <div class="container">
 	<div class="page-inner">
 	  <div class="page-header">
-		<h3 class="fw-bold mb-3">{{ title }}</h3>
+		<h3 class="fw-bold mb-3"></h3>
 		<ul class="breadcrumbs mb-3">
 		  <li class="nav-home">
 			<a href="{% url 'acd:dashboard' %}">
