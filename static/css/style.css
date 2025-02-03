@@ -923,6 +923,47 @@ body.dark-mode .notification-footer {
     margin-top: 15px;
 }
 
+/* PROFIL HEADER */
+.profile-header {
+    margin-bottom: 20px;
+}
+
+.profile-breadcrumb ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.profile-breadcrumb li {
+    display: flex;
+    align-items: center;
+    color: #666;
+    font-size: 14px;
+}
+
+.profile-breadcrumb a {
+    color: #4a90e2;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.profile-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.profile-breadcrumb i {
+    font-size: 16px;
+    margin: 0 8px;
+}
+
+.profile-breadcrumb span {
+    color: #666;
+}
+/* PROFIL HEADER */
+
 .upload-btn, .delete-btn {
     padding: 8px 16px;
     border-radius: 6px;
@@ -988,7 +1029,9 @@ select.form-control {
     background-color: #fff;
     font-size: 14px;
     height: 40px;
+    margin-top: 11px;
 }
+
 .form-group select:focus {
     border-color: #4CAF50;
     outline: none;
@@ -2123,3 +2166,31 @@ body.dark-mode .load-more-btn:hover {
 .social-btn i {
     font-size: 18px;
 }
+
+
+/* CSS FOR ALERT/NOTIF */
+.alert {
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.alert-success {
+    background-color: #e6f4ea;
+    color: #1e7e34;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-danger {
+    background-color: #fde7e9;
+    color: #dc3545;
+    border: 1px solid #f5c6cb;
+}
+
+.alert i {
+    font-size: 20px;
+    margin-right: 10px;
+}
+/* CLOSING CSS FOR NNOTIF */
