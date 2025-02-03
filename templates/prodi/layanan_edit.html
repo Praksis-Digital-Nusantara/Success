@@ -1,60 +1,65 @@
 {% extends "prodi/base.html" %}
 
 {% block content1 %}
-
 <div class="dashboard-content">
-	<div class="student-list-container">
-		<div class="list-header">
-			<div class="list-title">
-				<h2>{{ heading }}</h2>
-				<p>{{web_name}}</p>
-			</div>
-		</div>
-
-		<div class="">
-			<form method="post"  enctype="multipart/form-data">
-				{% csrf_token %}
-				<div class="row g-3 align-items-center mb-5">
-					<div class="col-md-2">
-						<label for="id_hasil_test">Balasan Layanan</label>
-					</div>
-					<div class="col-md-4">
-						{{ form.hasil_test }}  <!-- Form input untuk username -->
-					</div>
-				</div>
-				
-				<div class="row g-3 align-items-center mb-5">
-					<div class="col-md-2">
-						<label for="id_hasil_link">Link</label>
-					</div>
-					<div class="col-md-4">
-						{{ form.hasil_link }}  <!-- Form input untuk email -->
-					</div>
-				</div>
-				
-				<div class="row g-3 align-items-center mb-5">
-					<div class="col-md-2">
-						<label for="id_hasil_file">File</label>
-					</div>
-					<div class="col-md-4">
-						{{ form.hasil_file }}  <!-- Form input untuk first name -->
-					</div>
-				</div>
-
-				<div class="row g-3 align-items-center mb-5">
-					<div class="col-md-2">
-						<label for="id_status">Status</label>
-					</div>
-					<div class="col-md-4">
-						{{ form.status }}  <!-- Form input untuk first name -->
-					</div>
-				</div>
-
-				
-				<button type="submit" class="btn btn-primary">Update</button>
-			</form> 
-		</div>
+	<div class="profile-section">
+	<div class="container-header">
+		<nav class="container-breadcrumb">
+			<ul>
+				<li>
+					<a href="{% url 'acd:dashboard' %}">
+						<i class="ri-home-line"></i>
+					</a>
+				</li>
+				<li>
+					<i class="ri-arrow-right-s-line"></i>
+				</li>
+				<li>
+					<a href="{% url 'acd:layanan' %}">{{ heading }}</a>
+				</li>
+				<li>
+					<i class="ri-arrow-right-s-line"></i>
+				</li>
+				<li>
+					<span>{{web_name}}</span>
+				</li>
+			</ul>
+		</nav>
 	</div>
+
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+<div class="form-row">
+<!-- <div class="form-group">
+<label for="id_hasil_test">Balasan Layanan</label>
+</label>
+</div> -->
+<div class="form-group">
+    <label for="id_hasil_test">Balasan Layanan</label>
+    {{ form.hasil_test }}
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label>Link</label>
+{{ form.hasil_link }} 
+</div>
+<div class="form-group">
+<label>File</label>
+{{ form.hasil_file }}
+</div>
+<div class="form-group">
+	<label>Status</label>
+	{{ form.status }}
+	</div>
+</div>
+<div class="form-actions">
+	<button type="submit" class="btn primary">
+Update
+	</button>
+</div>
+</form>
+</div>
 </div>
 {% endblock content1 %}
 

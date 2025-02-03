@@ -1,92 +1,68 @@
 {% extends "prodi/base.html" %}
-
 {% block content1 %}
-<div class="container">
-	<div class="page-inner">
-	  <div class="page-header">
-		<h3 class="fw-bold mb-3">{{ title }}</h3>
-		<ul class="breadcrumbs mb-3">
-		  <li class="nav-home">
-			<a href="{% url 'acd:dashboard' %}">
-			  <i class="icon-home"></i>
-			</a>
-		  </li>
-		  <li class="separator">
-			<i class="icon-arrow-right"></i>
-		  </li>
-		  <li class="nav-item">
-			<a href="{% url 'acd:profile_prodi' %}">profile</a>
-		  </li>	  
-		</ul>
-	  </div>	  
-	  <div class="row">
-		<div class="col-md-12">
-		  <div class="card">
-			<div class="card-header">
-			  <h4 class="card-title">Edit My Profile</h4>
-			  <div class="row">
-				<div class="col-md-1">
-					<div class="avatar avatar-xxl p-3">
-						<img src="/{{ photo }}" alt="..." class="avatar-img rounded-circle">
+
+<div class="dashboard-content">
+	<!-- OPENING ELEMENT PROFILE SECTION -->
+	<div class="profile-container">
+		<!-- Profile Picture Section -->
+		<div class="profile-section">
+			<h2>{{ title }}</h2>
+			<div class="profile-picture">
+				<img src="/{{ photo }}" alt="Profile Picture" id="preview-image">
+				<p class="file-info">Silahkan unggah Profile Picture (JPG or PNG. Max size of 800K)</p>
+				<div class="profile-actions">
+					<div class="social-links">
+						<a href="#" class="social-btn"><i class="ri-instagram-line"></i> Instagram</a>
+						<a href="#" class="social-btn"><i class="ri-facebook-circle-line"></i> Facebook</a>
+						<a href="#" class="social-btn"><i class="ri-twitter-line"></i> Twitter</a>
+						<a href="#" class="social-btn"><i class="ri-linkedin-box-line"></i> LinkedIn</a>
 					</div>
 				</div>
-				<div class="col-md-10">
-					<div class="align-items-left p-3">
-						<h4>{{user.username}}</h4>
-						<h5>{{user.first_name}}</h5>
-					</div>
-				</div>
-			  </div>
+				<input type="file" id="profile-upload" hidden accept="image/*">
 			</div>
-			<div class="card-body">
-				
-
-				<form method="post"  enctype="multipart/form-data">
-					{% csrf_token %}
-					
-					<div class="row g-3 align-items-center mb-5">
-						<div class="col-md-2">
-							<label for="id_gender" class="col-form-label">Jenis Kelamin</label>
-						</div>
-						<div class="col-md-4">
-							{{ form.gender }}  <!-- Form input untuk email -->
-						</div>
-					</div>
-					
-					<div class="row g-3 align-items-center mb-5">
-						<div class="col-md-2">
-							<label for="id_telp" class="col-form-label">No Telp.</label>
-						</div>
-						<div class="col-md-4">
-							{{ form.telp }}  <!-- Form input untuk first name -->
-						</div>
-					</div>
-
-					<div class="row g-3 align-items-center mb-5">
-						<div class="col-md-2">
-							<label for="id_photo" class="col-form-label">Photo</label>
-						</div>
-						<div class="col-md-4">
-							{{ form.photo }}  <!-- Form input untuk first name -->
-						</div>
-					</div>
-
-					
-					<button type="submit" class="btn btn-primary">Update</button>
-				</form> 
-		  </div>
 		</div>
-
-		
-	  </div>
+		<!-- General Information Section -->
+		<div class="settings-section">
+			<form method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="form-row">
+					<div class="form-group">
+						<label>Username</label>
+						<input type="text" class="form-control" value="{{ user.username }}" readonly>
+					</div>
+					<div class="form-group">
+						<label>Nama Lengkap</label>
+						<input type="text" class="form-control" value="{{ user.first_name }}" readonly>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group">
+						<label for="id_gender">Jenis Kelamin</label>
+						{{ form.gender }}
+					</div>
+					<div class="form-group">
+						<label for="id_telp">No. Telepon</label>
+						{{ form.telp }}
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group">
+						<label for="id_photo">Photo Profile</label>
+						{{ form.photo }}
+					</div>
+				</div>
+				<div class="form-actions">
+					<button type="submit" class="btn primary">
+						<!-- <button type="submit" class="btn success"> -->
+							<!-- <button type="submit" class="btn warning"> -->
+						<i class="ri-save-line"></i> Update Profile
+					</button>
+				</div>
+			</form>
+		</div>
 	</div>
-  </div>
-
-
-  
+</div>  
 {% endblock content1 %} 
-
-
 
 {% block script_costum %} 
 {% if messages %}
@@ -109,5 +85,5 @@
         </script>
     {% endfor %}
 {% endif %}
-{% endblock script_costum %} 
+{% endblock script_costum %}
 

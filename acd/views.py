@@ -12,6 +12,8 @@ from .models import UserMhs, UserProdi, UserFakultas, UserDosen
 
 @login_required
 def index(request):
+
+    userC = None # izin menambahkan userC = None
     if request.user.last_name == 'Mahasiswa':
         try:
             userC = UserMhs.objects.get(user=request.user)
@@ -44,7 +46,7 @@ def index(request):
     context = {
         'title' : 'Dashboard',
         'heading' : 'Home Web Akademik',
-        'photo' : userC.photo, 
+        'photo' : userC.photo if userC else None, # izin menambahkan # if userC else None,
     }
     if request.user.last_name == "Admin Prodi":
         return render(request,'prodi/index.html', context)
