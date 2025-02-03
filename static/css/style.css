@@ -1377,6 +1377,7 @@ td {
 
 .action-btn:hover {
     background: #f5f5f5;
+    color: #000;
     border-color: #ccc;
 }
 
