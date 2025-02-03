@@ -25,3 +25,4 @@ static/layanan_files/*
 !static/img_profile/prodi/.gitkeep
 !static/img_profile/fakultas/.gitkeep
 !static/layanan_hasil_files/.gitkeep
+!static/layanan_files/.gitkeep
