@@ -1,6 +1,7 @@
 # IMPORTANT! 
 Anto : PULL dulu kak, baru kita push perubahan ta' :)
 Risal : Ok sudah, untuk mysql ada sudah saya masukkan, coba saja import nanti
+Anto: Project saya running di dbsqlite3 kak, folder /aam /acd/ saya gitignore dulu, saya pull model baru ta, dan sy tidak push /aam sama /acd
 
 # Cara Pull
 `git pull origin main` 
@@ -25,3 +26,5 @@ Risal : Ok sudah, untuk mysql ada sudah saya masukkan, coba saja import nanti
 - `git pull origin main` 
 - `git add .`
 - `git commit -m "Merge main and resolve conflicts"`
+
+# 
