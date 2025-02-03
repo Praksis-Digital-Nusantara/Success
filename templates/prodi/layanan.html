@@ -43,41 +43,43 @@
 					{% for layanan in layanan_data %}
 					<tr>
 					<td>{{ forloop.counter }}</td>
-					<td>{{ layanan.date_in }}</td>
+					<td>{{ layanan.date_in|date:"d M Y H:i" }}</td>
 					<td>{{ layanan.mhs }}</td>
 					<td>{{ layanan.prodi }}</td>
-					<td><b>{{ layanan.layanan_jenis }}</b>
-							<br>{{ layanan.layanan_isi }}
-							{% if layanan.layanan_file %}
-								<a target="_blank" href="/{{ layanan.layanan_file }}">
-									<button class="action-btn">file</button>
-								</a>
-							{% endif %}
-							</td>					  
 					<td>
-							{% if layanan.status == 'Waiting'  %}
-								<span class="grade-badge c">{{ layanan.status }}</span>
-							{% elif layanan.status == 'Processing'  %}
-								<span class="grade-badge b">{{ layanan.status }}</span>
-							{% elif layanan.status == 'Rejected'  %}
-								<span class="grade-badge d">{{ layanan.status }}</span>
-							{% elif layanan.status == 'Completed'  %}
-								<span class="grade-badge a">{{ layanan.status }}</span>
-							{% endif %}
-							<br>
-							{{ layanan.hasil_test }}
-							<br>
+						<b>{{ layanan.layanan_jenis }}</b>
+						<div class="layanan-content">{{ layanan.layanan_isi }}</div>
+						{% if layanan.layanan_file %}
+							<a target="_blank" href="/{{ layanan.layanan_file }}">
+								<button class="action-btn"><i class="ri-file-line"></i> File</button>
+							</a>
+						{% endif %}
+					</td>				  
+					<td>
+						{% if layanan.status == 'Waiting'  %}
+							<span class="grade-badge c">{{ layanan.status }}</span>
+						{% elif layanan.status == 'Processing'  %}
+							<span class="grade-badge b">{{ layanan.status }}</span>
+						{% elif layanan.status == 'Rejected'  %}
+							<span class="grade-badge d">{{ layanan.status }}</span>
+						{% elif layanan.status == 'Completed'  %}
+							<span class="grade-badge a">{{ layanan.status }}</span>
+						{% endif %}
+						{% if layanan.hasil_test %}
+							<div class="response-text">{{ layanan.hasil_test }}</div>
+						{% endif %}
+						<div class="button-group">
 							{% if layanan.hasil_link %}
 								<a target="_blank" href="{{ layanan.hasil_link }}">
-									<button class="upload-btn">link</button>
+									<button class="upload-btn"><i class="ri-link"></i> Link</button>
 								</a>
 							{% endif %}
 							{% if layanan.hasil_file %}
 								<a target="_blank" href="/{{ layanan.hasil_file }}">
-									<button class="upload-btn">file</button>
+									<button class="upload-btn"><i class="ri-file-line"></i> File</button>
 								</a>
 							{% endif %}
-							
+						</div>
 					</td>
 					<td>	
 						<a href="{% url 'acd:layanan_edit' layanan.id %}">

@@ -280,6 +280,7 @@ button:hover{
     background: #fff;
     box-shadow: 0 0 3px rgba(0,0,0,0.1);
     display: flex;
+    z-index: 1110;
     flex-direction: column;
     transition: all 0.3s ease;
     position: fixed;
@@ -1322,42 +1323,104 @@ td {
 }
 
 .grade-badge {
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 14px;
     display: inline-block;
-    text-align: center;
-    min-width: 40px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
 }
 
+
 .grade-badge.a {
-    background: #e6f4ea;
-    color: #1e7e34;
+    background-color: #E8F5E9;
+    color: #2E7D32;
+    border: 1px solid #A5D6A7;
 }
 
 .grade-badge.b {
-    background: #e8f0fe;
-    color: #1a73e8;
+    background-color: #E3F2FD;
+    color: #1565C0;
+    border: 1px solid #90CAF9;
 }
 
 .grade-badge.c {
-    background: #fef7e0;
-    color: #f9a825;
+    background-color: #FFF3E0;
+    color: #EF6C00;
+    border: 1px solid #FFCC80;
 }
 
 .grade-badge.d {
-    background: #fde7e9;
-    color: #dc3545;
+    background-color: #FFEBEE;
+    color: #C62828;
+    border: 1px solid #EF9A9A;
+}
+
+.grade-badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .action-btn {
-    padding: 6px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    background: #fff;
     color: #666;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
+
+
+.action-btn:hover {
+    background: #f5f5f5;
+    border-color: #ccc;
+}
+
+.action-btn i {
+    font-size: 16px;
+    color: #4a90e2;
+}
+
+.upload-btn {
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: #4a90e2;
+    color: white;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 8px;
+    display: inline-block;
+}
+
+.upload-btn:hover {
+    background: #357abd;
+    transform: translateY(-1px);
+}
+
+/* Response text styling */
+.response-text {
+    margin: 10px 0;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Layanan content styling */
+.layanan-content {
+    margin-top: 5px;
+    color: #666;
+    font-size: 14px;
+}
+
+
 
 /* Dark mode support */
 body.dark-mode .student-list-container {
