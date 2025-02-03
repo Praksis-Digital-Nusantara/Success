@@ -15,9 +15,13 @@ static/img_profile/mhs/*
 static/img_profile/dosen/*
 static/img_profile/prodi/*
 static/img_profile/fakultas/*
+static/layanan_hasil_files/*
+static/layanan_files/*
+
 
 # Keep the folders but ignore contents
 !static/img_profile/mhs/.gitkeep
 !static/img_profile/dosen/.gitkeep
 !static/img_profile/prodi/.gitkeep
 !static/img_profile/fakultas/.gitkeep
+!static/layanan_hasil_files/.gitkeep
