@@ -1,41 +1,477 @@
 {% extends "base.html" %}
-{% block header %}
-	<h1 class="display-4">{{ web_name }}</h1>
-	<p class="lead">Halo <b>{{user}}</b> Selamat datang di {{ web_name }}</p>
-	<a href="{% url "acd:index" %}">
-		<button class="btn btn-light btn-lg" id="btnHome" role="button">Dashboard</button>
-	</a>
-{% endblock header %}
+{% load static %}
+{% block content %}
 
-{% block content1 %}
-<div class="row p-5">
-	<div id="carouselExample" class="carousel slide">
-		<div class="carousel-inner">
-		  <div class="carousel-item active">
-			<img src="/static/img/bg-about.jpg" class="d-block w-100" alt="...">
-		  </div>
-		  <div class="carousel-item">
-			<img src="/static/img/bg-about.jpg" class="d-block w-100" alt="...">
-		  </div>
-		  <div class="carousel-item">
-			<img src="/static/img/bg-about.jpg" class="d-block w-100" alt="...">
-		  </div>
+<!-- START SECTION -->
+<section class="hero-slider">
+	<div class="slider-container">
+		<div class="slide active fade">
+			<img src="https://feb.unm.ac.id/media/images/feb-unm-cetak-prestasi-mahasiswa-lolos-wirausaha-merdeka_2024_09_27_333906.jpeg" alt="E-Success Education">
+			<div class="slide-content">
+				<h1>E-Success FEB-UNM</h1>
+				<p>Empowering students with innovative learning solutions</p>
+				<a href="#" class="cta-button">
+					Get Started
+					<i class="ri-arrow-right-line"></i>
+				</a>
+			</div>
 		</div>
-		<button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-		  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-		  <span class="visually-hidden">Previous</span>
-		</button>
-		<button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-		  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-		  <span class="visually-hidden">Next</span>
-		</button>
-	  </div>
+		<div class="slide fade">
+			<img src="https://feb.unm.ac.id/media/images/silaturahmi-dan-kunjungan-kerja-rektor-universitas-negeri-makassar-di-fakultas-ek_M1Zb3xX.jpg" alt="Online Learning">
+			<div class="slide-content">
+				<h1>Study Anywhere, Anytime</h1>
+				<p>Access world-class education from your device</p>
+				<a href="#" class="cta-button">
+					Browse Courses
+					<i class="ri-arrow-right-line"></i>
+				</a>
+			</div>
+		</div>
+		<div class="slide fade">
+			<img src="https://feb.unm.ac.id/media/images/pameran-pendidikan-feb-unm_2024_08_13_322867.JPG" alt="Student Success">
+			<div class="slide-content">
+				<h1>Achieve Excellence</h1>
+				<p>Join our community of successful graduates</p>
+				<a href="#" class="cta-button">
+					Join Now
+					<i class="ri-arrow-right-line"></i>
+				</a>
+			</div>
+		</div>
+		
+		<div class="slider-navigation">
+			<button class="slider-btn prev" aria-label="Previous slide">
+				<i class="ri-arrow-left-s-line"></i>
+			</button>
+			<div class="slider-dots"></div>
+			<button class="slider-btn next" aria-label="Next slide">
+				<i class="ri-arrow-right-s-line"></i>
+			</button>
+		</div>
+	</div>
+</section>
+<!-- END SLIDE SECTION -->
 
-</div>
-{% endblock content1 %}
+<!-- START ACTIVITY SECTION -->
+<section class="calendar-section">
+	<div class="container">
+		<div class="section-header">
+			<h2>Calendar Akademik</h2>
+			<p>Daftar tanggal setiap kegiatan yang sedang berlangsung dan sedang dibuka</p>
+		</div>
 
-{% comment %} {% block content2 %}
-<div class="row" style="height: 400px;">
-	<h1>konten 2</h1>
-</div>
-{% endblock content2 %} {% endcomment %}
+		<div class="calendar-filter">
+			<div class="search-program">
+				<input type="text" placeholder="Pilih Program Pembelajaran" class="program-search">
+				<i class="ri-search-line"></i>
+			</div>
+		</div>
+
+		<div class="program-list">
+			<div class="program-categories">
+				<ul>
+					<li class="active">Semua Program Pembelajaran</li>
+					<li>Pelatihan</li>
+					<li>Seminar Proposal</li>
+					<li>Mentoring</li>
+					<li>Webinar</li>
+					<li>Seminar Hasil</li>
+					<li>Ujian Tutup</li>
+				</ul>
+			</div>
+
+			<div class="program-items">
+				<div class="program-card">
+					<div class="program-icon">
+					   <img src="https://i.pinimg.com/736x/9d/1a/3d/9d1a3d5992176cd684886bd788539cbe.jpg" alt="mahasiswa">
+					</div>
+					<div class="program-content">
+						<div class="program-header">
+							<h3>Pelatihan Pengembangan Keterampilan Digital</h3>
+							<div class="program-tags">
+								<span class="tag offline">Offline</span>
+								<span class="tag privat">Privat</span>
+							</div>
+						</div>
+						<p class="program-organizer">Program Studi Ekonomi Pembangunan</p>
+					
+						<div class="student-details">
+							<div class="detail-item">
+								<i class="ri-user-line"></i>
+								<span>Nama: Andi Hermanto</span>
+							</div>
+							<div class="detail-item">
+								<i class="ri-number-2"></i>
+								<span>NIM: 2110101010</span>
+							</div>
+							<div class="detail-item">
+								<i class="ri-team-line"></i>
+								<span>Pembimbing 1: Dr. Anwar Ramli, SE., M.Si</span>
+							</div>
+							<div class="detail-item">
+								<i class="ri-team-line"></i>
+								<span>Pembimbing 2: Dr. Muhammad Rakib, S.Pd., M.Si</span>
+							</div>
+							<div class="detail-item">
+								<i class="ri-book-2-line"></i>
+								<span>Judul: Analisis Pengaruh Digital Marketing Terhadap UMKM di Kota Makassar</span>
+							</div>
+						</div>
+						<div class="program-status">
+							<span class="status ongoing">Sedang Berlangsung</span>
+							<span class="status close">Selesai</span>
+						</div>
+						<div class="program-schedule">
+							<div class="schedule-item">
+								<i class="ri-calendar-line"></i>
+								<span>Pendaftaran: 10 Maret 2024 - 1 Mei 2024</span>
+							</div>
+							<div class="schedule-item">
+								<i class="ri-time-line"></i>
+								<span>Pelaksanaan: 15 Maret 2024 - 1 Mei 2024</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="program-card">
+				   <div class="program-icon">
+					<img src="https://i.pinimg.com/736x/9d/1a/3d/9d1a3d5992176cd684886bd788539cbe.jpg" alt="mahasiswa">
+				   </div>
+					<div class="program-content">
+						<div class="program-header">
+							<h3>Pelatihan Pengembangan Keterampilan Digital</h3>
+							<div class="program-tags">
+								<span class="tag online">Online</span>
+								<span class="tag free">Gratis</span>
+							</div>
+						</div>
+						<p class="program-organizer">Fakultas Ekonomi dan Bisnis UNM</p>
+						<div class="program-status">
+							<span class="status ongoing">Sedang Berlangsung</span>
+							<span class="status open">Pendaftaran Dibuka</span>
+						</div>
+						<div class="program-schedule">
+							<div class="schedule-item">
+								<i class="ri-calendar-line"></i>
+								<span>Pendaftaran: 10 Maret 2024 - 1 Mei 2024</span>
+							</div>
+							<div class="schedule-item">
+								<i class="ri-time-line"></i>
+								<span>Pelaksanaan: 15 Maret 2024 - 1 Mei 2024</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="program-card">
+					<div class="program-icon">
+					   <img src="https://i.pinimg.com/736x/9d/1a/3d/9d1a3d5992176cd684886bd788539cbe.jpg" alt="mahasiswa">
+					</div>
+					<div class="program-content">
+						<div class="program-header">
+							<h3>Pelatihan Pengembangan Keterampilan Digital</h3>
+							<div class="program-tags">
+								<span class="tag offline">Offline</span>
+								<span class="tag privat">Privat</span>
+							</div>
+						</div>
+						<p class="program-organizer">Program Studi Ekonomi Pembangunan</p>
+					
+						<div class="student-details">
+							<div class="detail-item">
+								<i class="ri-user-line"></i>
+								<span>Nama: Andi Hermanto</span>
+							</div>
+							<div class="detail-item">
+								<i class="ri-number-2"></i>
+								<span>NIM: 2110101010</span>
+							</div>
+							<div class="detail-item">
+								<i class="ri-team-line"></i>
+								<span>Pembimbing 1: Dr. Anwar Ramli, SE., M.Si</span>
+							</div>
+							<div class="detail-item">
+								<i class="ri-team-line"></i>
+								<span>Pembimbing 2: Dr. Muhammad Rakib, S.Pd., M.Si</span>
+							</div>
+							<div class="detail-item">
+								<i class="ri-book-2-line"></i>
+								<span>Judul: Analisis Pengaruh Digital Marketing Terhadap UMKM di Kota Makassar</span>
+							</div>
+						</div>
+						<div class="program-status">
+							<span class="status ongoing">Sedang Berlangsung</span>
+							<span class="status close">Selesai</span>
+						</div>
+						<div class="program-schedule">
+							<div class="schedule-item">
+								<i class="ri-calendar-line"></i>
+								<span>Pendaftaran: 10 Maret 2024 - 1 Mei 2024</span>
+							</div>
+							<div class="schedule-item">
+								<i class="ri-time-line"></i>
+								<span>Pelaksanaan: 15 Maret 2024 - 1 Mei 2024</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Add more program cards as needed -->
+			</div>
+
+			<div class="pagination">
+				<button class="prev-page"><i class="ri-arrow-left-s-line"></i></button>
+				<div class="page-numbers">
+					<span class="active">1</span>
+					<span>2</span>
+					<span>3</span>
+					<span>4</span>
+					<span>5</span>
+					<span class="dots">...</span>
+					<span>105</span>
+				</div>
+				<button class="next-page"><i class="ri-arrow-right-s-line"></i></button>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- END ACTIVITY SECTION -->
+<!-- START WISUDA SECTION -->
+<section class="wisuda-section" id="wisuda">
+	<div class="container">
+		<div class="section-header">
+			<h2>Wisudawan/i FEB-UNM</h2>
+			<p>Selamat kepada wisudawan/i Fakultas Ekonomi dan Bisnis UNM</p>
+		</div>
+
+		<div class="wisuda-grid">
+			<div class="wisuda-card">
+				<div class="wisuda-image">
+					<img src="https://i.pinimg.com/736x/9d/1a/3d/9d1a3d5992176cd684886bd788539cbe.jpg" alt="Wisudawan">
+					<div class="wisuda-badge">
+						<i class="ri-medal-line"></i>
+						<span>Cumlaude</span>
+					</div>
+				</div>
+				<div class="wisuda-info">
+					<h3>Andi Hermanto</h3>
+					<p class="nim">2110101010</p>
+					<p class="prodi">Ekonomi Pembangunan</p>
+					<p class="ipk">IPK: 3.95</p>
+					<div class="wisuda-details">
+						<div class="detail-row">
+							<i class="ri-book-2-line"></i>
+							<span>Skripsi: Analisis Pengaruh Digital Marketing Terhadap UMKM</span>
+						</div>
+						<div class="detail-row">
+							<i class="ri-time-line"></i>
+							<span>Lama Studi: 3 Tahun 8 Bulan</span>
+						</div>
+						<div class="detail-row">
+							<i class="ri-calendar-line"></i>
+							<span>Wisuda: April 2024</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="wisuda-card">
+				<div class="wisuda-image">
+					<img src="https://i.pinimg.com/736x/9d/1a/3d/9d1a3d5992176cd684886bd788539cbe.jpg" alt="Wisudawan">
+					<div class="wisuda-badge">
+						<i class="ri-medal-line"></i>
+						<span>Cumlaude</span>
+					</div>
+				</div>
+				<div class="wisuda-info">
+					<h3>Andi Hermanto</h3>
+					<p class="nim">2110101010</p>
+					<p class="prodi">Ekonomi Pembangunan</p>
+					<p class="ipk">IPK: 3.95</p>
+					<div class="wisuda-details">
+						<div class="detail-row">
+							<i class="ri-book-2-line"></i>
+							<span>Skripsi: Analisis Pengaruh Digital Marketing Terhadap UMKM</span>
+						</div>
+						<div class="detail-row">
+							<i class="ri-time-line"></i>
+							<span>Lama Studi: 3 Tahun 8 Bulan</span>
+						</div>
+						<div class="detail-row">
+							<i class="ri-calendar-line"></i>
+							<span>Wisuda: April 2024</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="wisuda-card">
+				<div class="wisuda-image">
+					<img src="https://i.pinimg.com/736x/9d/1a/3d/9d1a3d5992176cd684886bd788539cbe.jpg" alt="Wisudawan">
+					<div class="wisuda-badge">
+						<i class="ri-medal-line"></i>
+						<span>Cumlaude</span>
+					</div>
+				</div>
+				<div class="wisuda-info">
+					<h3>Andi Hermanto</h3>
+					<p class="nim">2110101010</p>
+					<p class="prodi">Ekonomi Pembangunan</p>
+					<p class="ipk">IPK: 3.95</p>
+					<div class="wisuda-details">
+						<div class="detail-row">
+							<i class="ri-book-2-line"></i>
+							<span>Skripsi: Analisis Pengaruh Digital Marketing Terhadap UMKM</span>
+						</div>
+						<div class="detail-row">
+							<i class="ri-time-line"></i>
+							<span>Lama Studi: 3 Tahun 8 Bulan</span>
+						</div>
+						<div class="detail-row">
+							<i class="ri-calendar-line"></i>
+							<span>Wisuda: April 2024</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="wisuda-card">
+				<div class="wisuda-image">
+					<img src="https://i.pinimg.com/736x/9d/1a/3d/9d1a3d5992176cd684886bd788539cbe.jpg" alt="Wisudawan">
+					<div class="wisuda-badge">
+						<i class="ri-medal-line"></i>
+						<span>Cumlaude</span>
+					</div>
+				</div>
+				<div class="wisuda-info">
+					<h3>Andi Hermanto</h3>
+					<p class="nim">2110101010</p>
+					<p class="prodi">Ekonomi Pembangunan</p>
+					<p class="ipk">IPK: 3.95</p>
+					<div class="wisuda-details">
+						<div class="detail-row">
+							<i class="ri-book-2-line"></i>
+							<span>Skripsi: Analisis Pengaruh Digital Marketing Terhadap UMKM</span>
+						</div>
+						<div class="detail-row">
+							<i class="ri-time-line"></i>
+							<span>Lama Studi: 3 Tahun 8 Bulan</span>
+						</div>
+						<div class="detail-row">
+							<i class="ri-calendar-line"></i>
+							<span>Wisuda: April 2024</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="wisuda-card">
+				<div class="wisuda-image">
+					<img src="https://i.pinimg.com/736x/9d/1a/3d/9d1a3d5992176cd684886bd788539cbe.jpg" alt="Wisudawan">
+					<div class="wisuda-badge">
+						<i class="ri-medal-line"></i>
+						<span>Cumlaude</span>
+					</div>
+				</div>
+				<div class="wisuda-info">
+					<h3>Andi Hermanto</h3>
+					<p class="nim">2110101010</p>
+					<p class="prodi">Ekonomi Pembangunan</p>
+					<p class="ipk">IPK: 3.95</p>
+					<div class="wisuda-details">
+						<div class="detail-row">
+							<i class="ri-book-2-line"></i>
+							<span>Skripsi: Analisis Pengaruh Digital Marketing Terhadap UMKM</span>
+						</div>
+						<div class="detail-row">
+							<i class="ri-time-line"></i>
+							<span>Lama Studi: 3 Tahun 8 Bulan</span>
+						</div>
+						<div class="detail-row">
+							<i class="ri-calendar-line"></i>
+							<span>Wisuda: April 2024</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Repeat for more graduates -->
+			<div class="wisuda-card">
+				<div class="wisuda-image">
+					<img src="https://i.pinimg.com/736x/9d/1a/3d/9d1a3d5992176cd684886bd788539cbe.jpg" alt="Wisudawan">
+				</div>
+				<div class="wisuda-info">
+					<h3>Sarah Amalia</h3>
+					<p class="nim">2110101011</p>
+					<p class="prodi">Manajemen</p>
+					<p class="ipk">IPK: 3.85</p>
+					<div class="wisuda-details">
+						<div class="detail-row">
+							<i class="ri-book-2-line"></i>
+							<span>Skripsi: Strategi Pengembangan UMKM di Era Digital</span>
+						</div>
+						<div class="detail-row">
+							<i class="ri-time-line"></i>
+							<span>Lama Studi: 4 Tahun</span>
+						</div>
+						<div class="detail-row">
+							<i class="ri-calendar-line"></i>
+							<span>Wisuda: April 2024</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="wisuda-footer">
+			<a href="#" class="btn-primary">Lihat Semua Wisudawan</a>
+		</div>
+	</div>
+</section>
+<!-- END WISUDA SECTION -->
+<!-- START ABOUT SECTION -->
+<section class="about-section" id="about">
+	<div class="container">
+		<div class="about-content">
+			<div class="about-text">
+				<h2>Tentang E-Success</h2>
+				<p class="subtitle">Platform Manajemen Skripsi & Tugas Akhir FEB-UNM</p>
+				<div class="about-description">
+					<p>E-Success adalah sistem informasi terintegrasi yang dirancang khusus untuk memudahkan mahasiswa, dosen, dan staf akademik dalam mengelola proses skripsi dan tugas akhir di Fakultas Ekonomi dan Bisnis Universitas Negeri Makassar.</p>
+					<div class="features-grid">
+						<div class="feature-item">
+							<i class="ri-calendar-check-line"></i>
+							<h3>Penjadwalan Otomatis</h3>
+							<p>Sistem penjadwalan seminar dan ujian yang efisien</p>
+						</div>
+						<div class="feature-item">
+							<i class="ri-file-list-3-line"></i>
+							<h3>Tracking Progress</h3>
+							<p>Pemantauan kemajuan skripsi secara real-time</p>
+						</div>
+						<div class="feature-item">
+							<i class="ri-message-2-line"></i>
+							<h3>Konsultasi Online</h3>
+							<p>Bimbingan skripsi secara daring dengan dosen</p>
+						</div>
+						<div class="feature-item">
+							<i class="ri-notification-4-line"></i>
+							<h3>Notifikasi</h3>
+							<p>Pemberitahuan jadwal dan info penting</p>
+						</div>
+					</div>
+				</div>
+				<div class="about-cta">
+					<a href="#" class="btn-primary">Pelajari Lebih Lanjut</a>
+					<a href="#" class="btn-secondary">Hubungi Kami</a>
+				</div>
+			</div>
+			<div class="about-image">
+				<img src="https://feb.unm.ac.id/media/images/feb-unm-cetak-prestasi-mahasiswa-lolos-wirausaha-merdeka_2024_09_27_333906.jpeg" alt="E-Success Platform">
+			</div>
+		</div>
+	</div>
+</section>
+<!-- END WISUDA SECTION -->
+{% endblock %}
