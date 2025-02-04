@@ -7,6 +7,9 @@ VENV/
 
 acd/
 aam/
+
+acd/*
+aam/*
 db.sqlite3
 djg_success.sql
 
@@ -26,3 +29,4 @@ static/layanan_files/*
 !static/img_profile/fakultas/.gitkeep
 !static/layanan_hasil_files/.gitkeep
 !static/layanan_files/.gitkeep
+!aam/.gitkeep
