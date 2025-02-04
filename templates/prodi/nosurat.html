@@ -10,15 +10,10 @@
 			</div>
 			<div class="list-filters">
 				<div class="filter-dropdown">
-					<button class="filter-btn">
-						Filter Mata Kuliah <i class="ri-arrow-down-s-line"></i>
+					<button class="action-btn primary" onclick="openModal('nomorsurat')">
+						<i class="ri-add-line"></i>
+						Ajukan Nomor Surat
 					</button>
-				</div>
-				<div class="date-filter">
-					<div class="date-input">
-						<i class="ri-calendar-line"></i>
-						<input type="text" placeholder="Semester">
-					</div>
 				</div>
 			</div>
 		</div>
@@ -59,29 +54,52 @@
 	</div>
 </div>
 
-
-<!-- Modal -->
-<div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="formModalLabel">Modal Form Perihal dan Tujuan</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<form method="post">
-					{% csrf_token %}
-					{{ form.as_p }}	
-					<div class="d-flex justify-content-end">
-						<button type="submit" class="btn btn-success">Kirim</button>
-					</div>
-				</form>
-			</div>
+<!-- OPENING ELEMEN MODAL -->
+<div id="nomorsurat" class="modal-edit">
+	<div class="modal-content-edit">
+		<span class="close" onclick="closeModal('nomorsurat')">&times;</span>
+		<h2>Perihal dan Tujuan</h2>
+		<form method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+		<div class="form-group">
+			<label style="text-align: left;">Perihal</label>
+			{{ form.perihal }}
 		</div>
+		<div class="form-group">
+			<label style="text-align: left;">Tujuan</label>
+			{{ form.tujuan }}
+		<button type="submit" class="btn primary">
+			<i class="ri-save-line"></i>
+			Update Data
+		</button>
+	</form>
 	</div>
 </div>
+<!-- OPENING ELEMENT MODAL -->
 
-  
+
+ <!--JS FOR MODAL  -->
+<script>
+    function openModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "block";
+    }
+
+    function closeModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        var modals = document.getElementsByClassName('modal-edit');
+        for (var i = 0; i < modals.length; i++) {
+            if (event.target == modals[i]) {
+                modals[i].style.display = "none";
+            }
+        }
+    }
+</script>
+<!-- JS FOR MODAL -->
 {% endblock content1 %} 
 
 

@@ -11,6 +11,54 @@ Anto: Project saya running di dbsqlite3 kak, folder /aam /acd/ saya gitignore du
 `git commit -m "message"`
 `git push origin main`
 
+# MODAL 
+
+```html
+<div id="nomorsurat" class="modal-edit">
+	<div class="modal-content-edit">
+		<span class="close" onclick="closeModal('nomorsurat')">&times;</span>
+		<h2>Perihal dan Tujuan</h2>
+		<form method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+		<div class="form-group">
+			<label style="text-align: left;">Perihal</label>
+			{{ form.perihal }}
+		</div>
+		<div class="form-group">
+			<label style="text-align: left;">Tujuan</label>
+			{{ form.tujuan }}
+		<button type="submit" class="btn primary">
+			<i class="ri-save-line"></i>
+			Update Data
+		</button>
+	</form>
+	</div>
+</div>
+```
+
+```js
+<script>
+    function openModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "block";
+    }
+
+    function closeModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        var modals = document.getElementsByClassName('modal-edit');
+        for (var i = 0; i < modals.length; i++) {
+            if (event.target == modals[i]) {
+                modals[i].style.display = "none";
+            }
+        }
+    }
+</script>
+```
+
 
 # folder css 
 - main/styles.css
