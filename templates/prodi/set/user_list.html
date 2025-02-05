@@ -66,9 +66,9 @@
 						<button class="action-btn"><i class="ri-pencil-fill"></i></button>
 						</a>
 						<br>
-						<button class="action-btn primary" onclick="openModal('changePasswordModal')">
+						<button class="action-btn primary" onclick="openModal('changePasswordModal', '{{ datatb.id }}')">
 							<i class="ri-lock-fill"></i>
-						</button>
+						</button>						
 					</td>
 				</tr>
 				{% endfor %}
@@ -111,11 +111,13 @@
 {% block script_costum %} 
 
 <script>
-    function openModal(modalId) {
-        var modal = document.getElementById(modalId);
+	function openModal(modalId, userId) {
+		document.getElementById(modalId).style.display = 'block'; // Tampilkan modal
+		document.getElementById('userId').value = userId; // Masukkan userId ke input hidden
+		var modal = document.getElementById(modalId);
         modal.style.display = "block";
-    }
-
+	}
+	
     function closeModal(modalId) {
         var modal = document.getElementById(modalId);
         modal.style.display = "none";
@@ -131,31 +133,6 @@
     }
 </script>
 
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var changePasswordModal = document.getElementById('changePasswordModal');
-        
-        changePasswordModal.addEventListener('show.bs.modal', function (event) {
-            var button = event.relatedTarget;
-            var userId = button.getAttribute('data-user-id');
-            
-            document.getElementById('userId').value = userId;
-        });
-    });
-    
-    function validatePassword() {
-        var newPassword = document.getElementById('newPassword').value;
-        var confirmPassword = document.getElementById('confirmPassword').value;
-        
-        if (newPassword !== confirmPassword) {
-            alert('Password dan Konfirmasi Password harus sama!');
-            return false;
-        }
-        return true;
-    }
-</script>
 
 
 {% endblock script_costum %} 
