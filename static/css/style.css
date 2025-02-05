@@ -316,8 +316,9 @@ button:hover{
 }
 
 .logo-text span {
-    font-size: 14px;
-    color: #666;
+    font-size: 11px;
+    color: #4d4949;
+    font-weight: 500;
 }
 
 /* Dark mode support */

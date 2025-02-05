@@ -15,7 +15,7 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="logo">
-               <i class="ri-file-damage-fill"></i>
+                <i class="ri-strikethrough"></i>
                 <div class="logo-text">
                     <h2>{{webname}}</h2>
                     <span>{{web_name}}</span>
@@ -138,12 +138,10 @@
         const mainContent = document.querySelector('.main-content');
         const sidebar = document.querySelector('.sidebar');
 
-          // Function to check screen width and collapse sidebar
+        // Function to check screen width and collapse sidebar
         const checkScreenWidth = () => {
             if (window.innerWidth <= 768) {
                 dashboardContainer.classList.add('sidebar-collapsed');
-            } else {
-                dashboardContainer.classList.remove('sidebar-collapsed');
             }
         };
 
@@ -159,10 +157,12 @@
             dashboardContainer.classList.toggle('sidebar-collapsed');
         });
 
-        // Close sidebar when clicking main content
+        // Close sidebar when clicking main content only on mobile
         document.addEventListener('click', (e) => {
-            if (!sidebar.contains(e.target) && !toggleButton.contains(e.target)) {
-                dashboardContainer.classList.add('sidebar-collapsed');
+            if (window.innerWidth <= 768) {
+                if (!sidebar.contains(e.target) && !toggleButton.contains(e.target)) {
+                    dashboardContainer.classList.add('sidebar-collapsed');
+                }
             }
         });
 
