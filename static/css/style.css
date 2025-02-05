@@ -2125,6 +2125,35 @@ body.dark-mode .load-more-btn:hover {
     cursor: pointer;
 }
 
+/* ... existing modal styles ... */
+
+/* Dark mode modal styles */
+body.dark-mode .modal-edit {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+body.dark-mode .modal-content-edit {
+    background-color: #1f2937;
+    border-color: #374151;
+    color: #e5e7eb;
+}
+
+body.dark-mode .modal-content-edit h2 {
+    color: #e5e7eb;
+}
+
+body.dark-mode .close {
+    color: #9ca3af;
+}
+
+body.dark-mode .close:hover,
+body.dark-mode .close:focus {
+    color: #e5e7eb;
+}
+
+/* ... rest of the CSS ... */
+
+
 /* END MODAL */
 
 

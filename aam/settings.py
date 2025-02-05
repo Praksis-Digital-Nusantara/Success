@@ -64,6 +64,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'aam.context_processors.web_name',
+                'aam.context_processors.versioned_static',
             ],
         },
     },
