@@ -23,6 +23,15 @@
 		</div>
 		<!-- General Information Section -->
 		<div class="settings-section">
+			{% if messages %}
+			{% for message in messages %}
+				<div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} mb-4">
+					<i class="{% if message.tags == 'success' %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
+					{{ message }}
+				</div>
+			{% endfor %}
+			{% endif %}
+			
 			<form method="post" enctype="multipart/form-data">
 				{% csrf_token %}
 				<div class="form-row">

@@ -25,6 +25,14 @@
 		</div>
 
 		<div class="student-table">
+			{% if messages %}
+			{% for message in messages %}
+				<div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} mb-4">
+					<i class="{% if message.tags == 'success' %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
+					{{ message }}
+				</div>
+			{% endfor %}
+			{% endif %}
 			<table>
 				<thead>
 				<tr>
@@ -58,14 +66,9 @@
 						<button class="action-btn"><i class="ri-pencil-fill"></i></button>
 						</a>
 						<br>
-						<button 
-						class="action-btn" 
-						data-bs-toggle="modal" 
-						data-bs-target="#changePasswordModal" 
-						data-user-id="{{ datatb.id }}" 
-						data-username="{{ datatb.username }}">
-						<i class="ri-lock-fill"></i>
-					</button>
+						<button class="action-btn primary" onclick="openModal('changePasswordModal')">
+							<i class="ri-lock-fill"></i>
+						</button>
 					</td>
 				</tr>
 				{% endfor %}
@@ -76,37 +79,26 @@
 </div>
 
 
-
-
-
-   <!-- Modal -->
-   <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="modalLabel">Ganti Password</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<form id="changePasswordForm" method="post">
-					{% csrf_token %}
-					<input type="hidden" name="user_id" id="userId">
-					<div class="mb-3">
-						<label for="newPassword" class="form-label">Password Baru</label>
-						<input type="password" class="form-control" id="newPassword" name="new_password" required>
-					</div>
-					<div class="mb-3">
-						<label for="confirmPassword" class="form-label">Konfirmasi Password</label>
-						<input type="password" class="form-control" id="confirmPassword" name="confirm_password" required>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-						<button type="submit" class="btn btn-primary">Simpan</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+<div id="changePasswordModal" class="modal-edit">
+    <div class="modal-content-edit">
+        <span class="close" onclick="closeModal('changePasswordModal')">&times;</span>
+        <h2>Perihal dan Tujuan</h2>
+        <form id="changePasswordForm" method="post" onsubmit="return validatePassword()">
+            {% csrf_token %}
+            <input type="hidden" name="user_id" id="userId">
+            <div class="form-group">
+                <label for="newPassword">Password Baru</label>
+                <input type="password" class="form-control" id="newPassword" name="new_password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Konfirmasi Password</label>
+                <input type="password" class="form-control" id="confirmPassword" name="confirm_password" required>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+    </div>
 </div>
 
   
@@ -118,39 +110,52 @@
 
 {% block script_costum %} 
 
-{% if messages %}
-    {% for message in messages %}
-        <script>
-            swal({
-                title: "{% if message.tags == 'success' %}Good job!{% else %}Gagal Menyimpan!{% endif %}",
-                text: "{{ message }}",
-                icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
-                buttons: {
-                    confirm: {
-                        text: "OK",
-                        value: true,
-                        visible: true,
-                        className: "{% if message.tags == 'success' %}btn btn-success{% else %}btn btn-danger{% endif %}",
-                        closeModal: true,
-                    },
-                },
-            });
-        </script>
-    {% endfor %}
-{% endif %}
+<script>
+    function openModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "block";
+    }
+
+    function closeModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        var modals = document.getElementsByClassName('modal-edit');
+        for (var i = 0; i < modals.length; i++) {
+            if (event.target == modals[i]) {
+                modals[i].style.display = "none";
+            }
+        }
+    }
+</script>
+
 
 
 <script>
-	// Ambil data pengguna untuk diisi di modal
-	var changePasswordModal = document.getElementById('changePasswordModal');
-	changePasswordModal.addEventListener('show.bs.modal', function (event) {
-		var button = event.relatedTarget;
-		var userId = button.getAttribute('data-user-id');
-		var username = button.getAttribute('data-username');
-		
-		// Isi form di modal
-		var userIdInput = changePasswordModal.querySelector('#userId');
-		userIdInput.value = userId;
-	});
+    document.addEventListener('DOMContentLoaded', function () {
+        var changePasswordModal = document.getElementById('changePasswordModal');
+        
+        changePasswordModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var userId = button.getAttribute('data-user-id');
+            
+            document.getElementById('userId').value = userId;
+        });
+    });
+    
+    function validatePassword() {
+        var newPassword = document.getElementById('newPassword').value;
+        var confirmPassword = document.getElementById('confirmPassword').value;
+        
+        if (newPassword !== confirmPassword) {
+            alert('Password dan Konfirmasi Password harus sama!');
+            return false;
+        }
+        return true;
+    }
 </script>
+
+
 {% endblock script_costum %} 

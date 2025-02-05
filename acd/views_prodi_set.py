@@ -80,7 +80,7 @@ def user_edit(request, id, role):
         form = formUserEdit(request.POST, request.FILES, instance=userSelect)
         if form.is_valid():
             userSelect.save()  
-            messages.success(request, 'Berhasil')
+            messages.success(request, 'Update User Berhasil')
             return redirect('acd:user_edit', userSelect.user_id, role)
         else:
             messages.error(request, 'periksa kembali isian data anda!')
