@@ -31,8 +31,8 @@
                     <li class="has-dropdown  class="{% if title == 'Users' %}active{% endif %}"">
                         <a href="#"><i class="ri-user-line"></i>Users<i class="ri-arrow-down-s-line dropdown-icon"></i></a>
                         <ul class="submenu">
-                            <li><a href="{% url 'acd:user_list' %}?role=Mahasiswa">Mahasiswa</a></li>
-                            <li><a href="{% url 'acd:user_list' %}?role=Dosen">Dosen</a></li>
+                            <li><a href="{% url 'acd:user_list' %}?role=Mahasiswa"><i class="ri-file-list-line"></i> Mahasiswa</a></li>
+                            <li><a href="{% url 'acd:user_list' %}?role=Dosen"><i class="ri-file-list-line"></i> Dosen</a></li>
                         </ul>
                     </li>
                     <li class="{% if title == 'Layanan' %}active{% endif %}">
@@ -126,7 +126,30 @@
 
             {% block content1 %}
             {% endblock content1 %}
+<!-- START FOOTER DASHBAORD -->
+<footer class="dashboard-footer">
+    <div class="footer-content">
+        <div class="footer-left">
+            <p>&copy; 2025 Praksis Digital Nusantara. All rights reserved.
+            </p>
+        </div>
+        <div class="footer-center">
+            <a href="#">Terms of Service</a>
+            <a href="#">Privacy Police</a>
+            <a href="#">Manual Guide</a>
+        </div>
+        <div class="footer-right">
+            <div class="social-links">
+                <a href="#"><i class="ri-facebook-fill"></i></a>
+                <a href="#"><i class="ri-twitter-fill"></i></a>
+                <a href="#"><i class="ri-instagram-line"></i></a>
+                <a href="#"><i class="ri-github-fill"></i></a>
+            </div>
+        </div>
+    </div>
 
+</footer>
+<!-- FOOTER DASHBOARD -->
 
         </div>
     </div>
