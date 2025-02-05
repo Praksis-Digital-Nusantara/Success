@@ -111,8 +111,8 @@ def skripsi_sjudul(request):
         skripsi = get_object_or_404(SkripsiJudul, id=skripsi_id)
         skripsi.status = status
         skripsi.status_ket = status_ket
-        skripsi.save()
-        messages.success(request, f"Status Skripsi {skripsi_id} = Direvisi")
+        skripsi.save()       
+        messages.success(request, f"Status Skripsi {skripsi_id} = {status}")
 
     userprodi = request.userprodi  
     data = SkripsiJudul.objects.all()

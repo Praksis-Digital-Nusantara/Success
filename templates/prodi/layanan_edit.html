@@ -15,51 +15,53 @@
 					<i class="ri-arrow-right-s-line"></i>
 				</li>
 				<li>
-					<a href="{% url 'acd:layanan' %}">{{ heading }}</a>
+					<a href="{% url 'acd:layanan' %}">Layanan</a>
 				</li>
 				<li>
 					<i class="ri-arrow-right-s-line"></i>
 				</li>
 				<li>
-					<span>{{web_name}}</span>
+					<a href="">{{ heading }}</a>
 				</li>
 			</ul>
 		</nav>
 	</div>
+			{% if messages %}
+			{% for message in messages %}
+				<div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} mb-4">
+					<i class="{% if message.tags == 'success' %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
+					{{ message }}
+				</div>
+			{% endfor %}
+			{% endif %}
 
-<form method="post" enctype="multipart/form-data">
-{% csrf_token %}
-<div class="form-row">
-<!-- <div class="form-group">
-<label for="id_hasil_test">Balasan Layanan</label>
-</label>
-</div> -->
-<div class="form-group">
-    <label for="id_hasil_test">Balasan Layanan</label>
-    {{ form.hasil_test }}
-</div>
-</div>
-<div class="form-row">
-<div class="form-group">
-<label>Link</label>
-{{ form.hasil_link }} 
-</div>
-<div class="form-group">
-<label>File</label>
-{{ form.hasil_file }}
-</div>
-<div class="form-group">
-	<label>Status</label>
-	{{ form.status }}
+		<form method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+			<div class="form-row">
+				<div class="form-group">
+					<label for="id_hasil_test">Balasan Layanan</label>
+					{{ form.hasil_test }}
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group">
+					<label>Link</label>
+					{{ form.hasil_link }} 
+				</div>
+				<div class="form-group">
+					<label>File</label>
+					{{ form.hasil_file }}
+				</div>
+				<div class="form-group">
+					<label>Status</label>
+					{{ form.status }}
+				</div>
+			</div>
+			<div class="form-actions">
+				<button type="submit" class="btn primary">Update</button>
+			</div>
+		</form>
 	</div>
-</div>
-<div class="form-actions">
-	<button type="submit" class="btn primary">
-Update
-	</button>
-</div>
-</form>
-</div>
 </div>
 {% endblock content1 %}
 
