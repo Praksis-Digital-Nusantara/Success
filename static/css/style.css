@@ -31,7 +31,7 @@ body.login-page {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(#F1F3FF, #CBD4FF);
+    /* background: linear-gradient(#F1F3FF, #CBD4FF); */
 }
 
 body.dark-mode .sidebar,
