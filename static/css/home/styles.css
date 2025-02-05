@@ -382,21 +382,29 @@ body {
 .cta-button {
     display: inline-flex;
     align-items: center;
+    justify-content: center;  /* Add this to center content */
     gap: 0.5rem;
-    padding: 1rem 2rem;
+    padding: 0.6rem 1.2rem;
     background: #136815;
     color: #fff;
+    width: 200px;
     text-decoration: none;
-    border-radius: 30px;
+    border-radius: 20px;
     font-weight: 500;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(26, 115, 232, 0.3);
 }
 
+
 .cta-button:hover {
     background: #1557b0;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(26, 115, 232, 0.4);
+}
+
+.cta-text {
+    display: inline-block;
+    text-align: center;  
 }
 
 .slider-navigation {
