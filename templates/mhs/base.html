@@ -2,463 +2,252 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>{{ title }}</title>
-    <meta
-      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
-      name="viewport"
-    />
-    <link
-      rel="icon"
-      href="/static/img/kaiadmin/favicon.ico"
-      type="image/x-icon"
-    />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} | {{webname}}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v={{ STATIC_VERSION }}"> 
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <i class="ri-strikethrough"></i>
+                <div class="logo-text">
+                    <h2>{{webname}}</h2>
+                    <span>{{web_name}}</span>
+                </div>
+            </div>
+          
+            
+            <nav class="sidebar-menu">
+                <ul>
+                    <li class="{% if title == 'Dashboard' %}active{% endif %}">
+                        <a href="{% url "acd:dashboard" %}"><i class="ri-dashboard-line"></i> Dashboard</a>
+                    </li>
+                    <li class="{% if title == 'Layanan Akademik' %}active{% endif %}">
+                        <a href="{% url "acd:layanan_me" %}"><i class="ri-file-list-line"></i> Layanan Akademik</a>
+                    </li>
+                    <li class="{% if title == 'Skripsi' %}active{% endif %}">
+                        <a href="{% url "acd:skripsi" %}"><i class="ri-file-list-line"></i> Skripsi</a>
+                    </li>  
+                    <li class="{% if title == 'Profile' %}active{% endif %}">
+                        <a href="{% url 'acd:profile_mhs' %}"><i class="ri-calendar-line"></i>Profile</a>
+                    </li>                 
+                </ul>
+            </nav>
 
-    <!-- Fonts and icons -->
-    <script src="/static/js/plugin/webfont/webfont.min.js"></script>
+            <div class="sidebar-footer">
+                <a href="{% url 'acd:logout' %}" class="logout"><i class="ri-logout-box-line"></i> Logout</a>
+                <div class="sidebar-footer-p">
+                    <p>© 2024 Praksis Digital Nusantara.</p>
+                    <p>Version: 1.0.0-alpha.1</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button id="toggle-sidebar"><i class="ri-menu-line"></i></button>
+                    <h1>{{heading}}</h1>
+                </div>
+                <div class="header-right">
+                    <div class="search-bar">
+                        <i class="ri-search-line"></i>
+                        <input type="text" placeholder="Search...">
+                    </div>
+                    <div class="user-menu">
+                        <i class="ri-contrast-2-fill"></i>
+                        <i class="ri-notification-3-line"></i>
+                        <img src="/{{ photo }}" alt="User Avatar" class="avatar">
+                    </div>
+                </div>
+            </header>
+
+            <!-- MODAL NOTIFIKASI -->
+<div class="notification-modal" id="notificationModal">
+    <div class="notification-header">
+        <h2>Notifications</h2>
+    </div>
+    <div class="notification-list">
+        <div class="notification-item">
+            <img src="https://padinusantara.co.id/media/team/andi.jpg" alt="User Avatar" class="notification-avatar">
+            <div class="notification-content">
+                <p><strong>Pesan baru dari Admin Fakultas</strong> "Kesalahan dalam dokumen A"</p>
+                <span class="notification-time">a few moments ago</span>
+            </div>
+        </div>
+        <div class="notification-item">
+            <img src="https://padinusantara.co.id/media/team/andi.jpg" alt="User Avatar" class="notification-avatar">
+            <div class="notification-content">
+                <p><strong>HermantoXYZ</strong> and <strong>5 others</strong> ujian sidang akan segera di mulai.</p>
+                <span class="notification-time">10 minutes ago</span>
+            </div>
+        </div>
+        <div class="notification-item">
+            <img src="https://padinusantara.co.id/media/team/andi.jpg" alt="User Avatar" class="notification-avatar">
+            <div class="notification-content">
+                <p><strong>Aco</strong> and <strong>141 others</strong> telah menyelesaikan ujian proposal</p>
+                <span class="notification-time">44 minutes ago</span>
+            </div>
+        </div>
+        <div class="notification-footer">
+            <a href="#" class="view-all">View all</a>
+        </div>
+    </div>
+</div>
+
+
+
+            {% block content1 %}
+            {% endblock content1 %}
+<!-- START FOOTER DASHBAORD -->
+<footer class="dashboard-footer">
+    <div class="footer-content">
+        <div class="footer-left">
+            <p>&copy; 2025 Praksis Digital Nusantara. All rights reserved.
+            </p>
+        </div>
+        <div class="footer-center">
+            <a href="#">Terms of Service</a>
+            <a href="#">Privacy Police</a>
+            <a href="#">Manual Guide</a>
+        </div>
+        <div class="footer-right">
+            <div class="social-links">
+                <a href="#"><i class="ri-facebook-fill"></i></a>
+                <a href="#"><i class="ri-twitter-fill"></i></a>
+                <a href="#"><i class="ri-instagram-line"></i></a>
+                <a href="#"><i class="ri-github-fill"></i></a>
+            </div>
+        </div>
+    </div>
+
+</footer>
+<!-- FOOTER DASHBOARD -->
+
+        </div>
+    </div>
+
+    <!-- JS FOR SIDEBAR/OPENG/CLOSE -->
     <script>
-      WebFont.load({
-        google: { families: ["Public Sans:300,400,500,600,700"] },
-        custom: {
-          families: [
-            "Font Awesome 5 Solid",
-            "Font Awesome 5 Regular",
-            "Font Awesome 5 Brands",
-            "simple-line-icons",
-          ],
-          urls: ["/static/css/fonts.min.css"],
-        },
-        active: function () {
-          sessionStorage.fonts = true;
-        },
-      });
+        const toggleButton = document.getElementById('toggle-sidebar');
+        const dashboardContainer = document.querySelector('.dashboard-container');
+        const mainContent = document.querySelector('.main-content');
+        const sidebar = document.querySelector('.sidebar');
+
+        // Function to check screen width and collapse sidebar
+        const checkScreenWidth = () => {
+            if (window.innerWidth <= 768) {
+                dashboardContainer.classList.add('sidebar-collapsed');
+            }
+        };
+
+        // Check on page load
+        checkScreenWidth();
+
+        // Check on window resize
+        window.addEventListener('resize', checkScreenWidth);
+        
+        // Toggle sidebar with button
+        toggleButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dashboardContainer.classList.toggle('sidebar-collapsed');
+        });
+
+        // Close sidebar when clicking main content only on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                if (!sidebar.contains(e.target) && !toggleButton.contains(e.target)) {
+                    dashboardContainer.classList.add('sidebar-collapsed');
+                }
+            }
+        });
+
+        // Active Menu Item
+        const menuItems = document.querySelectorAll('.sidebar-menu li');
+        menuItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                menuItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+    </script>
+    <!-- JS FOR DROPDOWN -->
+    <script>
+      // Dropdown functionality
+      const dropdownItems = document.querySelectorAll('.has-dropdown > a');
+        
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const parent = item.parentElement;
+                
+                // Toggle current dropdown
+                if (parent.classList.contains('active')) {
+                    parent.classList.remove('active');
+                } else {
+                    // Close other dropdowns
+                    dropdownItems.forEach(other => {
+                        other.parentElement.classList.remove('active');
+                    });
+                    parent.classList.add('active');
+                }
+            });
+        });
     </script>
 
-    <!-- CSS Files -->
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/static/css/plugins.min.css" />
-    <link rel="stylesheet" href="/static/css/kaiadmin.min.css" />
-
-    <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link rel="stylesheet" href="/static/css/demo.css" />
-  </head>
-  <body>
-    <div class="wrapper">
-      <!-- Sidebar -->
-      <div class="sidebar" data-background-color="dark">
-        <div class="sidebar-logo">
-          <!-- Logo Header -->
-          <div class="logo-header" data-background-color="dark">
-            <a href="index.html" class="logo">
-              <img
-                src="/static/img/kaiadmin/logo_light.svg"
-                alt="navbar brand"
-                class="navbar-brand"
-                height="20"
-              />
-            </a>
-            <div class="nav-toggle">
-              <button class="btn btn-toggle toggle-sidebar">
-                <i class="gg-menu-right"></i>
-              </button>
-              <button class="btn btn-toggle sidenav-toggler">
-                <i class="gg-menu-left"></i>
-              </button>
-            </div>
-            <button class="topbar-toggler more">
-              <i class="gg-more-vertical-alt"></i>
-            </button>
-          </div>
-          <!-- End Logo Header -->
-        </div>
-        <div class="sidebar-wrapper scrollbar scrollbar-inner">
-          <div class="sidebar-content">
-            <ul class="nav nav-secondary">            
-              <li class="nav-item {% if title == 'Dashboard' %}active{% endif %}">
-                <a href="{% url "acd:dashboard" %}">
-                  <i class="fas fa-desktop"></i>
-                  <p>Dashboard</p>
-                  {% comment %} <span class="badge badge-secondary">1</span> {% endcomment %}
-                </a>
-              </li>
-              <li class="nav-item {% if title == 'Layanan Akademik' %}active{% endif %}">
-                <a href="{% url "acd:layanan_me" %}">
-                  <i class="fas fa-list"></i>
-                  <p>Daftar Layanan Saya</p>
-                </a>
-              </li>
-              
-              <li class="nav-section">
-                <span class="sidebar-mini-icon">
-                  <i class="fa fa-ellipsis-h"></i>
-                </span>
-                <h4 class="text-section">Menus</h4>
-              </li>
-              
-              <li class="nav-item {% if title == 'Skripsi' %}active{% endif %}">
-                <a href="{% url "acd:skripsi" %}">
-                  <i class="fas fa-book"></i>
-                  <p>Skripsi</p>
-                </a>
-              </li>
-              
-              
-
-              
-            </ul>
-          </div>
-        </div>
-      </div>
-      <!-- End Sidebar -->
-
-      <div class="main-panel">
-        <div class="main-header">
-          <div class="main-header-logo">
-            <!-- Logo Header -->
-            <div class="logo-header" data-background-color="dark">
-              <a href="index.html" class="logo">
-                <img
-                  src="/static/img/kaiadmin/logo_light.svg"
-                  alt="navbar brand"
-                  class="navbar-brand"
-                  height="20"
-                />
-              </a>
-              <div class="nav-toggle">
-                <button class="btn btn-toggle toggle-sidebar">
-                  <i class="gg-menu-right"></i>
-                </button>
-                <button class="btn btn-toggle sidenav-toggler">
-                  <i class="gg-menu-left"></i>
-                </button>
-              </div>
-              <button class="topbar-toggler more">
-                <i class="gg-more-vertical-alt"></i>
-              </button>
-            </div>
-            <!-- End Logo Header -->
-          </div>
-          <!-- Navbar Header -->
-          <nav
-            class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
-          >
-            <div class="container-fluid">
-
-              <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-                
-                <li class="nav-item topbar-icon dropdown hidden-caret">
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    id="notifDropdown"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <i class="fa fa-bell"></i>
-                    <span class="notification">4</span>
-                  </a>
-                  <ul
-                    class="dropdown-menu notif-box animated fadeIn"
-                    aria-labelledby="notifDropdown"
-                  >
-                    <li>
-                      <div class="dropdown-title">
-                        You have 4 new notification
-                      </div>
-                    </li>
-                    <li>
-                      <div class="notif-scroll scrollbar-outer">
-                        <div class="notif-center">
-                          <a href="#">
-                            <div class="notif-icon notif-primary">
-                              <i class="fa fa-user-plus"></i>
-                            </div>
-                            <div class="notif-content">
-                              <span class="block"> New user registered </span>
-                              <span class="time">5 minutes ago</span>
-                            </div>
-                          </a>
-                          <a href="#">
-                            <div class="notif-icon notif-success">
-                              <i class="fa fa-comment"></i>
-                            </div>
-                            <div class="notif-content">
-                              <span class="block">
-                                Rahmad commented on Admin
-                              </span>
-                              <span class="time">12 minutes ago</span>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <a class="see-all" href="javascript:void(0);"
-                        >See all notifications<i class="fa fa-angle-right"></i>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                
-
-                <li class="nav-item topbar-user dropdown hidden-caret">
-                  <a
-                    class="dropdown-toggle profile-pic"
-                    data-bs-toggle="dropdown"
-                    href="#"
-                    aria-expanded="false"
-                  >
-                    <div class="avatar-sm">
-                      <img
-                        src="/{{ photo }}"
-                        alt="..."
-                        class="avatar-img rounded-circle"
-                      />
-                    </div>
-                    <span class="profile-username">
-                      <span class="op-7">Hi,</span>
-                      <span class="fw-bold">{{user.first_name}}</span>
-                    </span>
-                  </a>
-                  <ul class="dropdown-menu dropdown-user animated fadeIn">
-                    <div class="dropdown-user-scroll scrollbar-outer">
-                      <li>
-                        <div class="user-box">
-                          <div class="avatar-lg">
-                            <img
-                              src="/{{ photo }}"
-                              alt="image profile"
-                              class="avatar-img rounded"
-                            />
-                          </div>
-                          <div class="u-text">
-                            <h4>{{user}}</h4>
-                            <p class="text-muted">{{user.last_name}}</p>
-                            <a
-                              href="{% url 'acd:profile_mhs' %}"
-                              class="btn btn-xs btn-secondary btn-sm"
-                              >View Profile</a
-                            >
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="dropdown-divider"></div>
-                        <a href="{% url 'acd:changepass' %}" class="dropdown-item">Change Password</a>
-                        <a href="" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalLogout">
-                          Logout
-                        </a>
-                      </li>
-                    </div>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </nav>
-          <!-- End Navbar -->
-        </div>
-
-
-        <!-- Modal Logout -->
-        <div class="modal fade" id="modalLogout" tabindex="-1" aria-labelledby="modalLogoutLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content shadow-lg border-0 rounded-3">
-              <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title" id="modalLogoutLabel">Log Out Confirmation</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body text-center">
-                <h4 class="fw-semibold">Are you sure you want to log out?</h4>
-                <p class="text-muted">You will be logged out of the system and your session will end.</p>
-              </div>
-              <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                <a href="{% url 'acd:logout' %}" class="btn btn-danger px-4">Log Out</a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-
-        {% block content1 %}
-        {% endblock content1 %}
-
-        <footer class="footer">
-          <div class="container-fluid d-flex justify-content-between">
-            <nav class="pull-left">
-              <ul class="nav">
-                <li class="nav-item">
-                  <a class="nav-link" href="http://www.themekita.com">
-                    ThemeKita
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#"> Help </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#"> Licenses </a>
-                </li>
-              </ul>
-            </nav>
-            <div class="copyright">
-              2024, made with <i class="fa fa-heart heart text-danger"></i> by
-              <a href="http://www.themekita.com">ThemeKita</a>
-            </div>
-            <div>
-              Distributed by
-              <a target="_blank" href="https://themewagon.com/">ThemeWagon</a>.
-            </div>
-          </div>
-        </footer>
-      </div>
-
-    </div>
-    <!--   Core JS Files   -->
-    <script src="/static/js/core/jquery-3.7.1.min.js"></script>
-    <script src="/static/js/core/popper.min.js"></script>
-    <script src="/static/js/core/bootstrap.min.js"></script>
-
-    <!-- jQuery Scrollbar -->
-    <script src="/static/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-     
-    <!-- Sweet Alert -->
-    <script src="/static/js/plugin/sweetalert/sweetalert.min.js"></script>
-
-
-    {% if title == 'Dashboard' %}
-      <!-- Chart JS -->
-      <script src="/static/js/plugin/chart.js/chart.min.js"></script>
-
-      <!-- jQuery Sparkline -->
-      <script src="/static/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
-  
-      <!-- Chart Circle -->
-      <script src="/static/js/plugin/chart-circle/circles.min.js"></script>
-  
-      <!-- Datatables -->
-      <script src="/static/js/plugin/datatables/datatables.min.js"></script>
-  
-      <!-- Bootstrap Notify -->
-      <script src="/static/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
-  
-      <!-- jQuery Vector Maps -->
-      <script src="/static/js/plugin/jsvectormap/jsvectormap.min.js"></script>
-      <script src="/static/js/plugin/jsvectormap/world.js"></script>
-  
-      <!-- Kaiadmin JS -->
-      <script src="/static/js/kaiadmin.min.js"></script>
-  
-      <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-      <script src="/static/js/setting-demo.js"></script>
-      <script src="/static/js/demo.js"></script>
-      <script>
-        $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
-          type: "line",
-          height: "70",
-          width: "100%",
-          lineWidth: "2",
-          lineColor: "#177dff",
-          fillColor: "rgba(23, 125, 255, 0.14)",
+    <!-- JS FOR DARK DASHBOARD -->
+    <script>
+        // Dark mode toggle
+        const darkModeToggle = document.querySelector('.ri-contrast-2-fill');
+        
+        // Check for saved dark mode preference
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+        }
+        
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            // Save preference
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                localStorage.setItem('darkMode', null);
+            }
         });
-  
-        $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
-          type: "line",
-          height: "70",
-          width: "100%",
-          lineWidth: "2",
-          lineColor: "#f3545d",
-          fillColor: "rgba(243, 84, 93, .14)",
-        });
-  
-        $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
-          type: "line",
-          height: "70",
-          width: "100%",
-          lineWidth: "2",
-          lineColor: "#ffa534",
-          fillColor: "rgba(255, 165, 52, .14)",
-        });
-      </script>
+    </script>
 
-    {% else %}
-      
-      <!-- Datatables -->
-      <script src="../static/js/plugin/datatables/datatables.min.js"></script>
-      <!-- Kaiadmin JS -->
-      <script src="../static/js/kaiadmin.min.js"></script>
-      <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-      <script src="../static/js/setting-demo2.js"></script>
-      <script>
-        $(document).ready(function () {
-          $("#basic-datatables").DataTable({});
 
-          $("#multi-filter-select").DataTable({
-            pageLength: 5,
-            initComplete: function () {
-              this.api()
-                .columns()
-                .every(function () {
-                  var column = this;
-                  var select = $(
-                    '<select class="form-select"><option value=""></option></select>'
-                  )
-                    .appendTo($(column.footer()).empty())
-                    .on("change", function () {
-                      var val = $.fn.dataTable.util.escapeRegex($(this).val());
+<!-- Add this before closing body tag -->
+<script>
+    const notificationButton = document.querySelector('.ri-notification-3-line');
+    const notificationModal = document.getElementById('notificationModal');
 
-                      column
-                        .search(val ? "^" + val + "$" : "", true, false)
-                        .draw();
-                    });
+    notificationButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        notificationModal.classList.toggle('show-notification');
+    });
 
-                  column
-                    .data()
-                    .unique()
-                    .sort()
-                    .each(function (d, j) {
-                      select.append(
-                        '<option value="' + d + '">' + d + "</option>"
-                      );
-                    });
-                });
-            },
-          });
+    // Close notification modal when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!notificationModal.contains(e.target) && !notificationButton.contains(e.target)) {
+            notificationModal.classList.remove('show-notification');
+        }
+    });
+</script>
 
-          // Add Row
-          $("#add-row").DataTable({
-            pageLength: 5,
-          });
+{% block script_costum %} 
+{% endblock script_costum %} 
 
-          var action =
-            '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
-
-          $("#addRowButton").click(function () {
-            $("#add-row")
-              .dataTable()
-              .fnAddData([
-                $("#addName").val(),
-                $("#addPosition").val(),
-                $("#addOffice").val(),
-                action,
-              ]);
-            $("#addRowModal").modal("hide");
-          });
-        });
-      </script>
-    
-    {% endif %}
-
-    
-    {% block script_costum %}
-      
-    {% endblock script_costum %}
-
-    
-
-   
-  </body>
+</body>
 </html>
+
