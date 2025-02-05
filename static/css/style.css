@@ -2305,3 +2305,92 @@ body.dark-mode .close:focus {
     margin-right: 10px;
 }
 /* CLOSING CSS FOR NNOTIF */
+
+/* FOOTER DASHBOARD */
+.dashboard-footer {
+    margin-top: auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-left p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.footer-center {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-center a {
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3 ease;
+}
+
+.footer-center a:hover {
+    color: #136815;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+}
+
+.social-links a {
+    color: #666;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.social-links a:hover{
+    color: #136815;
+    transform: translateY(-2px);
+}
+
+body.dark-mode .dashboard-footer {
+    background: rgba(31, 41, 55, 0.8);
+    border-top: 1px solid rbga (255, 255, 255, 0.1);
+}
+
+body.dark-mode .footer-left p,
+body.dark-mode .footer-center a,
+body.dark-mode .social-links a {
+    color: #9ca3af;
+}
+
+
+body.dark-mode .footer-center a:hover,
+body.dark-mode .social-links a:hover {
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+
+    .footer-center {
+        display: none;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+}
