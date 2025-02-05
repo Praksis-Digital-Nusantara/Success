@@ -31,8 +31,8 @@
                     <li class="has-dropdown  class="{% if title == 'Users' %}active{% endif %}"">
                         <a href="#"><i class="ri-user-line"></i>Users<i class="ri-arrow-down-s-line dropdown-icon"></i></a>
                         <ul class="submenu">
-                            <li><a href="{% url 'acd:user_list' %}?role=Mahasiswa">Mahasiswa</a></li>
-                            <li><a href="{% url 'acd:user_list' %}?role=Dosen">Dosen</a></li>
+                            <li><a href="{% url 'acd:user_list' %}?role=Mahasiswa"><i class="ri-file-list-line"></i> Mahasiswa</a></li>
+                            <li><a href="{% url 'acd:user_list' %}?role=Dosen"><i class="ri-file-list-line"></i> Dosen</a></li>
                         </ul>
                     </li>
                     <li class="{% if title == 'Layanan' %}active{% endif %}">

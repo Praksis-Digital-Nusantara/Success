@@ -97,7 +97,8 @@ body.dark-mode .sidebar-menu a {
 }
 
 body.dark-mode .top-header {
-    background: #1f2937;
+    background: rgba(31, 41, 55, 0.8);  /* Semi-transparent dark background */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* Dark mode scrollbar */
@@ -559,7 +560,11 @@ body.dark-mode .logo-text span {
     position: sticky;
     top: 0;
     z-index: 1000;
-    background: #f5f6fa;
+    /* background: rgba(245, 246, 250, 0.9); */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 0 4px 30px rgba (255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);  
     padding: 15px 20px;
     display: flex;
     justify-content: space-between;
