@@ -1,139 +1,98 @@
 {% extends "mhs/base.html" %}
 
- {% block header %}
-	<h1 class="display-4">{{ web_name }}</h1>
-	<p class="lead">Halo <b>{{user}}</b> Selamat datang di {{ web_name }}</p>
-	<button class="btn btn-light btn-lg" id="btnHome" role="button">Get Started</button>
-{% endblock header %}
-
 {% block content1 %}
-<div class="container">
-	<div class="page-inner">
-	  <div class="page-header">
-		<h3 class="fw-bold mb-3">{{ title }}</h3>
-		<ul class="breadcrumbs mb-3">
-		  <li class="nav-home">
-			<a href="{% url 'acd:dashboard' %}">
-			  <i class="icon-home"></i>
-			</a>
-		  </li>
-		  <li class="separator">
-			<i class="icon-arrow-right"></i>
-		  </li>
-		  <li class="nav-item">
-			<a href="{% url 'acd:layanan_me' %}">Layanan</a>
-		  </li>	  
-		</ul>
-	  </div>
-	  <div class="row">
-		<div class="col-md-12">
-		  <div class="card">
-			<div class="card-header">
-			  <h4 class="card-title">Daftar Layanan {{user.first_name}}
-				  <a href="{% url 'acd:layanan_add' %}">
-					<button class="btn btn-sm btn-primary">Ajukan Layanan</button>
-				  </a>
-			  </h4>
+<div class="dashboard-content">
+	<div class="student-list-container">
+		<div class="list-header">
+			<div class="list-title">
+				<h2>{{ heading }}</h2>
+				<p>{{web_name}}</p>
 			</div>
-			<div class="card-body">
-			  <div class="table-responsive">
-				<table
-				  id="multi-filter-select"
-				  class="display table table-striped table-hover"
-				>
-				  <thead>
-					<tr>
-					  <th>No</th>
-					  <th>Date In</th>
-					  <th>Jenis Layanan</th>
-					  <th>Detail Layanan</th>
-					  <th>Status</th>
-					</tr>
-				  </thead>
-				  <tfoot>
-					<tr>
-						<th>No</th>
-						<th>Date In</th>
-						<th>Jenis Layanan</th>
-						<th>Detail Layanan</th>
-						<th>Status</th>
-					</tr>
-				  </tfoot>
-				  <tbody>
-					{% for layanan in layanan_data %}
-					<tr>
-					  <td>{{ forloop.counter }}</td>
-					  <td>{{ layanan.date_in }}</td>
-					  <td>{{ layanan.layanan_jenis }}</td>
-					  <td>{{ layanan.layanan_isi }}
-						<br>{% if layanan.layanan_file != '' %} 
-							<a target="_blank" href='/{{ layanan.layanan_file }}'>
-								<button class="btn btn-xs btn-primary">File</button>
-							</a>
-							{% endif %}
-					  </td>					  
-					  <td>
-						{% if layanan.status == 'Waiting'  %}
-							<span class="badge badge-warning">{{ layanan.status }}</span>
-						{% elif layanan.status == 'Processing'  %}
-							<span class="badge badge-primary">{{ layanan.status }}</span>
-						{% elif layanan.status == 'Rejected'  %}
-							<span class="badge badge-danger">{{ layanan.status }}</span>
-						{% elif layanan.status == 'Completed'  %}
-							<span class="badge badge-success">{{ layanan.status }}</span>
-						{% endif %}
-						<br>
-						{{ layanan.hasil_test }}
-						<br>
-						{% if layanan.hasil_link %}
-							<a target="_blank" href="{{ layanan.hasil_link }}">
-								<button class="btn btn-xs btn-secondary btn-border">link</button>
-							</a>
-						{% endif %}
-						{% if layanan.hasil_file %}
-							<a target="_blank" href="/{{ layanan.hasil_file }}">
-								<button class="btn btn-xs btn-secondary btn-border">file</button>
-							</a>
-						{% endif %}
-					  </td>
-					</tr>
-					{% endfor %}
-				  </tbody>
-				</table>
-			  </div>
+			<div class="list-filters">
+				<div class="filter-dropdown">
+					<a href="{% url 'acd:layanan_add' %}">
+					<button class="btn primary">
+						<i class="ri-add-line"></i>
+						Ajukan Layanan Baru
+					</button>
+					</a>
+				</div>
 			</div>
-		  </div>
 		</div>
 
-		
-	  </div>
+		<div class="student-table">
+			{% if messages %}
+			{% for message in messages %}
+				<div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} mb-4">
+					<i class="{% if message.tags == 'success' %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
+					{{ message }}
+				</div>
+			{% endfor %}
+			{% endif %}
+			<table>
+				<thead>
+				<tr>
+					<th>No</th>
+					<th>Date In</th>
+					<th>Jenis Layanan</th>
+					<th>Detail Layanan</th>
+					<th>Status</th>
+				</tr>
+				</thead>
+				<tfoot>
+				<tr>
+					<th>No</th>
+					<th>Date In</th>
+					<th>Jenis Layanan</th>
+					<th>Detail Layanan</th>
+					<th>Status</th>
+				</tr>
+				</tfoot>
+				<tbody>
+				{% for layanan in layanan_data %}
+				<tr>
+					<td>{{ forloop.counter }}</td>
+					<td>{{ layanan.date_in }}</td>
+					<td>{{ layanan.layanan_jenis }}</td>
+					<td>{{ layanan.layanan_isi }}
+					<br>{% if layanan.layanan_file != '' %} 
+						<a target="_blank" href='/{{ layanan.layanan_file }}'>
+							<button class="action-btn">File</button>
+						</a>
+						{% endif %}
+					</td>					  
+					<td>
+					{% if layanan.status == 'Waiting'  %}
+						<span class="grade-badge c">{{ layanan.status }}</span>
+					{% elif layanan.status == 'Processing'  %}
+						<span class="grade-badge b">{{ layanan.status }}</span>
+					{% elif layanan.status == 'Rejected'  %}
+						<span class="grade-badge d">{{ layanan.status }}</span>
+					{% elif layanan.status == 'Completed'  %}
+						<span class="grade-badge a">{{ layanan.status }}</span>
+					{% endif %}
+					<br>
+					{{ layanan.hasil_test }}
+					<br>
+					{% if layanan.hasil_link %}
+						<a target="_blank" href="{{ layanan.hasil_link }}">
+							<button class="action-btn">link</button>
+						</a>
+					{% endif %}
+					{% if layanan.hasil_file %}
+						<a target="_blank" href="/{{ layanan.hasil_file }}">
+							<button class="action-btn">file</button>
+						</a>
+					{% endif %}
+					</td>
+				</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+
+		</div>
 	</div>
-  </div>
-
-  
-{% endblock content1 %} 
-
-
-{% block script_costum %} 
-{% if messages %}
-    {% for message in messages %}
-        <script>
-            swal({
-                title: "Good job!",
-                text: "Pengajuan layanan baru berhasil, silahkan tunggu sampai diproses Admin Prodi/Fakultas",
-                icon: "success",
-                buttons: {
-                    confirm: {
-                        text: "OK",
-                        value: true,
-                        visible: true,
-                        className: "btn btn-success",
-                        closeModal: true,
-                    },
-                },
-            });
-        </script>
-    {% endfor %}
-{% endif %}
-{% endblock script_costum %} 
+</div>
+		
+{% endblock content1 %}
 

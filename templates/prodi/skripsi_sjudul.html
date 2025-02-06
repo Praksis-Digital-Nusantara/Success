@@ -119,31 +119,3 @@
 
 
 
-
-
-{% block script_costum %} 
-
-<script>
-	function openModal(modalId, skripsiId) {
-		document.getElementById(modalId).style.display = 'block'; // Tampilkan modal
-		document.getElementById('skripsiId').value = skripsiId; // Masukkan userId ke input hidden
-		var modal = document.getElementById(modalId);
-        modal.style.display = "block";
-	}
-	
-    function closeModal(modalId) {
-        var modal = document.getElementById(modalId);
-        modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        var modals = document.getElementsByClassName('modal-edit');
-        for (var i = 0; i < modals.length; i++) {
-            if (event.target == modals[i]) {
-                modals[i].style.display = "none";
-            }
-        }
-    }
-</script>
-
-{% endblock script_costum %} 

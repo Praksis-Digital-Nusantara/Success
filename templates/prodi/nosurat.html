@@ -78,52 +78,5 @@
 <!-- OPENING ELEMENT MODAL -->
 
 
- <!--JS FOR MODAL  -->
-<script>
-    function openModal(modalId) {
-        var modal = document.getElementById(modalId);
-        modal.style.display = "block";
-    }
-
-    function closeModal(modalId) {
-        var modal = document.getElementById(modalId);
-        modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        var modals = document.getElementsByClassName('modal-edit');
-        for (var i = 0; i < modals.length; i++) {
-            if (event.target == modals[i]) {
-                modals[i].style.display = "none";
-            }
-        }
-    }
-</script>
-<!-- JS FOR MODAL -->
 {% endblock content1 %} 
 
-
-{% block script_costum %} 
-
-{% if messages %}
-    {% for message in messages %}
-        <script>
-            swal({
-                title: "{% if message.tags == 'success' %}Good job!{% else %}Gagal Menyimpan!{% endif %}",
-                text: "{{ message }}",
-                icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
-                buttons: {
-                    confirm: {
-                        text: "OK",
-                        value: true,
-                        visible: true,
-                        className: "{% if message.tags == 'success' %}btn btn-success{% else %}btn btn-danger{% endif %}",
-                        closeModal: true,
-                    },
-                },
-            });
-        </script>
-    {% endfor %}
-{% endif %}
-
-{% endblock script_costum %} 

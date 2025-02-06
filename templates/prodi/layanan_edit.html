@@ -70,28 +70,5 @@
 
 
 
-{% block script_costum %} 
 
-{% if messages %}
-    {% for message in messages %}
-        <script>
-            swal({
-                title: "{% if message.tags == 'success' %}Good job!{% else %}Gagal Menyimpan!{% endif %}",
-                text: "{{ message }}",
-                icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
-                buttons: {
-                    confirm: {
-                        text: "OK",
-                        value: true,
-                        visible: true,
-                        className: "{% if message.tags == 'success' %}btn btn-success{% else %}btn btn-danger{% endif %}",
-                        closeModal: true,
-                    },
-                },
-            });
-        </script>
-    {% endfor %}
-{% endif %}
-
-{% endblock script_costum %} 
 

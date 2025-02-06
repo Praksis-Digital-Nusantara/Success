@@ -60,7 +60,10 @@
             </nav>
 
             <div class="sidebar-footer">
-                <a href="{% url 'acd:logout' %}" class="logout"><i class="ri-logout-box-line"></i> Logout</a>
+                <button class="btn danger" onclick="openModal('logout')">
+                    <i class="ri-logout-box-line"></i>
+                    Logout
+                </button>
                 <div class="sidebar-footer-p">
                     <p>© 2024 Praksis Digital Nusantara.</p>
                     <p>Version: 1.0.0-alpha.1</p>
@@ -89,7 +92,43 @@
                 </div>
             </header>
 
-            <!-- MODAL NOTIFIKASI -->
+
+            {% block content1 %}
+            {% endblock content1 %}
+
+
+            
+            <!-- START FOOTER DASHBAORD -->
+            <footer class="dashboard-footer">
+                <div class="footer-content">
+                    <div class="footer-left">
+                        <p>&copy; 2025 Praksis Digital Nusantara. All rights reserved.
+                        </p>
+                    </div>
+                    <div class="footer-center">
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Privacy Police</a>
+                        <a href="#">Manual Guide</a>
+                    </div>
+                    <div class="footer-right">
+                        <div class="social-links">
+                            <a href="#"><i class="ri-facebook-fill"></i></a>
+                            <a href="#"><i class="ri-twitter-fill"></i></a>
+                            <a href="#"><i class="ri-instagram-line"></i></a>
+                            <a href="#"><i class="ri-github-fill"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+            </footer>
+            <!-- FOOTER DASHBOARD -->
+
+        </div>
+    </div>
+
+
+
+<!-- MODAL NOTIFIKASI -->
 <div class="notification-modal" id="notificationModal">
     <div class="notification-header">
         <h2>Notifications</h2>
@@ -124,35 +163,25 @@
 
 
 
-            {% block content1 %}
-            {% endblock content1 %}
-<!-- START FOOTER DASHBAORD -->
-<footer class="dashboard-footer">
-    <div class="footer-content">
-        <div class="footer-left">
-            <p>&copy; 2025 Praksis Digital Nusantara. All rights reserved.
-            </p>
-        </div>
-        <div class="footer-center">
-            <a href="#">Terms of Service</a>
-            <a href="#">Privacy Police</a>
-            <a href="#">Manual Guide</a>
-        </div>
-        <div class="footer-right">
-            <div class="social-links">
-                <a href="#"><i class="ri-facebook-fill"></i></a>
-                <a href="#"><i class="ri-twitter-fill"></i></a>
-                <a href="#"><i class="ri-instagram-line"></i></a>
-                <a href="#"><i class="ri-github-fill"></i></a>
-            </div>
-        </div>
-    </div>
+<!-- MODAL LOGOUT -->
+<div id="logout" class="modal-edit">
+	<div class="modal-content-edit">
+		<span class="close" onclick="closeModal('logout')">&times;</span>
+		<p>Yakin ingin keluar dari aplikasi?</p>
+        <a href="{% url 'acd:logout' %}" class="logout">
+            <button class="btn danger">
+                <i class="ri-logout-box-line"></i>
+                Ya
+            </button>
+        </a>
+        <button class="btn primary" onclick="closeModal('logout')">
+            <i class="ri-logout-box-line"></i>
+            Tidak
+        </button>
+	</div>
+</div>
 
-</footer>
-<!-- FOOTER DASHBOARD -->
 
-        </div>
-    </div>
 
     <!-- JS FOR SIDEBAR/OPENG/CLOSE -->
     <script>
@@ -266,6 +295,30 @@
 
 {% block script_costum %} 
 {% endblock script_costum %} 
+
+
+{% block script_modal %} 
+<script>
+    function openModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "block";
+    }
+
+    function closeModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        var modals = document.getElementsByClassName('modal-edit');
+        for (var i = 0; i < modals.length; i++) {
+            if (event.target == modals[i]) {
+                modals[i].style.display = "none";
+            }
+        }
+    }
+</script>
+{% endblock script_modal %} 
 
 </body>
 </html>

@@ -73,26 +73,3 @@
 </div>  
 {% endblock content1 %} 
 
-{% block script_costum %} 
-{% if messages %}
-    {% for message in messages %}
-        <script>
-            swal({
-                title: "Good job!",
-                text: "Profil Anda berhasil diperbarui!",
-                icon: "success",
-                buttons: {
-                    confirm: {
-                        text: "OK",
-                        value: true,
-                        visible: true,
-                        className: "btn btn-success",
-                        closeModal: true,
-                    },
-                },
-            });
-        </script>
-    {% endfor %}
-{% endif %}
-{% endblock script_costum %}
-
