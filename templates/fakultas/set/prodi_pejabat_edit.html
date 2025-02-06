@@ -1,83 +1,86 @@
 {% extends "fakultas/base.html" %}
 
+
 {% block content1 %}
-<div class="container">
-	<div class="page-inner">
-	  <div class="page-header">
-		<h3 class="fw-bold mb-3">{{ title }}</h3>
-		<ul class="breadcrumbs mb-3">
-		  <li class="nav-home">
-			<a href="{% url 'acd:dashboard' %}">
-			  <i class="icon-home"></i>
-			</a>
-		  </li>
-		  <li class="separator">
-			<i class="icon-arrow-right"></i>
-		  </li>
-		  <li class="nav-item">
-			<a href="{% url 'acd:prodi_pejabat_list' %}">Pejabat List</a>
-		  </li>	  
-		  <li class="separator">
-			<i class="icon-arrow-right"></i>
-		  </li>
-		  <li class="nav-item">
-			<a href="">{{heading}}</a>
-		  </li>	  
-		</ul>
-	  </div>	  
-	  <div class="row">
-		<div class="col-md-12">
-		  <div class="card">
-			<div class="card-header">
-			  <h4 class="card-title">Lengkapi Form Berikut</h4>
-			</div>
-			<div class="card-body">
-				
-
-				<form method="post"  enctype="multipart/form-data">
-					{% csrf_token %}
-					{{ form.as_p }}					
-					<button type="submit" class="btn btn-primary">Proses</button>
-					{% if prodi %}
-						<button type="submit" class="btn btn-danger" name="delete" onclick="return confirm('Yakin ingin menghapus Prodi ini?');">
-							Hapus
-						</button>
-					{% endif %}
-				</form> 
-		  </div>
-		</div>
-
-		
-	  </div>
+<div class="dashboard-content">
+	<div class="profile-section">
+	<div class="container-header">
+		<nav class="container-breadcrumb">
+			<ul>
+				<li>
+					<a href="{% url 'acd:dashboard' %}">
+						<i class="ri-home-line"></i>
+					</a>
+				</li>
+				<li>
+					<i class="ri-arrow-right-s-line"></i>
+				</li>
+				<li>
+					<a href="{% url 'acd:prodi_pejabat_list' %}">Pejabat Prodi</a>
+				</li>
+				<li>
+					<i class="ri-arrow-right-s-line"></i>
+				</li>
+				<li>
+					<a href="">{{ heading }}</a>
+				</li>
+			</ul>
+		</nav>
 	</div>
-  </div>
+		{% if messages %}
+		{% for message in messages %}
+			<div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} mb-4">
+				<i class="{% if message.tags == 'success' %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
+				{{ message }}
+			</div>
+		{% endfor %}
+		{% endif %}
+		<form method="post"  enctype="multipart/form-data">
+			{% csrf_token %}
+			{% comment %} {{ form.as_p }}	 {% endcomment %}
+			<div class="form-group">
+				<label for="id_jabatan">Jabatan</label>
+				{{ form.jabatan }}
+			</div>
+			<div class="form-group">
+				<label for="id_prodi">Prodi</label>
+				{{ form.prodi }}
+			</div>
+			<div class="form-group">
+				<label for="id_pejabat">Pejabat</label>
+				{{ form.pejabat }}
+			</div>
+			<div class="form-row">		
+				<div class="form-group">
+					<label for="id_tgl_mulai">Tanggal Mulai</label>
+					{{ form.tgl_mulai }}
+				</div>
+				<div class="form-group">
+					<label for="id_tgl_selesai">Tanggal Selesai</label>
+					{{ form.tgl_selesai }}
+				</div>				
+			</div>
+			<div class="form-row">		
+				<div class="form-group">
+					<label for="id_label">Label</label>
+					{{ form.label }}
+				</div>
+				<div class="form-group">
+					<label for="id_plt">Plt</label>
+					{{ form.plt }}
+				</div>				
+			</div>
 
-
-  
-{% endblock content1 %} 
-
-
-
-{% block script_costum %} 
-{% if messages %}
-    {% for message in messages %}
-        <script>
-            swal({
-                title: "{% if message.tags == 'success' %}Good job!{% else %}Gagal Menyimpan!{% endif %}",
-                text: "{{ message }}",
-                icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
-                buttons: {
-                    confirm: {
-                        text: "OK",
-                        value: true,
-                        visible: true,
-                        className: "{% if message.tags == 'success' %}btn btn-success{% else %}btn btn-danger{% endif %}",
-                        closeModal: true,
-                    },
-                },
-            });
-        </script>
-    {% endfor %}
-{% endif %}
-{% endblock script_costum %} 
+			<button type="submit" class="btn primary">Proses</button>
+			{% if prodi %}
+				<button type="submit" class="btn danger" name="delete" onclick="return confirm('Yakin ingin menghapus Prodi ini?');">
+					Hapus
+				</button>
+			{% endif %}
+		</form> 	
+		
+		
+	</div>
+</div>
+{% endblock content1 %}
 

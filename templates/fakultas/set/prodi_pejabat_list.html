@@ -1,110 +1,68 @@
 {% extends "fakultas/base.html" %}
 
 {% block content1 %}
-<div class="container">
-	<div class="page-inner">
-	  <div class="page-header">
-		<h3 class="fw-bold mb-3">{{ title }}</h3>
-		<ul class="breadcrumbs mb-3">
-		  <li class="nav-home">
-			<a href="{% url 'acd:dashboard' %}">
-			  <i class="icon-home"></i>
-			</a>
-		  </li>
-		  <li class="separator">
-			<i class="icon-arrow-right"></i>
-		  </li>
-		  <li class="nav-item">
-			<a href="">{{heading}}</a>
-		  </li>	  
-		</ul>
-	  </div>	  
-	  <div class="row">
-		<div class="col-md-12">
-		  <div class="card">
-			<div class="card-header">
-			  <a href="{% url 'acd:prodi_pejabat_edit' 0 %}" class="btn btn-primary btn-sm">Tambah Pejabat</a>
+<div class="dashboard-content">
+	<div class="student-list-container">
+		<div class="list-header">
+			<div class="list-title">
+				<h2>{{ heading }}</h2>
+				<p>{{web_name}}</p>
 			</div>
-			<div class="card-body">
-				
-
-				<div class="table-responsive">
-					<table
-					  id="multi-filter-select"
-					  class="display table table-striped table-hover"
-					>
-					  <thead>
-						<tr>
-						  <th>No</th>
-						  <th>Nama Prodi</th>
-						  <th>Pejabat</th>
-						  <th>Tgl Mulai</th>
-						  <th>Tgl Selesai</th>
-						  <th>Status</th>
-						  <th>Aksi</th>
-						</tr>
-					  </thead>
-					  <tfoot>
-						<tr>
-							<th>No</th>
-							<th>Nama Prodi</th>
-							<th>Pejabat</th>
-							<th>Tgl Mulai</th>
-							<th>Tgl Selesai</th>
-							<th>Status</th>
-							<th>Aksi</th>
-						</tr>
-					  </tfoot>
-					  <tbody>
-						{% for prodi in prodi_list %}
-						<tr>
-						  <td>{{ forloop.counter }}</td>
-						  <td>{{ prodi.prodi }}</td>
-						  <td>{{ prodi.pejabat }}</td>
-						  <td>{{ prodi.tgl_mulai }}</td>
-						  <td>{{ prodi.tgl_selesai }}</td>					  
-						  <td><a href="{% url 'acd:prodi_pejabat_edit' prodi.id %}" class="btn btn-warning btn-xs">Edit</a></td>						  
-						</tr>
-						{% endfor %}
-					  </tbody>
-					</table>
-				  </div>
-
-
-		  </div>
+			<div class="list-filters">
+				<div class="filter-dropdown">
+					<a href="{% url 'acd:prodi_pejabat_edit' 0 %}">
+					<button class="btn primary">
+						<i class="ri-add-line"></i>
+						Ajukan Layanan Baru
+					</button>
+					</a>
+				</div>
+			</div>
 		</div>
 
-		
-	  </div>
+		<div class="student-table">
+			<table>
+				<thead>
+				<tr>
+					<th>No</th>
+					<th>Nama Prodi</th>
+					<th>Pejabat</th>
+					<th>Tgl Mulai</th>
+					<th>Tgl Selesai</th>
+					<th>Status</th>
+					<th>Aksi</th>
+				</tr>
+				</thead>
+				<tfoot>
+				<tr>
+					<th>No</th>
+					<th>Nama Prodi</th>
+					<th>Pejabat</th>
+					<th>Tgl Mulai</th>
+					<th>Tgl Selesai</th>
+					<th>Status</th>
+					<th>Aksi</th>
+				</tr>
+				</tfoot>
+				<tbody>
+				{% for prodi in prodi_list %}
+				<tr>
+					<td>{{ forloop.counter }}</td>
+					<td>{{ prodi.prodi }}</td>
+					<td>{{ prodi.pejabat }}</td>
+					<td>{{ prodi.tgl_mulai }}</td>
+					<td>{{ prodi.tgl_selesai }}</td>					  
+					<td></td>					  
+					<td><a href="{% url 'acd:prodi_pejabat_edit' prodi.id %}" class="btn primary">Edit</a></td>						  
+				</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
 	</div>
-  </div>
+</div>
+		
+{% endblock content1 %}
 
 
-  
-{% endblock content1 %} 
-
-
-
-{% block script_costum %} 
-{% if messages %}
-    {% for message in messages %}
-        <script>
-            swal({
-                title: "{% if message.tags == 'success' %}Good job!{% else %}Gagal Menyimpan!{% endif %}",
-                text: "{{ message }}",
-                icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
-                buttons: {
-                    confirm: {
-                        text: "OK",
-                        value: true,
-                        visible: true,
-                        className: "{% if message.tags == 'success' %}btn btn-success{% else %}btn btn-danger{% endif %}",
-                        closeModal: true,
-                    },
-                },
-            });
-        </script>
-    {% endfor %}
-{% endif %}
-{% endblock script_costum %} 
 
