@@ -132,7 +132,7 @@ class NoSurat(models.Model):
     adminp = models.ForeignKey(User, on_delete=models.CASCADE, related_name="adminp_surat")
     jurusan = models.ForeignKey(Jurusan, on_delete=models.SET_NULL, null=True, blank=True)
     tahun = models.CharField(max_length=5, blank=False, null=False)
-    nomor = models.IntegerField(max_length=5, blank=False, null=False)
+    nomor = models.IntegerField(blank=False, null=False)
     perihal = models.CharField(max_length=255, blank=False, null=False)
     tujuan = models.CharField(max_length=255, blank=False, null=False)
 
