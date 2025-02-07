@@ -557,6 +557,7 @@ body.dark-mode .logo-text span {
     background: #f5f6fa;
     padding: 20px;
     margin-left: 260px;
+    width: 999px;
 }
 
 .dashboard-content {
