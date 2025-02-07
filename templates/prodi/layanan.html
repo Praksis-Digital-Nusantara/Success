@@ -12,21 +12,33 @@
 				<p>{{web_name}}</p>
 			</div>
 			<div class="list-filters">
-				<div class="filter-dropdown">
-					<button class="filter-btn">
-						Filter Mata Kuliah <i class="ri-arrow-down-s-line"></i>
-					</button>
-				</div>
-				<div class="date-filter">
-					<div class="date-input">
-						<i class="ri-calendar-line"></i>
-						<input type="text" placeholder="Semester">
+				<div class="table-actions">
+					<div class="action-group">
+						<div class="search-bar-table">
+							<i class="ri-search-line"></i>
+							<input type="text" id="searchInput" placeholder="Search table...">
+						</div>
+					</div>
+					<div class="action-group">
+						<button class="btn primary" onclick="openModal('nomorsurat')">
+							<i class="ri-add-line"></i>
+							<span>Add</span>
+						</button>
+						<button class="btn danger" id="deleteSelected">
+							<i class="ri-delete-bin-line"></i>
+							<span>Delete</span>
+						</button>
+						<button class="btn secondary" id="exportTable">
+							<i class="ri-download-line"></i>
+							<span>Export</span>
+						</button>
 					</div>
 				</div>
 			</div>
 		</div>
 
 		<div class="student-table">
+			<div class="table-responsive">
 			<table>
 				<thead>
 					<tr>
@@ -90,6 +102,7 @@
 					{% endfor %}
 				</tbody>
 			</table>
+		</div>
 		</div>
 	</div>
 </div>

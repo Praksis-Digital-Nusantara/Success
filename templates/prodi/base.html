@@ -320,6 +320,29 @@
 </script>
 {% endblock script_modal %} 
 
+{% block script_search %}
+<script>
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        let searchQuery = this.value.toLowerCase();
+        let table = document.querySelector('.student-table table');
+        let rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    
+        for (let row of rows) {
+            let cells = row.getElementsByTagName('td');
+            let found = false;
+            
+            for (let cell of cells) {
+                if (cell.textContent.toLowerCase().indexOf(searchQuery) > -1) {
+                    found = true;
+                    break;
+                }
+            }
+            
+            row.style.display = found ? '' : 'none';
+        }
+    });
+    </script>
+{% endblock script_search %}
 </body>
 </html>
 
