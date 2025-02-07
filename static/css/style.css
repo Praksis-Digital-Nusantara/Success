@@ -2218,6 +2218,19 @@ body.dark-mode .close:focus {
 }
 .btn.danger:hover { background: #D32F2F; }
 
+
+.btn.logout {
+    background: #a50b00;
+    color: white;
+    width: 120px;
+    border-radius: 20px;
+}
+
+.btn.logout:hover {
+    background: #000;
+    
+}
+
 .btn.info {
     background: #00BCD4;
     color: white;
