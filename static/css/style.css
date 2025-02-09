@@ -211,8 +211,9 @@ button {
 }
 
 .dark-mode button {
-    background-color: #ffffff;
-    color: #000;
+    background: #374151;
+    border-color: #4b5563;
+    color: #e5e7eb;
 }
 
 button:hover{
@@ -1121,7 +1122,8 @@ body.dark-mode .notification-footer {
     display: block;
     margin-bottom: 500;
     font-weight: 500;
-    color: #333
+    color: #333;
+    text-align: left;
 }
 
 .form-co.form-control {
