@@ -6,7 +6,10 @@ from django.conf import settings
 def web_name(request):
     return {
         'web_name': 'Sistem Informasi Fakultas Ekonomi dan Bisnis UNM',
-        'webname': 'SUCCESS'
+        'webname': 'SUCCESS',
+        'ministry_name': 'Kementerian Pendidikan Tinggi, Sains dan Teknologi',
+        'university_name': 'Universitas Negeri Makassar  (UNM)',
+        'faculty_name': 'Fakultas Ekonomi dan Bisnis',
     }
 
 # Izin adding versi static kak, (proble browsing chace css)

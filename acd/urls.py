@@ -6,6 +6,7 @@ from . import views_fakultas
 from . import views_prodi
 from . import views_prodi_set
 from . import views_mhs
+from . import views_mhs_print
 from . import views_dosen
 
 urlpatterns = [
@@ -36,6 +37,7 @@ urlpatterns = [
     path('get-prasyarat-layanan/', views_mhs.get_prasyarat_layanan, name='get_prasyarat_layanan'),
     path('skripsi', views_mhs.skripsi, name='skripsi'),
     path('skripsi_pjudul', views_mhs.skripsi_pjudul, name='skripsi_pjudul'),
+    path('print_pengajuanjudul/', views_mhs_print.print_pengajuanjudul, name='print_pengajuanjudul'),
 
 
     ###### DOSEN ######   
