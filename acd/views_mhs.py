@@ -26,6 +26,9 @@ def profile_mhs(request):
             form.save()
             messages.success(request, 'Profil Anda berhasil diperbarui!')
             return redirect('/acd/profile_mhs')
+        else:
+            messages.error(request, 'Gagal Memproses, pastikan semua isian sesuai format')
+            return redirect('/acd/profile_mhs')
     else:
         form = formProfile(instance=usermhs)
 

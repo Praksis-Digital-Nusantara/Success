@@ -76,13 +76,16 @@ class ProdiPejabat(models.Model):
 
 class UserMhs(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    prodi = models.ForeignKey(Prodi, on_delete=models.SET_NULL, null=True, blank=True)
+    prodi = models.ForeignKey(Prodi, on_delete=models.SET_NULL, null=True, blank=True, related_name="usermhs_prodi")
     telp = models.CharField(max_length=15)
     photo = models.FileField(upload_to='static/img_profile/mhs/', null=True, blank=True)
     gender = models.CharField(max_length=15, choices=[
         ('Laki-laki', 'Laki-laki'),
         ('Perempuan', 'Perempuan'),
     ])
+    tempat_lahir = models.CharField(max_length=50, null=True, blank=True)
+    tgl_lahir = models.DateField(null=True, blank=True)
+    penasehat_akademik = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="usermhs_pa") 
     def __str__(self):
         return f"{self.user.username}"
     
@@ -180,8 +183,7 @@ class SkripsiJudul(models.Model):
     judul_2 = models.CharField(max_length=255, verbose_name="Judul 2", blank=True, null=True)
     deskripsi_judul_2 = models.TextField(verbose_name="Deskripsi Judul 2", blank=True, null=True)
     judul_3 = models.CharField(max_length=255, verbose_name="Judul 3", blank=True, null=True)
-    deskripsi_judul_3 = models.TextField(verbose_name="Deskripsi Judul 3", blank=True, null=True)
-    penasehat_akademik = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)  
+    deskripsi_judul_3 = models.TextField(verbose_name="Deskripsi Judul 3", blank=True, null=True)     
     status = models.CharField(max_length=10,  default='Waiting', choices=[
         ('Waiting', 'Waiting'),
         ('Revision', 'Revision'), 

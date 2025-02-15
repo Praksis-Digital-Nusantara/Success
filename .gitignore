@@ -5,11 +5,11 @@ env/
 VENV/
 .venv
 
-acd/
-aam/
+# acd/
+# aam/
 
-acd/*
-aam/*
+# acd/*
+# aam/*
 db.sqlite3
 djg_success.sql
 

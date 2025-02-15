@@ -6,12 +6,21 @@ from .models import SkripsiJudul
 from django.contrib.auth.models import User
 
 class formProfile(forms.ModelForm):
-    class Meta:
+    penasehat_akademik = forms.ModelChoiceField(
+        queryset=User.objects.filter(last_name="Dosen"),  # Query only users who are staff (penasehat akademik)
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Penasehat Akademik"  # Optional placeholder text
+        )
+    
+    class Meta:     
         model = UserMhs
         fields = [   
             'telp',
             'gender',
             'photo',
+            'tempat_lahir',
+            'tgl_lahir',
+            'penasehat_akademik',
         ]
         widgets = {
             'gender': forms.Select(
@@ -23,7 +32,12 @@ class formProfile(forms.ModelForm):
             ),
             'telp': forms.NumberInput(attrs={'class': 'form-control'}),
             'photo': forms.FileInput(attrs={'class': 'form-control'}),
+            'tempat_lahir': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'tgl_lahir': forms.DateInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'date'}),
+            'penasehat_akademik': forms.Select(attrs={'class': 'form-control'}),  
         }
+
+        
 
 
 
@@ -66,8 +80,7 @@ class formSkripsiJudul(forms.ModelForm):
             'judul_2', 
             'deskripsi_judul_2', 
             'judul_3', 
-            'deskripsi_judul_3', 
-            'penasehat_akademik'
+            'deskripsi_judul_3'
         ]
         widgets = {
             'judul_1': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Masukkan Judul 1'}),
@@ -76,7 +89,7 @@ class formSkripsiJudul(forms.ModelForm):
             'deskripsi_judul_2': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Masukkan Deskripsi Judul 2', 'rows': 3}),
             'judul_3': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Masukkan Judul 3'}),
             'deskripsi_judul_3': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Masukkan Deskripsi Judul 3', 'rows': 3}),
-            'penasehat_akademik': forms.Select(attrs={'class': 'form-control'}),  # Using Select widget for dropdown
+            
         }
         labels = {
             'judul_1': 'Judul 1',
@@ -85,13 +98,8 @@ class formSkripsiJudul(forms.ModelForm):
             'deskripsi_judul_2': 'Deskripsi Judul 2',
             'judul_3': 'Judul 3',
             'deskripsi_judul_3': 'Deskripsi Judul 3',
-            'penasehat_akademik': 'Penasehat Akademik',
         }
 
 
-    penasehat_akademik = forms.ModelChoiceField(
-        queryset=User.objects.filter(last_name='Dosen'),  # Query only users who are staff (penasehat akademik)
-        widget=forms.Select(attrs={'class': 'form-control'}),
-        empty_label="Pilih Penasehat Akademik"  # Optional placeholder text
-    )
+    
 
