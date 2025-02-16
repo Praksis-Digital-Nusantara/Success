@@ -62,3 +62,16 @@ def tanggal_indo(tanggal_obj):
     bulan_inggris = tanggal_obj.strftime("%B")  # Ambil nama bulan dalam bahasa Inggris
     bulan_indonesia = bulan_dict.get(bulan_inggris, bulan_inggris)  # Ambil nama bulan dari dict
     return tanggal_obj.strftime("%d") + f" {bulan_indonesia} " + tanggal_obj.strftime("%Y")
+
+
+def dl(canvas, dl_pos_x, pos_y, dl_pos_y, dl_text, dl_bold=False, dl_align='L'):
+    pos_y -= dl_pos_y
+    if dl_bold==False:
+        canvas.setFont("Times-Roman", 12)
+    else:
+        canvas.setFont("Times-Bold", 12)
+    if dl_align=='C':
+        canvas.drawCentredString(dl_pos_x, pos_y, dl_text)
+    else:    
+        canvas.drawString(dl_pos_x, pos_y, dl_text)
+    return dl_pos_y

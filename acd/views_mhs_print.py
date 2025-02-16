@@ -8,7 +8,7 @@ from .decorators_mhs import mahasiswa_required
 
 from aam.context_processors import web_name
 
-from .utils import tanggal_indo, draw_kop_surat
+from .print_utils import tanggal_indo, draw_kop_surat, dl
 
 from .models import SkripsiJudul
 
@@ -76,7 +76,35 @@ def print_pengajuanjudul(request):
 
     pos_y = draw_aligned_text(p, "1.", judul.judul_1,  20)   
     pos_y = draw_aligned_text(p, "2.", judul.judul_2,  20)   
-    pos_y = draw_aligned_text(p, "3.", judul.judul_3,  20)   
+    pos_y = draw_aligned_text(p, "3.", judul.judul_3,  20)
+
+    # TEMPAT TANDA TANGAN
+    pos_y -= dl(p, A4[0] - 200, pos_y, 30, "Makassar, ....................", False, 'L')
+
+    pos_y -= dl(p, posd_x, pos_y, 20, "Disetujui Oleh", False, 'L')
+    pos_y -= dl(p, A4[0] - 200, pos_y, 0, "Diajukan Oleh", False, 'L')
+
+    pos_y -= dl(p, posd_x, pos_y, 15, "Penasehat Akademik,", False, 'L')
+    pos_y -= dl(p, A4[0] - 200, pos_y, 0, "Mahasiswa Ybs,", False, 'L')
+
+    pos_y -= dl(p, posd_x, pos_y, 60, usermhs.penasehat_akademik.first_name, False, 'L')
+    pos_y -= dl(p, A4[0] - 200, pos_y, 0, request.user.first_name, False, 'L')
+
+    pos_y -= dl(p, posd_x, pos_y, 15, "NIP." + usermhs.penasehat_akademik.username, False, 'L')
+    pos_y -= dl(p, A4[0] - 200, pos_y, 0, "NIM." + request.user.username, False, 'L')
+
+    
+    ################################### BATAS #########################
+    pos_y -= dl(p, A4[0] / 2, pos_y, 50, "PERSETUJUAN PIMPINAN PROGRAM STUDI DAN JURUSAN", True, 'C')
+    pos_y -= dl(p, posd_x, pos_y, 20, "Judul yang disetujui:", True, 'L')
+    
+    pos_y -= 15
+    p.setFont("Times-Roman", 12)
+    for _ in range(4):
+        p.drawString(posd_x, pos_y, "......................................................................................................................................................")
+        pos_y -= 15
+
+    pos_y -= dl(p, posd_x, pos_y, 20, "Pembimbing yang ditunjuk:", True, 'L')
 
 
     # Menutup halaman dan menyimpan PDF
