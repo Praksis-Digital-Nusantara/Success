@@ -68,7 +68,7 @@ class ProdiPejabat(models.Model):
     plt = models.BooleanField(blank=True, null=True)
     
     def __str__(self):
-        return f"{self.prodi} - {self.pejabat}"
+        return f"{self.jabatan} Prodi {self.prodi}"
     
 
 ########################### MANAGE USERS #####################################
@@ -139,6 +139,16 @@ class NoSurat(models.Model):
     perihal = models.CharField(max_length=255, blank=False, null=False)
     tujuan = models.CharField(max_length=255, blank=False, null=False)
 
+#########################  TTD QRCODE #####################################
+
+class TtdProdi(models.Model):
+    date_in = models.DateField(auto_now_add=True)
+    adminp = models.ForeignKey(User, on_delete=models.CASCADE, related_name="ttdqr_admin")
+    prodi = models.ForeignKey(Prodi, on_delete=models.SET_NULL, null=True, blank=True)
+    perihal = models.CharField(max_length=255, blank=False, null=False)
+    tujuan = models.CharField(max_length=255, blank=False, null=False)
+    pejabat = models.ForeignKey(ProdiPejabat, on_delete=models.SET_NULL, null=True, blank=True)
+
 
 ######################## LAYANAN ########################################
     
@@ -195,27 +205,17 @@ class SkripsiJudul(models.Model):
 ######################## PROPOSAL  ########################################
 
 # class SkripsiProposal(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="proposal_user")
-#     tgl_surat = models.ForeignKey(Prodi, on_delete=models.SET_NULL, null=True, blank=True)
+#     admin = models.ForeignKey(User, on_delete=models.CASCADE, related_name="proposal_admin")
 #     no_surat = models.ForeignKey(NoSurat, on_delete=models.CASCADE, related_name="proposal_nosurat")
-#     mhs1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="proposal_mhs1")
-#     mhs2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="proposal_mhs2")
-#     mhs3 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="proposal_mhs3")
-#     mhs4 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="proposal_mhs4")
-#     mhs5 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="proposal_mhs5")
+#     mhs = models.ForeignKey(User, on_delete=models.CASCADE, related_name="proposal_mhs")
 #     prodi = models.ForeignKey(Prodi, on_delete=models.CASCADE, related_name="proposal_prodi")
 #     judul = models.TextField(verbose_name="Judul", blank=False, null=False)
-#     seminar_waktu = models.DateTimeField(blank=False, null=False)
+#     seminar_waktu = models.TimeField(blank=False, null=False)
 #     seminar_tempat = models.CharField(max_length=255, blank=False, null=False)
 #     seminar_link = models.CharField(max_length=255, blank=False, null=False)
 #     pbb1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="proposal_pbb1")
-#     pbb1_nama = models.CharField(max_length=255, blank=False, null=False)
 #     pbb2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="proposal_pbb2", blank=True, null=True)
-#     pbb2_nama = models.CharField(max_length=255, blank=True, null=True)
 #     pgj1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="proposal_pgj1", blank=True, null=True)
-#     pgj1_nama = models.CharField(max_length=255, blank=True, null=True)
 #     pgj2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="proposal_pgj2", blank=True, null=True)
-#     pgj2_nama = models.CharField(max_length=255, blank=True, null=True)
-#     pgj2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="proposal_pgj2", blank=True, null=True)
-#     pgj2_nama = models.CharField(max_length=255, blank=True, null=True)
 #     ttd_status = models.BooleanField()
+#     ttd_user = models.ForeignKey(scaasasassasassasdasd, on_delete=models.CASCADE, related_name="proposal_pgj2", blank=True, null=True)

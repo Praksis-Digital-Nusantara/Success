@@ -1,0 +1,49 @@
+{% extends "prodi/base.html" %}
+
+{% block content1 %}
+<div class="dashboard-content">
+	<div class="profile-section">
+	<div class="container-header">
+		<nav class="container-breadcrumb">
+			<ul>
+				<li>
+					<a href="{% url 'acd:dashboard' %}">
+						<i class="ri-home-line"></i>
+					</a>
+				</li>
+				<li>
+					<i class="ri-arrow-right-s-line"></i>
+				</li>
+				<li>
+					<a href="{% url 'acd:ttd' %}">TTD</a>
+				</li>
+				<li>
+					<i class="ri-arrow-right-s-line"></i>
+				</li>
+				<li>
+					<a href="">{{ heading }}</a>
+				</li>
+			</ul>
+		</nav>
+	</div>		
+		<form method="post"  enctype="multipart/form-data">
+			{% csrf_token %}
+			<div class="form-group">
+				<label for="id_perihal">Perihal</label>
+				{{ form.perihal }}
+			</div>
+			<div class="form-group">
+				<label for="id_tujuan">Tujuan</label>
+				{{ form.tujuan }}
+			</div>
+			<div class="form-group">
+				<label for="id_pejabat">Pejabat</label>
+				{{ form.pejabat }}
+			</div>
+			{% comment %} {{ form.as_p }}					 {% endcomment %}
+			<button type="submit" class="btn btn-primary">Proses</button>
+		</form> 
+	</div>
+</div>
+{% endblock content1 %}
+

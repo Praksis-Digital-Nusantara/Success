@@ -41,6 +41,9 @@
                     <li class="{% if title == 'Nomor Surat' %}active{% endif %}">
                         <a href="{% url "acd:nosurat" %}"><i class="ri-file-list-line"></i> Nomor Surat</a>
                     </li>
+                    <li class="{% if title == 'TTD Qrcode' %}active{% endif %}">
+                        <a href="{% url "acd:ttd" %}"><i class="ri-numbers-fill"></i> TTD Qrcode</a>
+                    </li>
                     <li class="{% if title == 'Seleksi Judul' %}active{% endif %}">
                         <a href="{% url "acd:skripsi_sjudul" %}"><i class="ri-book-line"></i>Seleksi Judul</a>
                     </li>

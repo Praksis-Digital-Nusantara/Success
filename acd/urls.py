@@ -27,6 +27,8 @@ urlpatterns = [
     path('layanan_edit/<int:id>/', views_prodi.layanan_edit, name='layanan_edit'),  
     path('skripsi_sjudul', views_prodi.skripsi_sjudul, name='skripsi_sjudul'),      
     path('nosurat', views_prodi.nosurat, name='nosurat'),      
+    path('ttd', views_prodi.ttd, name='ttd'),      
+    path('ttd_edit/<int:id>/', views_prodi.ttd_edit, name='ttd_edit'),      
 
 
 

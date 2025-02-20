@@ -34,7 +34,6 @@ class formProfile(forms.ModelForm):
             'photo': forms.FileInput(attrs={'class': 'form-control'}),
             'tempat_lahir': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
             'tgl_lahir': forms.DateInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'date'}),
-            'penasehat_akademik': forms.Select(attrs={'class': 'form-control'}),  
         }
 
         

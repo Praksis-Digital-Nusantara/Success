@@ -3,11 +3,12 @@ from django.contrib.auth.decorators import login_required
 from functools import wraps
 from django.contrib import messages
 from datetime import datetime
+from django.core.exceptions import ObjectDoesNotExist
 
-from .models import Layanan, SkripsiJudul, NoSurat
+from .models import Layanan, SkripsiJudul, NoSurat, TtdProdi
 from django.contrib.auth.models import User
 
-from .forms_prodi import formLayananEdit, formNosuratAdd
+from .forms_prodi import formLayananEdit, formNosuratAdd, formTTD
 from .decorators_prodi import admin_prodi_required, check_userprodi
 
 
@@ -50,6 +51,55 @@ def nosurat(request):
         'form' : form
     }
     return render(request, 'prodi/nosurat.html', context)
+
+
+###################### TTD QRCODE ########################
+@check_userprodi
+@admin_prodi_required
+def ttd(request):           
+    userprodi = request.userprodi  
+    data = TtdProdi.objects.filter(prodi=userprodi.prodi)
+    context = {
+        'title': 'TTD Qrcode',
+        'heading': 'TTD Qrcode',
+        'userprodi' : userprodi,
+        'photo' : userprodi.photo,
+        'data': data,
+    }
+    return render(request, 'prodi/ttd.html', context)
+
+@check_userprodi
+@admin_prodi_required
+def ttd_edit(request, id=0):
+    userprodi = request.userprodi
+    try:
+        data = TtdProdi.objects.get(id=id)
+    except ObjectDoesNotExist:
+        data = None
+    if request.method == 'POST':
+        form = formTTD(request.POST, instance=data)
+        if form.is_valid():
+            data = form.save(commit=False)  
+            data.adminp = request.user   
+            data.prodi = userprodi.prodi   
+            data.save()  
+            messages.success(request, 'Berhasil')
+            return redirect('acd:ttd')
+        else:
+            messages.error(request, 'periksa kembali isian data anda!')
+    else:
+        form = formTTD(instance=data)
+
+    context = {
+        'title' : 'Kelolah Layanan',
+        'heading' : 'Kelolah Layanan',
+        'userprodi' : userprodi,
+        'photo' : userprodi.photo,
+        'form': form,
+    }
+    return render(request, 'prodi/ttd_edit.html', context)
+
+
 
 ###################### LAYANAN ########################
 

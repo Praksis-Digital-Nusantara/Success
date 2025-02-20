@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import UserMhs, UserProdi, UserDosen, UserFakultas
 from .models import LayananJenis, Layanan
-from .models import Prodi, Jurusan
+from .models import Prodi, Jurusan, ProdiPejabat, JurusanPejabat
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 
@@ -45,4 +45,6 @@ admin.site.register(UserMhs)
 
 admin.site.register(Prodi)
 admin.site.register(Jurusan)
+admin.site.register(ProdiPejabat)
+admin.site.register(JurusanPejabat)
 admin.site.register(LayananJenis)
