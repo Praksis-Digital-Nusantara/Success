@@ -1,5 +1,5 @@
 from django import forms
-from .models import Layanan, UserProdi, Prodi, ProdiPejabat, NoSurat, TtdProdi
+from .models import Layanan, UserProdi, Prodi, NoSurat, TTDProdi, User
 
 class formProfile(forms.ModelForm):
     class Meta:
@@ -39,26 +39,29 @@ class formNosuratAdd(forms.ModelForm):
         }
 
 class formTTD(forms.ModelForm):
-    pejabat = forms.ModelChoiceField(
-        queryset=ProdiPejabat.objects.all(), 
+    ttd_user = forms.ModelChoiceField(
+        queryset=User.objects.filter(last_name="Dosen"), 
         widget=forms.Select(attrs={'class': 'form-control'}),
-        empty_label="Pilih Penasehat Akademik"  # Optional placeholder text
+        empty_label="Pilih Pejabat"  # Optional placeholder text
         )
     
     class Meta:
-        model = TtdProdi      
+        model = TTDProdi      
         fields = [    
             'perihal',
             'tujuan',
-            'pejabat',
+            'ttd_jabatan',
+            'ttd_user',
         ]
         widgets = {
             'perihal': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Contoh : Undangan Rapat'}),
             'tujuan': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Contoh : Seluruh Dosen Prodi'}),
+            'ttd_jabatan': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Contoh : Ketua Jurusan'}),
         }
         labels = {
             'perihal': 'Perihal',
             'tujuan': 'Tujuan',
+            'ttd_jabatan': 'Nama Jabatan',
         }
 
         

@@ -75,7 +75,9 @@
 					<tr>
 						<td>{{ forloop.counter }}</td>
 						<td>{{ datatb.date_in }}</td>
-						<td>{{ datatb.pejabat }}</td>
+						<td>{{ datatb.ttd_jabatan }}
+							<br>{{ datatb.ttd_user }}	
+						</td>
 						<td>{{ datatb.perihal }}</td>							  				
 						<td>{{ datatb.tujuan }}</td>					  
 						<td><a href="{% url 'acd:ttd_edit' datatb.id %}">

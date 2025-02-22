@@ -4,11 +4,18 @@ from functools import wraps
 from django.contrib import messages
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
-
-from .models import Layanan, SkripsiJudul, NoSurat, TtdProdi
 from django.contrib.auth.models import User
 
-from .forms_prodi import formLayananEdit, formNosuratAdd, formTTD
+from .models import (Layanan, 
+                     SkripsiJudul, 
+                     NoSurat, 
+                     ProdiPejabat, 
+                     TTDProdi)
+
+from .forms_prodi import (formLayananEdit, 
+                          formNosuratAdd, 
+                          formTTD
+                          )
 from .decorators_prodi import admin_prodi_required, check_userprodi
 
 
@@ -58,7 +65,7 @@ def nosurat(request):
 @admin_prodi_required
 def ttd(request):           
     userprodi = request.userprodi  
-    data = TtdProdi.objects.filter(prodi=userprodi.prodi)
+    data = TTDProdi.objects.filter(prodi=userprodi.prodi)
     context = {
         'title': 'TTD Qrcode',
         'heading': 'TTD Qrcode',
@@ -73,7 +80,7 @@ def ttd(request):
 def ttd_edit(request, id=0):
     userprodi = request.userprodi
     try:
-        data = TtdProdi.objects.get(id=id)
+        data = TTDProdi.objects.get(id=id)
     except ObjectDoesNotExist:
         data = None
     if request.method == 'POST':
@@ -81,7 +88,7 @@ def ttd_edit(request, id=0):
         if form.is_valid():
             data = form.save(commit=False)  
             data.adminp = request.user   
-            data.prodi = userprodi.prodi   
+            data.prodi = userprodi.prodi
             data.save()  
             messages.success(request, 'Berhasil')
             return redirect('acd:ttd')
@@ -91,8 +98,8 @@ def ttd_edit(request, id=0):
         form = formTTD(instance=data)
 
     context = {
-        'title' : 'Kelolah Layanan',
-        'heading' : 'Kelolah Layanan',
+        'title' : 'Kelolah TTD',
+        'heading' : 'Kelolah TTD',
         'userprodi' : userprodi,
         'photo' : userprodi.photo,
         'form': form,

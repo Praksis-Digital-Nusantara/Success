@@ -141,13 +141,14 @@ class NoSurat(models.Model):
 
 #########################  TTD QRCODE #####################################
 
-class TtdProdi(models.Model):
+class TTDProdi(models.Model):
     date_in = models.DateField(auto_now_add=True)
     adminp = models.ForeignKey(User, on_delete=models.CASCADE, related_name="ttdqr_admin")
     prodi = models.ForeignKey(Prodi, on_delete=models.SET_NULL, null=True, blank=True)
-    perihal = models.CharField(max_length=255, blank=False, null=False)
-    tujuan = models.CharField(max_length=255, blank=False, null=False)
-    pejabat = models.ForeignKey(ProdiPejabat, on_delete=models.SET_NULL, null=True, blank=True)
+    perihal = models.CharField(max_length=255, blank=True, null=True)
+    tujuan = models.CharField(max_length=255, blank=True, null=True)
+    ttd_jabatan = models.CharField(max_length=255, blank=True, null=True)
+    ttd_user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="ttdqr_ttduser")
 
 
 ######################## LAYANAN ########################################
@@ -202,7 +203,7 @@ class SkripsiJudul(models.Model):
     status_ket = models.CharField(max_length=255, verbose_name="status_ket", blank=True, null=True)
 
 
-######################## PROPOSAL  ########################################
+####################### PROPOSAL  ########################################
 
 # class SkripsiProposal(models.Model):
 #     admin = models.ForeignKey(User, on_delete=models.CASCADE, related_name="proposal_admin")
@@ -218,4 +219,4 @@ class SkripsiJudul(models.Model):
 #     pgj1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="proposal_pgj1", blank=True, null=True)
 #     pgj2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="proposal_pgj2", blank=True, null=True)
 #     ttd_status = models.BooleanField()
-#     ttd_user = models.ForeignKey(scaasasassasassasdasd, on_delete=models.CASCADE, related_name="proposal_pgj2", blank=True, null=True)
+#     ttd = models.ForeignKey(TtdProdi, on_delete=models.CASCADE, blank=True, null=True)
