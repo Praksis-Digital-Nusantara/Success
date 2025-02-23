@@ -16,14 +16,14 @@ def index(request):
     userC = None # izin menambahkan userC = None
     if request.user.last_name == 'Mahasiswa':
         try:
-            userC = UserMhs.objects.get(user=request.user)
+            userC = UserMhs.objects.get(nim=request.user)
             request.usermhs = userC
         except UserMhs.DoesNotExist:
             messages.error(request, "Lengkapi data anda terlebih dahulu!")
             return redirect('/acd/profile_mhs')
     elif request.user.last_name == 'Dosen':  
         try:
-            userC = UserDosen.objects.get(user=request.user)
+            userC = UserDosen.objects.get(nip=request.user)
             request.usermhs = userC
         except UserDosen.DoesNotExist:
             messages.error(request, "Lengkapi data anda terlebih dahulu!")

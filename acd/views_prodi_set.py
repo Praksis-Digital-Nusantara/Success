@@ -71,20 +71,27 @@ def user_list(request):
 @admin_prodi_required
 def user_edit(request, id, role):
     userprodi = request.userprodi  
-    userMaster = get_object_or_404(User, id=id)
+    userMaster = get_object_or_404(User, username=id)
     if role == 'Mahasiswa':
-        userSelect = get_object_or_404(UserMhs, user_id=id)
+        userSelect = get_object_or_404(UserMhs, nim=id)
     if role == 'Dosen':
-        userSelect = get_object_or_404(UserDosen, user_id=id)
+        userSelect = get_object_or_404(UserDosen, nip=id)
     if request.method == 'POST':
         form = formUserEdit(request.POST, request.FILES, instance=userSelect)
         if form.is_valid():
             userSelect.save()  
             messages.success(request, 'Update User Berhasil')
-            return redirect('acd:user_edit', userSelect.user_id, role)
+            if role == 'Mahasiswa':
+                return redirect('acd:user_edit', userSelect.nim_id, role)
+            else:
+                return redirect('acd:user_edit', userSelect.nip_id, role)
         else:
             messages.error(request, 'periksa kembali isian data anda!')
-            return redirect('acd:user_edit', userSelect.user_id, role)
+            if role == 'Mahasiswa':
+                return redirect('acd:user_edit', userSelect.nim_id, role)
+            else:
+                return redirect('acd:user_edit', userSelect.nip_id, role)
+
     else:
         form = formUserEdit(instance=userSelect)
 

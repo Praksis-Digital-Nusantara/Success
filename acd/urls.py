@@ -22,7 +22,7 @@ urlpatterns = [
     ###### ADMIN PRODI ######   
     path('profile_prodi', views_prodi_set.profile_prodi, name='profile_prodi'),
     path('user_list', views_prodi_set.user_list, name='user_list'),      
-    path('user_edit/<int:id>/<str:role>/', views_prodi_set.user_edit, name='user_edit'),
+    path('user_edit/<str:id>/<str:role>/', views_prodi_set.user_edit, name='user_edit'),
     path('layanan', views_prodi.layanan, name='layanan'),  
     path('layanan_edit/<int:id>/', views_prodi.layanan_edit, name='layanan_edit'),  
     path('skripsi_sjudul', views_prodi.skripsi_sjudul, name='skripsi_sjudul'),      

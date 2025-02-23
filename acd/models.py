@@ -75,7 +75,7 @@ class ProdiPejabat(models.Model):
 
 
 class UserMhs(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    nim = models.OneToOneField(User, on_delete=models.CASCADE, to_field="username", primary_key=True)
     prodi = models.ForeignKey(Prodi, on_delete=models.SET_NULL, null=True, blank=True, related_name="usermhs_prodi")
     telp = models.CharField(max_length=15)
     photo = models.FileField(upload_to='static/img_profile/mhs/', null=True, blank=True)
@@ -90,7 +90,7 @@ class UserMhs(models.Model):
         return f"{self.user.username}"
     
 class UserDosen(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    nip = models.OneToOneField(User, on_delete=models.CASCADE, to_field="username", primary_key=True)
     prodi = models.ForeignKey(Prodi, on_delete=models.SET_NULL, null=True, blank=True)
     telp = models.CharField(max_length=15)
     photo = models.FileField(upload_to='static/img_profile/dosen/', null=True, blank=True)

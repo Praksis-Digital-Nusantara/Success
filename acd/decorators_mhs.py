@@ -7,7 +7,7 @@ def check_usermhs(function):
     def wrapper(request, *args, **kwargs):
         try:
             # Ambil data UserMhs terkait user
-            usermhs = UserMhs.objects.get(user=request.user)
+            usermhs = UserMhs.objects.get(nim=request.user)
             # Tambahkan data UserMhs ke request
             request.usermhs = usermhs
         except UserMhs.DoesNotExist:

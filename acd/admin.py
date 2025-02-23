@@ -15,7 +15,7 @@ class LayananAdmin(admin.ModelAdmin):
 
 class MhsInline(admin.StackedInline):
     model = UserMhs
-    fk_name = 'user'
+    fk_name = 'nim'
     can_delete = False
     verbose_name_plural = 'AccountsMhs'
 

@@ -7,7 +7,7 @@ def check_userdosen(function):
     def wrapper(request, *args, **kwargs):
         try:
             # Ambil data Userdosen terkait user
-            userdosen = UserDosen.objects.get(user=request.user)
+            userdosen = UserDosen.objects.get(nip=request.user)
             # Tambahkan data Userdosen ke request
             request.userdosen = userdosen
         except UserDosen.DoesNotExist:
