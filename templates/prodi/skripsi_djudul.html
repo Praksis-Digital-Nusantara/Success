@@ -9,15 +9,22 @@
 				<p>{{web_name}}</p>
 			</div>
 			<div class="list-filters">
-				<div class="filter-dropdown">
-					<button class="filter-btn">
-						Filter Mata Kuliah <i class="ri-arrow-down-s-line"></i>
-					</button>
-				</div>
-				<div class="date-filter">
-					<div class="date-input">
-						<i class="ri-calendar-line"></i>
-						<input type="text" placeholder="Semester">
+				<div class="table-actions">
+					<div class="action-group">
+						<div class="search-bar-table">
+							<i class="ri-search-line"></i>
+							<input type="text" id="searchInput" placeholder="Search table...">
+						</div>
+					</div>
+					<div class="action-group">
+						<button class="btn primary" onclick="openModal('nomorsurat')">
+							<i class="ri-add-line"></i>
+							<span>Add</span>
+						</button>
+						<button class="btn secondary" id="exportTable">
+							<i class="ri-download-line"></i>
+							<span>Export</span>
+						</button>
 					</div>
 				</div>
 			</div>
@@ -36,22 +43,22 @@
 				<thead>
 				<tr>
 					<th>No</th>
-					<th>Date In</th>
 					<th>Mahasiswa</th>
 					<th>Prodi</th>
-					<th>Dosen PA</th>
 					<th>Judul</th>
+					<th>Pembimbing</th>
+					<th>Status SK</th>
 					<th>Aksi</th>
 				</tr>
 				</thead>
 				<tfoot>
 				<tr>
 					<th>No</th>
-					<th>Date In</th>
 					<th>Mahasiswa</th>
 					<th>Prodi</th>
-					<th>Dosen PA</th>
 					<th>Judul</th>
+					<th>Pembimbing</th>
+					<th>Status SK</th>
 					<th>Aksi</th>
 				</tr>
 				</tfoot>
@@ -59,25 +66,21 @@
 				{% for datatb in data %}
 					<tr>
 						<td>{{ forloop.counter }}</td>
-						<td>{{ datatb.date_in|date:"d M Y H:i"  }}</td>
-						<td>{{ datatb.user }}</td>					  
+						<td>{{ datatb.mhs }}</td>					  
 						<td>{{ datatb.prodi }}</td>					  
-						<td>{{ datatb.penasehat_akademik }}</td>					  
-						<td>1. {{ datatb.judul_1 }}					  
-								<br>2. {{ datatb.judul_2}}					  
-								<br>3. {{ datatb.judul_3}}
-								</td>					  
-						<td>{% if datatb.status == 'Waiting'  %}
-							<span class="grade-badge c">{{ datatb.status }}</span>
-							<br>
+						<td>{{ datatb.judul }}</td>					  
+						<td>1. {{ datatb.pembimbing1 }}					  
+							<br>2. {{ datatb.pembimbing2 }}	
+							</td>					  
+						<td>{{ datatb.status_sk }}</td>					  
+						<td>
+							<a href="{% url "acd:skripsi_ejudul" datatb.id %}">
+							<button class="action-btn primary"><i class="ri-pencil-fill"></i></button>		
+							</a>
+							<br>			
 							<button class="action-btn primary" onclick="openModal('olahJudulModal', '{{ datatb.id }}')">
-								<i class="ri-pencil-fill"></i>
-							</button>
-							{% elif datatb.status == 'Revision'  %}
-								<span class="grade-badge b">{{ datatb.status }}</span>
-							{% elif datatb.status == 'Approved'  %}
-								<span class="grade-badge a">{{ datatb.status }}</span>
-							{% endif %}						
+								Ajukan SK
+							</button>		
 						</td>					
 					</tr>
 				{% endfor %}
@@ -91,24 +94,12 @@
 <div id="olahJudulModal" class="modal-edit"> 
     <div class="modal-content-edit">
         <span class="close" onclick="closeModal('olahJudulModal')">&times;</span>
-        <h2>Perihal dan Tujuan</h2>
+        <h2>Ajukan Penerbitan SK ke Fakultas?</h2>
 		<form method="post">
 			{% csrf_token %}
 			<input type="hidden" name="skripsi_id" id="skripsiId">
-				<div class="form-group">
-					<label for="status">Status</label>
-					<select class="form-control" id="status" name="status" required>
-						<option value="">Pilih Status</option>
-						<option value="Approved" >Diterima</option>
-						<option value="Revision" >Ditolak</option>
-					</select>						
-				</div>
-				<div class="form-group">
-					<label for="status_ket">Keterangan / Komentar / Alasan Penolakan</label>
-					<input type="text" class="form-control" id="status_ket" name="status_ket" required>
-				</div>
 			<div class="modal-footer">
-				<button type="submit" class="btn btn-primary">Simpan</button>
+				<button type="submit" class="btn btn-primary">Ya, Ajukan Sekarang.</button>
 			</div>		
 		</form>
     </div>
@@ -143,6 +134,9 @@
     }
 </script>
 {% endblock script_modal %} 
+
+
+
 
 
 

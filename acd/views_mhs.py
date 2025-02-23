@@ -124,7 +124,7 @@ def skripsi(request):
 def skripsi_pjudul(request):
     usermhs = request.usermhs
     try:
-        skripsi_judul = SkripsiJudul.objects.get(user=request.user)
+        skripsi_judul = SkripsiJudul.objects.get(mhs=request.user)
     except ObjectDoesNotExist:
         skripsi_judul = None
 
@@ -135,7 +135,7 @@ def skripsi_pjudul(request):
             skripsi_judul = form.save(commit=False)
             skripsi_judul.status = 'Waiting'
             skripsi_judul.prodi = usermhs.prodi
-            skripsi_judul.user = request.user
+            skripsi_judul.mhs = request.user
             skripsi_judul.save()
             messages.success(request, 'Judul berhasil disimpan.')
             return redirect('/acd/skripsi_pjudul')

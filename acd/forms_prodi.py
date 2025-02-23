@@ -1,5 +1,5 @@
 from django import forms
-from .models import Layanan, UserProdi, Prodi, NoSurat, TTDProdi, User
+from .models import Layanan, UserProdi, Prodi, NoSurat, TTDProdi, User, SkripsiJudul
 
 class formProfile(forms.ModelForm):
     class Meta:
@@ -119,5 +119,30 @@ class formLayananEdit(forms.ModelForm):
             'hasil_test': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': '...'}),
             'hasil_link': forms.TextInput(attrs={'class': 'form-control'}),
             'hasil_file': forms.FileInput(attrs={'class': 'form-control'}),
+        }
+
+
+
+class formSkripsiJudulEdit(forms.ModelForm):
+    pembimbing1 = forms.ModelChoiceField(
+        queryset=User.objects.filter(last_name="Dosen"), 
+        to_field_name="username",  # Tambahkan ini
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    pembimbing2 = forms.ModelChoiceField(
+        queryset=User.objects.filter(last_name="Dosen"), 
+        to_field_name="username",  # Tambahkan ini
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
+    class Meta:
+        model = SkripsiJudul
+        fields = [    
+            'judul',
+            'pembimbing1',
+            'pembimbing2',
+        ]
+        widgets = {
+            'judul': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': '...'}),
         }
 

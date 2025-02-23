@@ -6,7 +6,8 @@ from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 
-from .models import (Layanan, 
+from .models import (Layanan,
+                     UserMhs, 
                      SkripsiJudul, 
                      NoSurat, 
                      ProdiPejabat, 
@@ -14,7 +15,8 @@ from .models import (Layanan,
 
 from .forms_prodi import (formLayananEdit, 
                           formNosuratAdd, 
-                          formTTD
+                          formTTD,
+                          formSkripsiJudulEdit,
                           )
 from .decorators_prodi import admin_prodi_required, check_userprodi
 
@@ -173,6 +175,18 @@ def skripsi_sjudul(request):
 
     userprodi = request.userprodi  
     data = SkripsiJudul.objects.all()
+
+    # Buat dictionary untuk mengambil first_name penasehat akademik
+    user_mhs_dict = {
+        um.nim.username: um.penasehat_akademik.first_name if um.penasehat_akademik else "Tidak Ada"
+        for um in UserMhs.objects.select_related('penasehat_akademik')
+    }
+
+    # Tambahkan first_name penasehat akademik ke dalam setiap data SkripsiJudul
+    for skripsi in data:
+        skripsi.penasehat_akademik = user_mhs_dict.get(skripsi.mhs.username, "Tidak Ada")
+
+        
     context = {
         'title': 'Seleksi Judul',
         'heading': 'Seleksi Judul',
@@ -181,3 +195,54 @@ def skripsi_sjudul(request):
         'data': data,
     }
     return render(request, 'prodi/skripsi_sjudul.html', context)
+
+
+
+@check_userprodi
+@admin_prodi_required
+def skripsi_djudul(request):
+    if request.method == "POST":
+        skripsi_id = request.POST.get("skripsi_id")
+        skripsi = get_object_or_404(SkripsiJudul, id=skripsi_id)
+        skripsi.status_sk = "Pengajuan"
+        skripsi.save()       
+        messages.success(request, f"Pengajuan SK {skripsi.mhs} berhasil diajukan ")
+
+    userprodi = request.userprodi  
+    data = SkripsiJudul.objects.all()       
+    context = {
+        'title': 'Daftar Judul',
+        'heading': 'Daftar Judul',
+        'userprodi' : userprodi,
+        'photo' : userprodi.photo,
+        'data': data,
+    }
+    return render(request, 'prodi/skripsi_djudul.html', context)
+
+
+@check_userprodi
+@admin_prodi_required
+def skripsi_ejudul(request, id):
+    userprodi = request.userprodi  
+    judul = get_object_or_404(SkripsiJudul, id=id)
+    if request.method == 'POST':
+        form = formSkripsiJudulEdit(request.POST, instance=judul)
+        if form.is_valid():
+            judul = form.save(commit=False)  
+            judul.save()  
+            messages.success(request, 'Berhasil')
+            return redirect('acd:skripsi_ejudul', id=judul.id)
+        else:
+            messages.error(request, 'periksa kembali isian data anda!')
+            return redirect('acd:skripsi_ejudul', id=judul.id)
+    else:
+        form = formSkripsiJudulEdit(instance=judul)
+
+    context = {
+        'title' : 'Edit Judul Skripsi',
+        'heading' : 'Edit Judul Skripsi',
+        'userprodi' : userprodi,
+        'photo' : userprodi.photo,
+        'form': form,
+    }
+    return render(request, 'prodi/skripsi_ejudul.html', context)

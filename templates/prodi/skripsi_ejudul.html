@@ -1,0 +1,68 @@
+{% extends "prodi/base.html" %}
+
+{% block content1 %}
+<div class="dashboard-content">
+	<div class="profile-section">
+	<div class="container-header">
+		<nav class="container-breadcrumb">
+			<ul>
+				<li>
+					<a href="{% url 'acd:dashboard' %}">
+						<i class="ri-home-line"></i>
+					</a>
+				</li>
+				<li>
+					<i class="ri-arrow-right-s-line"></i>
+				</li>
+				<li>
+					<a href="{% url 'acd:skripsi_djudul' %}">List Judul</a>
+				</li>
+				<li>
+					<i class="ri-arrow-right-s-line"></i>
+				</li>
+				<li>
+					<a href="">{{ heading }}</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+			{% if messages %}
+			{% for message in messages %}
+				<div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} mb-4">
+					<i class="{% if message.tags == 'success' %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
+					{{ message }}
+				</div>
+			{% endfor %}
+			{% endif %}
+
+		<form method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+			
+			<div class="form-group">
+				<label for="id_judul">Judul</label>
+				{{ form.judul }}
+			</div>		
+			<div class="form-group">
+				<label for="id_pembimbing1">Pembimbing 1</label>
+				{{ form.pembimbing1 }}
+			</div>		
+			<div class="form-group">
+				<label for="id_pembimbing2">Pembimbing 2</label>
+				{{ form.pembimbing2 }}
+			</div>
+		
+			<div class="form-actions">
+				<button type="submit" class="btn primary">Update</button>
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock content1 %}
+
+
+
+
+
+
+
+

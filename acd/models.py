@@ -186,7 +186,7 @@ class Layanan(models.Model):
 
 
 class SkripsiJudul(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="skripsi_judul")
+    mhs = models.ForeignKey(User, on_delete=models.CASCADE, to_field="username", related_name="skripsi_judul")
     prodi = models.ForeignKey(Prodi, on_delete=models.SET_NULL, null=True, blank=True)
     date_in = models.DateTimeField(auto_now_add=True)
     judul_1 = models.CharField(max_length=255, verbose_name="Judul 1")
@@ -201,6 +201,15 @@ class SkripsiJudul(models.Model):
         ('Approved', 'Approved'), 
         ])
     status_ket = models.CharField(max_length=255, verbose_name="status_ket", blank=True, null=True)
+    judul = models.CharField(max_length=255, blank=True, null=True)     
+    pembimbing1 = models.ForeignKey(User, on_delete=models.CASCADE, to_field="username", related_name="skripsi_pbb1", blank=True, null=True)    
+    pembimbing2 = models.ForeignKey(User, on_delete=models.CASCADE, to_field="username", related_name="skripsi_pbb2", blank=True, null=True)   
+    status_sk = models.CharField(max_length=15,  default='-', choices=[
+        ('-', '-'),
+        ('Pengajuan', 'Pengajuan'), 
+        ('Pembaharuan', 'Pembaharuan'), 
+        ('Terbit', 'Terbit'), 
+        ])
 
 
 ####################### PROPOSAL  ########################################
