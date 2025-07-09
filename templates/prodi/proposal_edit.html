@@ -1,0 +1,152 @@
+{% extends "prodi/base.html" %}
+
+{% block content1 %}
+
+<div class="layanan-form-container">
+	<div class="profile-section-ujian">
+		<div class="student-table">
+			<div class="table-responsive">
+				<table>
+					<tbody>
+						<tr>
+							<td width="10%">Mahasiswa</td>
+							<td width="5%">:</td>
+							<td>{{ judul.mhs }}</td>					  
+						</tr>
+						<tr>
+							<td>Program Studi</td>
+							<td>:</td>
+							<td>{{ judul.prodi }}</td>					  
+						</tr>
+						<tr>
+							<td>Judul</td>
+							<td>:</td>
+							<td><div class="response-text">{{ judul.judul }}</div></td>					  
+						</tr>
+						<tr>
+							<td>Pembimbing I</td>
+							<td>:</td>
+							<td>{{ judul.pembimbing1 }}</td>					  
+						</tr>
+						<tr>
+							<td>Pembimbing II</td>
+							<td>:</td>
+							<td>{{ judul.pembimbing2 }}</td>					  
+						</tr>
+						<tr>
+							<td>KRS</td>
+							<td>:</td>
+							<td>{% if proposal.krs %}
+									<a target="_blank" href="/media/{{ proposal.krs }}"><button class="btn success small">Lihat File</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+						<tr>
+							<td>KHS</td>
+							<td>:</td>
+							<td>{% if proposal.khs %}
+									<a target="_blank" href="/media/{{ proposal.khs }}"><button class="btn success small">Lihat File</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+						<tr>
+							<td>Persetujuan Proposal</td>
+							<td>:</td>
+							<td>{% if proposal.persetujuan_proposal %}
+									<a target="_blank" href="/media/{{ proposal.persetujuan_proposal }}"><button class="btn success small">Lihat File</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+						<tr>
+							<td>Kartu Seminar</td>
+							<td>:</td>
+							<td>{% if proposal.kartu_seminar %}
+									<a target="_blank" href="/media/{{ proposal.kartu_seminar }}"><button class="btn success small">Lihat File</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+						<tr>
+							<td>Rekening Koran Bagi Bidik Misi</td>
+							<td>:</td>
+							<td>{% if proposal.rek_koran %}
+									<a target="_blank" href="/media/{{ proposal.rek_koran }}"><button class="btn success small">Lihat File</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+					</tbody>
+				</table>	
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="form-card">
+	<div class="form-header">
+		<div class="form-header-icon">
+			<i class="ri-edit-line"></i>
+		</div>
+		<div class="form-header-content">
+			<h2>Form Edit Proposal</h2>
+			<p>Silahkan isi form dibawah ini untuk mengedit proposal seminar.</p>
+		</div>
+	</div>
+
+	<form method="post" enctype="multipart/form-data" class="layanan-form">
+		{% csrf_token %}
+		<div class="form-group">
+			<label for="id_no_surat">Nomor Surat</label>
+			{{ form.no_surat }}
+		</div>
+		<div class="form-group">
+			<label for="id_seminar_tgl">Tanggal Seminar</label>
+			{{ form.seminar_tgl }}
+		</div>
+		<div class="form-group">
+			<label for="id_seminar_jam">Jam Seminar</label>
+			{{ form.seminar_jam }}
+		</div>
+		<div class="form-group">
+			<label for="id_seminar_tempat">Tempat Seminar</label>
+			{{ form.seminar_tempat }}
+		</div>
+		<div class="form-group">
+			<label for="id_seminar_link">Link Seminar</label>
+			{{ form.seminar_link }}
+		</div>
+		<div class="form-group">
+			<label for="id_penguji1">Penguji I</label>
+			{{ form.penguji1 }}
+		</div>
+		<div class="form-group">
+			<label for="id_penguji2">Penguji II</label>
+			{{ form.penguji2 }}
+		</div>
+		<div class="form-group">
+			<label for="id_ttd">Pejabat Bertandatangan</label>
+			{{ form.ttd }}
+		</div>
+		<div class="form-group">
+			<label for="id_ttd_status">Jenis TTD</label>
+			{{ form.ttd_status }}
+		</div>
+	
+		<div class="form-actions">
+			<a href="{% url 'acd:proposal' %}">
+				<button type="button" class="btn btn-secondary">
+					<i class="ri-arrow-left-line"></i>
+					Kembali
+				</button>
+			</a>
+			<button type="submit" class="btn primary">Update</button>
+		</div>
+	</form>
+
+{% endblock content1 %}
+
+
+
+
+
+
+
+

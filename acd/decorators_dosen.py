@@ -4,15 +4,12 @@ from .models import UserDosen
 from functools import wraps
 
 def check_userdosen(function):
-    def wrapper(request, *args, **kwargs):
-        try:
-            # Ambil data Userdosen terkait user
-            userdosen = UserDosen.objects.get(nip=request.user)
-            # Tambahkan data Userdosen ke request
-            request.userdosen = userdosen
-        except UserDosen.DoesNotExist:
+    def wrapper(request, *args, **kwargs): 
+        userdosen = UserDosen.objects.get(nip=request.user)
+        request.userdosen = userdosen
+        if userdosen.photo == None :
             messages.error(request, "Lengkapi data anda terlebih dahulu!")
-            return redirect('/acd/profile_dosen')
+            return redirect('/acd/profile_dsn')               
         return function(request, *args, **kwargs)
     return wrapper
 

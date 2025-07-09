@@ -1,0 +1,142 @@
+{% extends "dosen/base.html" %}
+
+{% block content1 %}
+<div class="dashboard-content">
+	<div class="profile-section">
+	<div class="container-header">
+		<nav class="container-breadcrumb">
+			<ul>
+				<li>
+					<a href="{% url 'acd:dashboard' %}">
+						<i class="ri-home-line"></i>
+					</a>
+				</li>
+				<li>
+					<i class="ri-arrow-right-s-line"></i>
+				</li>
+				<li>
+					<a href="{% url 'acd:proposal_dsn' 'Semua' %}">Proposal</a>
+				</li>
+				<li>
+					<i class="ri-arrow-right-s-line"></i>
+				</li>
+				<li>
+					<a href="">{{ heading }}</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+
+	<div class="student-table">
+		<div class="table-responsive">
+			<table>
+				<tbody>
+					<tr>
+						<td width="15%">Mahasiswa</td>
+						<td width="5%">: </td>									  
+						<td width="80%">{{ data.mhs_judul.mhs }}</td>									  
+					</tr>
+					<tr>
+						<td>Program Studi</td>
+						<td>: </td>									  
+						<td>{{ data.prodi }}</td>									  
+					</tr>
+					<tr>
+						<td>Judul</td>
+						<td>: </td>									  
+						<td>{{ data.mhs_judul }}</td>									  
+					</tr>
+					<tr>
+						<td>Tanggal Proposal</td>
+						<td>: </td>									  
+						<td>{{ data.seminar_tgl }}</td>									  
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	{% if messages %}
+		{% for message in messages %}
+				<div class="alert {% if 'success' in message.tags %}alert-success{% else %}alert-danger{% endif %} mb-4">
+					<i class="{% if 'success' in message.tags %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
+					{{ message }}
+				</div>
+		{% endfor %}
+	{% endif %}
+	<div class="student-table">
+		<div class="table-responsive">			
+			<form method="post">
+			{% csrf_token %}
+				<table>
+					<thead>
+					<tr>
+						<th>Aspek Yang di Nilai</th>
+						<th>Nilai Angka</th>
+						<th>Keterangan</th>
+					</tr>
+					</thead>	
+					<tbody>
+						<tr>
+							<td>Hasil Penelitian</td>
+							<td>{{ form.aspek1 }}</td>											  
+							<td rowspan="6" style="vertical-align: top;">
+								<!-- Isi kolom gabungan -->
+								<strong>Keterangan Nilai</strong>						
+								<br>85 ≤ NA ≤ 100	=	A
+								<br>80 ≤ NA < 85	=	A-
+								<br>75 ≤ NA < 80	=	B+
+								<br>70 ≤ NA < 75	=	B
+								<br>65 ≤ NA < 70	=	B-
+								<br>50 ≤ NA < 65	=	C
+								<br>40 ≤ NA < 50	=	D
+								<br>   < 40	=	E
+								<br> Catatan: C, D, dan E tidak Lulus
+
+							</td>												  
+						</tr>
+						<tr>
+							<td>Kajian Teori</td>
+							<td>{{ form.aspek2 }}</td>										  
+						</tr>
+						<tr>
+							<td>Metode Penelitian</td>
+							<td>{{ form.aspek3 }}</td>											  
+						</tr>
+						<tr>
+							<td>Kaidah Penulisan</td>
+							<td>{{ form.aspek4 }}</td>										  
+						</tr>
+						<tr>
+							<td>Kemampuan Presentasi</td>
+							<td>{{ form.aspek5 }}</td>											  
+						</tr>
+						<tr>
+							<td>Penguasaan Materi</td>
+							<td>{{ form.aspek6 }}</td>											  
+						</tr>
+						<tr>
+							<td>Komentar</td>
+							<td colspan="2" >{{ form.komentar }}</td>>												  
+						</tr>
+						<tr>
+							<td><b>Nilai Akhir</b></td>
+							<td><span class="btn primary">{{ nilai.nilai_angka }}</span></td>											  
+							<td><span class="btn primary" >{{ nilai.nilai_huruf }}</span></td>											  
+						</tr>
+					</tbody>				
+				</table>
+				<button type="submit" class="btn primary small">SIMPAN</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock content1 %}
+
+
+
+
+
+
+
+

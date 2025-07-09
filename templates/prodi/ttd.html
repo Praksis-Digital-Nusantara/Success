@@ -8,51 +8,41 @@
 				<h2>{{ heading }}</h2>
 				<p>{{web_name}}</p>
 			</div>
-				<div class="list-filters">
-					<div class="table-actions">
-						<div class="action-group">
-							<div class="search-bar-table">
-								<i class="ri-search-line"></i>
-								<input type="text" id="searchInput" placeholder="Search table...">
-							</div>
-						</div>
-						<div class="action-group">
-							<a href="{% url "acd:ttd_edit" 0 %}">
-							<button class="btn primary">
-								<i class="ri-add-line"></i>
-								<span>Add</span>
-							</button>
-							</a>
-							{% comment %} <button class="btn danger" id="deleteSelected">
-								<i class="ri-delete-bin-line"></i>
-								<span>Delete</span>
-							</button>
-							<button class="btn secondary" id="exportTable">
-								<i class="ri-download-line"></i>
-								<span>Export</span>
-							</button> {% endcomment %}
+			<div class="list-filters">
+				<div class="table-actions">
+					<div class="action-group">
+						<div class="search-bar-table">
+							<i class="ri-search-line"></i>
+							<input type="text" id="searchInput" placeholder="Search table...">
 						</div>
 					</div>
+					<div class="action-group">
+						<a href="{% url "acd:ttd_edit" 0 %}">
+						<button class="btn primary">
+							<i class="ri-add-line"></i>
+							<span>Add</span>
+						</button>
+						</a>
+					</div>
 				</div>
+			</div>
+		</div>
 
-
-
-
+		<div class="table-options">
+			<label for="recordsPerPage">Records per page:</label>
+			<select id="recordsPerPage" onchange="updateTable()">
+				<option value="10" selected>10</option>
+				<option value="25">25</option>
+				<option value="50">50</option>
+				<option value="100">100</option>
+			</select>
 		</div>
 
 		<div class="student-table">
-			{% if messages %}
-			{% for message in messages %}
-				<div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} mb-4">
-					<i class="{% if message.tags == 'success' %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
-					{{ message }}
-				</div>
-			{% endfor %}
-			{% endif %}
 			<table>
 				<thead>
 				<tr>
-					<th>No</th>
+					<th style="white-space: nowrap;">No</th>
 					<th>Date In</th>
 					<th>Pejabat</th>
 					<th>Perihal</th>
@@ -78,16 +68,24 @@
 						<td>{{ datatb.ttd_jabatan }}
 							<br>{{ datatb.ttd_user }}	
 						</td>
-						<td>{{ datatb.perihal }}</td>							  				
+						<td style="text-transform: uppercase;">{{ datatb.perihal }}</td>							  				
 						<td>{{ datatb.tujuan }}</td>					  
 						<td><a href="{% url 'acd:ttd_edit' datatb.id %}">
-							<button class="action-btn"><i class="ri-pencil-fill"></i></button>
+							<button class="btn primary x-small"><i class="ri-pencil-fill"></i></button>
+							</a>
+							<a href="{% url 'acd:ttd_del' datatb.id %}">
+							<button class="btn danger x-small"><i class="ri-delete-bin-fill"></i></button>
 							</a>
 							</td>					  
 					</tr>
 				{% endfor %}
 				</tbody>
 			</table>
+		</div>
+		<div id="pagination" class="pagination">
+			<button id="prev" class="btn warning">Prev</button>
+			<span id="pageNumber" class="page-number">1</span>
+			<button id="next" class="btn warning">Next</button>
 		</div>
 	</div>
 </div>

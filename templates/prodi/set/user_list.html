@@ -10,29 +10,30 @@
 				<p>{{web_name}}</p>
 			</div>
 			<div class="list-filters">
-				<div class="filter-dropdown">
-					<button class="filter-btn">
-						Filter Mata Kuliah <i class="ri-arrow-down-s-line"></i>
-					</button>
-				</div>
-				<div class="date-filter">
-					<div class="date-input">
-						<i class="ri-calendar-line"></i>
-						<input type="text" placeholder="Semester">
+				<div class="table-actions">
+					<div class="action-group">
+						<div class="search-bar-table">
+							<i class="ri-search-line"></i>
+							<input type="text" id="searchInput" placeholder="Search table...">
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
+		<div class="table-options">
+			<label for="recordsPerPage">Records per page:</label>
+			<select id="recordsPerPage" onchange="updateTable()">
+				<option value="10" selected>10</option>
+				<option value="25">25</option>
+				<option value="50">50</option>
+				<option value="100">100</option>
+			</select>
+		</div>
+
+		
+
 		<div class="student-table">
-			{% if messages %}
-			{% for message in messages %}
-				<div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} mb-4">
-					<i class="{% if message.tags == 'success' %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
-					{{ message }}
-				</div>
-			{% endfor %}
-			{% endif %}
 			<table>
 				<thead>
 				<tr>
@@ -54,26 +55,57 @@
 					<th>Aksi</th>
 				</tr>
 				</tfoot>
-				<tbody>
-				{% for datatb in user_data %}
-				<tr>
-					<td>{{ forloop.counter }}</td>
-					<td>{{ datatb.username }}</td>
-					<td>{{ datatb.first_name }}</td>
-					<td>{{ datatb.email }}</td>
-					<td>{{ datatb.last_login }}</td>
-					<td><a href="{% url 'acd:user_edit' datatb.username heading %}">
-						<button class="action-btn"><i class="ri-pencil-fill"></i></button>
-						</a>
-						<br>
-						<button class="action-btn primary" onclick="openModal('changePasswordModal', '{{ datatb.id }}')">
-							<i class="ri-lock-fill"></i>
-						</button>						
-					</td>
-				</tr>
-				{% endfor %}
-				</tbody>
+				{% if heading == 'Mahasiswa' %}
+					<tbody>
+					{% for datatb in user_data %}
+					<tr>
+						<td>{{ forloop.counter }}</td>
+						<td>{{ datatb.nim.username }}</td>
+						<td>{{ datatb.nim.first_name }}</td>
+						<td>{{ datatb.nim.email }}</td>
+						<td>{{ datatb.nim.last_login }}</td>
+						<td><a href="{% url 'acd:user_edit' datatb.nim.username heading %}">
+							<button class="action-btn"><i class="ri-pencil-fill"></i></button>
+							</a>
+							<br>
+							<button class="action-btn primary" onclick="openModal('changePasswordModal', '{{ datatb.nim.id }}')">
+								<i class="ri-lock-fill"></i>
+							</button>						
+						</td>
+					</tr>
+					{% endfor %}
+					</tbody>
+				
+				{% else %}
+
+					<tbody>
+					{% for datatb in user_data %}
+					<tr>
+						<td>{{ forloop.counter }}</td>
+						<td>{{ datatb.nip.username }}</td>
+						<td>{{ datatb.nip.first_name }}</td>
+						<td>{{ datatb.nip.email }}</td>
+						<td>{{ datatb.nip.last_login }}</td>
+						<td><a href="{% url 'acd:user_edit' datatb.nip.username heading %}">
+							<button class="action-btn"><i class="ri-pencil-fill"></i></button>
+							</a>
+							<br>
+							<button class="action-btn primary" onclick="openModal('changePasswordModal', '{{ datatb.nip.id }}')">
+								<i class="ri-lock-fill"></i>
+							</button>						
+						</td>
+					</tr>
+					{% endfor %}
+					</tbody>
+
+				{% endif %}
+
 			</table>
+		</div>
+		<div id="pagination" class="pagination">
+			<button id="prev" class="btn warning">Prev</button>
+			<span id="pageNumber" class="page-number">1</span>
+			<button id="next" class="btn warning">Next</button>
 		</div>
 	</div>
 </div>
@@ -82,21 +114,22 @@
 <div id="changePasswordModal" class="modal-edit"> 
     <div class="modal-content-edit">
         <span class="close" onclick="closeModal('changePasswordModal')">&times;</span>
-        <h2>Perihal dan Tujuan</h2>
+        <h2 style="text-align: left;">Ganti Password</h2>
         <form id="changePasswordForm" method="post" onsubmit="return validatePassword()">
             {% csrf_token %}
             <input type="hidden" name="user_id" id="userId">
             <div class="form-group">
-                <label for="newPassword">Password Baru</label>
+                <label for="newPassword" style="text-align: left;">Password Baru</label>
                 <input type="password" class="form-control" id="newPassword" name="new_password" required>
             </div>
             <div class="form-group">
-                <label for="confirmPassword">Konfirmasi Password</label>
+                <label for="confirmPassword" style="text-align: left;">Konfirmasi Password</label>
                 <input type="password" class="form-control" id="confirmPassword" name="confirm_password" required>
             </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Simpan</button>
-            </div>
+			<button type="submit" class="btn primary btn-block">
+				<i class="ri-save-line"></i>
+				Ganti Password
+			</button>
         </form>
     </div>
 </div>
@@ -108,7 +141,7 @@
 
 
 
-{% block script_modal %} 
+{% block script_costum %} 
 <script>
 	function openModal(modalId, userId) {
 		document.getElementById(modalId).style.display = 'block'; // Tampilkan modal
@@ -131,4 +164,4 @@
         }
     }
 </script>
-{% endblock script_modal %} 
+{% endblock script_costum %} 

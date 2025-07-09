@@ -8,34 +8,42 @@
 				<h2>{{ heading }}</h2>
 				<p>{{web_name}}</p>
 			</div>
-				<div class="list-filters">
-					<div class="table-actions">
-						<div class="action-group">
-							<div class="search-bar-table">
-								<i class="ri-search-line"></i>
-								<input type="text" id="searchInput" placeholder="Search table...">
-							</div>
-						</div>
-						<div class="action-group">
-							<button class="btn primary" onclick="openModal('nomorsurat')">
-								<i class="ri-add-line"></i>
-								<span>Add</span>
-							</button>
-							<button class="btn danger" id="deleteSelected">
-								<i class="ri-delete-bin-line"></i>
-								<span>Delete</span>
-							</button>
-							<button class="btn secondary" id="exportTable">
-								<i class="ri-download-line"></i>
-								<span>Export</span>
-							</button>
+			<div class="list-filters">
+				<div class="table-actions">
+					<div class="action-group">
+						<div class="search-bar-table">
+							<i class="ri-search-line"></i>
+							<input type="text" id="searchInput" placeholder="Search table...">
 						</div>
 					</div>
+					<div class="action-group">
+						<button class="btn primary" onclick="openModal('nomorsurat')">
+							<i class="ri-add-line"></i>
+							<span>Tambah</span>
+						</button>
+						<a href="{% url 'acd:nosurat_del' %}">
+						<button class="btn danger" id="deleteSelected">
+							<i class="ri-delete-bin-line"></i>
+							<span>Batalakan Nomor Terakhir</span>
+						</button>
+						</a>
+						{% comment %} <button class="btn secondary" id="exportTable">
+							<i class="ri-download-line"></i>
+							<span>Export</span>
+						</button> {% endcomment %}
+					</div>
 				</div>
+			</div>
+		</div>
 
-
-
-
+		<div class="table-options">
+			<label for="recordsPerPage">Records per page:</label>
+			<select id="recordsPerPage" onchange="updateTable()">
+				<option value="10" selected>10</option>
+				<option value="25">25</option>
+				<option value="50">50</option>
+				<option value="100">100</option>
+			</select>
 		</div>
 
 		<div class="student-table">
@@ -63,22 +71,27 @@
 					<tr>
 						<td>{{ forloop.counter }}</td>
 						<td>{{ datatb.date_in }}</td>
-						<td>{{ datatb.nomor }}/{{datatb.jurusan.kode_surat}}</td>
-						<td>{{ datatb.perihal }}</td>							  				
+						<td>{{ datatb.nomor }}{{datatb.jurusan.kode_surat}}{{datatb.tahun}}</td>
+						<td style="text-transform: uppercase;">{{ datatb.perihal }}</td>							  				
 						<td>{{ datatb.tujuan }}</td>					  
 					</tr>
 				{% endfor %}
 				</tbody>
 			</table>
 		</div>
+		<div id="pagination" class="pagination">
+			<button id="prev" class="btn warning">Prev</button>
+			<span id="pageNumber" class="page-number">1</span>
+			<button id="next" class="btn warning">Next</button>
+		</div>
 	</div>
-</div>
+
 
 <!-- OPENING ELEMEN MODAL -->
 <div id="nomorsurat" class="modal-edit">
 	<div class="modal-content-edit">
 		<span class="close" onclick="closeModal('nomorsurat')">&times;</span>
-		<h2>Perihal dan Tujuan</h2>
+		<h2 style="text-align: left;">Perihal dan Tujuan</h2>
 		<form method="post" enctype="multipart/form-data">
 			{% csrf_token %}
 		<div class="form-group">
@@ -88,12 +101,14 @@
 		<div class="form-group">
 			<label style="text-align: left;">Tujuan</label>
 			{{ form.tujuan }}
-		<button type="submit" class="btn primary">
+		<button type="submit" class="btn primary top">
 			<i class="ri-save-line"></i>
 			Update Data
 		</button>
 	</form>
 	</div>
+</div>
+</div>
 </div>
 <!-- OPENING ELEMENT MODAL -->
 {% endblock content1 %}

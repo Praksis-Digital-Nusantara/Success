@@ -1,0 +1,262 @@
+{% extends "dosen/base.html" %}
+
+{% block content1 %}
+<div class="dashboard-content">
+
+	<div class="form-card">
+		<!-- Student Information Card -->
+		<div class="info-card">
+			<div class="info-card-header">
+				<i class="ri-user-line"></i>
+				<h4>Informasi Mahasiswa</h4>
+			</div>
+			<div class="info-card-content">
+				<div class="student-info-grid">
+					<div class="info-item">
+						<span class="info-label">Mahasiswa:</span>
+						<span class="info-value">{{ data.mhs_judul.mhs }}</span>
+					</div>
+					<div class="info-item">
+						<span class="info-label">Program Studi:</span>
+						<span class="info-value">{{ data.mhs_judul.prodi }}</span>
+					</div>
+					<div class="info-item">
+						<span class="info-label">Judul Penelitian:</span>
+						<span class="info-value"><div class="response-text">{{ data.mhs_judul }}</div></span>
+					</div>
+					<div class="info-item">
+						<span class="info-label">Tanggal Proposal:</span>
+						<span class="info-value">{{ data.ujian_tgl }}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- {% if messages %}
+		{% for message in messages %}
+				<div class="alert {% if 'success' in message.tags %}alert-success{% else %}alert-danger{% endif %} mb-4">
+					<i class="{% if 'success' in message.tags %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
+					{{ message }}
+				</div>
+		{% endfor %}
+	{% endif %} -->
+		<!-- Scoring Form -->
+		<div class="form-card" style="margin-top: 10px;">
+			<form method="post" class="layanan-form">
+				{% csrf_token %}
+				
+				<!-- Scoring Criteria Section -->
+				<div class="form-section">
+					<h3 class="section-title">
+						<i class="ri-star-line"></i>
+						Kriteria Penilaian
+					</h3>
+					
+					<div class="scoring-grid">
+						<div class="scoring-item">
+							<div class="scoring-header">
+								<i class="ri-lightbulb-line"></i>
+								<h4>Ide Penelitian</h4>
+							</div>
+							<div class="scoring-input">
+								{{ form.aspek1 }}
+								<span class="input-label">Nilai (0-100)</span>
+							</div>
+						</div>
+
+						<div class="scoring-item">
+							<div class="scoring-header">
+								<i class="ri-book-open-line"></i>
+								<h4>Kajian Teori</h4>
+							</div>
+							<div class="scoring-input">
+								{{ form.aspek2 }}
+								<span class="input-label">Nilai (0-100)</span>
+							</div>
+						</div>
+
+						<div class="scoring-item">
+							<div class="scoring-header">
+								<i class="ri-tools-line"></i>
+								<h4>Metode Penelitian</h4>
+							</div>
+							<div class="scoring-input">
+								{{ form.aspek3 }}
+								<span class="input-label">Nilai (0-100)</span>
+							</div>
+						</div>
+
+						<div class="scoring-item">
+							<div class="scoring-header">
+								<i class="ri-edit-line"></i>
+								<h4>Kaidah Penulisan</h4>
+							</div>
+							<div class="scoring-input">
+								{{ form.aspek4 }}
+								<span class="input-label">Nilai (0-100)</span>
+							</div>
+						</div>
+
+						<div class="scoring-item">
+							<div class="scoring-header">
+								<i class="ri-presentation-line"></i>
+								<h4>Kemampuan Presentasi</h4>
+							</div>
+							<div class="scoring-input">
+								{{ form.aspek5 }}
+								<span class="input-label">Nilai (0-100)</span>
+							</div>
+						</div>
+
+						<div class="scoring-item">
+							<div class="scoring-header">
+								<i class="ri-brain-line"></i>
+								<h4>Penguasaan Materi</h4>
+							</div>
+							<div class="scoring-input">
+								{{ form.aspek6 }}
+								<span class="input-label">Nilai (0-100)</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Comments Section -->
+				<div class="form-section">
+					<h3 class="section-title">
+						<i class="ri-chat-1-line"></i>
+						Komentar & Saran
+					</h3>
+					<div class="form-group">
+						<div class="textarea-wrapper">
+							{{ form.komentar }}
+							<span class="textarea-counter">0/500</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Final Score Display -->
+				<div class="form-section">
+					<div class="final-score-card">
+						<div class="score-header">
+							<i class="ri-medal-line"></i>
+							<h3>Nilai Akhir</h3>
+						</div>
+						<div class="score-display">
+							<div class="score-item">
+								<span class="score-label">Nilai Angka</span>
+								<span class="score-value angka">{{ nilai.nilai_angka }}</span>
+							</div>
+							<div class="score-item">
+								<span class="score-label">Nilai Huruf</span>
+								<span class="score-value huruf">{{ nilai.nilai_huruf }}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Grade Legend -->
+				<div class="form-section">
+					<div class="grade-legend">
+						<h4><i class="ri-information-line"></i> Keterangan Nilai</h4>
+						<div class="grade-grid">
+							<div class="grade-item">
+								<span class="grade-range">85 ≤ NA ≤ 100</span>
+								<span class="grade-letter a">A</span>
+							</div>
+							<div class="grade-item">
+								<span class="grade-range">80 ≤ NA < 85</span>
+								<span class="grade-letter a-minus">A-</span>
+							</div>
+							<div class="grade-item">
+								<span class="grade-range">75 ≤ NA < 80</span>
+								<span class="grade-letter b-plus">B+</span>
+							</div>
+							<div class="grade-item">
+								<span class="grade-range">70 ≤ NA < 75</span>
+								<span class="grade-letter b">B</span>
+							</div>
+							<div class="grade-item">
+								<span class="grade-range">65 ≤ NA < 70</span>
+								<span class="grade-letter b-minus">B-</span>
+							</div>
+							<div class="grade-item">
+								<span class="grade-range">50 ≤ NA < 65</span>
+								<span class="grade-letter c">C</span>
+							</div>
+							<div class="grade-item">
+								<span class="grade-range">40 ≤ NA < 50</span>
+								<span class="grade-letter d">D</span>
+							</div>
+							<div class="grade-item">
+								<span class="grade-range">< 40</span>
+								<span class="grade-letter e">E</span>
+							</div>
+						</div>
+						<div class="grade-note">
+							<i class="ri-alert-line"></i>
+							<span>Catatan: Nilai C, D, dan E tidak lulus</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Form Actions -->
+				<div class="form-actions">
+					<button type="submit" class="btn primary">
+						<i class="ri-save-line"></i>
+						Simpan Penilaian
+					</button>
+				</div>
+			</form>
+	</div>
+</div>
+
+
+<script>
+	// Textarea character counter
+	document.addEventListener('DOMContentLoaded', function() {
+		const textarea = document.querySelector('textarea[name="komentar"]');
+		const counter = document.querySelector('.textarea-counter');
+		
+		if (textarea && counter) {
+			function updateCounter() {
+				const length = textarea.value.length;
+				counter.textContent = `${length}/500`;
+				
+				if (length > 450) {
+					counter.style.color = '#F44336';
+				} else if (length > 400) {
+					counter.style.color = '#FF9800';
+				} else {
+					counter.style.color = 'var(--text-secondary)';
+				}
+			}
+			
+			textarea.addEventListener('input', updateCounter);
+			updateCounter(); // Initial count
+		}
+		
+		// Add focus effects to scoring inputs
+		const scoringInputs = document.querySelectorAll('.scoring-input input');
+		scoringInputs.forEach(input => {
+			input.addEventListener('focus', function() {
+				this.closest('.scoring-item').style.transform = 'translateY(-2px)';
+			});
+			
+			input.addEventListener('blur', function() {
+				this.closest('.scoring-item').style.transform = 'translateY(0)';
+			});
+		});
+	});
+	</script>
+
+{% endblock content1 %}
+
+
+
+
+
+
+
+

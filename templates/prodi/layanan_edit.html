@@ -2,68 +2,204 @@
 
 {% block content1 %}
 <div class="dashboard-content">
-	<div class="profile-section">
-	<div class="container-header">
-		<nav class="container-breadcrumb">
-			<ul>
-				<li>
-					<a href="{% url 'acd:dashboard' %}">
-						<i class="ri-home-line"></i>
-					</a>
-				</li>
-				<li>
-					<i class="ri-arrow-right-s-line"></i>
-				</li>
-				<li>
-					<a href="{% url 'acd:layanan' %}">Layanan</a>
-				</li>
-				<li>
-					<i class="ri-arrow-right-s-line"></i>
-				</li>
-				<li>
-					<a href="">{{ heading }}</a>
-				</li>
-			</ul>
-		</nav>
-	</div>
-			{% if messages %}
-			{% for message in messages %}
-				<div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} mb-4">
-					<i class="{% if message.tags == 'success' %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
-					{{ message }}
+	<div class="layanan-form-container">
+		<!-- Enhanced Form Card -->
+		<div class="form-card">
+			<div class="form-header">
+				<div class="form-header-icon">
+					<i class="ri-edit-line"></i>
 				</div>
-			{% endfor %}
-			{% endif %}
+				<div class="form-header-content">
+					<h2>{{ heading }}</h2>
+					<p>Kelola dan update layanan dari mahasiswa</p>
+				</div>
+			</div>
 
-		<form method="post" enctype="multipart/form-data">
-		{% csrf_token %}
-			<div class="form-row">
-				<div class="form-group">
-					<label for="id_hasil_test">Balasan Layanan</label>
-					{{ form.hasil_test }}
+			<form method="post" enctype="multipart/form-data" class="layanan-form" 
+				{% if messages %}
+					data-has-messages="true"
+				{% endif %}>
+				{% csrf_token %}
+				
+				<!-- Response Content -->
+				<div class="form-section">
+					<div class="form-group">
+						<label for="id_hasil_test" class="form-label">
+							<i class="ri-file-text-line"></i>
+							Balasan Layanan
+						</label>
+						<div class="textarea-wrapper">
+							{{ form.hasil_test }}
+							<div class="textarea-counter">
+								<span id="char-count">0</span> karakter
+							</div>
+						</div>
+						{% if form.hasil_test.errors %}
+							<div class="form-error">
+								<i class="ri-error-warning-line"></i>
+								{{ form.hasil_test.errors }}
+							</div>
+						{% endif %}
+					</div>
 				</div>
-			</div>
-			<div class="form-row">
-				<div class="form-group">
-					<label>Link</label>
-					{{ form.hasil_link }} 
+
+				<!-- Link Response -->
+				<div class="form-section">
+					<div class="form-group">
+						<label for="id_hasillink" class="form-label">
+							<i class="ri-link"></i>
+							Link Hasil Layanan
+						</label>
+						<div class="input-wrapper">
+							{{ form.hasil_link }}
+						</div>
+						{% if form.hasil_link.errors %}
+							<div class="form-error">
+								<i class="ri-error-warning-line"></i>
+								{{ form.hasil_link.errors }}
+							</div>
+						{% endif %}
+					</div>
 				</div>
-				<div class="form-group">
-					<label>File</label>
-					{{ form.hasil_file }}
+
+				<!-- File Upload -->
+				<div class="form-section">
+					<div class="form-group">
+						<label for="id_hasil_file" class="form-label">
+							<i class="ri-attachment-2"></i>
+							File Hasil Layanan
+						</label>
+						<div class="file-upload-wrapper">
+							<div class="file-upload-area" id="file-upload-area">
+								<i class="ri-upload-cloud-line"></i>
+								<p>Klik untuk memilih file atau drag & drop</p>
+								<span class="file-format">Format yang didukung: PDF, DOC, DOCX, JPG, PNG (Maks. 10MB)</span>
+							</div>
+							{{ form.hasil_file }}
+							<div class="file-preview" id="file-preview" style="display: none;">
+								<div class="file-info">
+									<i class="ri-file-pdf-line"></i>
+									<div class="file-details">
+										<span class="file-name" id="file-name"></span>
+										<span class="file-size" id="file-size"></span>
+									</div>
+									<button type="button" class="file-remove" id="file-remove">
+										<i class="ri-close-line"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+						{% if form.hasil_file.errors %}
+							<div class="form-error">
+								<i class="ri-error-warning-line"></i>
+								{{ form.hasil_file.errors }}
+							</div>
+						{% endif %}
+					</div>
 				</div>
-				<div class="form-group">
-					<label>Status</label>
-					{{ form.status }}
+
+				<!-- Status Selection -->
+				<div class="form-section">
+					<div class="form-group">
+						<label for="id_status" class="form-label">
+							<i class="ri-checkbox-multiple-line"></i>
+							Status Layanan
+						</label>
+						<div class="select-wrapper">
+							{{ form.status }}
+							<i class="ri-arrow-down-s-line select-arrow"></i>
+						</div>
+						{% if form.status.errors %}
+							<div class="form-error">
+								<i class="ri-error-warning-line"></i>
+								{{ form.status.errors }}
+							</div>
+						{% endif %}
+					</div>
 				</div>
-			</div>
-			<div class="form-actions">
-				<button type="submit" class="btn primary">Update</button>
-			</div>
-		</form>
+
+				<!-- Form Actions -->
+				<div class="form-actions">
+					<a href="{% url 'acd:layanan' filter %}">
+					<button type="button" class="btn btn-secondary">
+						<i class="ri-arrow-left-line"></i>
+						Kembali
+					</button>
+				</a>
+					<button type="submit" class="btn btn-primary">
+						<i class="ri-save-line"></i>
+						Update Layanan
+					</button>
+				</div>
+			</form>
+		</div>
 	</div>
 </div>
 {% endblock content1 %}
+
+{% block script_costum %}
+<script>
+	// Character counter for textarea
+	const textarea = document.querySelector('#id_hasil_test');
+	const charCount = document.querySelector('#char-count');
+	
+	if (textarea && charCount) {
+		// Set initial count
+		charCount.textContent = textarea.value.length;
+		
+		textarea.addEventListener('input', function() {
+			charCount.textContent = this.value.length;
+		});
+	}
+
+	// File upload handling
+	const fileInput = document.querySelector('#id_hasil_file');
+	const fileUploadArea = document.querySelector('#file-upload-area');
+	const filePreview = document.querySelector('#file-preview');
+	const fileName = document.querySelector('#file-name');
+	const fileSize = document.querySelector('#file-size');
+	const fileRemove = document.querySelector('#file-remove');
+
+	if (fileInput && fileUploadArea && filePreview) {
+		fileInput.addEventListener('change', function(e) {
+			const file = e.target.files[0];
+			if (file) {
+				// Validate file size (10MB)
+				if (file.size > 10 * 1024 * 1024) {
+					showToast('error', 'Ukuran file maksimal 10MB');
+					this.value = '';
+					return;
+				}
+				
+				// Show file preview
+				fileName.textContent = file.name;
+				fileSize.textContent = formatFileSize(file.size);
+				fileUploadArea.style.display = 'none';
+				filePreview.style.display = 'block';
+				
+				showToast('info', `File "${file.name}" berhasil dipilih`);
+			}
+		});
+
+		// File remove
+		fileRemove.addEventListener('click', function() {
+			fileInput.value = '';
+			fileUploadArea.style.display = 'block';
+			filePreview.style.display = 'none';
+			showToast('info', 'File telah dihapus');
+		});
+	}
+
+	// Format file size
+	function formatFileSize(bytes) {
+		if (bytes === 0) return '0 Bytes';
+		const k = 1024;
+		const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+		const i = Math.floor(Math.log(bytes) / Math.log(k));
+		return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+	}
+</script>
+{% endblock script_costum %}
 
 
 

@@ -15,7 +15,7 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="logo">
-                <i class="ri-strikethrough"></i>
+                <!-- <img src="/static/img/logo.png" style="width: 100px;"> -->
                 <div class="logo-text">
                     <h2>{{webname}}</h2>
                     <span>{{web_name}}</span>
@@ -32,16 +32,16 @@
                         <a href="{% url "acd:layanan_me" %}"><i class="ri-file-list-line"></i> Layanan Akademik</a>
                     </li>
                     <li class="{% if title == 'Skripsi' %}active{% endif %}">
-                        <a href="{% url "acd:skripsi" %}"><i class="ri-file-list-line"></i> Skripsi</a>
+                        <a href="{% url "acd:skripsi" %}"><i class="ri-folder-reduce-line"></i>Skripsi</a>
                     </li>  
                     <li class="{% if title == 'Profile' %}active{% endif %}">
-                        <a href="{% url 'acd:profile_mhs' %}"><i class="ri-calendar-line"></i>Profile</a>
+                        <a href="{% url "acd:profile_mhs" %}"><i class="ri-user-settings-line"></i>Profile</a>
                     </li>                 
                 </ul>
             </nav>
 
             <div class="sidebar-footer">
-                <button class="btn danger" onclick="openModal('logout')">
+                <button class="btn logout " onclick="openModal('logout')">
                     <i class="ri-logout-box-line"></i>
                     Logout
                 </button>
@@ -52,23 +52,30 @@
             </div>
         </div>
 
+        <div class="alert2-container">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert2 alert2-{{ message.tags }}">
+                        <i class="{% if message.tags == 'success' %}ri-checkbox-circle-line{% elif message.tags == 'warning' %}ri-alert-line{% elif message.tags == 'info' %}ri-information-line{% else %}ri-error-warning-line{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
         <!-- Main Content -->
         <div class="main-content">
             <!-- Top Header -->
             <header class="top-header">
                 <div class="header-left">
                     <button id="toggle-sidebar"><i class="ri-menu-line"></i></button>
-                    <h1>{{heading}}</h1>
+                    <h2>{{heading}}</h2>
                 </div>
                 <div class="header-right">
-                    <div class="search-bar">
-                        <i class="ri-search-line"></i>
-                        <input type="text" placeholder="Search...">
-                    </div>
                     <div class="user-menu">
                         <i class="ri-contrast-2-fill"></i>
                         <i class="ri-notification-3-line"></i>
-                        <img src="/{{ photo }}" alt="User Avatar" class="avatar">
+                        <img src="/media/{{ photo }}" alt="User Avatar" class="avatar">
                     </div>
                 </div>
             </header>
@@ -143,20 +150,34 @@
 <div id="logout" class="modal-edit">
 	<div class="modal-content-edit">
 		<span class="close" onclick="closeModal('logout')">&times;</span>
-		<p>Yakin ingin keluar dari aplikasi?</p>
-        <a href="{% url 'acd:logout' %}" class="logout">
-            <button class="btn danger">
-                <i class="ri-logout-box-line"></i>
-                Ya
+		<div class="modal-icon"><i class="ri-logout-box-r-line"></i></div>
+		<h2>Konfirmasi Logout</h2>
+        <p>Yakin ingin keluar dari aplikasi?</p>
+        <div class="modal-actions">
+            <button class="btn" onclick="closeModal('logout')">
+                Batal
             </button>
-        </a>
-        <button class="btn primary" onclick="closeModal('logout')">
-            <i class="ri-logout-box-line"></i>
-            Tidak
-        </button>
+            <a href="{% url 'acd:logout' %}" class="logout">
+                <button class="btn danger">
+                    Keluar
+                </button>
+            </a>
+        </div>
 	</div>
 </div>
 
+
+<!-- JS FOR ALERT -->
+<script>
+    setTimeout(() => {
+        const alerts = document.querySelectorAll('.alert2');
+        alerts.forEach(alert => {
+            alert.style.transition = "opacity 0.5s ease-out";
+            alert.style.opacity = "0";
+            setTimeout(() => alert.remove(), 500);
+        });
+    }, 4000); // hilang setelah 4 detik
+</script>
 
     <!-- JS FOR SIDEBAR/OPENG/CLOSE -->
     <script>

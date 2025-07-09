@@ -1,312 +1,442 @@
 {% extends "mhs/base.html" %}
 
 {% block content1 %}
-<!-- ELEMENT FOR TIMELINE CONTAINER -->
-<div class="timeline-container">
-	<div class="timeline-header">
-		<h2>Alur Pengajuan Skripsi</h2>
-		<p>Berikut adalah tahapan yang harus dilalui dalam proses pengajuan skripsi</p>
-	</div>
-	<div class="timeline">
-		<div class="timeline-item">
-			<div class="timeline-dot"></div>
-			<div class="timeline-content">
-				<div class="timeline-date">Tahap 1</div>
-				<h3>Pengajuan Judul</h3>
-				<span class="notification-time">a few moments ago</span>
-				<p>
-					Silahkan mengajukan judul dengan mengikuti panduan, isi form berikut untuk pengecekan judul!
-					<br><a href="{% url 'acd:skripsi_pjudul' %}" class="btn primary">Form Pengajuan Judul</a>
-					<br/>Jika judul anda sudah selesai dicek anda dapat mencetak lembar persetujuan penasehat akademik berikut:
-					<br><a target="_blank" href="{% url 'acd:print_pengajuanjudul' %}" class="btn success">Cetak Pengajuan Judul</a>
-					<br>setelah tandatanngan silahkan ajukan penerbitan SK Pembimbing di layanan akademik.
-					<br><a href="{% url 'acd:layanan_add' %}" class="btn primary">Layanan Akademik</a>
-				</p>
-				<div class="timeline-status completed">
-					<i class="ri-check-line"></i>
-					<span>Completed</span>
+<div class="dashboard-content">
+		<!-- Enhanced Header Section -->
+		<div class="skripsi-header">
+			<div class="header-content">
+				<div class="header-icon">
+						<div class="student-photo-placeholder">
+							<i class="ri-user-line"></i>
+						</div>
+				</div>
+				<div class="header-text">
+					<h1>Alur Pengajuan Skripsi</h1>
+					<p>Ikuti tahapan yang telah ditentukan untuk menyelesaikan proses pengajuan skripsi Anda</p>
+				</div>
+			</div>
+			<div class="header-progress">
+				<div class="progress-info">
+					<span class="progress-text">Progress Keseluruhan</span>
+					<span class="progress-percentage">75%</span>
+				</div>
+				<div class="progress-bar">
+					<div class="progress-fill" style="width: 75%"></div>
 				</div>
 			</div>
 		</div>
 
-		<div class="timeline-item">
-			<div class="timeline-dot"></div>
-			<div class="timeline-content">
-				<div class="timeline-date">Tahap 2</div>
-				<h3>Penentuan Pembimbing</h3>
-				<span class="notification-time">Senin, 12 Februari 2025</span>
-				<p>Penentuan dosen pembimbing skripsi oleh Ketua Program Studi.</p>
-				<div class="timeline-status active">
-					<i class="ri-time-line"></i>
-					<span>In Progress</span>
+		<!-- Enhanced Timeline Container -->
+		<div class="timeline-container">
+			<div class="timeline">
+				<!-- Tahap 1: Pengajuan Judul -->
+				<div class="timeline-item">
+					<div class="timeline-marker">
+						<div class="timeline-dot"></div>
+						<div class="timeline-line"></div>
+					</div>
+					<div class="timeline-content">
+						<div class="timeline-header">
+							<div class="timeline-badge">Tahap 1</div>
+							<h3>Pengajuan Judul</h3>
+						</div>
+						
+						{% if skripsi is None %}
+							<div class="timeline-body">
+								<div class="timeline-description">
+									<p>Silahkan mengajukan judul dengan mengikuti panduan, isi form berikut untuk pengecekan judul!</p>
+								</div>
+								<div class="timeline-actions">
+									<a href="{% url 'acd:skripsi_pjudul' %}" class="action-btn primary">
+										<i class="ri-file-add-line"></i>
+										Form Pengajuan Judul
+									</a>
+									<a target="_blank" href="{% url 'acd:print_pengajuanjudul' %}" class="action-btn success">
+										<i class="ri-printer-line"></i>
+										Cetak Pengajuan Judul
+									</a>
+									<a href="{% url 'acd:layanan_add' %}" class="action-btn primary">
+										<i class="ri-customer-service-line"></i>
+										Layanan Akademik
+									</a>
+								</div>
+							</div>
+							<div class="timeline-status pending">
+								<i class="ri-time-line"></i>
+								<span>Menunggu Pengajuan</span>
+							</div>
+						{% elif skripsi.status == 'Waiting' %}
+							<div class="timeline-body">
+								<div class="timeline-description">
+									<p>Judul Anda sedang dalam proses pengecekan oleh penasehat akademik.</p>
+								</div>
+								<div class="timeline-actions">
+									<a href="{% url 'acd:skripsi_pjudul' %}" class="action-btn primary">
+										<i class="ri-file-add-line"></i>
+										Form Pengajuan Judul
+									</a>
+									<a target="_blank" href="{% url 'acd:print_pengajuanjudul' %}" class="action-btn success">
+										<i class="ri-printer-line"></i>
+										Cetak Pengajuan Judul
+									</a>
+									<a href="{% url 'acd:layanan_add' %}" class="action-btn primary">
+										<i class="ri-customer-service-line"></i>
+										Layanan Akademik
+									</a>
+								</div>
+							</div>
+							<div class="timeline-status active">
+								<i class="ri-loader-4-line"></i>
+								<span>{{ skripsi.status }}</span>
+							</div>
+						{% else %}
+							<div class="timeline-body">
+								<div class="timeline-description">
+									<p>Judul Anda telah disetujui oleh penasehat akademik:</p>
+									<div class="approved-title">
+										<i class="ri-check-double-line"></i>
+										<span>"{{ skripsi.judul }}"</span>
+									</div>
+								</div>
+							</div>
+							<div class="timeline-status completed">
+								<i class="ri-check-line"></i>
+								<span>{{ skripsi.status }}</span>
+							</div>
+						{% endif %}
+					</div>
 				</div>
-			</div>
-		</div>
 
-		<div class="timeline-item">
-			<div class="timeline-dot"></div>
-			<div class="timeline-content">
-				<div class="timeline-date">Tahap 3</div>
-				<h3>Seminar Proposal</h3>
-				<span class="notification-time">Senin, 12 Februari 2025</span>
-				<p>Presentasi proposal penelitian di hadapan dosen pembimbing dan penguji.</p>
-				<div class="timeline-status pending">
-					<i class="ri-loader-line"></i>
-					<span>Pending</span>
+				<!-- Tahap 2: Penentuan Pembimbing -->
+				<div class="timeline-item">
+					<div class="timeline-marker">
+						<div class="timeline-dot"></div>
+						<div class="timeline-line"></div>
+					</div>
+					<div class="timeline-content">
+						<div class="timeline-header">
+							<div class="timeline-badge">Tahap 2</div>
+							<h3>Penentuan Pembimbing</h3>
+						</div>
+						
+						{% if skripsi is None %}
+							<div class="timeline-body">
+								<div class="timeline-description">
+									<p>Penentuan dosen pembimbing skripsi oleh Program Studi.</p>
+								</div>
+							</div>
+							<div class="timeline-status active">
+								<i class="ri-time-line"></i>
+								<span>Menunggu Tahap 1</span>
+							</div>
+						{% else %}
+							<div class="timeline-body">
+								<div class="timeline-description">
+									<p>Pembimbing telah ditetapkan:</p>
+									<div class="supervisor-list">
+										<div class="supervisor-item">
+											<i class="ri-user-star-line"></i>
+											<span>{{ skripsi.pembimbing1 }}</span>
+										</div>
+										<div class="supervisor-item">
+											<i class="ri-user-star-line"></i>
+											<span>{{ skripsi.pembimbing2 }}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="timeline-status completed">
+								<i class="ri-check-line"></i>
+								<span>Selesai</span>
+							</div>
+						{% endif %}
+					</div>
 				</div>
-			</div>
-		</div>
 
-		<div class="timeline-item">
-			<div class="timeline-dot"></div>
-			<div class="timeline-content">
-				<div class="timeline-date">Tahap 4</div>
-				<h3>Penelitian</h3>
-				<span class="notification-time">Kamis, 6 Februari 2025</span>
-				<p>Pelaksanaan penelitian dan penulisan skripsi dengan bimbingan dosen pembimbing.</p>
-				<div class="timeline-status pending">
-					<i class="ri-loader-line"></i>
-					<span>Pending</span>
+				<!-- Tahap 3: Penerbitan SK Pembimbing -->
+				<div class="timeline-item">
+					<div class="timeline-marker">
+						<div class="timeline-dot"></div>
+						<div class="timeline-line"></div>
+					</div>
+					<div class="timeline-content">
+						<div class="timeline-header">
+							<div class="timeline-badge">Tahap 3</div>
+							<h3>Penerbitan SK Pembimbing</h3>
+						</div>
+						
+						{% if skripsi.status_sk is None %}
+							<div class="timeline-body">
+								<div class="timeline-description">
+									<p>Anda belum mengajukan layanan Penerbitan SK Pembimbing, cek di Tahap 1</p>
+								</div>
+							</div>
+							<div class="timeline-status active">
+								<i class="ri-time-line"></i>
+								<span>Belum Mengajukan</span>
+							</div>
+						{% elif skripsi.status_sk == 'Pengajuan' %}
+							<div class="timeline-body">
+								<div class="timeline-description">
+									<p>Prodi telah mengajukan penerbitan SK ke Fakultas, silahkan tunggu</p>
+								</div>
+							</div>
+							<div class="timeline-status active">
+								<i class="ri-loader-4-line"></i>
+								<span>Proses Penerbitan SK</span>
+							</div>
+						{% else %}
+							<div class="timeline-body">
+								<div class="timeline-description">
+									<p>SK Pembimbing telah terbit, berikut daftar SK Anda:</p>
+									<div class="sk-list">
+										{% for skpbb_data in skpbb %}
+										<a target='_blank' href="{% url 'acd:print_skpbb' skpbb_data.id %}" class="sk-item">
+											<i class="ri-file-text-line"></i>
+											<span>{{ skpbb_data.date_in }}</span>
+										</a>
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+							<div class="timeline-status completed">
+								<i class="ri-check-line"></i>
+								<span>Selesai</span>
+							</div>
+						{% endif %}
+					</div>
 				</div>
-			</div>
-		</div>
 
-		<div class="timeline-item">
-			<div class="timeline-dot"></div>
-			<div class="timeline-content">
-				<div class="timeline-date">Tahap 5</div>
-				<h3>Sidang Skripsi</h3>
-				<span class="notification-time">Tommorow, 09 Januari 2026</span>
-				<p>Presentasi dan pertanggungjawaban hasil penelitian di hadapan tim penguji.</p>
-				<div class="timeline-status pending">
-					<i class="ri-loader-line"></i>
-					<span>Pending</span>
+				<!-- Tahap 4: Seminar Proposal -->
+				<div class="timeline-item">
+					<div class="timeline-marker">
+						<div class="timeline-dot"></div>
+						<div class="timeline-line"></div>
+					</div>
+					<div class="timeline-content">
+						<div class="timeline-header">
+							<div class="timeline-badge">Tahap 4</div>
+							<h3>Seminar Proposal</h3>
+						</div>
+						
+						{% if proposal.seminar_tgl is None %}
+							<div class="timeline-body">
+								<div class="timeline-description">
+									<p>Buat proposal penelitian dan konsultasikan ke Pembimbing, berikut adalah format pengesahan proposal</p>
+								</div>
+								<div class="timeline-actions">
+									{% if skripsi is None %}
+										<div class="warning-message">
+											<i class="ri-error-warning-line"></i>
+											<span>Ajukan Judul Terlebih Dahulu! Lihat di Tahap 1</span>
+										</div>
+									{% elif not skripsi.pembimbing1 %}
+										<div class="warning-message">
+											<i class="ri-error-warning-line"></i>
+											<span>Pembimbing 1 Belum Diset! Lihat di Tahap 2</span>
+										</div>
+									{% elif not skripsi.pembimbing2 %}
+										<div class="warning-message">
+											<i class="ri-error-warning-line"></i>
+											<span>Pembimbing 2 Belum Diset! Lihat di Tahap 2</span>
+										</div>
+									{% else %}
+										<a target="_blank" href="{% url 'acd:print_pengesahan' 'proposal' skripsi.id %}" class="action-btn success">
+											<i class="ri-printer-line"></i>
+											Cetak Lembar Pengesahan
+										</a>
+										<a href="{% url 'acd:proposal_reg' %}" class="action-btn primary">
+											<i class="ri-file-add-line"></i>
+											Registrasi Proposal
+										</a>
+									{% endif %}
+								</div>
+							</div>
+							<div class="timeline-status active">
+								<i class="ri-time-line"></i>
+								<span>In Progress</span>
+							</div>
+						{% else %}
+							<div class="timeline-body">
+								<div class="timeline-description">
+									<div class="notification-time">
+										<i class="ri-calendar-line"></i>
+										<span>{{ proposal.seminar_tgl }}</span>
+									</div>
+									<p>Undangan seminar proposal penelitian Anda telah terbit, silahkan download di tautan berikut:</p>
+								</div>
+								<div class="timeline-actions">
+									<a target="_blank" href="{% url 'acd:print_undangan' 'Proposal' proposal.id %}" class="action-btn success">
+										<i class="ri-download-line"></i>
+										Cetak Undangan
+									</a>
+								</div>
+							</div>
+							<div class="timeline-status completed">
+								<i class="ri-check-line"></i>
+								<span>Selesai</span>
+							</div>
+						{% endif %}
+					</div>
 				</div>
-			</div>
-		</div>
 
-		<div class="timeline-item">
-			<div class="timeline-dot"></div>
-			<div class="timeline-content">
-				<div class="timeline-date">Tahap 1</div>
-				<h3>Pengajuan Judul</h3>
-				<span class="notification-time">a few moments ago</span>
-				<p>Mahasiswa mengajukan judul skripsi kepada Ketua Program Studi untuk mendapatkan persetujuan.</p>
-				<div class="timeline-status failed">
-					<i class="ri-close-circle-line"></i>
-					<span>Failed</span>
+				<!-- Tahap 5: Penelitian -->
+				<div class="timeline-item">
+					<div class="timeline-marker">
+						<div class="timeline-dot"></div>
+						<div class="timeline-line"></div>
+					</div>
+					<div class="timeline-content">
+						<div class="timeline-header">
+							<div class="timeline-badge">Tahap 5</div>
+							<h3>Penelitian</h3>
+						</div>
+						
+						{% if izinpenelitian %}
+							<div class="timeline-body">
+								<div class="timeline-description">
+									<div class="notification-time">
+										<i class="ri-calendar-line"></i>
+										<span>{{ proposal.seminar_tgl }}</span>
+									</div>
+									<p>Izin Penelitian Anda telah terbit, silahkan download di tautan berikut:</p>
+								</div>
+								<div class="timeline-actions">
+									{% for datatb in izinpenelitian %}
+									<a target="_blank" href="{% url 'acd:print_izinpenelitian' datatb.id %}" class="action-btn success">
+										<i class="ri-download-line"></i>
+										Cetak Izin Penelitian
+									</a>
+									{% endfor %}
+								</div>
+							</div>
+							<div class="timeline-status completed">
+								<i class="ri-check-line"></i>
+								<span>Selesai</span>
+							</div>
+						{% elif proposal is None %}
+							<div class="timeline-body">
+								<div class="timeline-description">
+									<p>Maaf Anda belum melaksanakan Proposal</p>
+								</div>
+							</div>
+							<div class="timeline-status pending">
+								<i class="ri-time-line"></i>
+								<span>Menunggu Tahap 4</span>
+							</div>
+						{% else %}
+							<div class="timeline-body">
+								<div class="timeline-description">
+									<p>Lakukan revisi proposal sebelum melaksanakan penelitian, berikut adalah lembar persetujuan penelitian:</p>
+								</div>
+								<div class="timeline-actions">
+									<a target="_blank" href="{% url 'acd:print_persetujuan_penelitian' proposal.id %}" class="action-btn success">
+										<i class="ri-printer-line"></i>
+										Cetak Lembar Izin Penelitian
+									</a>
+									<a href="{% url 'acd:layanan_add' %}" class="action-btn primary">
+										<i class="ri-customer-service-line"></i>
+										Layanan Akademik
+									</a>
+								</div>
+							</div>
+							<div class="timeline-status active">
+								<i class="ri-time-line"></i>
+								<span>In Progress</span>
+							</div>
+						{% endif %}
+					</div>
+				</div>
+
+				<!-- Tahap 6: Seminar Hasil -->
+				<div class="timeline-item">
+					<div class="timeline-marker">
+						<div class="timeline-dot"></div>
+						<div class="timeline-line"></div>
+					</div>
+					<div class="timeline-content">
+						<div class="timeline-header">
+							<div class="timeline-badge">Tahap 6</div>
+							<h3>Seminar Hasil</h3>
+						</div>
+						
+						<div class="timeline-body">
+							<div class="timeline-description">
+								<p>Lengkapi semua berkas untuk persiapan Ujian</p>
+							</div>
+						</div>
+						<div class="timeline-status pending">
+							<i class="ri-time-line"></i>
+							<span>Menunggu Tahap 5</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Tahap 7: Ujian Skripsi -->
+				<div class="timeline-item">
+					<div class="timeline-marker">
+						<div class="timeline-dot"></div>
+					</div>
+					<div class="timeline-content">
+						<div class="timeline-header">
+							<div class="timeline-badge">Tahap 7</div>
+							<h3>Ujian Tutup</h3>
+						</div>
+						
+						{% if not ujian.no_surat %}
+							<div class="timeline-body">
+								<div class="timeline-description">
+									<p>Konsultasikan ke pembimbing untuk melaksanakan ujian tutup skripsi, berikut adalah format lembar pengesahan</p>
+								</div>
+								<div class="timeline-actions">
+									{% if skripsi is None %}
+										<div class="warning-message">
+											<i class="ri-error-warning-line"></i>
+											<span>Ajukan Judul Terlebih Dahulu!</span>
+										</div>
+									{% else %}
+										<a target="_blank" href="{% url 'acd:print_pengesahan' 'Ujian' skripsi.id %}" class="action-btn success">
+											<i class="ri-printer-line"></i>
+											Cetak Lembar Pengesahan
+										</a>
+										<a href="{% url 'acd:ujian_reg' %}" class="action-btn primary">
+											<i class="ri-file-add-line"></i>
+											Registrasi Ujian
+										</a>
+									{% endif %}
+								</div>
+							</div>
+							<div class="timeline-status active">
+								<i class="ri-time-line"></i>
+								<span>In Progress</span>
+							</div>
+						{% else %}
+							<div class="timeline-body">
+								<div class="timeline-description">
+									<div class="notification-time">
+										<i class="ri-calendar-line"></i>
+										<span>{{ ujian.ujian_tgl }}</span>
+									</div>
+									<p>Undangan ujian tutup Anda telah terbit, silahkan download di tautan berikut:</p>
+								</div>
+								<div class="timeline-actions">
+									<a target="_blank" href="{% url 'acd:print_undangan_ujian' ujian.id %}" class="action-btn success">
+										<i class="ri-download-line"></i>
+										Cetak Undangan Ujian
+									</a>
+								</div>
+							</div>
+							<div class="timeline-status completed">
+								<i class="ri-check-line"></i>
+								<span>Selesai</span>
+							</div>
+						{% endif %}
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 </div>
-<!-- ELEMENT FOR TIMELINE CONTAINER -->
-
 {% endblock content1 %}
 
-
-
-{% block content2 %}
-
-<div class="container">
-	<div class="page-inner">
-	  <div class="page-header">
-		<h3 class="fw-bold mb-3">{{ title }}</h3>
-		<ul class="breadcrumbs mb-3">
-		  <li class="nav-home">
-			<a href="{% url 'acd:dashboard' %}">
-			  <i class="icon-home"></i>
-			</a>
-		  </li>
-		  <li class="separator">
-			<i class="icon-arrow-right"></i>
-		  </li>
-		  <li class="nav-item">
-			<a href="">Skripsi</a>
-		  </li>	  
-		</ul>
-	  </div>	  
-	  <div class="row">
-		<div class="col-md-12">
-		  <div class="card">
-			<div class="card-header">
-			  <div class="row">
-				<div class="col-md-1">
-					<div class="avatar avatar-xxl p-3">
-						<img src="/{{ usermhs.photo }}" alt="..." class="avatar-img rounded-circle">
-					</div>
-				</div>
-				<div class="col-md-10">
-					<div class="align-items-left p-3">
-						<h4>{{user.username}}</h4>
-						<h5>{{user.first_name}}</h5>
-					</div>
-				</div>
-			  </div>
-			</div>
-			<div class="card-body">			
-
-				
-		  </div>
-		</div>		
-	  </div>
-
-	  <h3 class="fw-bold mb-3">Alur Pembuatan Tugas Akhir / Skripsi</h3>
-		<div class="row">
-		<div class="col-md-12">
-			<ul class="timeline">
-			<li>
-				<div class="timeline-badge">
-				<i class="far fa-paper-plane"></i>
-				</div>
-				<div class="timeline-panel">
-				<div class="timeline-heading">
-					<h4 class="timeline-title">Pengajuan Judul</h4>
-					<p>
-					<small class="text-muted"
-						><i class="far fa-paper-plane"></i> Download Panduan</small
-					>
-					</p>
-				</div>
-				<div class="timeline-body">
-					<p>
-					Silahkan mengajukan judul dengan mengikuti panduan, isi form berikut untuk pengecekan judul!
-					<a href="{% url 'acd:skripsi_pjudul' %}" class="btn btn-primary btn-xs">Form Pengajuan Judul</a>
-					<br/><br/>Jika judul anda sudah selesai dicek anda dapat mencetak lembar persetujuan penasehat akademik berikut:
-					<a href="{% url 'acd:skripsi_pjudul' %}" class="btn btn-success btn-xs">Cetak Pengajuan Judul</a>, setelah tandatanngan silahkan ajukan penerbitan SK Pembimbing di layanan akademik.<a href="{% url 'acd:layanan_add' %}" class="btn btn-primary btn-xs">Layanan Akademik</a>
-					</p>
-				</div>
-				</div>
-			</li>
-			<li class="timeline-inverted">
-				<div class="timeline-badge warning">
-				<i class="far fa-bell"></i>
-				</div>
-				<div class="timeline-panel">
-				<div class="timeline-heading">
-					<h4 class="timeline-title">Mussum ipsum cacilds</h4>
-				</div>
-				<div class="timeline-body">
-					<p>
-					Far far away, behind the word mountains, far from the
-					countries Vokalia and Consonantia, there live the
-					blind texts.
-					</p>
-				</div>
-				</div>
-			</li>
-			<li>
-				<div class="timeline-badge danger">
-				<i class="icon-close"></i>
-				</div>
-				<div class="timeline-panel">
-				<div class="timeline-heading">
-					<h4 class="timeline-title">Mussum ipsum cacilds</h4>
-				</div>
-				<div class="timeline-body">
-					<p>
-					Far far away, behind the word mountains, far from the
-					countries Vokalia and Consonantia, there live the
-					blind texts.
-					</p>
-				</div>
-				</div>
-			</li>
-			<li class="timeline-inverted">
-				<div class="timeline-panel">
-				<div class="timeline-heading">
-					<h4 class="timeline-title">Mussum ipsum cacilds</h4>
-				</div>
-				<div class="timeline-body">
-					<p>
-					Far far away, behind the word mountains, far from the
-					countries Vokalia and Consonantia, there live the
-					blind texts.
-					</p>
-				</div>
-				</div>
-			</li>
-			<li>
-				<div class="timeline-badge info">
-				<i class="icon-tag"></i>
-				</div>
-				<div class="timeline-panel">
-				<div class="timeline-heading">
-					<h4 class="timeline-title">Mussum ipsum cacilds</h4>
-				</div>
-				<div class="timeline-body">
-					<p>
-					Far far away, behind the word mountains, far from the
-					countries Vokalia and Consonantia, there live the
-					blind texts.
-					</p>
-					<hr />
-					<div class="btn-group dropdown">
-					<button
-						type="button"
-						class="btn btn-primary btn-sm dropdown-toggle"
-						data-bs-toggle="dropdown"
-					>
-						<span class="btn-label">
-						<i class="fa fa-cog"></i>
-						</span>
-					</button>
-					<ul class="dropdown-menu" role="menu">
-						<li>
-						<a class="dropdown-item" href="#">Action</a>
-						<a class="dropdown-item" href="#"
-							>Another action</a
-						>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#"
-							>Something else here</a
-						>
-						</li>
-					</ul>
-					</div>
-				</div>
-				</div>
-			</li>
-			<li>
-				<div class="timeline-panel">
-				<div class="timeline-heading">
-					<h4 class="timeline-title">Mussum ipsum cacilds</h4>
-				</div>
-				<div class="timeline-body">
-					<p>
-					Far far away, behind the word mountains, far from the
-					countries Vokalia and Consonantia, there live the
-					blind texts.
-					</p>
-				</div>
-				</div>
-			</li>
-			<li class="timeline-inverted">
-				<div class="timeline-badge success">
-				<i class="icon-credit-card"></i>
-				</div>
-				<div class="timeline-panel">
-				<div class="timeline-heading">
-					<h4 class="timeline-title">Mussum ipsum cacilds</h4>
-				</div>
-				<div class="timeline-body">
-					<p>
-					Far far away, behind the word mountains, far from the
-					countries Vokalia and Consonantia, there live the
-					blind texts.
-					</p>
-				</div>
-				</div>
-			</li>
-			</ul>
-		</div>
-	  </div>
-
-	</div>
-  </div>
-
-
-  
-{% endblock content2 %} 
 
 

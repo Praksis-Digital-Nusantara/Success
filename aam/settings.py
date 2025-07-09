@@ -23,9 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%kg=+$o2wx!(znw!%5!htm5l%y=hb07&+@tjc5%8!ct+v^co9#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
+DEBUG = True
+ALLOWED_HOSTS = []  
 
 
 # Application definition
@@ -37,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'import_export',
     'acd',
+
 ]
 
 MIDDLEWARE = [
@@ -64,6 +68,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'aam.context_processors.web_name',
+                'aam.context_processors.versioned_static', #saya tambahkan untuk version stylesnya
             ],
         },
     },
@@ -80,7 +85,7 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'djg_success',  # Ganti dengan nama database yang Anda buat di phpMyAdmin
+        'NAME': 'djg_focus',  # Ganti dengan nama database yang Anda buat di phpMyAdmin
         'USER': 'root',  # Nama pengguna MySQL, biasanya 'root' di XAMPP
         'PASSWORD': '',  # Kata sandi pengguna MySQL, jika tidak ada, biarkan kosong
         'HOST': 'localhost',  # Host server database, localhost untuk XAMPP
@@ -127,6 +132,11 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'  
+ 
 
 
 # Default primary key field type

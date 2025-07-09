@@ -1,0 +1,127 @@
+{% extends "prodi/base.html" %}
+
+{% block content1 %}
+<div class="dashboard-content">
+	<div class="student-list-container">
+		<div class="list-header">
+			<div class="list-title">
+				<h2>{{ heading }}</h2>
+				<p>{{web_name}}</p>
+			</div>
+				<div class="list-filters">
+					<div class="table-actions">
+						<div class="action-group">
+							<div class="search-bar-table">
+								<i class="ri-search-line"></i>
+								<input type="text" id="searchInput" placeholder="Search table...">
+							</div>
+						</div>
+						<div class="action-group">
+							<button class="btn primary small" onclick="openModal('tambah_data')">
+								<i class="ri-add-line"></i>
+								<span>Add</span>
+							</button>
+						</div>
+					</div>
+				</div>
+
+		</div>
+
+		<div class="table-options">
+			<label for="recordsPerPage">Records per page:</label>
+			<select id="recordsPerPage" onchange="updateTable()">
+				<option value="10" selected>10</option>
+				<option value="25">25</option>
+				<option value="50">50</option>
+				<option value="100">100</option>
+			</select>
+		</div>
+
+		<div class="student-table">
+			<div class="table-responsive">
+				<table>
+					<thead>
+					<tr>
+						<th>No</th>
+						<th>Date In</th>
+						<th>Mahasiswa</th>
+						<th>SKS Lulus</th>
+						<th>Aksi</th>
+					</tr>
+					</thead>
+					<tfoot>
+					<tr>
+						<th>No</th>
+						<th>Date In</th>
+						<th>Mahasiswa</th>
+						<th>SKS Lulus</th>
+						<th>Aksi</th>
+					</tr>
+					</tfoot>
+					<tbody>
+					{% for datatb in data %}
+						<tr>
+							<td>{{ forloop.counter }}</td>
+							<td>{{ datatb.date_in }}</td> 
+							<td>{{ datatb.mhs }}</td>
+							<td>{{ datatb.sks_lulus }}</td>									  				
+							<td><a href="{% url 'acd:suket_bebaskuliah_edit' datatb.mhs.nim.username %}">
+									<button class="btn primary x-small"><i class="ri-pencil-fill"></i></button>
+									</a>
+								<a target="_blank" href="{% url 'acd:print_suket_bebaskuliah' datatb.id %}">
+									<button class="btn success x-small"><i class="ri-printer-line"></i></button>
+									</a>
+								<a onclick="return confirm('Yakin ingin menghapus data ini?');" href="{% url 'acd:suket_bebaskuliah_del' datatb.id %}">
+									<button class="btn danger x-small"><i class="ri-delete-bin-line"></i></button>
+									</a>
+							</td>					  
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>	
+			</div>
+			<div id="pagination" class="pagination">
+				<button id="prev" class="btn warning">Prev</button>
+				<span id="pageNumber" class="page-number">1</span>
+				<button id="next" class="btn warning">Next</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- OPENING ELEMEN MODAL -->
+<div id="tambah_data" class="modal-edit">
+	<div class="modal-content-edit">
+		<span class="close" onclick="closeModal('tambah_data')">&times;</span>
+		<h2 style="text-align: left;">Perihal dan Tujuan</h2>
+		<form onsubmit="return redirectToNim()">
+			{% csrf_token %}
+			<div class="form-group">
+				<label for="nim" style="text-align: left;">Masukkan NIM Mahasiswa</label>
+				<input type="text" class="form-control" id="nim" name="nim" required>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn primary btn-block">
+					<i class="ri-save-line"></i>
+					Update Data
+				</button>
+			</div>		
+		</form>
+	</div>
+</div>
+<!-- OPENING ELEMENT MODAL -->
+
+
+<script>
+    function redirectToNim() {
+        const nim = document.getElementById('nim').value;
+        if (nim) {
+            window.location.href = `/acd/suket_bebaskuliah_edit/${nim}`; // arahkan ke URL yang diinginkan
+        }
+        return false; // cegah form submit default
+    }
+</script>
+
+
+{% endblock content1 %}
+

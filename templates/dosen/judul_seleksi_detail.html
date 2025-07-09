@@ -1,0 +1,607 @@
+{% extends "dosen/base.html" %}
+
+{% block content1 %}
+<div class="layanan-form-container">
+	<div class="profile-section-ujian">
+		<div class="student-table">
+			<div class="table-responsive">
+			<table>
+				<tbody>
+					<tr>
+						<td width="15%">Nama</td>
+						<td width="5%">: </td>									  
+						<td width="80%">{{ data.mhs.nim.first_name }}</td>									  
+					</tr>
+					<tr>
+						<td>NIM</td>
+						<td>: </td>									  
+						<td>{{ data.mhs.nim.username }}</td>									  
+					</tr>
+					<tr>
+						<td>Program Studi</td>
+						<td>: </td>									  
+						<td>{{ data.mhs.prodi }}</td>									  
+					</tr>
+					<tr>
+						<td>Tanggal Pengajuan</td>
+						<td>: </td>									  
+						<td>{{ data.date_in }}</td>									  
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+</div>
+	{% if messages %}
+		{% for message in messages %}
+			{% if 'acc_judul' in message.tags %}
+				<div class="alert {% if 'success' in message.tags %}alert-success{% else %}alert-danger{% endif %} mb-4">
+					<i class="{% if 'success' in message.tags %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
+					{{ message }}
+				</div>
+			{% endif %}
+		{% endfor %}
+	{% endif %}
+
+					<!-- <th>Judul</th>
+					<th>Masalah</th>
+					<th>Solusi</th>
+					<th>Jurnal yang Dikaji</th>
+					<th>Aksi</th>  -->
+
+	<div class="form-card">
+		<div class="form-header">
+			<div class="form-header-icon">
+				<i class="ri-file-text-line"></i>
+			</div>
+			<div class="form-header-content">
+				<h2>Seleksi Judul Detail</h2>
+				<p>Cek Kemiripan Judul mahasiswa yang mengajukan proposal skripsi</p>
+			</div>
+		</div>
+				<form method="post" class="layanan-form"> 
+					{% csrf_token %}
+					<div class="requirements-list">
+						<div class="requirement-item">
+							<div class="requirement-info">
+								<div class="requirement-text">
+									<h4 class="requirement-title">Judul 1</h4>
+									<p class="requirement-desc">{{ data.judul1 }}</p>
+									<div class="requirement-details">
+										<div class="detail-section">
+											<strong>Masalah:</strong> {{ data.judul1_masalah }}
+										</div>
+										<div class="detail-section">
+											<strong>Solusi:</strong> {{ data.judul1_solusi }}
+										</div>
+										<div class="detail-section">
+											<strong>Jurnal yang Dikaji:</strong>
+											<div class="journal-links">
+												<div class="journal-item">
+													<span class="journal-number">1.</span>
+													<span class="journal-title">{{ data.judul1_j1 }}</span>
+													<a target="_blank" href="{{ data.judul1_j1l }}" class="journal-link">
+														<button class="action-btn"><i class="ri-external-link-line"></i> Link</button>
+													</a>
+												</div>
+												<div class="journal-item">
+													<span class="journal-number">2.</span>
+													<span class="journal-title">{{ data.judul1_j2 }}</span>
+													<a target="_blank" href="{{ data.judul1_j2l }}" class="journal-link">
+														<button class="action-btn"><i class="ri-external-link-line"></i> Link</button>
+													</a>
+												</div>
+												<div class="journal-item">
+													<span class="journal-number">3.</span>
+													<span class="journal-title">{{ data.judul1_j3 }}</span>
+													<a target="_blank" href="{{ data.judul1_j3l }}" class="journal-link">
+														<button class="action-btn"><i class="ri-external-link-line"></i> Link</button>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="requirement-actions">
+								{% if kemiripan_judul1.0.kemiripan >= 75 %}									
+									<button type="button" class="btn danger small" onclick="openModal('detail_kesamaan_judul1')">
+										<i class="ri-error-warning-line"></i> Kemiripan: {{ kemiripan_judul1.0.kemiripan }}%
+									</button>
+								{% elif kemiripan_judul1.0.kemiripan >= 50 %}									
+									<button type="button" class="btn warning small" onclick="openModal('detail_kesamaan_judul1')">
+										<i class="ri-alert-line"></i> Kemiripan: {{ kemiripan_judul1.0.kemiripan }}%
+									</button>
+								{% elif kemiripan_judul1.0.kemiripan >= 25 %}									
+									<button type="button" class="btn primary small" onclick="openModal('detail_kesamaan_judul1')">
+										<i class="ri-information-line"></i> Kemiripan: {{ kemiripan_judul1.0.kemiripan }}%
+									</button>
+								{% else %}
+									<button type="button" class="btn success small" onclick="openModal('detail_kesamaan_judul1')">
+										<i class="ri-checkbox-circle-line"></i> Bebas Plagiarisme
+									</button>
+								{% endif %}
+								
+								<button type="submit" name="judul1_acc" class="btn success small">
+									<i class="ri-check-fill"></i> Approve
+								</button>
+							</div>
+						</div>
+
+						<div class="requirement-item">
+							<div class="requirement-info">
+								<div class="requirement-text">
+									<h4 class="requirement-title">Judul 2</h4>
+									<p class="requirement-desc">{{ data.judul2 }}</p>
+									<div class="requirement-details">
+										<div class="detail-section">
+											<strong>Masalah:</strong> {{ data.judul2_masalah }}
+										</div>
+										<div class="detail-section">
+											<strong>Solusi:</strong> {{ data.judul2_solusi }}
+										</div>
+										<div class="detail-section">
+											<strong>Jurnal yang Dikaji:</strong>
+											<div class="journal-links">
+												<div class="journal-item">
+													<span class="journal-number">1.</span>
+													<span class="journal-title">{{ data.judul2_j1 }}</span>
+													<a target="_blank" href="{{ data.judul2_j1l }}" class="journal-link">
+														<button class="action-btn"><i class="ri-external-link-line"></i> Link</button>
+													</a>
+												</div>
+												<div class="journal-item">
+													<span class="journal-number">2.</span>
+													<span class="journal-title">{{ data.judul2_j2 }}</span>
+													<a target="_blank" href="{{ data.judul2_j2l }}" class="journal-link">
+														<button class="action-btn"><i class="ri-external-link-line"></i> Link</button>
+													</a>
+												</div>
+												<div class="journal-item">
+													<span class="journal-number">3.</span>
+													<span class="journal-title">{{ data.judul2_j3 }}</span>
+													<a target="_blank" href="{{ data.judul2_j3l }}" class="journal-link">
+														<button class="action-btn"><i class="ri-external-link-line"></i> Link</button>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="requirement-actions">
+								{% if kemiripan_judul2.0.kemiripan >= 75 %}									
+									<button type="button" class="btn danger small" onclick="openModal('detail_kesamaan_judul2')">
+										<i class="ri-error-warning-line"></i> Kemiripan: {{ kemiripan_judul2.0.kemiripan }}%
+									</button>
+								{% elif kemiripan_judul2.0.kemiripan >= 50 %}									
+									<button type="button" class="btn warning small" onclick="openModal('detail_kesamaan_judul2')">
+										<i class="ri-alert-line"></i> Kemiripan: {{ kemiripan_judul2.0.kemiripan }}%
+									</button>
+								{% elif kemiripan_judul2.0.kemiripan >= 25 %}									
+									<button type="button" class="btn primary small" onclick="openModal('detail_kesamaan_judul2')">
+										<i class="ri-information-line"></i> Kemiripan: {{ kemiripan_judul2.0.kemiripan }}%
+									</button>
+								{% else %}
+									<button type="button" class="btn success small" onclick="openModal('detail_kesamaan_judul2')">
+										<i class="ri-checkbox-circle-line"></i> Bebas Plagiarisme
+									</button>
+								{% endif %}
+								<button type="submit" name="judul2_acc" class="btn success small">
+									<i class="ri-check-fill"></i> Approve
+								</button>
+							</div>
+						</div>
+
+						<div class="requirement-item">
+							<div class="requirement-info">
+								<div class="requirement-text">
+									<h4 class="requirement-title">Judul 3</h4>
+									<p class="requirement-desc">{{ data.judul3 }}</p>
+									<div class="requirement-details">
+										<div class="detail-section">
+											<strong>Masalah:</strong> {{ data.judul3_masalah }}
+										</div>
+										<div class="detail-section">
+											<strong>Solusi:</strong> {{ data.judul3_solusi }}
+										</div>
+										<div class="detail-section">
+											<strong>Jurnal yang Dikaji:</strong>
+											<div class="journal-links">
+												<div class="journal-item">
+													<span class="journal-number">1.</span>
+													<span class="journal-title">{{ data.judul3_j1 }}</span>
+													<a target="_blank" href="{{ data.judul3_j1l }}" class="journal-link">
+														<button class="action-btn"><i class="ri-external-link-line"></i> Link</button>
+													</a>
+												</div>
+												<div class="journal-item">
+													<span class="journal-number">2.</span>
+													<span class="journal-title">{{ data.judul3_j2 }}</span>
+													<a target="_blank" href="{{ data.judul3_j2l }}" class="journal-link">
+														<button class="action-btn"><i class="ri-external-link-line"></i> Link</button>
+													</a>
+												</div>
+												<div class="journal-item">
+													<span class="journal-number">3.</span>
+													<span class="journal-title">{{ data.judul3_j3 }}</span>
+													<a target="_blank" href="{{ data.judul3_j3l }}" class="journal-link">
+														<button class="action-btn"><i class="ri-external-link-line"></i> Link</button>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="requirement-actions">
+								{% if kemiripan_judul3.0.kemiripan >= 75 %}									
+									<button type="button" class="btn danger small" onclick="openModal('detail_kesamaan_judul3')">
+										<i class="ri-error-warning-line"></i> Kemiripan: {{ kemiripan_judul3.0.kemiripan }}%
+									</button>
+								{% elif kemiripan_judul3.0.kemiripan >= 50 %}									
+									<button type="button" class="btn warning small" onclick="openModal('detail_kesamaan_judul3')">
+										<i class="ri-alert-line"></i> Kemiripan: {{ kemiripan_judul3.0.kemiripan }}%
+									</button>
+								{% elif kemiripan_judul3.0.kemiripan >= 25 %}									
+									<button type="button" class="btn primary small" onclick="openModal('detail_kesamaan_judul3')">
+										<i class="ri-information-line"></i> Kemiripan: {{ kemiripan_judul3.0.kemiripan }}%
+									</button>
+								{% else %}
+									<button type="button" class="btn success small" onclick="openModal('detail_kesamaan_judul3')">
+										<i class="ri-checkbox-circle-line"></i> Bebas Plagiarisme
+									</button>
+								{% endif %}
+								<button type="submit" name="judul3_acc" class="btn success small">
+									<i class="ri-check-fill"></i> Approve
+								</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			
+			<!-- OPENING ELEMEN MODAL -->
+			<div id="detail_kesamaan_judul1" class="modal-edit">
+				<div class="modal-content-edit modal-large">
+					<span class="close" onclick="closeModal('detail_kesamaan_judul1')">&times;</span>
+					<div class="modal-header">
+						<div class="modal-title">
+							<h2>Detail Kemiripan Judul</h2>
+							<p>{{ data.judul1 }}</p>
+						</div>
+					</div>
+					
+					<div class="similarity-content">
+						<div class="similarity-summary">
+							<div class="summary-item">
+								<span class="summary-label">Total Judul Serupa:</span>
+								<span class="summary-value">{{ kemiripan_judul1|length }}</span>
+							</div>
+							<div class="summary-item">
+								<span class="summary-label">Kemiripan Tertinggi:</span>
+								<span class="summary-value {% if kemiripan_judul1.0.kemiripan >= 75 %}text-danger{% elif kemiripan_judul1.0.kemiripan >= 50 %}text-warning{% elif kemiripan_judul1.0.kemiripan >= 25 %}text-primary{% else %}text-success{% endif %}">
+									{{ kemiripan_judul1.0.kemiripan }}%
+								</span>
+							</div>
+						</div>
+						
+						<div class="similarity-table">
+							<table>
+								<thead>
+									<tr>
+										<th>No</th>
+										<th>Judul Serupa</th>
+										<th>Mahasiswa</th>
+										<th>Persentase Kemiripan</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for item in kemiripan_judul1 %}
+									<tr class="{% if item.kemiripan >= 75 %}similarity-high{% elif item.kemiripan >= 50 %}similarity-medium{% elif item.kemiripan >= 25 %}similarity-low{% else %}similarity-safe{% endif %}">
+										<td>{{ forloop.counter }}</td>
+										<td class="title-cell">
+											<div class="title-content">
+												<span class="title-text" style="text-transform: uppercase;">{{ item.judul }}</span>
+											</div>
+										</td>
+										<td class="student-cell">
+											<div class="student-info">
+												<span class="student-name">{{ item.mhs.nim.first_name }}</span>
+												<span class="student-nim">{{ item.mhs.nim.username }}</span>
+											</div>
+										</td>
+										<td class="percentage-cell">
+											<div class="percentage-badge {% if item.kemiripan >= 75 %}danger{% elif item.kemiripan >= 50 %}warning{% elif item.kemiripan >= 25 %}primary{% else %}success{% endif %}">
+												{{ item.kemiripan }}%
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+						
+						<div class="similarity-legend">
+							<div class="legend-item">
+								<span class="legend-color danger"></span>
+								<span class="legend-text">Tinggi (≥75%) - Perlu revisi</span>
+							</div>
+							<div class="legend-item">
+								<span class="legend-color warning"></span>
+								<span class="legend-text">Sedang (50-74%) - Perlu perhatian</span>
+							</div>
+							<div class="legend-item">
+								<span class="legend-color primary"></span>
+								<span class="legend-text">Rendah (25-49%) - Aman</span>
+							</div>
+							<div class="legend-item">
+								<span class="legend-color success"></span>
+								<span class="legend-text">Sangat Rendah (<25%) - Sangat aman</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div id="detail_kesamaan_judul2" class="modal-edit">
+				<div class="modal-content-edit modal-large">
+					<span class="close" onclick="closeModal('detail_kesamaan_judul2')">&times;</span>
+					<div class="modal-header">
+						<div class="modal-title">
+							<h2>Detail Kemiripan Judul</h2>
+							<p>{{ data.judul2 }}</p>
+						</div>
+					</div>
+					
+					<div class="similarity-content">
+						<div class="similarity-summary">
+							<div class="summary-item">
+								<span class="summary-label">Total Judul Serupa:</span>
+								<span class="summary-value">{{ kemiripan_judul2|length }}</span>
+							</div>
+							<div class="summary-item">
+								<span class="summary-label">Kemiripan Tertinggi:</span>
+								<span class="summary-value {% if kemiripan_judul2.0.kemiripan >= 75 %}text-danger{% elif kemiripan_judul2.0.kemiripan >= 50 %}text-warning{% elif kemiripan_judul2.0.kemiripan >= 25 %}text-primary{% else %}text-success{% endif %}">
+									{{ kemiripan_judul2.0.kemiripan }}%
+								</span>
+							</div>
+						</div>
+						
+						<div class="similarity-table">
+							<table>
+								<thead>
+									<tr>
+										<th>No</th>
+										<th>Judul Serupa</th>
+										<th>Mahasiswa</th>
+										<th>Persentase Kemiripan</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for item in kemiripan_judul2 %}
+									<tr class="{% if item.kemiripan >= 75 %}similarity-high{% elif item.kemiripan >= 50 %}similarity-medium{% elif item.kemiripan >= 25 %}similarity-low{% else %}similarity-safe{% endif %}">
+										<td>{{ forloop.counter }}</td>
+										<td class="title-cell">
+											<div class="title-content">
+												<span class="title-text">{{ item.judul }}</span>
+											</div>
+										</td>
+										<td class="student-cell">
+											<div class="student-info">
+												<span class="student-name">{{ item.mhs.nim.first_name }}</span>
+												<span class="student-nim">{{ item.mhs.nim.username }}</span>
+											</div>
+										</td>
+										<td class="percentage-cell">
+											<div class="percentage-badge {% if item.kemiripan >= 75 %}danger{% elif item.kemiripan >= 50 %}warning{% elif item.kemiripan >= 25 %}primary{% else %}success{% endif %}">
+												{{ item.kemiripan }}%
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+						
+						<div class="similarity-legend">
+							<div class="legend-item">
+								<span class="legend-color danger"></span>
+								<span class="legend-text">Tinggi (≥75%) - Perlu revisi</span>
+							</div>
+							<div class="legend-item">
+								<span class="legend-color warning"></span>
+								<span class="legend-text">Sedang (50-74%) - Perlu perhatian</span>
+							</div>
+							<div class="legend-item">
+								<span class="legend-color primary"></span>
+								<span class="legend-text">Rendah (25-49%) - Aman</span>
+							</div>
+							<div class="legend-item">
+								<span class="legend-color success"></span>
+								<span class="legend-text">Sangat Rendah (<25%) - Sangat aman</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div id="detail_kesamaan_judul3" class="modal-edit">
+				<div class="modal-content-edit modal-large">
+					<span class="close" onclick="closeModal('detail_kesamaan_judul3')">&times;</span>
+					<div class="modal-header">
+					
+						<div class="modal-title">
+							<h2>Detail Kemiripan Judul</h2>
+							<p>{{ data.judul3 }}</p>
+						</div>
+					</div>
+					
+					<div class="similarity-content">
+						<div class="similarity-summary">
+							<div class="summary-item">
+								<span class="summary-label">Total Judul Serupa:</span>
+								<span class="summary-value">{{ kemiripan_judul3|length }}</span>
+							</div>
+							<div class="summary-item">
+								<span class="summary-label">Kemiripan Tertinggi:</span>
+								<span class="summary-value {% if kemiripan_judul3.0.kemiripan >= 75 %}text-danger{% elif kemiripan_judul3.0.kemiripan >= 50 %}text-warning{% elif kemiripan_judul3.0.kemiripan >= 25 %}text-primary{% else %}text-success{% endif %}">
+									{{ kemiripan_judul3.0.kemiripan }}%
+								</span>
+							</div>
+						</div>
+						
+						<div class="similarity-table">
+							<table>
+								<thead>
+									<tr>
+										<th>No</th>
+										<th>Judul Serupa</th>
+										<th>Mahasiswa</th>
+										<th>Persentase Kemiripan</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for item in kemiripan_judul3 %}
+									<tr class="{% if item.kemiripan >= 75 %}similarity-high{% elif item.kemiripan >= 50 %}similarity-medium{% elif item.kemiripan >= 25 %}similarity-low{% else %}similarity-safe{% endif %}">
+										<td>{{ forloop.counter }}</td>
+										<td class="title-cell">
+											<div class="title-content">
+												<span class="title-text">{{ item.judul }}</span>
+											</div>
+										</td>
+										<td class="student-cell">
+											<div class="student-info">
+												<span class="student-name">{{ item.mhs.nim.first_name }}</span>
+												<span class="student-nim">{{ item.mhs.nim.username }}</span>
+											</div>
+										</td>
+										<td class="percentage-cell">
+											<div class="percentage-badge {% if item.kemiripan >= 75 %}danger{% elif item.kemiripan >= 50 %}warning{% elif item.kemiripan >= 25 %}primary{% else %}success{% endif %}">
+												{{ item.kemiripan }}%
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+						
+						<div class="similarity-legend">
+							<div class="legend-item">
+								<span class="legend-color danger"></span>
+								<span class="legend-text">Tinggi (≥75%) - Perlu revisi</span>
+							</div>
+							<div class="legend-item">
+								<span class="legend-color warning"></span>
+								<span class="legend-text">Sedang (50-74%) - Perlu perhatian</span>
+							</div>
+							<div class="legend-item">
+								<span class="legend-color primary"></span>
+								<span class="legend-text">Rendah (25-49%) - Aman</span>
+							</div>
+							<div class="legend-item">
+								<span class="legend-color success"></span>
+								<span class="legend-text">Sangat Rendah (<25%) - Sangat aman</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- OPENING ELEMENT MODAL -->
+
+
+<div class="dashboard-content">
+	{% if messages %}
+		{% for message in messages %}
+			{% if 'chatpa' in message.tags %}
+				<div class="alert {% if 'success' in message.tags %}alert-success{% else %}alert-danger{% endif %} mb-4">
+					<i class="{% if 'success' in message.tags %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
+					{{ message }}
+				</div>
+			{% endif %}
+		{% endfor %}
+	{% endif %}
+
+<div class="form-card">
+	<div class="form-header">
+		<div class="form-header-icon">
+			<i class="ri-chat-3-line"></i>
+		</div>
+		<div class="form-header-content">
+			<h2>Diskusi dengan Penasehat Akademik</h2>
+			<p>Berdiskusi langsung dengan {{ data.mhs }}</p>
+		</div>
+	</div>
+
+    <div class="messages-container">    
+        <!-- Main chat area -->
+        <div class="chat-area">
+            <div class="chat-header">
+                <div class="chat-contact-info">
+                    <img src="/{{ data.mhs.photo }}" alt="Contact">
+                    <div>
+                        <h4>{{ data.mhs }}</h4>
+                        <p>Diskusi Dengan Mahasiswa</p>
+                    </div>
+                </div>
+            </div>
+
+
+			<div class="chat-messages">
+				{% for chat in chatpa %}
+					{% if chat.sender == 'Mahasiswa' %}           
+						<div class="message received">
+							<img src="/{{ data.mhs.photo }}" alt="Contact">
+							<div class="message-content">
+								<div class="message-bubble">
+									{{ chat.message }}
+								</div>
+								<span class="message-time">{{ chat.date_in|date:"H:i" }}</span>
+							</div>
+						</div>
+					{% else %}	
+		
+						<div class="message sent">
+							<div class="message-content">
+								<div class="message-bubble">
+									{{ chat.message }}
+								</div>
+								<span class="message-time">{{ chat.date_in|date:"H:i" }}</span>
+							</div>
+						</div>
+
+					{% endif %}
+					
+				{% empty %}
+					<p class="text-muted text-center">Belum ada percakapan.</p>
+				{% endfor %}
+			</div>		
+			<div class="chat-input">
+				<form method="post" class="chat-input-form">
+					{% csrf_token %}
+					<div class="input-wrapper-input">
+						<div class="form-group flex-grow-1">
+							{{ form_chatpa.message }}
+						</div>
+						<button type="submit" name="submit_chatpa" class="btn btn-primary">
+							<i class="ri-send-plane-fill"></i>
+							<span class="btn-text">Kirim</span>
+						</button>
+					</div>
+				</form>
+			</div>
+        </div>
+    </div>
+</div></div>
+
+{% endblock content1 %}
+
+
+
+
+
+
+
+

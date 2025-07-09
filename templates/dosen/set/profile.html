@@ -6,19 +6,8 @@
 	<div class="profile-container">
 		<!-- Profile Picture Section -->
 		<div class="profile-section">
-			<h2>{{ title }}</h2>
 			<div class="profile-picture">
-				<img src="/{{ photo }}" alt="Profile Picture" id="preview-image">
-				<p class="file-info">Silahkan unggah Profile Picture (JPG or PNG. Max size of 800K)</p>
-				<div class="profile-actions">
-					<div class="social-links">
-						<a href="#" class="social-btn"><i class="ri-instagram-line"></i> Instagram</a>
-						<a href="#" class="social-btn"><i class="ri-facebook-circle-line"></i> Facebook</a>
-						<a href="#" class="social-btn"><i class="ri-twitter-line"></i> Twitter</a>
-						<a href="#" class="social-btn"><i class="ri-linkedin-box-line"></i> LinkedIn</a>
-					</div>
-				</div>
-				<input type="file" id="profile-upload" hidden accept="image/*">
+				<img src="/media/{{ photo }}" alt="Profile Picture" id="preview-image">
 			</div>
 		</div>
 		<!-- General Information Section -->
@@ -52,6 +41,46 @@
 					<div class="form-group">
 						<label for="id_telp">No. Telepon</label>
 						{{ form.telp }}
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group">
+						<label for="id_tempat_lahir">Tempat Lahir</label>
+						{{ form.tempat_lahir }}
+					</div>
+					<div class="form-group">
+						<label for="id_tgl_lahir">Tanggal Lahir</label>
+						{{ form.tgl_lahir }}
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group">
+						<label for="id_status_kepegawaian">Status Kepegawaian</label>
+						{{ form.status_kepegawaian }}
+					</div>
+					<div class="form-group">
+						<label for="id_jafung">Jabatan Fungsional</label>
+						{{ form.jafung }}
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group">
+						<label for="id_pangkat">Pangkat</label>
+						{{ form.pangkat }}
+					</div>
+					<div class="form-group">
+						<label for="id_golongan">Golongan</label>
+						{{ form.golongan }}
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group">
+						<label for="id_bidang_keahlian">Bidang Keahlian</label>
+						{{ form.bidang_keahlian }}
+					</div>
+					<div class="form-group">
+						<label for="id_nidn">NIDN</label>
+						{{ form.nidn }}
 					</div>
 				</div>
 				<div class="form-row">

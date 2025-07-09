@@ -1,0 +1,189 @@
+{% extends "mhs/base.html" %}
+
+{% block content1 %}
+<div class="layanan-form-container">
+	<div class="profile-section-ujian">
+		<div class="student-table">
+			<div class="table-responsive">
+				<table>
+					<tbody>
+						<tr>
+							<td width="10%">Mahasiswa</td>
+							<td width="5%">:</td>
+							<td>{{ judul.mhs }}</td>					  
+						</tr>
+						<tr>
+							<td width="10%">Program Studi</td>
+							<td width="5%">:</td>
+							<td>{{ judul.prodi }}</td>					  
+						</tr>
+						<tr>
+							<td width="10%">Judul</td>
+							<td width="5%">:</td>
+							<td>{{ judul.judul }}</td>					  
+						</tr>
+						<tr>
+							<td width="10%">Pembimbing I</td>
+							<td width="5%">:</td>
+							<td>{{ judul.pembimbing1 }}</td>					  
+						</tr>
+						<tr>
+							<td width="10%">Pembimbing II</td>
+							<td width="5%">:</td>
+							<td>{{ judul.pembimbing2 }}</td>					  
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="form-card">
+	<div class="form-header">
+		<div class="form-header-icon">
+			<i class="ri-file-text-line"></i>
+		</div>
+		<div class="form-header-content">
+			<h2>Form Pengajuan Proposal</h2>
+			<p>Silahkan isi form dibawah ini untuk mengajukan proposal skripsi</p>
+		</div>
+	</div>
+
+		<form method="post"  enctype="multipart/form-data" class="layanan-form">
+			{% csrf_token %}
+			<div class="requirements-list">
+				
+				<div class="requirement-item">
+					<div class="requirement-info">
+						<div class="requirement-icon"><i class="ri-file-shield-2-line"></i></div>
+						<div class="requirement-text">
+							<h4 class="requirement-title">KRS</h4>
+							<p class="requirement-desc">File Kartu Rencana Studi.</p>
+						</div>
+					</div>
+					<div class="requirement-actions">
+						{% if proposal.krs %}
+						<a target="_blank" href="/media/{{ proposal.krs }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
+						{% endif %}
+						{{ form.krs }}
+						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
+					</div>
+				</div>
+
+				<div class="requirement-item">
+					<div class="requirement-info">
+						<div class="requirement-icon"><i class="ri-file-shield-2-line"></i></div>
+						<div class="requirement-text">
+							<h4 class="requirement-title">KHS</h4>
+							<p class="requirement-desc">File Kartu Hasil Studi.</p>
+						</div>
+					</div>
+					<div class="requirement-actions">
+						{% if proposal.khs %}
+						<a target="_blank" href="/media/{{ proposal.khs }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
+						{% endif %}
+						{{ form.khs }}
+						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
+					</div>
+				</div>
+
+				<div class="requirement-item">
+					<div class="requirement-info">
+						<div class="requirement-icon"><i class="ri-file-shield-2-line"></i></div>
+						<div class="requirement-text">
+							<h4 class="requirement-title">Persetujuan Proposal</h4>
+							<p class="requirement-desc">Lampirkan file Persetujuan Proposal.</p>
+						</div>
+					</div>
+					<div class="requirement-actions">
+						{% if proposal.persetujuan_proposal %}
+						<a target="_blank" href="/media/{{ proposal.persetujuan_proposal }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
+						{% endif %}
+						{{ form.persetujuan_proposal }}
+						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
+					</div>
+				</div>
+
+				<div class="requirement-item">
+					<div class="requirement-info">
+						<div class="requirement-icon"><i class="ri-file-shield-2-line"></i></div>
+						<div class="requirement-text">
+							<h4 class="requirement-title">Kartu Seminar</h4>
+							<p class="requirement-desc">Lampirkan file Persetujuan Proposal.</p>
+						</div>
+					</div>
+					<div class="requirement-actions">
+						{% if proposal.kartu_seminar %}
+						<a target="_blank" href="/media/{{ proposal.kartu_seminar }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
+						{% endif %}
+						{{ form.kartu_seminar }}
+						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
+					</div>
+				</div>
+
+				<div class="requirement-item">
+					<div class="requirement-info">
+						<div class="requirement-icon"><i class="ri-file-shield-2-line"></i></div>
+						<div class="requirement-text">
+							<h4 class="requirement-title">Rekening Koran untuk mahasiswa Bidikmisi</h4>
+							<p class="requirement-desc">Lampirkan file Rekening Koran untuk mahasiswa Bidikmisi.</p>
+						</div>
+					</div>
+					<div class="requirement-actions">
+						{% if proposal.rek_koran %}
+						<a target="_blank" href="/media/{{ proposal.rek_koran }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
+						{% endif %}
+						{{ form.rek_koran }}
+						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+		
+		<div class="final-action-section">
+			{% if proposal.seminar_tgl %}
+			<p>Undangan Anda Telah Terbit</p>
+			<h2><a target="_blank" href="{% url 'acd:print_undangan' 'Proposal' proposal.id %}"><button class"btn success">Cetak Undangan</button></a></h2>
+			{% else %}
+			<p>Pastikan data diatas telah lengkap, sebelum klik tombol daftar dibawah.</p>
+			<button class="btn primary" onclick="openModal('modal_001')">
+							<i class="ri-add-line"></i>
+							<span>DAFTAR SEKARANG!</span>
+						</button>
+			{% endif %}
+		</div>
+		
+
+
+<!-- OPENING ELEMEN MODAL -->
+<div id="modal_001" class="modal-edit">
+	<div class="modal-content-edit">
+		<span class="close" onclick="closeModal('modal_001')">&times;</span>
+		<h2>Pengajuan Seminar Proposal</h2>
+		<form method="post" action='/acd/proposal_reg_up' enctype="multipart/form-data">
+			{% csrf_token %}
+			<div class="form-group" style="text-align: left;">
+				<label for="layanan_isi">Keterangan / Komentar Tambahan </label>
+				<input type="text" class="form-control" id="layanan_isi" name="layanan_isi" required>
+			</div>
+			<div class="form-actions">
+				<button type="submit" class="btn primary">
+					<i class="ri-save-line"></i>
+					Daftar Sekarang
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+
+
+{% endblock content1 %}
+
+
+
+{% block script_costum %} 
+{% endblock script_costum %} 
+

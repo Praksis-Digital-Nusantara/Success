@@ -2,175 +2,115 @@
 
 {% block content1 %}
 <div class="dashboard-content">
-	<!-- Stats Cards -->
+
+	<div class="hero-profile-elegant">
+		<div class="hero-photo-elegant">
+			<img src="/media/{{ photo }}" alt="Profile Picture">
+		</div>
+		<div class="hero-info-elegant">
+			<p class="hero-welcome-text">Selamat Datang..</p>
+			<h1 class="hero-name-display">{{ userdetail.username.first_name }}</h1>
+			<div class="hero-details-grid">
+				<div class="detail-item">
+					<span class="detail-label">Program Studi</span>
+					<span class="detail-value">{{ userdetail.prodi }}</span>
+				</div>
+				<div class="detail-item">
+					<span class="detail-label">Kontak</span>
+					<span class="detail-value">{{ userdetail.telp }}</span>
+				</div>
+				<div class="detail-item">
+					<span class="detail-label">Email</span>
+					<span class="detail-value">{{ userdetail.username.email }}</span>
+				</div>
+				<div class="detail-item">
+					<span class="detail-label">Jenis Kelamin</span>
+					<span class="detail-value">{{ userdetail.gender }}</span>
+				</div>
+			</div>
+			<div class="hero-action-area">
+				<a href="{% url 'acd:profile_prodi' %}">
+					{% if userdetail.photo is none %}
+						<button class="btn danger x-small">Lengkapi profile anda untuk melanjutkan aktivitas di sistem ini!</button>
+					{% else %}
+						<button class="btn warning x-small">Details</button>
+					{% endif %}
+				</a>
+			</div>
+		</div>
+	</div>	
 	<div class="stats-cards">
-		<div class="stat-card">
-			<i class="ri-book-open-line"></i>
+		<h4>Info Layanan Mahasiswa</h4>
+	</div>
+	
+	
+	<div class="stats-cards">		
+		<div class="stat-card orange">			
+			<i class="ri-loader-3-line"></i>
 			<div class="stat-info">
-				<h3>Mata Kuliah</h3>
-				<p>8</p>
+				<p>Menunggu</p>
+				<h1>{{ data.layanan_waiting }}</h1>
+				<a href="{% url 'acd:layanan' 'Waiting' %}"><button class="btn warning x-small">Details</button></a>				
+			</div>			
+		</div>		
+		<div class="stat-card blue">
+			<i class="ri-loader-4-fill"></i> <!-- Dalam Proses -->
+			<div class="stat-info">
+				<p>Dalam Proses</p>
+				<h1>{{ data.layanan_processing }}</h1>
+				<a href="{% url 'acd:layanan' 'Processing'  %}"><button class="btn primary x-small">Details</button></a>
 			</div>
 		</div>
-		<div class="stat-card">
-			<i class="ri-task-line"></i>
+		<div class="stat-card green">
+			<i class="ri-checkbox-circle-line"></i> <!-- Selesai -->
 			<div class="stat-info">
-				<h3>Kehadiran</h3>
-				<p>80%</p>
+				<p>Pengajuan Judul</p>
+				<h1>{{ data.pengajuan_judul }}</h1>
+				<a href="{% url 'acd:skripsi_djudul'  %}"><button class="btn success x-small">Details</button></a>
 			</div>
 		</div>
-		<div class="stat-card">
-			<i class="ri-timer-line"></i>
+		<div class="stat-card red">
+			<i class="ri-close-circle-line"></i> <!-- Ditolak -->
 			<div class="stat-info">
-				<h3>Seminar</h3>
-				<p>45</p>
-			</div>
-		</div>
-		<div class="stat-card">
-			<i class="ri-medal-line"></i>
-			<div class="stat-info">
-				<h3>Achievements</h3>
-				<p>10</p>
+				<p>Ditolak</p>
+				<h1>{{ data.layanan_rejected }}</h1>
+				<a href="{% url 'acd:layanan' 'Rejected'  %}"><button class="btn danger x-small">Details</button></a>
 			</div>
 		</div>
 	</div>
 	
 
-	<!-- Recent Activities -->
-	<div class="recent-activities">
-		<h2>Recent Activities</h2>
-		<div class="activity-list">
-			<div class="activity-item">
-				<div class="activity-icon"><i class="ri-file-text-line"></i></div>
-				<div class="activity-details">
-					<h4>Assignment Submitted</h4>
-					<p>Mengikut perkuliahan pasar modal</p>
-					<span class="time">2 hours ago</span>
-				</div>
+	<div class="stats-cards">
+		<h4>Info Jumlah Layanan</h4>
+	</div>
+	
+	<div class="stats-cards">
+		<div class="stat-card purple">
+			<i class="ri-book-open-line"></i>
+			<div class="stat-info">
+				<h3>Bulan Ini</h3>
+				<p>{{ data.layanan_month }}</p>
 			</div>
-			<div class="activity-item">
-				<div class="activity-icon"><i class="ri-video-line"></i></div>
-				<div class="activity-details">
-					<h4>Seminar Progress</h4>
-					<p>menyelesaikan Seminar Proposal</p>
-					<span class="time">Yesterday</span>
-				</div>
+		</div>
+		<div class="stat-card indigo">
+			<i class="ri-task-line"></i>
+			<div class="stat-info">
+				<h3>Tahun Ini</h3>
+				<p>{{ data.layanan_year }}</p>
 			</div>
-
-			<div class="activity-item">
-				<div class="activity-icon"><i class="ri-file-text-line"></i></div>
-				<div class="activity-details">
-					<h4>Seminar Proposal</h4>
-					<p>Telah menyelesaikan seminar proposal</p>
-					<span class="time">2 hours ago</span>
-				</div>
-			</div>
-			<div class="activity-item">
-				<div class="activity-icon"><i class="ri-file-text-line"></i></div>
-				<div class="activity-details">
-					<h4>Seminar Hasil </h4>
-					<p>Jadwal seminar hasil telah ditetapkan</p>
-					<span class="time">Yesterday</span><span class="status-badge completed">Aktif</span>
-				</div>
-			</div>
-			<div class="activity-item">
-				<div class="activity-icon"><i class="ri-file-text-line"></i></div>
-				<div class="activity-details">
-					<h4>Ujian Tutup</h4>
-					<p>Pengajuan jadwal ujian tutup disetujui</p>
-					<span class="time">2 days ago</span><span class="status-badge completed">Aktif</span>
-				</div>
-			</div>
-			<div class="activity-item">
-				<div class="activity-icon"><i class="ri-file-paper-2-line"></i></div>
-				<div class="activity-details">
-					<h4>Revisi Proposal</h4>
-					<p>Revisi proposal telah disetujui pembimbing</p>
-					<span class="time">3 days ago</span>
-				</div>
-			</div>
-			<div class="activity-item">
-				<div class="activity-icon"><i class="ri-file-paper-2-line"></i></div>
-				<div class="activity-details">
-					<h4>Revisi Hasil</h4>
-					<p>Menunggu persetujuan revisi hasil penelitian</p>
-					<span class="time">4 days ago</span>
-				</div>
-			</div>
-			<div class="activity-item">
-				<div class="activity-icon"><i class="ri-user-follow-line"></i></div>
-				<div class="activity-details">
-					<h4>Validator Penelitian</h4>
-					<p>Validator telah memberikan feedback</p>
-					<span class="time">5 days ago</span><span class="status-badge completed">Aktif</span>
-				</div>
-			</div>
-			<div class="activity-item">
-				<div class="activity-icon"><i class="ri-file-search-line"></i></div>
-				<div class="activity-details">
-					<h4>Izin Penelitian</h4>
-					<p>Surat izin penelitian telah disetujui</p>
-					<span class="time">1 week ago</span>
-				</div>
-			</div>
-			<div class="activity-item">
-				<div class="activity-icon"><i class="ri-file-text-line"></i></div>
-				<div class="activity-details">
-					<h4>Assignment Submitted</h4>
-					<p>You submitted Marketing Strategy assignment</p>
-					<span class="time">2 hours ago</span><span class="status-badge cancelled">Cancelled</span>
-				</div>
-			</div>
-
-			<div class="activity-item">
-				<div class="activity-icon"><i class="ri-file-text-line"></i></div>
-				<div class="activity-details">
-					<h4>Assignment Submitted</h4>
-					<p>You submitted Marketing Strategy assignment</p>
-					<span class="time">2 hours ago</span><span class="status-badge cancelled">Cancelled</span>
-				</div>
-			</div>
-			<div class="activity-item">
-				<div class="activity-icon"><i class="ri-file-text-line"></i></div>
-				<div class="activity-details">
-					<h4>Assignment Submitted</h4>
-					<p>You submitted Marketing Strategy assignment</p>
-					<span class="time">2 hours ago</span><span class="status-badge cancelled">Cancelled</span>
-				</div>
-			</div>
-			<div class="activity-item">
-				<div class="activity-icon"><i class="ri-file-text-line"></i></div>
-				<div class="activity-details">
-					<h4>Assignment Submitted</h4>
-					<p>You submitted Marketing Strategy assignment</p>
-					<span class="time">2 hours ago</span><span class="status-badge cancelled">Cancelled</span>
-				</div>
-			</div>
-			<div class="activity-item">
-				<div class="activity-icon"><i class="ri-file-text-line"></i></div>
-				<div class="activity-details">
-					<h4>Assignment Submitted</h4>
-					<p>You submitted Marketing Strategy assignment</p>
-					<span class="time">2 hours ago</span>
-				</div>
-			</div>
-			<div class="activity-item">
-				<div class="activity-icon"><i class="ri-file-text-line"></i></div>
-				<div class="activity-details">
-					<h4>Assignment Submitted</h4>
-					<p>You submitted Marketing Strategy assignment</p>
-					<span class="time">2 hours ago</span>
-				</div>
-			</div>
-			<div class="activity-item">
-				<div class="activity-icon"><i class="ri-file-text-line"></i></div>
-				<div class="activity-details">
-					<h4>Assignment Submitted</h4>
-					<p>You submitted Marketing Strategy assignment</p>
-					<span class="time">2 hours ago</span>
-				</div>
+		</div>
+		<div class="stat-card purple">
+			<i class="ri-task-line"></i>
+			<div class="stat-info">
+				<h3>Semua</h3>
+				<p>{{ data.layanan_all }}</p>
 			</div>
 		</div>
 	</div>
+	
+
+	
+
 </div>
 {% endblock content1 %} 
 

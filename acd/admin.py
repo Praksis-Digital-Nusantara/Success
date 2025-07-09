@@ -1,9 +1,24 @@
 from django.contrib import admin
 from .models import UserMhs, UserProdi, UserDosen, UserFakultas
 from .models import LayananJenis, Layanan
-from .models import Prodi, Jurusan, ProdiPejabat, JurusanPejabat
+from .models import Prodi, Jurusan, Pejabat
+from .models import KodeSurat, SkripsiJudul
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
+
+from import_export.admin import ImportExportModelAdmin
+from .admin_resources import UserMhsResource, UserDsnResource
+
+class UserMhsImport(ImportExportModelAdmin):
+    resource_class = UserMhsResource  # Import User Mahasiswa
+
+class UserDsnImport(ImportExportModelAdmin):
+    resource_class = UserDsnResource  # Import User DOSEN
+
+
+admin.site.register(UserMhs, UserMhsImport)
+admin.site.register(UserDosen, UserDsnImport)
+
 
 @admin.register(Layanan)
 class LayananAdmin(admin.ModelAdmin):
@@ -40,11 +55,9 @@ class CustomUserAdmin(UserAdmin):
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
 
-admin.site.register(UserMhs)
-
-
+admin.site.register(KodeSurat)
 admin.site.register(Prodi)
 admin.site.register(Jurusan)
-admin.site.register(ProdiPejabat)
-admin.site.register(JurusanPejabat)
+admin.site.register(Pejabat)
 admin.site.register(LayananJenis)
+admin.site.register(SkripsiJudul)

@@ -11,10 +11,9 @@ from .decorators_prodi import admin_prodi_required, check_userprodi
 
 ########### SET PROFILE #####################################################
 
-@check_userprodi
 @admin_prodi_required
 def profile_prodi(request):
-    userprodi = request.userprodi    
+    userprodi = UserProdi.objects.get(username=request.user)      
     if request.method == 'POST':
         form = formProfile(request.POST,  request.FILES, instance=userprodi)
         if form.is_valid():
@@ -25,7 +24,7 @@ def profile_prodi(request):
         form = formProfile(instance=userprodi)
 
     context = {
-        'title' : 'Edit Profile',
+        'title' : 'Profile',
         'heading' : 'Edit Profile',
         'userprodi' : userprodi,
         'photo' : userprodi.photo,
@@ -55,7 +54,11 @@ def user_list(request):
             
     userprodi = request.userprodi
     role = request.GET.get('role', 'Mahasiswa')    
-    user_data = User.objects.filter(last_name = role)
+    if role == 'Mahasiswa':
+        user_data = UserMhs.objects.filter(prodi=userprodi.prodi)
+    elif role == 'Dosen':
+        user_data = UserDosen.objects.filter(prodi=userprodi.prodi)
+    
     context = {
         'title': 'User List',
         'heading': role,

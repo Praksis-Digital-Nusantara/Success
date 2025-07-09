@@ -1,62 +1,74 @@
 {% extends "prodi/base.html" %}
 
 {% block content1 %}
-<div class="dashboard-content">
-	<div class="profile-section">
-	<div class="container-header">
-		<nav class="container-breadcrumb">
-			<ul>
-				<li>
-					<a href="{% url 'acd:dashboard' %}">
-						<i class="ri-home-line"></i>
-					</a>
-				</li>
-				<li>
-					<i class="ri-arrow-right-s-line"></i>
-				</li>
-				<li>
-					<a href="{% url 'acd:skripsi_djudul' %}">List Judul</a>
-				</li>
-				<li>
-					<i class="ri-arrow-right-s-line"></i>
-				</li>
-				<li>
-					<a href="">{{ heading }}</a>
-				</li>
-			</ul>
-		</nav>
-	</div>
-			{% if messages %}
-			{% for message in messages %}
-				<div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} mb-4">
-					<i class="{% if message.tags == 'success' %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
-					{{ message }}
-				</div>
-			{% endfor %}
-			{% endif %}
 
-		<form method="post" enctype="multipart/form-data">
-		{% csrf_token %}
-			
-			<div class="form-group">
-				<label for="id_judul">Judul</label>
-				{{ form.judul }}
-			</div>		
-			<div class="form-group">
-				<label for="id_pembimbing1">Pembimbing 1</label>
-				{{ form.pembimbing1 }}
-			</div>		
-			<div class="form-group">
-				<label for="id_pembimbing2">Pembimbing 2</label>
-				{{ form.pembimbing2 }}
+<div class="layanan-form-container">
+	<div class="profile-section-ujian">
+		<div class="student-table">
+			<div class="table-responsive">
+				<table>
+					<tbody>
+						<tr>
+							<td width="10%">Mahasiswa</td>
+							<td width="5%">:</td>
+							<td>{{ judul.mhs }}</td>					  
+						</tr>
+						<tr>
+							<td width="10%">Program Studi</td>
+							<td width="5%">:</td>
+							<td>{{ judul.prodi }}</td>					  
+						</tr>
+						<tr>
+							<td width="10%">Judul</td>
+							<td width="5%">:</td>
+							<td>{{ judul.judul }}</td>					  
+						</tr>
+					</tbody>
+				</table>
 			</div>
-		
-			<div class="form-actions">
-				<button type="submit" class="btn primary">Update</button>
-			</div>
-		</form>
+		</div>
 	</div>
 </div>
+
+<div class="form-card">
+	<div class="form-header">
+		<div class="form-header-icon">
+			<i class="ri-file-text-line"></i>
+		</div>
+		<div class="form-header-content">
+			<h2>{{ heading }}</h2>
+			<p>Silahkan isi form dibawah ini untuk mengajukan proposal skripsi</p>
+		</div>
+	</div>
+
+	<form method="post"  enctype="multipart/form-data" class="layanan-form">
+		{% csrf_token %}
+		<div class="form-group">
+			<label for="id_judul">Judul</label>
+			{{ form.judul }}
+		</div>		
+		<div class="form-group">
+			<label for="id_pembimbing1">Pembimbing 1</label>
+			{{ form.pembimbing1 }}
+		</div>		
+		<div class="form-group">
+			<label for="id_pembimbing2">Pembimbing 2 [*memerlukan persetujuan]</label>
+			{{ form.pembimbing2 }}
+		</div>
+	
+		<div class="form-actions">
+			<a href="{% url 'acd:skripsi_djudul' %}">
+				<button type="button" class="btn btn-secondary">
+					<i class="ri-arrow-left-line"></i>
+					Kembali
+				</button>
+			</a>
+			<button type="submit" class="btn btn-primary">
+				<i class="ri-refresh-line"></i>
+				Update</button>
+		</div>
+	</form>
+
 {% endblock content1 %}
 
 

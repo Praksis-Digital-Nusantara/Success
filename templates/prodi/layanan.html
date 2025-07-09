@@ -19,22 +19,18 @@
 							<input type="text" id="searchInput" placeholder="Search table...">
 						</div>
 					</div>
-					<div class="action-group">
-						<button class="btn primary" onclick="openModal('nomorsurat')">
-							<i class="ri-add-line"></i>
-							<span>Add</span>
-						</button>
-						<button class="btn danger" id="deleteSelected">
-							<i class="ri-delete-bin-line"></i>
-							<span>Delete</span>
-						</button>
-						<button class="btn secondary" id="exportTable">
-							<i class="ri-download-line"></i>
-							<span>Export</span>
-						</button>
-					</div>
 				</div>
 			</div>
+		</div>
+
+		<div class="table-options">
+			<label for="recordsPerPage">Records per page:</label>
+			<select id="recordsPerPage" onchange="updateTable()">
+				<option value="10" selected>10</option>
+				<option value="25">25</option>
+				<option value="50">50</option>
+				<option value="100">100</option>
+			</select>
 		</div>
 
 		<div class="student-table">
@@ -42,12 +38,12 @@
 			<table>
 				<thead>
 					<tr>
-					<th>No</th>
+					<th style="white-space: nowrap;">No</th>
 					<th>Date In</th>
 					<th>Mahasiswa</th>
-					<th>Prodi</th>
-					<th>Layanan</th>
-					<th>Status</th>
+					<th>Jenis Layanan</th>
+					<th>Detail Layanan</th>
+					<th style="white-space: nowrap;">Status Layanan</th>
 					<th>Aksi</th>
 					</tr>
 				</thead>
@@ -57,15 +53,25 @@
 					<td>{{ forloop.counter }}</td>
 					<td>{{ layanan.date_in|date:"d M Y H:i" }}</td>
 					<td>{{ layanan.mhs }}</td>
-					<td>{{ layanan.prodi }}</td>
+					<td>{{ layanan.layanan_jenis }}</td>
 					<td>
-						<b>{{ layanan.layanan_jenis }}</b>
-						<div class="layanan-content">{{ layanan.layanan_isi }}</div>
 						{% if layanan.layanan_file %}
-							<a target="_blank" href="/{{ layanan.layanan_file }}">
-								<button class="action-btn"><i class="ri-file-line"></i> File</button>
+							<a target="_blank" href="/media/{{ layanan.layanan_file }}">
+								<button class="btn success x-small"><i class="ri-file-line"></i> File</button>
 							</a>
 						{% endif %}
+						{% if layanan.layanan_jenis.nama_layanan == 'Undangan Seminar Proposal' %}
+							<a href="/acd/proposal_edit/{{layanan.mhs.nim.username}}">
+								<button class="btn success x-small"><i class="ri-file-line"></i> Berkas Kelengkapan</button>
+							</a>
+						{% endif %}
+						{% if layanan.layanan_jenis.nama_layanan == 'Undangan Ujian Tutup' %}
+							<a href="/acd/ujian_edit/{{layanan.mhs.nim.username}}">
+								<button class="btn success x-small"><i class="ri-file-line"></i> Berkas Kelengkapan</button>
+							</a>
+						{% endif %}
+						<br>
+						<div class="response-text">{{ layanan.layanan_isi }}</div>
 					</td>				  
 					<td>
 						{% if layanan.status == 'Waiting'  %}
@@ -83,26 +89,31 @@
 						<div class="button-group">
 							{% if layanan.hasil_link %}
 								<a target="_blank" href="{{ layanan.hasil_link }}">
-									<button class="upload-btn"><i class="ri-link"></i> Link</button>
+									<button class="btn success x-small"><i class="ri-link"></i>Download File</button>
 								</a>  
 							{% endif %}
 							{% if layanan.hasil_file %}
-								<a target="_blank" href="/{{ layanan.hasil_file }}">
-									<button class="upload-btn"><i class="ri-file-line"></i> File</button>
+								<a target="_blank" href="/media/{{ layanan.hasil_file }}">
+									<button class="btn success x-small"><i class="ri-link"></i>File</button>
 								</a>
 							{% endif %}
 						</div>
 					</td> 
 					<td>	
-						<a href="{% url 'acd:layanan_edit' layanan.id %}">
-							<button class="action-btn"><i class="ri-pencil-fill"></i></button>
+						<a href="{% url 'acd:layanan_edit' layanan.id filter %}">
+							<button class="btn primary x-small"><i class="ri-pencil-fill"></i></button>
 						</a>
 					</td>
 					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
-		</div>
+			</div>
+			<div id="pagination" class="pagination">
+				<button id="prev" class="btn warning">Prev</button>
+				<span id="pageNumber" class="page-number">1</span>
+				<button id="next" class="btn warning">Next</button>
+			</div>
 		</div>
 	</div>
 </div>

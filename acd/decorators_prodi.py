@@ -5,13 +5,13 @@ from functools import wraps
 
 def check_userprodi(function):
     def wrapper(request, *args, **kwargs):
-        try:
-            userprodi = UserProdi.objects.get(user=request.user)
-            request.userprodi = userprodi
-        except UserProdi.DoesNotExist:
+        userprodi = UserProdi.objects.get(username=request.user)
+        request.userprodi = userprodi
+        if userprodi.photo == None :
             messages.error(request, "Lengkapi data anda terlebih dahulu!")
-            return redirect('/acd/profile_prodi')
+            return redirect('/acd/profile_prodi')               
         return function(request, *args, **kwargs)
+    
     return wrapper
 
 

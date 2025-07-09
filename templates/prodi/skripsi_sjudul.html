@@ -9,29 +9,28 @@
 				<p>{{web_name}}</p>
 			</div>
 			<div class="list-filters">
-				<div class="filter-dropdown">
-					<button class="filter-btn">
-						Filter Mata Kuliah <i class="ri-arrow-down-s-line"></i>
-					</button>
-				</div>
-				<div class="date-filter">
-					<div class="date-input">
-						<i class="ri-calendar-line"></i>
-						<input type="text" placeholder="Semester">
+				<div class="table-actions">
+					<div class="action-group">
+						<div class="search-bar-table">
+							<i class="ri-search-line"></i>
+							<input type="text" id="searchInput" placeholder="Search table...">
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
+		<div class="table-options">
+			<label for="recordsPerPage">Records per page:</label>
+			<select id="recordsPerPage" onchange="updateTable()">
+				<option value="10" selected>10</option>
+				<option value="25">25</option>
+				<option value="50">50</option>
+				<option value="100">100</option>
+			</select>
+		</div>
+
 		<div class="student-table">
-			{% if messages %}
-			{% for message in messages %}
-				<div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} mb-4">
-					<i class="{% if message.tags == 'success' %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
-					{{ message }}
-				</div>
-			{% endfor %}
-			{% endif %}
 			<table>
 				<thead>
 				<tr>
@@ -62,10 +61,10 @@
 						<td>{{ datatb.date_in|date:"d M Y H:i"  }}</td>
 						<td>{{ datatb.mhs }}</td>					  
 						<td>{{ datatb.prodi }}</td>					  
-						<td>{{ datatb.penasehat_akademik }}</td>					  
-						<td>1. {{ datatb.judul_1 }}					  
-								<br>2. {{ datatb.judul_2}}					  
-								<br>3. {{ datatb.judul_3}}
+						<td>{{ datatb.mhs.penasehat_akademik }}</td>					  
+						<td>1. {{ datatb.judul1 }}					  
+								<br>2. {{ datatb.judul2}}					  
+								<br>3. {{ datatb.judul3}}
 								</td>					  
 						<td>{% if datatb.status == 'Waiting'  %}
 							<span class="grade-badge c">{{ datatb.status }}</span>
@@ -75,14 +74,19 @@
 							</button>
 							{% elif datatb.status == 'Revision'  %}
 								<span class="grade-badge b">{{ datatb.status }}</span>
-							{% elif datatb.status == 'Approved'  %}
-								<span class="grade-badge a">{{ datatb.status }}</span>
+							{% else  %}
+								<span class="grade-badge a">Konsultasi PA</span>
 							{% endif %}						
 						</td>					
 					</tr>
 				{% endfor %}
 				</tbody>
 			</table>
+		</div>
+		<div id="pagination" class="pagination">
+			<button id="prev" class="btn warning">Prev</button>
+			<span id="pageNumber" class="page-number">1</span>
+			<button id="next" class="btn warning">Next</button>
 		</div>
 	</div>
 </div>
@@ -119,7 +123,7 @@
 
 
 
-{% block script_modal %} 
+{% block script_costum %} 
 <script>
 	function openModal(modalId, skripsiId) {
 		document.getElementById(modalId).style.display = 'block'; // Tampilkan modal
@@ -142,7 +146,7 @@
         }
     }
 </script>
-{% endblock script_modal %} 
+{% endblock script_costum %} 
 
 
 

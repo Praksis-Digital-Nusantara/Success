@@ -2,20 +2,29 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
+from datetime import datetime
+from django.utils import timezone
 
-from .models import Prodi, ProdiPejabat
+from .models import Prodi, Pejabat, UserFakultas
+from .models import NoSuratFakultas, Layanan, KodeSurat
+from .models import SkripsiJudul, skPembimbing, IzinPenelitian, Ujian
+from .models import SuketBebasKuliah, SuketBebasPlagiasi
 
-from .forms_fakultas import formProfile, formProdiEdit, formProdiPejabatEdit
+
+from .forms_fakultas import formProfile, formProdiEdit, formPejabatEdit
+from .forms_fakultas import formNoSurat, formUjian
 
 from .decorators_fakultas import check_userfakultas
 from .decorators_fakultas import fakultas_required
 
+from aam.context_processors import web_name
+
+tgl_now = timezone.now()
 
 
 @fakultas_required
-@check_userfakultas
 def profile_fakultas(request):
-    userfakultas = request.userfakultas    
+    userfakultas = UserFakultas.objects.get(username=request.user)     
     if request.method == 'POST':
         form = formProfile(request.POST, request.FILES, instance=userfakultas)
         if form.is_valid():
@@ -35,114 +44,366 @@ def profile_fakultas(request):
     return render(request, 'fakultas/set/profile.html', context)
 
 
-########### SET PRODI #####################################################
-
+########### NOMOR SURAT #####################################################
 @fakultas_required
 @check_userfakultas
-def prodi_list(request):           
-    userfakultas = request.userfakultas
-    prodi_list = Prodi.objects.all()
-    context = {
-        'title': 'Set Prodi',
-        'heading': 'Program Studi',
-        'userfakultas' : userfakultas,
-        'photo' : userfakultas.photo,
-        'prodi_list' : prodi_list,
-    }
-    return render(request, 'fakultas/set/prodi_list.html', context)
-
-
-@fakultas_required
-@check_userfakultas
-def prodi_edit(request, id):           
-    userfakultas = request.userfakultas
-    if id == 0:
-        prodi = None
+def nosurat_fakultas(request):           
+    userfakultas = request.userfakultas   
+    tahun = datetime.now().year
+    nosurat_cek = NoSuratFakultas.objects.filter(tahun=tahun).order_by('-nomor').first()
+    if nosurat_cek:
+        nosurat_baru = nosurat_cek.nomor + 1
     else:
-        prodi = get_object_or_404(Prodi, id=id)
+        nosurat_baru = 1  
 
     if request.method == 'POST':
-        if 'delete' in request.POST:  # Jika tombol delete ditekan
-            if prodi:
-                prodi.delete()
-                messages.success(request, 'Prodi berhasil dihapus.')
-                return redirect('/acd/prodi_list') 
-            else:
-                messages.error(request, 'Prodi tidak ditemukan.')
+        form = formNoSurat(request.POST)
+        if form.is_valid():
+            nosurat = form.save(commit=False)  
+            nosurat.adminp = request.user   
+            nosurat.tahun = tahun
+            nosurat.nomor = nosurat_baru 
+            nosurat.save()  
+            messages.success(request, 'No Surat Berhasil Ditambahkan')
         else:
-            form = formProdiEdit(request.POST, instance=prodi)
-            if form.is_valid():
-                prodi = form.save(commit=False) 
-                prodi.save()
-                messages.success(request, 'Prodi berhasil disimpan.')
-                return redirect(f'/acd/prodi_edit/{prodi.id}')
-            else:
-                messages.error(request, 'Periksa kembali isian form.') 
+            messages.error(request, 'periksa kembali isian data anda!')
+        return redirect('acd:nosurat_fakultas')
     else:
-        form = formProdiEdit(instance=prodi)
+        form = formNoSurat(request.POST)
 
+    data = NoSuratFakultas.objects.filter(tahun=tahun).order_by('-date_in')
     context = {
-        'title': 'Set Program Studi',
-        'heading': 'Set Program Studi',
+        'title': 'Nomor Surat',
+        'heading': 'Nomor Surat',
         'userfakultas' : userfakultas,
         'photo' : userfakultas.photo,
-        'form': form,
-        'prodi': prodi 
+        'data' : data,
+        'form' : form
     }
-    return render(request, 'fakultas/set/prodi_edit.html', context)
-
-
+    return render(request, 'fakultas/nosurat.html', context)
 
 
 @fakultas_required
 @check_userfakultas
-def prodi_pejabat_list(request):           
+def nosurat_fakultas_del(request):
     userfakultas = request.userfakultas
-    prodi_list = ProdiPejabat.objects.all()
+    tahun = datetime.now().year
+    data = NoSuratFakultas.objects.filter(tahun=tahun).order_by('-date_in').first()
+    if data:
+        data.delete()
+        messages.success(request, 'Berhasil Membatalkan Nomor Surat Terakhir')
+    else:
+        messages.warning(request, 'Tidak ada nomor surat untuk dibatalkan')
+    return redirect('acd:nosurat_fakultas')
+
+
+########### SK PEMBIMBING #####################################################
+@fakultas_required
+@check_userfakultas
+def skpbb_list(request):           
+    userfakultas = request.userfakultas
+    data = skPembimbing.objects.all().order_by('-date_in')
     context = {
-        'title': 'Set Pejabat Prodi',
-        'heading': 'Pejabat Program Studi',
+        'title': 'SK Pembimbing - List',
+        'heading': 'Daftar SK Pembimbing',
         'userfakultas' : userfakultas,
         'photo' : userfakultas.photo,
-        'prodi_list' : prodi_list,
+        'data' : data,
     }
-    return render(request, 'fakultas/set/prodi_pejabat_list.html', context)
+    return render(request, 'fakultas/skpbb_list.html', context)
 
 
 @fakultas_required
 @check_userfakultas
-def prodi_pejabat_edit(request, id):           
+def skpbb_pengajuan(request):           
     userfakultas = request.userfakultas
-    if id == 0:
-        pejabat = None
-    else:
-        pejabat = get_object_or_404(ProdiPejabat, id=id)
+    data = SkripsiJudul.objects.filter(status_sk='Pengajuan')
 
-    if request.method == 'POST':
-        if 'delete' in request.POST:  # Jika tombol delete ditekan
-            if pejabat:
-                pejabat.delete()
-                messages.success(request, 'Pejabat berhasil dihapus.')
-                return redirect('/acd/prodi_pejabat_list') 
+    if request.method == "POST":
+        skripsi_id = request.POST.get("skripsi_id")
+        data_skripsi = SkripsiJudul.objects.get(id=skripsi_id)
+
+        # Ambil nosurat, jika kosong ambil di sistem
+        nosurat = request.POST.get("nosurat")
+        if nosurat == "" :
+            tahun = datetime.now().year
+            nosurat_cek = NoSuratFakultas.objects.filter(tahun=tahun).order_by('-nomor').first()
+            if nosurat_cek:
+                nosurat_baru = nosurat_cek.nomor + 1
             else:
-                messages.error(request, 'Pejabat tidak ditemukan.')
-        else:
-            form = formProdiPejabatEdit(request.POST, instance=pejabat)
-            if form.is_valid():
-                pejabat = form.save(commit=False) 
-                pejabat.save()
-                messages.success(request, 'Pejabat berhasil disimpan.')
-                return redirect(f'/acd/prodi_pejabat_edit/{pejabat.id}')
-            else:
-                messages.error(request, 'Periksa kembali isian form.') 
-    else:
-        form = formProdiPejabatEdit(instance=pejabat)
+                nosurat_baru = 1  
+            kodesurat = KodeSurat.objects.get(jenis='SK Pembimbing')
+
+            addnosurat = NoSuratFakultas.objects.create(
+                adminp = request.user,
+                tahun = tahun,
+                nomor = nosurat_baru, 
+                perihal = 'SK Pembimbing ' + str(data_skripsi.mhs),
+                tujuan = 'Dosen Pembimbing Skripsi',
+                kode = kodesurat.kode
+            )
+            nosurat =  str(nosurat_baru) + str(kodesurat.kode) + str(tahun)            
+
+        
+        # Buat instance SK Pembimbing
+        skpembimbing = skPembimbing.objects.create(
+            nosurat=nosurat,
+            mhs=data_skripsi.mhs,
+            prodi=data_skripsi.prodi,  # Pastikan mhs memiliki relasi ke Prodi
+            pembimbing1=data_skripsi.pembimbing1,
+            pembimbing2=data_skripsi.pembimbing2,
+            judul=data_skripsi.judul,
+            ttd = Pejabat.objects.get(jabatan='Dekan', tgl_selesai__gte=tgl_now),
+        )
+
+        # Update status skripsi jika diperlukan
+        data_skripsi.status_sk = 'Terbit'
+        data_skripsi.save()
+
+        #update layanan agar status DIPROSES
+        context_pro = web_name(request)
+        try:
+            layanan = Layanan.objects.get(mhs=data_skripsi.mhs, layanan_jenis__nama_layanan__in = ['Penerbitan SK Pembimbing', 'Perpanjangan SK Pembimbing', 'Revisi SK Pembimbing'], status='Processing')
+            layanan.status = 'Completed'
+            layanan.hasil_test = 'SK Pembimbing anda telah diterbitkan, unduh di tautan berikut:'
+            layanan.hasil_link = context_pro.get("baseurl", "") + "acd/print_skpbb/" + str(skpembimbing.id)
+            layanan.save() 
+            messages.success(request, f"Layanan Mahasiswa {data_skripsi.mhs} Berhasil diperbaharui ")
+        except Layanan.DoesNotExist:
+            messages.info(request, f"Tidak ada layanan yang ditemukan untuk mahasiswa {data_skripsi.mhs} ")
+
+        # tambahkan program untuk skpbb     
+        messages.success(request, f"SK Pembimbing {data_skripsi.mhs} berhasil diterbitkan ")
 
     context = {
-        'title': 'Set Pejabat Prodi',
-        'heading': 'Kelolah Pejabat',
+        'title': 'SK Pembimbing - Pengajuan',
+        'heading': 'Daftar Pengajuan SK Pembimbing',
         'userfakultas' : userfakultas,
         'photo' : userfakultas.photo,
-        'form': form,
+        'data' : data,
     }
-    return render(request, 'fakultas/set/prodi_pejabat_edit.html', context)
+    return render(request, 'fakultas/skpbb_pengajuan.html', context)
+
+
+
+##########################  IZIN PENELITIAN ######################################
+@fakultas_required
+@check_userfakultas
+def izinpenelitian_list(request):           
+    userfakultas = request.userfakultas
+    data = IzinPenelitian.objects.all().order_by('-date_in')
+    context = {
+        'title': 'Izin Penelitian - List',
+        'heading': 'Daftar Izin Penelitian',
+        'userfakultas' : userfakultas,
+        'photo' : userfakultas.photo,
+        'data' : data,
+    }
+    return render(request, 'fakultas/izinpenelitian_list.html', context)
+
+
+@fakultas_required
+@check_userfakultas
+def izinpenelitian_pengajuan(request):           
+    userfakultas = request.userfakultas
+    data = Layanan.objects.filter(status__in = ['Waiting', 'Processing'], layanan_jenis__nama_layanan = 'Izin Penelitian')
+
+    if request.method == "POST":
+        layanan_id = request.POST.get("id")
+        layanan = Layanan.objects.get(id=layanan_id)
+        action = request.POST.get('action')
+        if action == 'tolak':
+            #update layanan agar status DITOLAK
+            layanan.status = 'Rejected'
+            layanan.hasil_test = request.POST.get("alasan")
+            layanan.adminp = request.user
+            layanan.save() 
+            messages.warning(request, f"Izin Penelitian {layanan.mhs} ditolak ")
+        else :
+            data_skripsi = SkripsiJudul.objects.get(mhs=layanan.mhs)
+            # Buat instance Izin Penelitian
+            nosurat= request.POST.get("nosurat")
+            if nosurat == "" :
+                tahun = datetime.now().year
+                nosurat_cek = NoSuratFakultas.objects.filter(tahun=tahun).order_by('-nomor').first()
+                if nosurat_cek:
+                    nosurat_baru = nosurat_cek.nomor + 1
+                else:
+                    nosurat_baru = 1  
+                kodesurat = KodeSurat.objects.get(jenis='Izin Penelitian')
+
+                addnosurat = NoSuratFakultas.objects.create(
+                    adminp = request.user,
+                    tahun = tahun,
+                    nomor = nosurat_baru, 
+                    perihal = 'Izin Penelitian ' + str(data_skripsi.mhs),
+                    tujuan = 'Pimpinan ' + request.POST.get("pimpinan"),
+                    kode = kodesurat.kode
+                )
+                nosurat =  str(nosurat_baru) + str(kodesurat.kode) + str(tahun) 
+
+            izinpenelitian = IzinPenelitian.objects.create(
+                no_surat= nosurat,
+                adminp = request.userfakultas,
+                mhs_judul = data_skripsi,
+                lokasi = request.POST.get("lokasi"),
+                pimpinan = request.POST.get("pimpinan"),
+                pimpinancq = request.POST.get("pimpinancq"),
+                ttd = Pejabat.objects.get(jabatan='Wakil Dekan I', tgl_selesai__gte=tgl_now)  
+            )
+
+            #update layanan agar status DIPROSES
+            context_pro = web_name(request)
+            layanan.status = 'Completed'
+            layanan.adminp = request.user
+            layanan.hasil_test = 'Izin Penelitian anda telah terbit, download di tautan berikut:'
+            layanan.hasil_link = context_pro.get("baseurl", "") + "acd/print_izinpenelitian/" + str(izinpenelitian.id)
+            layanan.save() 
+
+            # tambahkan program untuk izin penelitian     
+            messages.success(request, f"Izin Penelitian {data_skripsi.mhs} berhasil diterbitkan ")  # Updated message to reflect Izin Penelitian
+        
+
+    context = {
+        'title': 'Izin Penelitian - Pengajuan',
+        'heading': 'Daftar Pengajuan Izin Penelitian',
+        'userfakultas' : userfakultas,
+        'photo' : userfakultas.photo,
+        'data' : data,
+    }
+    return render(request, 'fakultas/izinpenelitian_pengajuan.html', context)
+
+
+
+
+##########################  UJIAN TUTUP SKRIPSI ######################################
+@fakultas_required
+@check_userfakultas
+def ujian_list(request, filter):           
+    userfakultas = request.userfakultas
+    if filter == 'pengajuan':
+        title = 'Ujian Tutup - Pengajuan'
+        data = Ujian.objects.filter(ujian_tgl__isnull=False, no_surat__isnull=True).order_by('-date_in')
+    elif filter == 'terbit':
+        title = 'Ujian Tutup - Terbit'
+        data = Ujian.objects.filter(ujian_tgl__isnull=False, no_surat__isnull=False).order_by('-date_in')
+    else:
+        title = 'Ujian Tutup'
+        data = Ujian.objects.all().order_by('-date_in')
+
+    
+    context = {
+        'title': title,
+        'heading': title,
+        'userfakultas' : userfakultas,
+        'photo' : userfakultas.photo,
+        'data' : data,
+    }
+    return render(request, 'fakultas/ujian_list.html', context)
+
+
+@fakultas_required
+@check_userfakultas
+def ujian_proses(request, id):     
+    userfakultas = request.userfakultas
+    ujian = Ujian.objects.get(id=id)
+
+    if request.method == "POST":
+        form = formUjian(request.POST, instance=ujian)
+        if form.is_valid():
+            # Ambil nosurat, jika kosong ambil di sistem
+            nosurat = request.POST.get("no_surat")
+            if not nosurat :
+                tahun = datetime.now().year
+                nosurat_cek = NoSuratFakultas.objects.filter(tahun=tahun).order_by('-nomor').first()
+                if nosurat_cek:
+                    nosurat_baru = nosurat_cek.nomor + 1
+                else:
+                    nosurat_baru = 1  
+                kodesurat = KodeSurat.objects.get(jenis='Undangan Ujian')
+
+                addnosurat = NoSuratFakultas.objects.create(
+                    adminp = request.user,
+                    tahun = tahun,
+                    nomor = nosurat_baru, 
+                    perihal = 'Undangan Ujian ' + str(ujian.mhs_judul.mhs),
+                    tujuan = 'Dosen Pimpinan Sidang, Pembimbing dan Penguji Skripsi',
+                    kode = kodesurat.kode
+                )
+                nosurat =  str(nosurat_baru) + str(kodesurat.kode) + str(tahun)  
+                messages.info(request, 'Nosurat diambil dari sistem') 
+
+            ujian = form.save(commit=False)
+            ujian.adminp = request.userfakultas
+            ujian.no_surat = nosurat
+            ujian.save()
+            messages.success(request, 'Data Ujian berhasil diperbarui!')
+
+            try:
+                layanan = Layanan.objects.get(
+                    mhs=ujian.mhs_judul.mhs,
+                    layanan_jenis__nama_layanan='Undangan Ujian Tutup',
+                    status__in=['Processing', 'Waiting']
+                )
+                layanan.status = 'Completed'
+                layanan.hasil_test = 'Undangan Ujian anda telah diterbitkan, unduh di tautan berikut:'
+                layanan.hasil_link = "/acd/print_undangan_ujian/" + str(ujian.id)
+                layanan.adminp = request.user
+                layanan.save()
+                messages.info(request, f"Layanan Mahasiswa {ujian.mhs_judul.mhs} Berhasil diperbaharui ")
+            except Layanan.DoesNotExist:
+                messages.info(request, f"Tidak ada layanan yang ditemukan untuk mahasiswa {ujian.mhs_judul.mhs} ")
+
+
+        else:
+            messages.error(request, 'Periksa kembali isian data anda!')
+    else:
+        form = formUjian(instance=ujian)
+
+    context = {
+        'title': "Ujian Tutup - Proses",
+        'heading': "Ujian Tutup - Proses",
+        'userfakultas' : userfakultas,
+        'photo' : userfakultas.photo,
+        'ujian' : ujian,
+        'bebaskuliah' : SuketBebasKuliah.objects.filter(mhs=ujian.mhs_judul.mhs).first(),
+        'bebasplagiasi' : SuketBebasPlagiasi.objects.filter(mhs=ujian.mhs_judul.mhs).first(),
+        'skpbb' : skPembimbing.objects.filter(mhs=ujian.mhs_judul.mhs).order_by('-date_in').first(),
+        'form' : form,
+    }
+    return render(request, 'fakultas/ujian_proses.html', context)
+
+
+##########################  LAYANAN ######################################
+# saya tambahkan filter untuk layanan fakultas - ndx
+@fakultas_required
+@check_userfakultas
+def layanan_fakultas(request, filter):           
+    userfakultas = request.userfakultas
+    
+    if filter == 'Waiting':
+        layanan_data = Layanan.objects.filter(status='Waiting').order_by('-date_in')
+    elif filter == 'Processing':
+        layanan_data = Layanan.objects.filter(status='Processing').order_by('-date_in')
+    elif filter == 'Completed':
+        layanan_data = Layanan.objects.filter(status='Completed').order_by('-date_in')
+    elif filter == 'Rejected':
+        layanan_data = Layanan.objects.filter(status='Rejected').order_by('-date_in')
+    else:
+        layanan_data = Layanan.objects.all().order_by('-date_in')
+    
+    context = {
+        'title': 'Layanan',
+        'heading': 'List Layanan',
+        'userfakultas' : userfakultas,
+        'filter' : filter,
+        'photo' : userfakultas.photo,
+        'layanan_data': layanan_data,
+    }
+    return render(request, 'fakultas/layanan.html', context)
+
+
+
+
+
+

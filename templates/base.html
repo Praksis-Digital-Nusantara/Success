@@ -37,19 +37,12 @@
 				<ul>
 					<li><a href="/" class="active"><i class="ri-home-4-line"></i> Home</a></li>
 					<li><a href="#about"><i class="ri-information-line"></i> About</a></li>
-					<li><a href="#wisuda"><i class="ri-book-2-line"></i> Wisuda</a></li>
 					<li><a href="#contact"><i class="ri-contacts-line"></i> Contact</a></li>
 					{% if user.is_authenticated %}
 
-                    <li class="nav-item user-menu">
-                        <a href="#" class="nav-link">
-                            <i class="ri-user-line"></i> {{ user.username|title }}
-                        </a>
-                    </li>
-
 					<li class="nav-item user-menu">
-						<a href="{% url 'acd:index' %}" class="nav-link">
-							<i class="ri-dashboard-line"></i> Dashboard
+						<a href="{% url 'acd:index' %}" >
+							<btn class="btn warning small"><i class="ri-dashboard-fill"></i>Dashboard : {{ user.first_name|title }}</btn>
 						</a>
 					</li>
                     {% else %}
@@ -99,9 +92,9 @@
 					<div class="footer-col">
 						<h4>Contact Info</h4>
 						<div class="contact-info">
-							<p><i class="ri-map-pin-2-line"></i> Jl. A. P. Pettarani, Tidung, Makassar</p>
-							<p><i class="ri-phone-line"></i> (0411) 889464</p>
-							<p><i class="ri-mail-line"></i> feb@unm.ac.id</p>
+							<p><i class="ri-map-pin-2-line"></i> {{address}}</p>
+							<p><i class="ri-phone-line"></i> {{telp}}</p>
+							<p><i class="ri-mail-line"></i> {{email}}</p>
 						</div>
 					</div>
 				</div>
@@ -117,10 +110,12 @@
 				</div>
 			</div>
 		</footer>
+
+		
 <script src="{% static 'js/home/navigation.js' %}"></script>
 <script>
-			// Slider functionality
-			const slides = document.querySelectorAll('.slide');
+		// Slider functionality
+		const slides = document.querySelectorAll('.slide');
 		const nextBtn = document.querySelector('.next');
 		const prevBtn = document.querySelector('.prev');
 		const dotsContainer = document.querySelector('.slider-dots');
@@ -196,5 +191,43 @@
 			});
 		});
 </script>
+
+
+<script>
+	document.addEventListener("DOMContentLoaded", function() {
+		const tabs = document.querySelectorAll(".program-categories ul li");
+		const programCards = document.querySelectorAll(".program-card");
+	
+		tabs.forEach(tab => {
+			tab.addEventListener("click", function() {
+				// Remove active class from all tabs
+				tabs.forEach(t => t.classList.remove("active"));
+				// Add active class to the clicked tab
+				tab.classList.add("active");
+	
+				// Get category from the clicked tab
+				const category = tab.getAttribute("data-category");
+	
+				// Hide all program cards
+				programCards.forEach(card => {
+					// Check if the card belongs to the selected category or if "semua" is selected
+					if (category === "semua" || card.getAttribute("data-category") === category) {
+						card.style.display = "flex"; // Show the card, use flex for consistent layout
+					} else {
+						card.style.display = "none"; // Hide the card
+					}
+				});
+			});
+		});
+	
+		// Trigger click on the "Semua Kegiatan" tab to show all items by default
+		document.querySelector(".program-categories ul li.active").click();
+	});
+	
+
+	
+
+</script>
+
 </body>
 </html>

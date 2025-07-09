@@ -1,0 +1,117 @@
+{% extends "fakultas/base.html" %}
+
+{% block content1 %}
+<div class="dashboard-content">
+	<div class="student-list-container">
+		<div class="list-header">
+			<div class="list-title">
+				<h2>{{ heading }}</h2>
+				<p>{{web_name}}</p>
+			</div>
+				<div class="list-filters">
+					<div class="table-actions">
+						<div class="action-group">
+							<div class="search-bar-table">
+								<i class="ri-search-line"></i>
+								<input type="text" id="searchInput" placeholder="Search table...">
+							</div>
+						</div>
+						<div class="action-group">
+							<button class="btn primary" onclick="openModal('nomorsurat')">
+								<i class="ri-add-line"></i>
+								<span>Nomor Surat Baru</span>
+							</button>
+							<a href="{% url 'acd:nosurat_fakultas_del' %}">
+							<button class="btn danger" id="deleteSelected">
+								<i class="ri-delete-bin-line"></i>
+								<span>Batalkan Nomor Terakhir</span>
+							</button>
+							</a>
+						</div>
+					</div>
+				</div>
+		</div>
+
+		<div class="table-options">
+			<label for="recordsPerPage">Records per page:</label>
+			<select id="recordsPerPage" onchange="updateTable()">
+				<option value="10" selected>10</option>
+				<option value="25">25</option>
+				<option value="50">50</option>
+				<option value="100">100</option>
+			</select>
+		</div>
+
+
+		<div class="student-table">
+			<table>
+				<thead>
+				<tr>
+					<th style="white-space: nowrap;">No</th>
+					<th>Date In</th>
+					<th>Nomor Surat</th>
+					<th>Perihal</th>
+					<th>Tujuan</th>
+				</tr>
+				</thead>
+				<tfoot>
+				<tr>
+					<th>No</th>
+					<th>Date In</th>
+					<th>Nomor Surat</th>
+					<th>Perihal</th>
+					<th>Tujuan</th>
+				</tr>
+				</tfoot>
+				<tbody id="tableBody">
+				{% for datatb in data %}
+					<tr>
+						<td>{{ forloop.counter }}</td>
+						<td>{{ datatb.date_in }}</td>
+						<td>{{ datatb.nomor }}{{ datatb.kode }}{{ datatb.tahun }}</td>
+						<td>{{ datatb.perihal }}</td>							  				
+						<td>{{ datatb.tujuan }}</td>					  
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div id="pagination" class="pagination">
+			<button id="prev" class="btn warning">Prev</button>
+			<span id="pageNumber" class="page-number">1</span>
+			<button id="next" class="btn warning">Next</button>
+		</div>
+	</div>
+</div>
+
+<!-- OPENING ELEMEN MODAL -->
+<div id="nomorsurat" class="modal-edit">
+	<div class="modal-content-edit">
+		<span class="close" onclick="closeModal('nomorsurat')">&times;</span>
+		<h2 style="text-align: left;">Perihal dan Tujuan</h2>
+		<form method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+		<div class="form-group">
+			<label style="text-align: left;">Perihal</label>
+			{{ form.perihal }}
+		</div>
+		<div class="form-group">
+			<label style="text-align: left;">Tujuan</label>
+			{{ form.tujuan }}
+		</div>
+		<div class="form-group">
+			<label style="text-align: left;">Kode Surat</label>
+			{{ form.kode }}
+		</div>
+		<div class="form-group">
+			<button type="submit" class="btn primary">
+				<i class="ri-save-line"></i>
+				Update Data
+			</button>
+		</div>
+	</form>
+	</div>
+</div>
+<!-- OPENING ELEMENT MODAL -->
+{% endblock content1 %}
+

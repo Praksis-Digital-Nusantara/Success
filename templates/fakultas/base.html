@@ -15,7 +15,9 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="logo">
-                <i class="ri-strikethrough"></i>
+                <!-- <a href="/">
+                    <img src="/static/img/logo.png" style="width: 100px;">
+                </a> -->
                 <div class="logo-text">
                     <h2>{{webname}}</h2>
                     <span>{{web_name}}</span>
@@ -28,12 +30,30 @@
                     <li class="{% if title == 'Dashboard' %}active{% endif %}">
                         <a href="{% url "acd:dashboard" %}"><i class="ri-dashboard-line"></i> Dashboard</a>
                     </li>  
-                    <li class="{% if title == 'Set Prodi' %}active{% endif %}">
-                        <a href="{% url 'acd:prodi_list' %}"><i class="ri-calendar-line"></i>Set Prodi</a>
-                    </li>                 
-                    <li class="{% if title == 'Set Pejabat Prodi' %}active{% endif %}">
-                        <a href="{% url 'acd:prodi_pejabat_list' %}"><i class="ri-calendar-line"></i>Set Pejabat Prodi</a>
-                    </li>                 
+                    <li class="{% if title == 'Nomor Surat' %}active{% endif %}">
+                        <a href="{% url 'acd:nosurat_fakultas' %}"><i class="ri-file-list-3-line"></i> Nomor Surat</a>
+                    </li>
+                    <li class="has-dropdown  {% if title == 'SK Pembimbing - Pengajuan' or title == 'SK Pembimbing - List' %}active{% endif %}">
+                        <a href="#"><i class="ri-file-text-line"></i></i>SK Pembimbing<i class="ri-arrow-down-s-line dropdown-icon"></i></a>
+                        <ul class="submenu">
+                            <li class="{% if title == 'SK Pembimbing - Pengajuan' %}active{% endif %}"><a href="{% url 'acd:skpbb_pengajuan' %}"><i class="ri-file-list-3-line"></i> Pengajuan</a></li>
+                            <li class="{% if title == 'SK Pembimbing - List' %}active{% endif %}"><a href="{% url 'acd:skpbb_list' %}"><i class="ri-file-list-3-line"></i> SK Terbit</a></li>
+                        </ul>
+                    </li>                    
+                    <li class="has-dropdown  {% if title == 'Izin Penelitian - Pengajuan' or title == 'Izin Penelitian - List' %}active{% endif %}">
+                        <a href="#"><i class="ri-file-text-line"></i></i>Izin Penelitian<i class="ri-arrow-down-s-line dropdown-icon"></i></a>
+                        <ul class="submenu">
+                            <li class="{% if title == 'Izin Penelitian - Pengajuan' %}active{% endif %}"><a href="{% url 'acd:izinpenelitian_pengajuan' %}"><i class="ri-file-list-3-line"></i> Pengajuan</a></li>
+                            <li class="{% if title == 'Izin Penelitian - List' %}active{% endif %}"><a href="{% url 'acd:izinpenelitian_list' %}"><i class="ri-file-list-3-line"></i>Terbit</a></li>
+                        </ul>
+                    </li>                
+                    <li class="has-dropdown  {% if title == 'Ujian Tutup - Pengajuan' or title == 'Ujian Tutup - Terbit' %}active{% endif %}">
+                        <a href="#"><i class="ri-file-text-line"></i></i>Ujian Tutup Skripsi<i class="ri-arrow-down-s-line dropdown-icon"></i></a>
+                        <ul class="submenu">
+                            <li class="{% if title == 'Ujian Tutup - Pengajuan' %}active{% endif %}"><a href="{% url 'acd:ujian_list' 'pengajuan' %}"><i class="ri-file-list-3-line"></i> Pengajuan</a></li>
+                            <li class="{% if title == 'Ujian Tutup - Terbit' %}active{% endif %}"><a href="{% url 'acd:ujian_list' 'terbit' %}"><i class="ri-file-list-3-line"></i>Terbit</a></li>
+                        </ul>
+                    </li>                                 
                     <li class="{% if title == 'Profile' %}active{% endif %}">
                         <a href="{% url 'acd:profile_fakultas' %}"><i class="ri-calendar-line"></i>Profile</a>
                     </li>                 
@@ -41,7 +61,7 @@
             </nav>
 
             <div class="sidebar-footer">
-                <button class="btn danger" onclick="openModal('logout')">
+                <button class="btn logout " onclick="openModal('logout')">
                     <i class="ri-logout-box-line"></i>
                     Logout
                 </button>
@@ -58,23 +78,34 @@
             <header class="top-header">
                 <div class="header-left">
                     <button id="toggle-sidebar"><i class="ri-menu-line"></i></button>
-                    <h1>{{heading}}</h1>
+                    <h2>{{heading}}</h2>
                 </div>
                 <div class="header-right">
-                    <div class="search-bar">
-                        <i class="ri-search-line"></i>
-                        <input type="text" placeholder="Search...">
-                    </div>
                     <div class="user-menu">
                         <i class="ri-contrast-2-fill"></i>
                         <i class="ri-notification-3-line"></i>
-                        <img src="/{{ photo }}" alt="User Avatar" class="avatar">
+                        <img src="/media/{{ photo }}" alt="User Avatar" class="avatar">
                     </div>
                 </div>
             </header>
 
+            <div class="alert2-container">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert2 alert2-{{ message.tags }}">
+                            <i class="{% if message.tags == 'success' %}ri-checkbox-circle-line{% elif message.tags == 'warning' %}ri-alert-line{% elif message.tags == 'info' %}ri-information-line{% else %}ri-error-warning-line{% endif %}"></i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+
             {% block content1 %}
             {% endblock content1 %}
+
+
+
             <!-- START FOOTER DASHBAORD -->
             <footer class="dashboard-footer">
                 <div class="footer-content">
@@ -143,157 +174,29 @@
 <div id="logout" class="modal-edit">
 	<div class="modal-content-edit">
 		<span class="close" onclick="closeModal('logout')">&times;</span>
-		<p>Yakin ingin keluar dari aplikasi?</p>
-        <a href="{% url 'acd:logout' %}" class="logout">
-            <button class="btn danger">
-                <i class="ri-logout-box-line"></i>
-                Ya
+		<div class="modal-icon"><i class="ri-logout-box-r-line"></i></div>
+		<h2>Konfirmasi Logout</h2>
+        <p>Yakin ingin keluar dari aplikasi?</p>
+        <div class="modal-actions">
+            <button class="btn" onclick="closeModal('logout')">
+                Batal
             </button>
-        </a>
-        <button class="btn primary" onclick="closeModal('logout')">
-            <i class="ri-logout-box-line"></i>
-            Tidak
-        </button>
+            <a href="{% url 'acd:logout' %}" class="logout">
+                <button class="btn danger">
+                    Keluar
+                </button>
+            </a>
+        </div>
 	</div>
 </div>
 
 
-    <!-- JS FOR SIDEBAR/OPENG/CLOSE -->
-    <script>
-        const toggleButton = document.getElementById('toggle-sidebar');
-        const dashboardContainer = document.querySelector('.dashboard-container');
-        const mainContent = document.querySelector('.main-content');
-        const sidebar = document.querySelector('.sidebar');
 
-        // Function to check screen width and collapse sidebar
-        const checkScreenWidth = () => {
-            if (window.innerWidth <= 768) {
-                dashboardContainer.classList.add('sidebar-collapsed');
-            }
-        };
-
-        // Check on page load
-        checkScreenWidth();
-
-        // Check on window resize
-        window.addEventListener('resize', checkScreenWidth);
-        
-        // Toggle sidebar with button
-        toggleButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            dashboardContainer.classList.toggle('sidebar-collapsed');
-        });
-
-        // Close sidebar when clicking main content only on mobile
-        document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768) {
-                if (!sidebar.contains(e.target) && !toggleButton.contains(e.target)) {
-                    dashboardContainer.classList.add('sidebar-collapsed');
-                }
-            }
-        });
-
-        // Active Menu Item
-        const menuItems = document.querySelectorAll('.sidebar-menu li');
-        menuItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                menuItems.forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
-            });
-        });
-    </script>
-    <!-- JS FOR DROPDOWN -->
-    <script>
-      // Dropdown functionality
-      const dropdownItems = document.querySelectorAll('.has-dropdown > a');
-        
-        dropdownItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                const parent = item.parentElement;
-                
-                // Toggle current dropdown
-                if (parent.classList.contains('active')) {
-                    parent.classList.remove('active');
-                } else {
-                    // Close other dropdowns
-                    dropdownItems.forEach(other => {
-                        other.parentElement.classList.remove('active');
-                    });
-                    parent.classList.add('active');
-                }
-            });
-        });
-    </script>
-
-    <!-- JS FOR DARK DASHBOARD -->
-    <script>
-        // Dark mode toggle
-        const darkModeToggle = document.querySelector('.ri-contrast-2-fill');
-        
-        // Check for saved dark mode preference
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            document.body.classList.add('dark-mode');
-        }
-        
-        darkModeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            
-            // Save preference
-            if (document.body.classList.contains('dark-mode')) {
-                localStorage.setItem('darkMode', 'enabled');
-            } else {
-                localStorage.setItem('darkMode', null);
-            }
-        });
-    </script>
-
-
-<!-- Add this before closing body tag -->
-<script>
-    const notificationButton = document.querySelector('.ri-notification-3-line');
-    const notificationModal = document.getElementById('notificationModal');
-
-    notificationButton.addEventListener('click', (e) => {
-        e.stopPropagation();
-        notificationModal.classList.toggle('show-notification');
-    });
-
-    // Close notification modal when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!notificationModal.contains(e.target) && !notificationButton.contains(e.target)) {
-            notificationModal.classList.remove('show-notification');
-        }
-    });
-</script>
+<script src="{% static 'js/acd/main.js' %}?v={{ STATIC_VERSION }}"></script>
 
 {% block script_costum %} 
 {% endblock script_costum %} 
 
-
-{% block script_modal %} 
-<script>
-    function openModal(modalId) {
-        var modal = document.getElementById(modalId);
-        modal.style.display = "block";
-    }
-
-    function closeModal(modalId) {
-        var modal = document.getElementById(modalId);
-        modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        var modals = document.getElementsByClassName('modal-edit');
-        for (var i = 0; i < modals.length; i++) {
-            if (event.target == modals[i]) {
-                modals[i].style.display = "none";
-            }
-        }
-    }
-</script>
-{% endblock script_modal %} 
 
 
 </body>

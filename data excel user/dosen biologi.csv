@@ -1,0 +1,35 @@
+﻿username,email,first_name,last_name,is_active,password,prodi,telp,status_kepegawaian,tempat_lahir,tgl_lahir,nidn,pangkat,golongan,jafung,bidang_keahlian
+197307012005012002,dosen@unsulbar.com,"Sari Rahayu Rahman, S. Pd., M. Pd.",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0001067303,Penata Tk I,III/d,Lektor,S2 Pendidikan Dasar Sains
+198008102015042001,dosen@unsulbar.com,"Nurmiati, S. Pd., M. Pd.",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0010088004,Penata,III/c,Lektor,S2 Pendidikan Biologi
+199211082022032014,dosen@unsulbar.com,"Phika Ainnadya Hasan, S.Si., M.Si",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,8119201,Penata,III/c,Lektor,S2 Biosains Hewan
+198812102018031001,dosen@unsulbar.com,"Firman, S. Pd., M. Pd.",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0010128801,Penata,III/c,Lektor,S2 Pendidikan Biologi
+199210092018032001,dosen@unsulbar.com,"Nurhidayah, S. Pd., M. Pd.",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0009109201,Penata,III/c,Lektor,S2 Pendidikan biologi
+199109262019032022,dosen@unsulbar.com,"Gaby Maulida Nurdin, S. Si, M. Si.",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0926099102,Penata Muda Tk I,III/b,Lektor,S2 Biologi/Mikrobiologi
+198903272019031013,dosen@unsulbar.com,"Ariandi, S. Pd., M. Si.",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0927038902,Penata Muda Tk I,III/b,Lektor,S2 Biologi dan Bioteknologi Umum
+198701282015042003,dosen@unsulbar.com,"Dr. Indah Panca Pujiastuti, S. Pd., M. Pd.",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0028018702,Penata Muda Tk I,III/b,Lektor,S3 Pendidikan Biologi
+199009232019032019,dosen@unsulbar.com,"Nurul Hidayah, S. Si., M. Si.",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0023099005,Penata Muda Tk I,III/b,Asisten Ahli,S2 Biologi/Mikrobiologi
+199005032019032018,dosen@unsulbar.com,"Arlinda Puspita Sari, S. Si, M. Si.",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0003059004,Penata Muda Tk I,III/b,Asisten Ahli,S2 Biologi Tumbuhan
+199305272019032029,dosen@unsulbar.com,"Nur Amaliah, S. Pd., M. Pd.",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0027059301,Penata Muda Tk I,III/b,Asisten Ahli,S2 Biologi dan Bioteknologi Umum
+199106272019032025,dosen@unsulbar.com,"Masyitha Wahid, S. Pd., M. S.",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0027069104,Penata,III/c,Lektor,S2 Ilmu Biologi dan Biologi molekuler
+199109092019031023,dosen@unsulbar.com,"Firdaus, S. Pd., M. Sc",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0009099101,Penata,III/c,Lektor,S2 Pendidikan Biologi 
+198502232019032011,dosen@unsulbar.com,"Mufti Hatur Rahmah, S. Si, M. Si.",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0023028504,Penata Muda Tk I,III/b,Asisten Ahli,S2 Biologi dan Bioteknologi Umum
+199102122019031008,dosen@unsulbar.com,"M. Irfan, S. Pd., M. Pd.",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0912029103,Penata Muda Tk I,III/b,Asisten Ahli,S2 Pendidikan Bioloogi
+198908152022031003,dosen@unsulbar.com,"Baso Manguntungi, S.Si.,M.Si",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0915088901,Penata Muda Tk I,III/b,Lektor,S-2 Biologi Tumbuhan
+198703082022032009,dosen@unsulbar.com,"Nurmuliyanti Muis, S.Si., M.Si",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0080038711,Penata Muda Tk I,III/b,Asisten Ahli,S-2 Biologi Tumbuhan
+199209262022031004,dosen@unsulbar.com,"Alexander Kurniawan Sariyanto Putera, S.Si., M.Si.",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0026099203,Penata Muda Tk I,III/b,Asisten Ahli,S-2 Biosains Hewan
+199009212022031009,dosen@unsulbar.com,"Muh. Rizaldi Trias Jaya Putra N S.Pd.,M.Si",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0821099002,Penata Muda Tk I,III/b,Lektor,S-2 Biosains Hewan
+19901015202231006,dosen@unsulbar.com,"Sufyan Hakim, S.Pd., M.Pd.",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0015109011,Penata Muda Tk I,III/b,Asisten Ahli,S2 Pendidikan Biologi 
+199312302022031013,dosen@unsulbar.com,"Muh. Rizal Kurniawan Yunus, S.Pd., M.Pd",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0030129302,Penata Muda Tk I,III/b,Asisten Ahli,S2 Pendidikan Biologi 
+199410202022032017,dosen@unsulbar.com,"Ramlah, S.Si., M.Sc.",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0920109401,Penata Muda Tk I,III/b,Asisten Ahli,S-2 Biologi
+199112162022032009,dosen@unsulbar.com,"Isdaryanti, S.Si.,M.Si.",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0016129102,Penata Muda Tk I,III/b,Asisten Ahli,S-2 Biologi
+199510302022032017,dosen@unsulbar.com,"Musrifah Tahar, S.Si., M.Si",Dosen,1,dosen,Pendidikan Biologi - S1,,PNS,,1900-01-01,0030109503,Penata Muda Tk I,III/b,Asisten Ahli,S-2 Biokimia
+dsn_bio_001,dosen@unsulbar.com,"Nurman, S. Si., M. Si.",Dosen,1,dosen,Pendidikan Biologi - S1,,CPNS,,1900-01-01,,Penata Muda Tk I,III/b,Asisten Ahli,
+198812132024062001,dosen@unsulbar.com,"Evy Noviana, S.Pd., M.Si.",Dosen,1,dosen,Pendidikan Biologi - S1,,CPNS,,1900-01-01,,Penata Muda Tk I,III/b,Asisten Ahli,S-2 Biologi
+198404252021212003,dosen@unsulbar.com,"Dr. Sainab, S. Pd., M. Pd.",Dosen,1,dosen,Pendidikan Biologi - S1,,PPPK,,1900-01-01,0925048401,Penata Muda Tk I,III/b,Lektor,S3 Pendidikan Biologi
+0906038201,dosen@unsulbar.com,"Dr.Jirana, S. Pd., M. Pd.",Dosen,1,dosen,Pendidikan Biologi - S1,,PPPK,,1900-01-01,0906038201,Penata Muda Tk I,III/b,Lektor,S3 Pendidikan Biologi
+0029018405,dosen@unsulbar.com,"Mesra Damayanti, S. Pd., M. Pd.",Dosen,1,dosen,Pendidikan Biologi - S1,,PPPK,,1900-01-01,0029018405,Penata Muda Tk I,III/b,Lektor,S2 Pendidikan Kimia
+0013108206,dosen@unsulbar.com,"Dr. Syamsiara Nur, S. Pd., M. Pd.",Dosen,1,dosen,Pendidikan Biologi - S1,,NON_ASN,,1900-01-01,0013108206,Penata,III/c,Lektor,S3 Pendidikan Biologi
+0927058902,dosen@unsulbar.com,"Muhammad Mifta Fausan, S. Pd., M. Pd.",Dosen,1,dosen,Pendidikan Biologi - S1,,NON_ASN,,1900-01-01,0927058902,Penata Muda Tk I,III/b,Asisten Ahli,S2 Pendidikan Biologi
+0002079009,dosen@unsulbar.com,"Nursyamsi, S. Pd., M. Pd.",Dosen,1,dosen,Pendidikan Biologi - S1,,NON_ASN,,1900-01-01,0002079009,,III/b,Tenaga Pengajar,S2 Pendidikan Biologi 
+0004059401,dosen@unsulbar.com,"Yusrianto Nasir, S.Pd, M. Pd",Dosen,1,dosen,Pendidikan Biologi - S1,,NON_ASN,,1900-01-01,0004059401,,III/b,Tenaga Pengajar,S2 Pendidikan Bioloogi
+dsn_bio_002,dosen@unsulbar.com,"Muhammad Aslam, S.Pd., M.Pd",Dosen,1,dosen,Pendidikan Biologi - S1,,NON_ASN,,1900-01-01,,,III/b,Tenaga Pengajar,S2 Pendidikan Bioloogi

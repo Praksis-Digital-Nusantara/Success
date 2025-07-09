@@ -1,0 +1,92 @@
+{% extends "prodi/base.html" %}
+
+{% block content1 %}
+<div class="dashboard-content">
+	<div class="profile-section">
+	<div class="container-header">
+		<nav class="container-breadcrumb">
+			<ul>
+				<li>
+					<a href="{% url 'acd:dashboard' %}">
+						<i class="ri-home-line"></i>
+					</a>
+				</li>
+				<li>
+					<i class="ri-arrow-right-s-line"></i>
+				</li>
+				<li>
+					<a href="{% url 'acd:suket_bebasplagiasi' %}">suket_bebasplagiasi</a>
+				</li>
+				<li>
+					<i class="ri-arrow-right-s-line"></i>
+				</li>
+				<li>
+					<a href="">{{ heading }}</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+
+		<div class="student-table">
+			<div class="table-responsive">
+				<table>
+					<tbody>
+						<tr>
+							<td width="20%">Mahasiswa</td>
+							<td width="5%">:</td>
+							<td>{{ mhs.nim }}</td>					  
+						</tr>
+						<tr>
+							<td >Program Studi</td>
+							<td >:</td>
+							<td>{{ mhs.prodi }}</td>					  
+						</tr>
+						<tr>
+							<td >Tempat/Tanggal Lahir</td>
+							<td >:</td>
+							<td>{{ mhs.tempat_lahir }}, {{ mhs.tgl_lahir }}</td>					  
+						</tr>
+					</tbody>
+				</table>	
+			</div>
+		</div>
+
+		<form method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+			<div class="form-row">
+				<div class="form-group">
+					<label for="id_no_surat">Nomor Surat</label>
+					{{ form.no_surat }}
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group">
+					<label for="id_nilai_plagiasi">Persentase Plagiasi</label>
+					{{ form.nilai_plagiasi }}
+				</div>
+			</div>			
+			<div class="form-row">
+				<div class="form-group">
+					<label for="id_ttd">Pejabat Bertandatangan</label>
+					{{ form.ttd }}
+				</div>
+				<div class="form-group">
+					<label for="id_ttd_status">Jenis TTD</label>
+					{{ form.ttd_status }}
+				</div>
+			</div>
+			<div class="form-actions">
+				<button type="submit" class="btn primary">Proses</button>
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock content1 %}
+
+
+
+
+
+
+
+

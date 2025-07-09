@@ -1,0 +1,164 @@
+{% extends "fakultas/base.html" %}
+
+{% block content1 %}
+<div class="dashboard-content">
+	<div class="student-list-container">
+		<div class="list-header">
+			<div class="list-title">
+				<h2>{{ heading }}</h2>
+				<p>{{web_name}}</p>
+			</div>
+			<div class="list-filters">
+				<div class="table-actions">
+					<div class="action-group">
+						<div class="search-bar-table">
+							<i class="ri-search-line"></i>
+							<input type="text" id="searchInput" placeholder="Search table...">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="student-table">
+			<div class="table-responsive">
+			{% if messages %}
+			{% for message in messages %}
+				<div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} mb-4">
+					<i class="{% if message.tags == 'success' %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
+					{{ message }}
+				</div>
+			{% endfor %}
+			{% endif %}
+			<table>
+				<thead>
+				<tr>
+					<th>No</th>
+					<th>Date In</th>
+					<th>Mahasiswa</th>
+					<th>Prodi</th>
+					<th>Persyaratan</th>
+					<th>Aksi</th>
+				</tr>
+				</thead>
+				<tfoot>
+				<tr>
+					<th>No</th>
+					<th>Date In</th>
+					<th>Mahasiswa</th>
+					<th>Prodi</th>
+					<th>Persyaratan</th>
+					<th width="10%">Aksi</th>
+				</tr>
+				</tfoot>
+				<tbody>
+				{% for datatb in data %}
+					<tr>
+						<td>{{ forloop.counter }}</td>
+						<td>{{ datatb.date_in|date:"d M Y H:i"  }}</td>
+						<td>{{ datatb.mhs }}</td>					  
+						<td>{{ datatb.prodi }}</td>					  
+						<td>{{ datatb.layanan_isi }}
+							<a target="_blank" href="/{{ datatb.layanan_file }}">
+								<button class="btn primary x-small">Lampiran</button>	
+							</a>
+						</td>						  
+						<td>
+							<button class="btn danger x-small" onclick="openModal('tolakSK', '{{ datatb.id }}')">Tolak</button>					
+							<button class="btn primary x-small" onclick="openModal('terbitkanSK', '{{ datatb.id }}')">Proses</button>					
+						</td>					
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="terbitkanSK" class="modal-edit"> 
+    <div class="modal-content-edit">
+        <span class="close" onclick="closeModal('terbitkanSK')">&times;</span>
+        <h2>Perihal dan Tujuan</h2>
+		<form method="post">
+			{% csrf_token %}
+			<input type="hidden" name="id" id="skripsiId">
+				<div class="form-group">
+					<label for="nosurat">Nomor Surat </label>
+					<input type="text" class="form-control" id="nosurat" name="nosurat" placeholder="Kosongkan Jika Ambil Nomor Otomatis">
+				</div>
+				<div class="form-group">
+					<label for="lokasi">Lokasi Penelitian</label>
+					<input type="text" class="form-control" id="lokasi" name="lokasi" placeholder="Sekolah Negeri 1 Indonesia">
+				</div>
+				<div class="form-group">
+					<label for="pimpinan">Pimpinan </label>
+					<input type="text" class="form-control" id="pimpinan" name="pimpinan" placeholder="Presiden Republik Indonesia">
+				</div>
+				<div class="form-group">
+					<label for="pimpinancq">Pimpinan cq (jika ada) </label>
+					<input type="text" class="form-control" id="pimpinancq" name="pimpinancq" placeholder="Menteri Pendidikan dan Kebudayaan">
+				</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-primary" name="action" value="terbitkan">Terbitkan</button>
+			</div>		
+		</form>
+    </div>
+</div>
+
+{% comment %} FORM PENOLAKAN {% endcomment %}
+<div id="tolakSK" class="modal-edit"> 
+    <div class="modal-content-edit">
+        <span class="close" onclick="closeModal('tolakSK')">&times;</span>
+        <h2>Perihal dan Tujuan</h2>
+		<form method="post">
+			{% csrf_token %}
+			<input type="hidden" name="id" id="skripsiIdTolak">
+				<div class="form-group">
+					<label for="alasan">Alasan Penolakan</label>
+					<input type="text" class="form-control" id="alasan" name="alasan" placeholder="Contoh : berkas tidak lengkap">
+				</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-danger" name="action" value="tolak">Tolak</button>
+			</div>		
+		</form>
+    </div>
+</div>
+
+
+{% endblock content1 %} 
+
+
+
+{% block script_costum %} 
+<script>
+	function openModal(modalId, skripsiId) {
+		document.getElementById(modalId).style.display = 'block'; // Tampilkan modal
+		if (modalId === 'terbitkanSK') {
+			document.getElementById('skripsiId').value = skripsiId;
+		} else if (modalId === 'tolakSK') {
+			document.getElementById('skripsiIdTolak').value = skripsiId;
+		}
+		var modal = document.getElementById(modalId);
+        modal.style.display = "block";
+	}
+	
+    function closeModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        var modals = document.getElementsByClassName('modal-edit');
+        for (var i = 0; i < modals.length; i++) {
+            if (event.target == modals[i]) {
+                modals[i].style.display = "none";
+            }
+        }
+    }
+</script>
+{% endblock script_costum %}
+
+
+

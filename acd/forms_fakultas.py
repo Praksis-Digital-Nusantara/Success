@@ -1,7 +1,13 @@
 from django import forms
-from .models import Prodi, ProdiPejabat
-from .models import UserFakultas
+from .models import Prodi, Pejabat
+from .models import UserFakultas, UserDosen
+from .models import NoSuratFakultas, KodeSurat
+from .models import Ujian
 from django.contrib.auth.models import User
+from django.utils import timezone
+from django.db.models import Q
+
+tgl_now = timezone.now()
 
 class formProfile(forms.ModelForm):
     class Meta:
@@ -72,9 +78,9 @@ class formProdiEdit(forms.ModelForm):
 
 
 
-class formProdiPejabatEdit(forms.ModelForm):
+class formPejabatEdit(forms.ModelForm):
     class Meta:
-        model = ProdiPejabat
+        model = Pejabat
         fields = [
             'jabatan', 
             'prodi',  
@@ -88,8 +94,8 @@ class formProdiPejabatEdit(forms.ModelForm):
             'jabatan': forms.Select(attrs={'class': 'form-control'}),
             'prodi': forms.Select(attrs={'class': 'form-control'}),
             'pejabat': forms.Select(attrs={'class': 'form-control'}),
-            'tgl_mulai': forms.SelectDateWidget(attrs={'class': 'form-control'}),
-            'tgl_selesai': forms.SelectDateWidget(attrs={'class': 'form-control'}),
+            'tgl_mulai': forms.DateInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'date'}),
+            'tgl_selesai': forms.DateInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'date'}),
             'label': forms.TextInput(attrs={'class': 'form-control'}),
             'plt': forms.NullBooleanSelect(attrs={'class': 'form-control'}),
 
@@ -101,6 +107,103 @@ class formProdiPejabatEdit(forms.ModelForm):
             'tgl_mulai': 'Tanggal Mulai',
             'tgl_selesai': 'Tanggal Selesai',
             'label': 'Label Jabatan',
+        }
+
+
+
+
+class formNoSurat(forms.ModelForm):
+    kode = forms.ModelChoiceField(
+        queryset=KodeSurat.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Kode Surat",
+        label="Kode Surat"
+    )
+
+    class Meta:
+        model = NoSuratFakultas
+        fields = ['perihal', 'tujuan', 'kode']
+        widgets = {
+            'perihal': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Contoh: Undangan Rapat'}),
+            'tujuan': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Contoh: Seluruh Dosen Prodi'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Tampilkan jenis - kode di dropdown
+        self.fields['kode'].label_from_instance = lambda obj: f"{obj.jenis} - {obj.kode}"
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        selected_kode_obj = self.cleaned_data['kode']
+        instance.kode = selected_kode_obj.kode  # simpan hanya string kode
+        if commit:
+            instance.save()
+        return instance
+
+
+class formUjian(forms.ModelForm):
+    dekan = forms.ModelChoiceField(
+        queryset=Pejabat.objects.filter(
+            tgl_selesai__gte=tgl_now, jabatan__in=['Dekan', 'Wakil Dekan I']
+        ),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Pejabat"
+    )
+    wd = forms.ModelChoiceField(
+        queryset=Pejabat.objects.filter(tgl_selesai__gte=tgl_now),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Pejabat"
+    )
+    kaprodi = forms.ModelChoiceField(
+        queryset=Pejabat.objects.filter(tgl_selesai__gte=tgl_now),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Pejabat"
+    )
+    penguji1 = forms.ModelChoiceField(
+        queryset=UserDosen.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Dosen"
+    )
+    penguji2 = forms.ModelChoiceField(
+        queryset=UserDosen.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Dosen"
+    )
+    
+    class Meta:
+        model = Ujian
+        fields = [    
+            'no_surat',
+            'ujian_tgl',
+            'ujian_jam',
+            'ujian_tempat',
+            'ujian_link',
+            'penguji1',
+            'penguji2',
+            'ttd_status',
+            'kaprodi',
+            'wd',
+            'dekan',
+        ]
+        widgets = {
+            'no_surat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '*kosongkan jika ambil nomor dari sistem'}),
+            'ujian_tgl': forms.DateInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'date'}),
+            'ujian_jam': forms.TimeInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'time'}),
+            'ujian_tempat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Zoom Meeting ID : 00000000 Passcode: xxxxx', 'required': 'required'}),
+            'ujian_link': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'link zoom jika ada'}),
+            'penguji1': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'penguji2': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'ttd_status': forms.Select(
+                                choices=[
+                                    ('QRcode', 'QRcode'),
+                                    ('Manual', 'Manual'),
+                                ],
+                                attrs={'class': 'form-control'}
+                            ),
+            'kaprodi': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'wd': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'dekan': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
         }
 
 

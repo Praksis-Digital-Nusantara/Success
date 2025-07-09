@@ -1,20 +1,18 @@
 from django.shortcuts import redirect
 from django.contrib import messages
-from .models import UserMhs 
+from .models import UserMhs, User 
 from functools import wraps
 
 def check_usermhs(function):
     def wrapper(request, *args, **kwargs):
-        try:
-            # Ambil data UserMhs terkait user
-            usermhs = UserMhs.objects.get(nim=request.user)
-            # Tambahkan data UserMhs ke request
-            request.usermhs = usermhs
-        except UserMhs.DoesNotExist:
+        usermhs = UserMhs.objects.get(nim=request.user) 
+        request.usermhs = usermhs
+        if usermhs.photo == None or usermhs.tempat_lahir == None or usermhs.tgl_lahir == None or usermhs.gender == None or usermhs.penasehat_akademik == None:
             messages.error(request, "Lengkapi data anda terlebih dahulu!")
-            return redirect('/acd/profile_mhs')
+            return redirect('/acd/profile_mhs')               
         return function(request, *args, **kwargs)
     return wrapper
+
 
 def mahasiswa_required(view_func):
     @wraps(view_func)

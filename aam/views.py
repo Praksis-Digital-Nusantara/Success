@@ -1,14 +1,30 @@
-from  django.shortcuts import render, redirect
-from django.views.generic import TemplateView
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from acd.models import Proposal, Hasil, Ujian
+from datetime import datetime
+
+tanggal_now = datetime.now().date()
+
+def custom_404(request, exception):
+    return render(request, "404.html", status=404)
 
 def index(request):
+    proposal = Proposal.objects.filter(seminar_tgl=tanggal_now).order_by('-date_in')
+    hasil = Hasil.objects.filter(seminar_tgl=tanggal_now).order_by('-date_in')
+    ujian = Ujian.objects.filter(ujian_tgl=tanggal_now).order_by('-date_in')
     context = {
         'title' : 'Home',
-        'heading' : 'Home Web Akademik' 
+        'heading' : 'Home Web Akademik',
+        'proposal' : proposal,
+        'hasil' : hasil,
+        'ujian' : ujian,
     }
     return render(request,'index.html', context) 
+
+
+
 
 def about(request):
     context = {
@@ -16,6 +32,13 @@ def about(request):
         'heading' : 'TENTANG APLIKASI' 
     }
     return render(request,'about.html', context) 
+
+def verTTD(request):
+    context = {
+        'title' : 'Verifikasi TTD',
+        'heading' : 'Verifikasi TTD',
+    }
+    return render(request,'ver_ttd.html', context) 
 
 def loginView(request):
     context = {
@@ -30,8 +53,10 @@ def loginView(request):
         if user is not None:
             login(request, user)
             print(user)
-            return redirect('/acd')
+            messages.success(request, 'Selamat Datang!')
+            return redirect('/acd/')
         else:
+            messages.warning(request, 'Periksa Kembali Username dan Password Anda!')
             return redirect('login')
     
     if request.method == "GET":

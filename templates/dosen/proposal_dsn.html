@@ -1,0 +1,128 @@
+{% extends "dosen/base.html" %}
+
+{% block content1 %}
+<div class="dashboard-content">
+	<div class="student-list-container">
+		<div class="list-header">
+			<div class="list-title">
+				<h2>{{ heading }}</h2>
+				<p>{{web_name}}</p>
+				<p>Filter : 
+					<a href="{% url 'acd:proposal_dsn' 'Semua' %}">
+						<btn class="btn {% if filter != 'Semua'  %} outlined {% endif %} warning x-small">Semua</btn>
+					</a>					
+					<a href="{% url 'acd:proposal_dsn' 'Pembimbing1' %}">
+						<btn class="btn {% if filter != 'Pembimbing1'  %} outlined {% endif %}  warning x-small">Pembimbing I</btn>
+					</a>					
+					<a href="{% url 'acd:proposal_dsn' 'Pembimbing2' %}">
+						<btn class="btn {% if filter != 'Pembimbing2'  %} outlined {% endif %}  warning x-small">Pembimbing II</btn>
+					</a>					
+					<a href="{% url 'acd:proposal_dsn' 'Penguji1' %}">
+						<btn class="btn {% if filter != 'Penguji1'  %} outlined {% endif %}  warning x-small">Penguji I</btn>
+					</a>					
+					<a href="{% url 'acd:proposal_dsn' 'Penguji2' %}">
+						<btn class="btn {% if filter != 'Penguji2'  %} outlined {% endif %}  warning x-small">Penguji II</btn>
+					</a>					
+				</p>
+			</div>
+			<div class="list-filters">
+				<div class="table-actions">
+					<div class="action-group">
+						<div class="search-bar-table">
+							<i class="ri-search-line"></i>
+							<input type="text" id="searchInput" placeholder="Search table...">
+						</div>
+					</div>
+					<div class="action-group">
+						<button class="btn secondary" id="exportTable">
+							<i class="ri-download-line"></i>
+							<span>Export</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{% if messages %}
+		{% for message in messages %}
+				<div class="alert {% if 'success' in message.tags %}alert-success{% else %}alert-danger{% endif %} mb-4">
+					<i class="{% if 'success' in message.tags %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
+					{{ message }}
+				</div>
+		{% endfor %}
+		{% endif %}
+
+		<div class="student-table">
+			<div class="table-responsive">
+			<table>
+				<thead>
+				<tr>
+					<th style="white-space: nowrap;">No</th>
+					<th>Mahasiswa</th>
+					<th style="white-space: nowrap;">Prodi</th>
+					<th style="white-space: nowrap;">Judul Proposal yang disetujui</th>
+					<th>Pembimbing</th>
+					<th>Penguji</th>
+					<th>Aksi</th>
+				</tr>
+				</thead>
+				<tfoot>
+				<tr>
+					<th>No</th>
+					<th>Mahasiswa</th>
+					<th>Prodi</th>
+					<th>Judul Proposal yang disetujui</th>
+					<th>Pembimbing</th>
+					<th>Penguji</th>
+					<th width="10%">Aksi</th>
+				</tr>
+				</tfoot>
+				<tbody>
+				{% for datatb in data %}
+					<tr>
+						<td>{{ forloop.counter }}</td>
+						<td>{{ datatb.mhs_judul.mhs }}</td>
+						<td>{{ datatb.mhs_judul.prodi }}</td>
+						<td><div class="response-text">{{ datatb.mhs_judul }}</div></td>							  				
+						<td>1. {{ datatb.pembimbing1 }}
+							<br> 2. {{ datatb.pembimbing2 }}
+						</td>							  				
+						<td>1. {{ datatb.penguji1 }}
+							<br> 2. {{ datatb.penguji2 }}
+						</td>							  				
+						<td>
+							<a href="{% url 'acd:proposal_dsn_nilai' datatb.id %}" class="btn primary x-small"><i class="ri-percent-line"></i>Nilai</a>						
+						</td>					  
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- OPENING ELEMEN MODAL -->
+<div id="nomorsurat" class="modal-edit">
+	<div class="modal-content-edit">
+		<span class="close" onclick="closeModal('nomorsurat')">&times;</span>
+		<h2>Perihal dan Tujuan</h2>
+		<form method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+		<div class="form-group">
+			<label style="text-align: left;">Perihal</label>
+			{{ form.perihal }}
+		</div>
+		<div class="form-group">
+			<label style="text-align: left;">Tujuan</label>
+			{{ form.tujuan }}
+		<button type="submit" class="btn primary">
+			<i class="ri-save-line"></i>
+			Update Data
+		</button>
+	</form>
+	</div>
+</div>
+<!-- OPENING ELEMENT MODAL -->
+{% endblock content1 %}
+

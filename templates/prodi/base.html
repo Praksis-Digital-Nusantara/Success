@@ -12,10 +12,10 @@
 </head>
 <body>
     <div class="dashboard-container">
-        <!-- Sidebar -->
+        <!-- Sidebar --> 
         <div class="sidebar">
             <div class="logo">
-                <i class="ri-strikethrough"></i>
+                <!-- <img src="/static/img/logo.png" style="width: 100px;"> -->
                 <div class="logo-text">
                     <h2>{{webname}}</h2>
                     <span>{{web_name}}</span>
@@ -28,37 +28,47 @@
                     <li class="{% if title == 'Dashboard' %}active{% endif %}">
                         <a href="{% url "acd:dashboard" %}"><i class="ri-dashboard-line"></i> Dashboard</a>
                     </li>
-                    <li class="has-dropdown  class="{% if title == 'Users' %}active{% endif %}"">
+                    <li class="has-dropdown  {% if title == 'User List' %}active{% endif %}">
                         <a href="#"><i class="ri-user-line"></i>Users<i class="ri-arrow-down-s-line dropdown-icon"></i></a>
                         <ul class="submenu">
-                            <li><a href="{% url 'acd:user_list' %}?role=Mahasiswa"><i class="ri-file-list-line"></i> Mahasiswa</a></li>
-                            <li><a href="{% url 'acd:user_list' %}?role=Dosen"><i class="ri-file-list-line"></i> Dosen</a></li>
+                            <li class="{% if heading == 'Mahasiswa' %}active{% endif %}"><a href="{% url 'acd:user_list' %}?role=Mahasiswa"><i class="ri-file-list-line"></i> Mahasiswa</a></li>
+                            <li class="{% if heading == 'Dosen' %}active{% endif %}"><a href="{% url 'acd:user_list' %}?role=Dosen"><i class="ri-file-list-line"></i> Dosen</a></li>
                         </ul>
                     </li>
                     <li class="{% if title == 'Layanan' %}active{% endif %}">
-                        <a href="{% url "acd:layanan" %}"><i class="ri-file-list-line"></i> Layanan</a>
+                        <a href="{% url "acd:layanan" 'All' %}"><i class="ri-service-line"></i> Layanan</a>
                     </li>
                     <li class="{% if title == 'Nomor Surat' %}active{% endif %}">
-                        <a href="{% url "acd:nosurat" %}"><i class="ri-file-list-line"></i> Nomor Surat</a>
+                        <a href="{% url "acd:nosurat" %}"><i class="ri-mail-send-line"></i> Nomor Surat</a>
                     </li>
                     <li class="{% if title == 'TTD Qrcode' %}active{% endif %}">
-                        <a href="{% url "acd:ttd" %}"><i class="ri-numbers-fill"></i> TTD Qrcode</a>
+                        <a href="{% url "acd:ttd" %}"><i class="ri-qr-scan-line"></i> TTD Qrcode</a>
                     </li>
-                    <li class="{% if title == 'Seleksi Judul' %}active{% endif %}">
-                        <a href="{% url "acd:skripsi_sjudul" %}"><i class="ri-book-line"></i>Seleksi Judul</a>
-                    </li>
+                    {% comment %} <li class="{% if title == 'Seleksi Judul' %}active{% endif %}">
+                        <a href="{% url "acd:skripsi_sjudul" %}"><i class="ri-check-double-line"></i> Seleksi Judul</a>
+                    </li> {% endcomment %}
                     <li class="{% if title == 'Daftar Judul' %}active{% endif %}">
-                        <a href="{% url "acd:skripsi_djudul" %}"><i class="ri-calendar-line"></i> Daftar Judul</a>
+                        <a href="{% url "acd:skripsi_djudul" %}"><i class="ri-list-unordered"></i> Daftar Judul</a>
                     </li>
                     <li class="{% if title == 'Proposal' %}active{% endif %}">
-                        <a href="#"><i class="ri-message-2-line"></i> Proposal</a>
+                        <a href="{% url "acd:proposal" %}"><i class="ri-draft-line"></i> Proposal</a>
                     </li>
-                    <li class="{% if title == 'Hasil' %}active{% endif %}">
-                        <a href="#"><i class="ri-settings-line"></i> Hasil</a>
+                    {% comment %} <li class="{% if title == 'Hasil' %}active{% endif %}">
+                        <a href="{% url "acd:hasil" %}"><i class="ri-award-line"></i> Hasil</a>
+                    </li> {% endcomment %}
+                    <li class="{% if title == 'Ujian' %}active{% endif %}">
+                        <a href="{% url "acd:ujian" %}"><i class="ri-award-line"></i> Ujian</a>
+                    </li>
+                    <li class="{% if title == 'Suket Bebas Kuliah' %}active{% endif %}">
+                        <a href="{% url "acd:suket_bebaskuliah" %}"><i class="ri-award-line"></i> Suket Bebas Kuliah</a>
+                    </li>
+                    <li class="{% if title == 'Suket Bebas Plagiasi' %}active{% endif %}">
+                        <a href="{% url "acd:suket_bebasplagiasi" %}"><i class="ri-award-line"></i> Suket Bebas Plagiasi</a>
                     </li>
                     <li class="{% if title == 'Profile' %}active{% endif %}">
-                        <a href="{% url 'acd:profile_prodi' %}"><i class="ri-calendar-line"></i>Profile</a>
+                        <a href="{% url 'acd:profile_prodi' %}"><i class="ri-user-3-line"></i> Profile</a>
                     </li>
+                    
                 </ul>
             </nav>
 
@@ -80,20 +90,35 @@
             <header class="top-header">
                 <div class="header-left">
                     <button id="toggle-sidebar"><i class="ri-menu-line"></i></button>
-                    <h1>{{heading}}</h1>
+                    <h2>{{heading}}</h2>
                 </div>
                 <div class="header-right">
-                    <div class="search-bar">
-                        <i class="ri-search-line"></i>
-                        <input type="text" placeholder="Search...">
-                    </div>
                     <div class="user-menu">
                         <i class="ri-contrast-2-fill"></i>
-                        <i class="ri-notification-3-line"></i>
-                        <img src="/{{ photo }}" alt="User Avatar" class="avatar">
+                        <div class="notification-icon">
+                            <i class="ri-notification-3-line"></i>
+                            <span class="notif-count" style="display: none;">0</span>
+                        </div>
+                        <img src="/media/{{ photo }}" alt="User Avatar" class="avatar">
                     </div>
                 </div>
             </header>
+
+            <div class="alert2-container">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert2 alert2-{{ message.tags }}">
+                            <i class="{% if message.tags == 'success' %}ri-checkbox-circle-line
+                                    {% elif message.tags == 'warning' %}ri-alert-line
+                                    {% elif message.tags == 'info' %}ri-information-line
+                                    {% else %}ri-error-warning-line
+                                    {% endif %}">
+                                </i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
 
 
             {% block content1 %}
@@ -134,33 +159,13 @@
 <!-- MODAL NOTIFIKASI -->
 <div class="notification-modal" id="notificationModal">
     <div class="notification-header">
-        <h2>Notifications</h2>
+        <h2>Layanan Menunggu</h2>
     </div>
     <div class="notification-list">
-        <div class="notification-item">
-            <img src="https://padinusantara.co.id/media/team/andi.jpg" alt="User Avatar" class="notification-avatar">
-            <div class="notification-content">
-                <p><strong>Pesan baru dari Admin Fakultas</strong> "Kesalahan dalam dokumen A"</p>
-                <span class="notification-time">a few moments ago</span>
-            </div>
-        </div>
-        <div class="notification-item">
-            <img src="https://padinusantara.co.id/media/team/andi.jpg" alt="User Avatar" class="notification-avatar">
-            <div class="notification-content">
-                <p><strong>HermantoXYZ</strong> and <strong>5 others</strong> ujian sidang akan segera di mulai.</p>
-                <span class="notification-time">10 minutes ago</span>
-            </div>
-        </div>
-        <div class="notification-item">
-            <img src="https://padinusantara.co.id/media/team/andi.jpg" alt="User Avatar" class="notification-avatar">
-            <div class="notification-content">
-                <p><strong>Aco</strong> and <strong>141 others</strong> telah menyelesaikan ujian proposal</p>
-                <span class="notification-time">44 minutes ago</span>
-            </div>
-        </div>
-        <div class="notification-footer">
-            <a href="#" class="view-all">View all</a>
-        </div>
+        <!-- Notifikasi akan dimuat di sini oleh JavaScript -->
+    </div>
+    <div class="notification-footer">
+        <a href="{% url 'acd:layanan' 'Waiting' %}" class="view-all">View all</a>
     </div>
 </div>
 
@@ -170,183 +175,95 @@
 <div id="logout" class="modal-edit">
 	<div class="modal-content-edit">
 		<span class="close" onclick="closeModal('logout')">&times;</span>
-		<p>Yakin ingin keluar dari aplikasi?</p>
-        <a href="{% url 'acd:logout' %}" class="logout">
-            <button class="btn danger">
-                <i class="ri-logout-box-line"></i>
-                Ya
+		<div class="modal-icon"><i class="ri-logout-box-r-line"></i></div>
+		<h2>Konfirmasi Logout</h2>
+        <p>Yakin ingin keluar dari aplikasi?</p>
+        <div class="modal-actions">
+            <button class="btn" onclick="closeModal('logout')">
+                Batal
             </button>
-        </a>
-        <button class="btn primary" onclick="closeModal('logout')">
-            <i class="ri-logout-box-line"></i>
-            Tidak
-        </button>
+            <a href="{% url 'acd:logout' %}" class="logout">
+                <button class="btn danger">
+                    Keluar
+                </button>
+            </a>
+        </div>
 	</div>
 </div>
 
+<script src="{% static 'js/acd/main.js' %}?v={{ STATIC_VERSION }}"></script>
 
 
-    <!-- JS FOR SIDEBAR/OPENG/CLOSE -->
-    <script>
-        const toggleButton = document.getElementById('toggle-sidebar');
-        const dashboardContainer = document.querySelector('.dashboard-container');
-        const mainContent = document.querySelector('.main-content');
-        const sidebar = document.querySelector('.sidebar');
 
-        // Function to check screen width and collapse sidebar
-        const checkScreenWidth = () => {
-            if (window.innerWidth <= 768) {
-                dashboardContainer.classList.add('sidebar-collapsed');
-            }
-        };
-
-        // Check on page load
-        checkScreenWidth();
-
-        // Check on window resize
-        window.addEventListener('resize', checkScreenWidth);
-        
-        // Toggle sidebar with button
-        toggleButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            dashboardContainer.classList.toggle('sidebar-collapsed');
-        });
-
-        // Close sidebar when clicking main content only on mobile
-        document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768) {
-                if (!sidebar.contains(e.target) && !toggleButton.contains(e.target)) {
-                    dashboardContainer.classList.add('sidebar-collapsed');
-                }
-            }
-        });
-
-        // Active Menu Item
-        const menuItems = document.querySelectorAll('.sidebar-menu li');
-        menuItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                menuItems.forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
-            });
-        });
-    </script>
-    <!-- JS FOR DROPDOWN -->
-    <script>
-      // Dropdown functionality
-      const dropdownItems = document.querySelectorAll('.has-dropdown > a');
-        
-        dropdownItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                const parent = item.parentElement;
-                
-                // Toggle current dropdown
-                if (parent.classList.contains('active')) {
-                    parent.classList.remove('active');
-                } else {
-                    // Close other dropdowns
-                    dropdownItems.forEach(other => {
-                        other.parentElement.classList.remove('active');
-                    });
-                    parent.classList.add('active');
-                }
-            });
-        });
-    </script>
-
-    <!-- JS FOR DARK DASHBOARD -->
-    <script>
-        // Dark mode toggle
-        const darkModeToggle = document.querySelector('.ri-contrast-2-fill');
-        
-        // Check for saved dark mode preference
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            document.body.classList.add('dark-mode');
-        }
-        
-        darkModeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            
-            // Save preference
-            if (document.body.classList.contains('dark-mode')) {
-                localStorage.setItem('darkMode', 'enabled');
-            } else {
-                localStorage.setItem('darkMode', null);
-            }
-        });
-    </script>
-
-
-<!-- Add this before closing body tag -->
 <script>
-    const notificationButton = document.querySelector('.ri-notification-3-line');
-    const notificationModal = document.getElementById('notificationModal');
+    function updateNotificationCount() {
+        fetch("{% url 'acd:notif_prodi' %}")
+            .then(response => response.json())
+            .then(data => {
+                const count = data.count;
+                const notifElement = document.querySelector('.notif-count');
 
-    notificationButton.addEventListener('click', (e) => {
-        e.stopPropagation();
-        notificationModal.classList.toggle('show-notification');
+                if (count > 0) {
+                    notifElement.textContent = count > 9 ? '9+' : count;
+                    notifElement.style.display = 'inline-block';
+                } else {
+                    notifElement.style.display = 'none';
+                }
+            })
+            .catch(error => {
+                console.error('Gagal memuat notifikasi:', error);
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateNotificationCount();
+        setInterval(updateNotificationCount, 10000); // tiap 10 detik
     });
 
-    // Close notification modal when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!notificationModal.contains(e.target) && !notificationButton.contains(e.target)) {
-            notificationModal.classList.remove('show-notification');
-        }
+    function updateNotificationModal() {
+        fetch("{% url 'acd:notif_prodi' %}")
+            .then(response => response.json())
+            .then(data => {
+                const notifList = document.querySelector('.notification-list');
+                notifList.innerHTML = ''; // Kosongkan daftar notifikasi
+    
+                data.data.forEach(item => {
+                    const notifItem = `
+                        <div class="notification-item">
+                            <img src="/${item.avatar}" alt="User Avatar" class="notification-avatar">
+                            <div class="notification-content">
+                                <p><strong>${item.mhs}</strong> ${item.jenis_layanan}</p>
+                                <span class="notification-time">${item.date_in}</span>
+                            </div>
+                        </div>
+                    `;
+                    notifList.innerHTML += notifItem;
+                });
+    
+                const notifCount = document.querySelector('.notif-count');
+                if (data.count > 0) {
+                    notifCount.textContent = data.count > 9 ? '9+' : data.count;
+                    notifCount.style.display = 'inline-block';
+                } else {
+                    notifCount.style.display = 'none';
+                }
+            })
+            .catch(error => {
+                console.error('Gagal memuat notifikasi:', error);
+            });
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        updateNotificationModal();
+        setInterval(updateNotificationModal, 10000); // Perbarui setiap 10 detik
     });
 </script>
+
 
 {% block script_costum %} 
 {% endblock script_costum %} 
 
 
-{% block script_modal %} 
-<script>
-    function openModal(modalId) {
-        var modal = document.getElementById(modalId);
-        modal.style.display = "block";
-    }
-
-    function closeModal(modalId) {
-        var modal = document.getElementById(modalId);
-        modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        var modals = document.getElementsByClassName('modal-edit');
-        for (var i = 0; i < modals.length; i++) {
-            if (event.target == modals[i]) {
-                modals[i].style.display = "none";
-            }
-        }
-    }
-</script>
-{% endblock script_modal %} 
-
-
-{% block script_search %}
-<script>
-    document.getElementById('searchInput').addEventListener('keyup', function() {
-        let searchQuery = this.value.toLowerCase();
-        let table = document.querySelector('.student-table table');
-        let rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-    
-        for (let row of rows) {
-            let cells = row.getElementsByTagName('td');
-            let found = false;
-            
-            for (let cell of cells) {
-                if (cell.textContent.toLowerCase().indexOf(searchQuery) > -1) {
-                    found = true;
-                    break;
-                }
-            }
-            
-            row.style.display = found ? '' : 'none';
-        }
-    });
-    </script>
-{% endblock script_search %}
 </body>
 </html>
 

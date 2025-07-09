@@ -4,15 +4,12 @@ from .models import UserFakultas
 from functools import wraps
 
 def check_userfakultas(function):
-    def wrapper(request, *args, **kwargs):
-        try:
-            # Ambil data Userfakultas terkait user
-            userfakultas = UserFakultas.objects.get(user=request.user)
-            # Tambahkan data Userfakultas ke request
-            request.userfakultas = userfakultas
-        except UserFakultas.DoesNotExist:
+    def wrapper(request, *args, **kwargs):   
+        userfakultas = UserFakultas.objects.get(username=request.user)
+        request.userfakultas = userfakultas
+        if userfakultas.photo == None :
             messages.error(request, "Lengkapi data anda terlebih dahulu!")
-            return redirect('/acd/profile_fakultas')
+            return redirect('/acd/profile_fakultas')               
         return function(request, *args, **kwargs)
     return wrapper
 

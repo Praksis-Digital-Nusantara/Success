@@ -3,23 +3,23 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 
-from .models import LayananJenis
-from .models import Layanan
-from .models import SkripsiJudul
+from .models import UserMhs
+from .models import Layanan, LayananJenis
+from .models import SuketBebasPlagiasi, SuketBebasKuliah
+from .models import SkripsiJudul, chatPA, skPembimbing, Proposal, Hasil, IzinPenelitian, Ujian
 
 from .forms_mhs import formAddLayanan
 from .forms_mhs import formProfile
-from .forms_mhs import formSkripsiJudul
+from .forms_mhs import formSkripsiJudul, formProposalReg, formUjianReg
+from .forms_mhs import formChatPA
 
 from .decorators_mhs import check_usermhs
 from .decorators_mhs import mahasiswa_required
 
 
-
 @mahasiswa_required
-@check_usermhs
 def profile_mhs(request):
-    usermhs = request.usermhs    
+    usermhs = UserMhs.objects.get(nim=request.user)   
     if request.method == 'POST':
         form = formProfile(request.POST, request.FILES, instance=usermhs)
         if form.is_valid():
@@ -33,7 +33,7 @@ def profile_mhs(request):
         form = formProfile(instance=usermhs)
 
     context = {
-        'title' : 'Edit Profile',
+        'title' : 'Profile',
         'heading' : 'Edit Profile',
         'usermhs' : usermhs,
         'photo' : usermhs.photo,
@@ -54,7 +54,7 @@ def layananMe(request):
         'title': 'Layanan',
         'heading': 'List Layanan',
     }
-    layanan_data = Layanan.objects.filter(mhs=request.user)
+    layanan_data = Layanan.objects.filter(mhs=usermhs).order_by('-date_in')
     context = {
         'title' : 'Layanan Akademik',
         'heading' : 'Layanan Akademik',
@@ -77,26 +77,44 @@ def get_prasyarat_layanan(request): #untuk json respon jenis layanan
 @mahasiswa_required
 @check_usermhs
 def layananAdd(request):
-    usermhs = request.usermhs 
+    usermhs = request.usermhs  
     if request.method == 'POST':
         form = formAddLayanan(request.POST, request.FILES)
         if form.is_valid():
-            layanan = form.save(commit=False)  
-            layanan.mhs = request.user 
-            layanan.prodi = usermhs.prodi   
-            layanan.save()  
-            messages.success(request, 'Layanan berhasil ditambahkan!')
-            return redirect('/acd/layanan_me') 
+            layanan_jenis = form.cleaned_data.get('layanan_jenis')
+            
+            # Cek apakah ada layanan dengan jenis yang sama dan status "Waiting" atau "Processing"
+            layanan_exists = Layanan.objects.filter(
+                mhs=usermhs, 
+                layanan_jenis=layanan_jenis, 
+                status__in=["Waiting", "Processing"]
+            ).exists()
+            
+            if layanan_exists:
+                messages.error(request, 'Anda masih memiliki layanan dengan jenis ini yang sedang diproses.')
+                return redirect('/acd/layanan_me') 
+            else:
+                layanan = form.save(commit=False)  
+                layanan.mhs = usermhs 
+                layanan.prodi = usermhs.prodi
+                if layanan_jenis.nama_layanan == 'Izin Penelitian' or layanan_jenis.nama_layanan == 'Undangan Ujian Tutup':
+                    layanan.status = 'Processing'
+                    layanan.hasil_test = 'menunggu diproses oleh admin Falultas'
+                else:
+                    layanan.status = 'Waiting' 
+                layanan.save()  
+                messages.success(request, 'Layanan berhasil ditambahkan!')
+                return redirect('/acd/layanan_me') 
         else:
             messages.error(request, 'Terjadi kesalahan. Silakan periksa input Anda.')
     else:
         form = formAddLayanan()
 
     context = {
-        'title' : 'Layanan Baru',
-        'heading' : 'Layanan Baru',
-        'usermhs' : usermhs,
-        'photo' : usermhs.photo,
+        'title': 'Layanan Baru',
+        'heading': 'Layanan Baru',
+        'usermhs': usermhs,
+        'photo': usermhs.photo,
         'form': form,
     }
     return render(request, 'mhs/layanan_add.html', context)
@@ -109,46 +127,266 @@ def layananAdd(request):
 @mahasiswa_required
 @check_usermhs
 def skripsi(request):
-    usermhs = request.usermhs    
+    usermhs = request.usermhs       
+
+    try:
+        skripsi = SkripsiJudul.objects.get(mhs=usermhs)
+    except SkripsiJudul.DoesNotExist:
+        skripsi = None 
+    try:
+        skpbb = skPembimbing.objects.filter(mhs=usermhs).order_by('date_in')
+    except skPembimbing.DoesNotExist:
+        skpbb = None 
+
+    try:
+        proposal = Proposal.objects.get(mhs_judul__mhs=usermhs)
+    except Proposal.DoesNotExist:
+        proposal = None 
+
+    try:
+        izinpenelitian = IzinPenelitian.objects.filter(mhs_judul__mhs=usermhs).order_by('-date_in')
+    except IzinPenelitian.DoesNotExist:
+        izinpenelitian = None 
+
+    try:
+        hasil = Hasil.objects.get(mhs_judul__mhs=usermhs)
+    except Hasil.DoesNotExist:
+        hasil = None 
+
+    try:
+        ujian = Ujian.objects.get(mhs_judul__mhs=usermhs)
+    except Ujian.DoesNotExist:
+        ujian = None 
+
     context = {
         'title' : 'Skripsi',
         'heading' : 'Skripsi',
         'usermhs' : usermhs,
+        'skripsi' : skripsi,
+        'skpbb' : skpbb,
+        'proposal' : proposal,
+        'izinpenelitian' : izinpenelitian,
+        'hasil' : hasil,
+        'ujian' : ujian,
         'photo' : usermhs.photo,
     }
     return render(request, 'mhs/skripsi.html', context)
+
 
 
 @mahasiswa_required
 @check_usermhs
 def skripsi_pjudul(request):
     usermhs = request.usermhs
+    
+    # Ambil data skripsi jika sudah ada
     try:
-        skripsi_judul = SkripsiJudul.objects.get(mhs=request.user)
+        skripsi_judul = SkripsiJudul.objects.get(mhs=usermhs)
     except ObjectDoesNotExist:
         skripsi_judul = None
 
+    # Ambil semua chat yang sesuai
+    chatpa_list = chatPA.objects.filter(dsn=usermhs.penasehat_akademik, mhs=usermhs).order_by('date_in')
+
+    form_skripsi = formSkripsiJudul(instance=skripsi_judul)
+    form_chatpa = formChatPA()
+
     if request.method == 'POST':
-        form = formSkripsiJudul(request.POST, instance=skripsi_judul)
-        if form.is_valid():
-            # Menambahkan user yang sedang login jika menambah data baru
-            skripsi_judul = form.save(commit=False)
-            skripsi_judul.status = 'Waiting'
-            skripsi_judul.prodi = usermhs.prodi
-            skripsi_judul.mhs = request.user
-            skripsi_judul.save()
-            messages.success(request, 'Judul berhasil disimpan.')
-            return redirect('/acd/skripsi_pjudul')
-        else:
-            messages.error(request, 'Periksa kembali isian form.') 
-    else:
-        form = formSkripsiJudul(instance=skripsi_judul)
-     
+        if 'submit_skripsi' in request.POST:  # Submit form skripsi
+            form_skripsi = formSkripsiJudul(request.POST, instance=skripsi_judul)
+            if form_skripsi.is_valid():
+                skripsi_judul = form_skripsi.save(commit=False)
+                if skripsi_judul.status in ['', 'Revision']:
+                    skripsi_judul.status = 'Waiting'
+                skripsi_judul.prodi = usermhs.prodi
+                skripsi_judul.mhs = usermhs
+                skripsi_judul.save()
+                messages.success(request, 'Judul berhasil disimpan.', extra_tags='skripsi')
+                return redirect('/acd/skripsi_pjudul')
+            else:
+                messages.error(request, 'Periksa kembali isian form skripsi.', extra_tags='skripsi')
+
+        elif 'submit_chatpa' in request.POST:  # Submit form chatPA
+            form_chatpa = formChatPA(request.POST)
+            if form_chatpa.is_valid():
+                chatpa = form_chatpa.save(commit=False)
+                chatpa.dsn = usermhs.penasehat_akademik
+                chatpa.mhs = usermhs
+                chatpa.prodi = usermhs.prodi
+                chatpa.sender = 'Mahasiswa'
+                chatpa.save()
+                messages.success(request, 'Pesan ke pembimbing berhasil dikirim.', extra_tags='chatpa')
+                return redirect('/acd/skripsi_pjudul')
+            else:
+                messages.error(request, 'Periksa kembali isi pesan.', extra_tags='chatpa')       
+
+    # Ambil data pembimbing akademik
+    # nip_pa = usermhs.penasehat_akademik
+    # pa = UserDosen.objects.get(nip=nip_pa)
+
     context = {
-        'title' : 'Pengajuan Judul',
-        'heading' : 'Pengajuan Judul',
-        'usermhs' : usermhs,
-        'photo' : usermhs.photo,
-        'form': form,
+        'title': 'Pengajuan Judul',
+        'heading': 'Pengajuan Judul',
+        'usermhs': usermhs,
+        'photo': usermhs.photo,
+        'form': form_skripsi,
+        'form_chatpa': form_chatpa,
+        'chatpa': chatpa_list,  # Kirim semua chat ke template
+        # 'pa': pa,
     }
     return render(request, 'mhs/skripsi_pjudul.html', context)
+
+
+
+###################### REGISTRASI PROPOSAL #######################################################
+
+
+@mahasiswa_required
+@check_usermhs
+def proposal_reg(request):
+    usermhs = request.usermhs
+    judul = SkripsiJudul.objects.get(mhs=usermhs)
+
+    # Mencoba mengambil Proposal yang ada, jika tidak ada, buat yang baru
+    try:
+        proposal = Proposal.objects.get(mhs_judul__mhs=usermhs)
+    except Proposal.DoesNotExist:
+        proposal = Proposal(mhs_judul=judul)  # Membuat proposal baru jika tidak ditemukan
+        proposal.save()
+
+    if request.method == 'POST':
+        form = formProposalReg(request.POST, request.FILES, instance=proposal)
+        if form.is_valid():
+            proposal_obj = form.save(commit=False)
+            proposal_obj.mhs_judul = judul  # Pastikan judul tetap terikat
+            proposal_obj.save()  # Simpan perubahan atau data baru
+            messages.success(request, 'Data berhasil disimpan!')
+        else:
+            messages.error(request, 'Periksa kembali isian form.')
+    else:
+        form = formProposalReg(instance=proposal)
+
+    context = {
+        'title': 'Proposal',
+        'heading': 'Proposal Registrasi',
+        'usermhs': usermhs,
+        'photo': usermhs.photo,
+        'judul': judul,
+        'proposal': proposal,
+        'form': form,
+    }
+    return render(request, 'mhs/proposal_reg.html', context)
+
+
+@mahasiswa_required
+@check_usermhs
+def proposal_reg_up(request):
+    usermhs = request.usermhs
+    proposal = Proposal.objects.get(mhs_judul__mhs=usermhs)
+    if request.method == 'POST':
+        if proposal.krs == "" or proposal.krs == "" or proposal.persetujuan_proposal == "" or proposal.kartu_seminar == "":
+            messages.error(request, 'Berkas persyaratan belum lengkap, silakan lengkapi terlebih dahulu.')
+            return redirect('/acd/proposal_reg')
+        else:
+            ceklayanan = Layanan.objects.filter(mhs=usermhs, layanan_jenis__nama_layanan='Undangan Seminar Proposal',status__in=['Waiting', 'Processing']).exists()
+            if ceklayanan:
+                messages.info(request, 'Anda masih memiliki layanan dengan jenis ini yang sedang diproses.')
+                return redirect('/acd/proposal_reg')
+            else:
+                layanan = Layanan(
+                    mhs=usermhs,
+                    layanan_jenis=LayananJenis.objects.get(nama_layanan='Undangan Seminar Proposal'),
+                    prodi=usermhs.prodi,
+                    status='Waiting',
+                    layanan_isi=request.POST.get('layanan_isi'),
+                )  # Menambahkan layanan baru
+                layanan.save()
+                messages.success(request, 'Pendaftar Proposal berhasil!, cek status di menu layanan')
+                return redirect('/acd/layanan_me')
+
+
+###################### REGISTRASI UJIAN #######################################################
+
+@mahasiswa_required
+@check_usermhs
+def ujian_reg(request):
+    usermhs = request.usermhs
+    judul = SkripsiJudul.objects.get(mhs=usermhs)
+
+    try:
+        ujian = Ujian.objects.get(mhs_judul__mhs=usermhs)
+    except Ujian.DoesNotExist:
+        ujian = Ujian(mhs_judul=judul)  # Membuat ujian baru jika tidak ditemukan
+        ujian.save()
+
+    if request.method == 'POST':
+        form = formUjianReg(request.POST, request.FILES, instance=ujian)
+        if form.is_valid():
+            ujian_obj = form.save(commit=False)
+            ujian_obj.mhs_judul = judul  # Pastikan judul tetap terikat
+            ujian_obj.save()  # Simpan perubahan atau data baru
+            messages.success(request, 'Data berhasil disimpan!')
+        else:
+            messages.error(request, 'Periksa kembali isian form.')
+    else:
+        form = formUjianReg(instance=ujian)
+
+    context = {
+        'title': 'Ujian',
+        'heading': 'Ujian Registrasi',
+        'usermhs': usermhs,
+        'photo': usermhs.photo,
+        'judul': judul,
+        'ujian': ujian,
+        'bebasbebankuliah': SuketBebasKuliah.objects.filter(mhs=usermhs).order_by('-date_in').first(),
+        'bebasplagiasi': SuketBebasPlagiasi.objects.filter(mhs=usermhs).order_by('-date_in').first(),
+        'skpbb': skPembimbing.objects.filter(mhs=usermhs).order_by('-date_in').first(),
+        'form': form,
+    }
+    return render(request, 'mhs/ujian_reg.html', context)
+
+
+@mahasiswa_required
+@check_usermhs
+def ujian_reg_up(request):
+    usermhs = request.usermhs
+    ujian = Ujian.objects.get(mhs_judul__mhs=usermhs)
+
+    # Cek apakah semua berkas sudah diupload
+    bebaskuliah = SuketBebasKuliah.objects.filter(mhs=usermhs).order_by('-date_in').first()
+    bebasplagiasi = SuketBebasPlagiasi.objects.filter(mhs=usermhs).order_by('-date_in').first()
+    skpbb = skPembimbing.objects.filter(mhs=usermhs).order_by('-date_in').first()
+    if request.method == 'POST':
+        if (
+                not bebaskuliah or
+                not bebasplagiasi or
+                not skpbb or
+                not ujian.persetujuan_ujian or
+                not ujian.transkrip or
+                not ujian.ijaza_terakhir or
+                not ujian.krs_berjalan or
+                not ujian.rekomendasi_akademik
+            ):
+            messages.error(request, 'Berkas persyaratan belum lengkap, silakan lengkapi terlebih dahulu.')
+            return redirect('/acd/ujian_reg')
+        else:
+            ceklayanan = Layanan.objects.filter(mhs=usermhs, layanan_jenis__nama_layanan='Undangan Ujian Tutup',status__in=['Waiting', 'Processing']).exists()
+            if ceklayanan:
+                messages.info(request, 'Anda masih memiliki layanan dengan jenis ini yang sedang diproses.')
+                return redirect('/acd/ujian_reg')
+            else:
+                # Jika tidak ada layanan yang sedang diproses, lanjutkan
+                layanan = Layanan(
+                    mhs=usermhs,
+                    layanan_jenis=LayananJenis.objects.get(nama_layanan='Undangan Ujian Tutup'),
+                    prodi=usermhs.prodi,
+                    status='Waiting',
+                    layanan_isi=request.POST.get('layanan_isi'),
+                    )  # Menambahkan layanan baru
+                layanan.save()            
+                messages.success(request, 'Pendaftar Ujian berhasil!, cek status di menu layanan')
+                return redirect('/acd/layanan_me')
+
+            
+
+

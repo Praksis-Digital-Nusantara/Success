@@ -2,95 +2,242 @@
 
 {% block content1 %}
 <div class="dashboard-content">
-	<div class="profile-section">
-	<div class="container-header">
-		<nav class="container-breadcrumb">
-			<ul>
-				<li>
-					<a href="{% url 'acd:dashboard' %}">
-						<i class="ri-home-line"></i>
-					</a>
-				</li>
-				<li>
-					<i class="ri-arrow-right-s-line"></i>
-				</li>
-				<li>
-					<a href="{% url 'acd:layanan_me' %}">Layanan</a>
-				</li>
-				<li>
-					<i class="ri-arrow-right-s-line"></i>
-				</li>
-				<li>
-					<a href="">{{ heading }}</a>
-				</li>
-			</ul>
-		</nav>
-	</div>
-		<form method="post"  enctype="multipart/form-data">
-			{% csrf_token %}					
-			<div class="form-row">
-				<div class="form-group">
-					<label for="id_layanan_jenis" class="col-form-label">layanan_jenis</label>
-					{{ form.layanan_jenis }} 							
+		<!-- Toast Container -->
+		<div class="toast-container" id="toast-container"></div>
+
+		<!-- Enhanced Form Card -->
+		<div class="form-card">
+			<div class="form-header">
+				<div class="form-header-icon">
+					<i class="ri-file-add-line"></i>
 				</div>
-				<div  class="form-group" id="prasyarat-container" style="margin-top: 20px;">
-					<label><strong>Prasyarat Layanan:</strong></label>
-					<p id="prasyarat-layanan">Pilih jenis layanan untuk melihat prasyarat.</p>
+				<div class="form-header-content">
+					<h2>{{ heading }}</h2>
+					<p>Ajukan layanan akademik baru dengan mengisi formulir di bawah ini</p>
 				</div>
-			</div>			
-
-			<div class="form-group">
-				<label for="id_layanan_isi" class="col-form-label">Layanan Isi</label>
-				{{ form.layanan_isi }}  <!-- Form input untuk email -->
 			</div>
-			
 
-			<div class="form-group">
-				<label for="id_layanan_file" class="col-form-label">File jika ada</label>
-				{{ form.layanan_file }}  <!-- Form input untuk first name -->
-			</div>
-			
-			<button type="submit" class="btn btn-primary">Ajukan</button>
-		</form> 
+			<form method="post" enctype="multipart/form-data" class="layanan-form">
+				{% csrf_token %}
+				
+				<!-- Layanan Type Selection -->
+				<div class="form-section">
+					<div class="form-group">
+						<label for="id_layanan_jenis" class="form-label">
+							<i class="ri-list-check"></i>
+							Jenis Layanan
+						</label>
+						<div class="select-wrapper">
+							{{ form.layanan_jenis }}
+							<i class="ri-arrow-down-s-line select-arrow"></i>
+						</div>
+						{% if form.layanan_jenis.errors %}
+							<div class="form-error">
+								<i class="ri-error-warning-line"></i>
+								{{ form.layanan_jenis.errors }}
+							</div>
+						{% endif %}
+					</div>
+				</div>
 
-		
+				<!-- Prasyarat Information -->
+				<div class="form-section" id="prasyarat-container">
+					<div class="info-card">
+						<div class="info-card-header">
+							<i class="ri-information-line"></i>
+							<h4>Prasyarat Layanan</h4>
+						</div>
+						<div class="info-card-content">
+							<p id="prasyarat-layanan">Pilih jenis layanan untuk melihat prasyarat yang diperlukan.</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- Layanan Content -->
+				<div class="form-section">
+					<div class="form-group">
+						<label for="id_layanan_isi" class="form-label">
+							<i class="ri-file-text-line"></i>
+							Deskripsi Layanan
+						</label>
+						<div class="textarea-wrapper">
+							{{ form.layanan_isi }}
+							<div class="textarea-counter">
+								<span id="char-count">0</span> karakter
+							</div>
+						</div>
+						{% if form.layanan_isi.errors %}
+							<div class="form-error">
+								<i class="ri-error-warning-line"></i>
+								{{ form.layanan_isi.errors }}
+							</div>
+						{% endif %}
+					</div>
+				</div>
+
+				<!-- File Upload -->
+				<div class="form-section">
+					<div class="form-group">
+						<label for="id_layanan_file" class="form-label">
+							<i class="ri-attachment-2"></i>
+							Lampiran Dokumen
+						</label>
+						<div class="file-upload-wrapper">
+							<div class="file-upload-area" id="file-upload-area">
+								<i class="ri-upload-cloud-line"></i>
+								<p>Klik untuk memilih file atau drag & drop</p>
+								<span class="file-format">Format yang didukung: PDF (Maks. 5MB)</span>
+							</div>
+							{{ form.layanan_file }}
+							<div class="file-preview" id="file-preview" style="display: none;">
+								<div class="file-info">
+									<i class="ri-file-pdf-line"></i>
+									<div class="file-details">
+										<span class="file-name" id="file-name"></span>
+										<span class="file-size" id="file-size"></span>
+									</div>
+									<button type="button" class="file-remove" id="file-remove">
+										<i class="ri-close-line"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+						{% if form.layanan_file.errors %}
+							<div class="form-error">
+								<i class="ri-error-warning-line"></i>
+								{{ form.layanan_file.errors }}
+							</div>
+						{% endif %}
+					</div>
+				</div>
+
+				<!-- Form Actions -->
+				<div class="form-actions">
+					<button type="button" class="btn btn-secondary" onclick="history.back()">
+						<i class="ri-arrow-left-line"></i>
+						Kembali
+					</button>
+					<button type="submit" class="btn btn-primary">
+						<i class="ri-send-plane-line"></i>
+						Ajukan Layanan
+					</button>
+				</div>
+			</form>
 	</div>
 </div>
 {% endblock content1 %}
 
+{% block script_costum %}
+<script>
+	// Simple Toast Function
+	function showToast(type, message) {
+		const toast = document.createElement('div');
+		toast.className = `toast ${type}`;
+		toast.innerHTML = `
+			<div class="toast-icon">
+				<i class="ri-${type === 'error' ? 'error-warning-line' : 'information-line'}"></i>
+			</div>
+			<div class="toast-content">
+				<div class="toast-message">${message}</div>
+			</div>
+			<button class="toast-close" onclick="this.parentElement.remove()">
+				<i class="ri-close-line"></i>
+			</button>
+			<div class="toast-progress"></div>
+		`;
+		
+		document.getElementById('toast-container').appendChild(toast);
+		
+		setTimeout(() => {
+			if (toast.parentElement) {
+				toast.classList.add('hide');
+				setTimeout(() => toast.remove(), 300);
+			}
+		}, 4000);
+	}
 
+	// File upload handling
+	const fileInput = document.querySelector('#id_layanan_file');
+	const fileUploadArea = document.querySelector('#file-upload-area');
+	const filePreview = document.querySelector('#file-preview');
+	const fileName = document.querySelector('#file-name');
+	const fileSize = document.querySelector('#file-size');
+	const fileRemove = document.querySelector('#file-remove');
 
-{% block script_costum %} 
-
-	<script>
-		// Ambil elemen dropdown dan container prasyarat
-		const layananJenisDropdown = document.querySelector('#id_layanan_jenis');
-		const prasyaratContainer = document.querySelector('#prasyarat-container');
-		const prasyaratLayanan = document.querySelector('#prasyarat-layanan');
-	
-		// Tambahkan event listener pada dropdown
-		layananJenisDropdown.addEventListener('change', function () {
-			const layananId = this.value; // Ambil ID dari pilihan dropdown
-			if (layananId) {
-				// Lakukan AJAX request ke endpoint
-				fetch(`/acd/get-prasyarat-layanan/?layanan_id=${layananId}`)
-					.then(response => response.json())
-					.then(data => {
-						if (data.prasyarat_layanan) {
-							prasyaratLayanan.textContent = data.prasyarat_layanan; // Tampilkan prasyarat
-						} else {
-							prasyaratLayanan.textContent = 'Prasyarat tidak ditemukan.';
-						}
-					})
-					.catch(error => {
-						console.error('Error fetching prasyarat:', error);
-						prasyaratLayanan.textContent = 'Terjadi kesalahan saat mengambil prasyarat.';
-					});
-			} else {
-				prasyaratLayanan.textContent = 'Pilih jenis layanan untuk melihat prasyarat.';
+	if (fileInput && fileUploadArea && filePreview) {
+		fileInput.addEventListener('change', function(e) {
+			const file = e.target.files[0];
+			if (file) {
+				// Validate file type
+				if (!file.type.includes('pdf')) {
+					showToast('error', 'Hanya file PDF yang diperbolehkan');
+					this.value = '';
+					return;
+				}
+				
+				// Validate file size (5MB)
+				if (file.size > 5 * 1024 * 1024) {
+					showToast('error', 'Ukuran file maksimal 5MB');
+					this.value = '';
+					return;
+				}
+				
+				// Show file preview
+				fileName.textContent = file.name;
+				fileSize.textContent = formatFileSize(file.size);
+				fileUploadArea.style.display = 'none';
+				filePreview.style.display = 'block';
+				
+				showToast('info', `File "${file.name}" berhasil dipilih`);
 			}
 		});
-	</script>
 
+		// File remove
+		fileRemove.addEventListener('click', function() {
+			fileInput.value = '';
+			fileUploadArea.style.display = 'block';
+			filePreview.style.display = 'none';
+			showToast('info', 'File telah dihapus');
+		});
+	}
+
+	// Format file size
+	function formatFileSize(bytes) {
+		if (bytes === 0) return '0 Bytes';
+		const k = 1024;
+		const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+		const i = Math.floor(Math.log(bytes) / Math.log(k));
+		return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+	}
+
+	// Ambil elemen dropdown dan container prasyarat
+	const layananJenisDropdown = document.querySelector('#id_layanan_jenis');
+	const prasyaratContainer = document.querySelector('#prasyarat-container');
+	const prasyaratLayanan = document.querySelector('#prasyarat-layanan');
+
+	// Tambahkan event listener pada dropdown
+	layananJenisDropdown.addEventListener('change', function () {
+		const layananId = this.value; // Ambil ID dari pilihan dropdown
+		if (layananId) {
+			// Lakukan AJAX request ke endpoint
+			fetch(`/acd/get-prasyarat-layanan/?layanan_id=${layananId}`)
+				.then(response => response.json())
+				.then(data => {
+					if (data.prasyarat_layanan) {
+						prasyaratLayanan.textContent = data.prasyarat_layanan; // Tampilkan prasyarat
+					} else {
+						prasyaratLayanan.textContent = 'Prasyarat tidak ditemukan.';
+					}
+				})
+				.catch(error => {
+					console.error('Error fetching prasyarat:', error);
+					prasyaratLayanan.textContent = 'Terjadi kesalahan saat mengambil prasyarat.';
+					showToast('error', 'Gagal memuat prasyarat layanan');
+				});
+		} else {
+			prasyaratLayanan.textContent = 'Pilih jenis layanan untuk melihat prasyarat.';
+		}
+	});
+</script>
 {% endblock script_costum %} 
 

@@ -5,23 +5,60 @@ from django.contrib import messages
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 
-from .models import (Layanan,
-                     UserMhs, 
+from aam.context_processors import web_name
+
+from uuid import UUID
+
+from .models import (UserMhs, Layanan,
                      SkripsiJudul, 
                      NoSurat, 
-                     ProdiPejabat, 
-                     TTDProdi)
+                     Hasil,
+                     Ujian,
+                     Proposal, 
+                     skPembimbing, 
+                     TTDProdi,
+                     NoSuratFakultas,
+                     KodeSurat,
+                     SuketBebasKuliah,
+                     SuketBebasPlagiasi,
+                     )
+
 
 from .forms_prodi import (formLayananEdit, 
                           formNosuratAdd, 
                           formTTD,
                           formSkripsiJudulEdit,
+                          formProposal,
+                          formHasil,
+                          formUjian,
+                          formSuketBebasKuliah,
+                          formSuketBebasPlagiasi,
                           )
 from .decorators_prodi import admin_prodi_required, check_userprodi
 
 
 ########### NOMOR SURAT #####################################################
+
+
+@check_userprodi
+@admin_prodi_required
+def notif_prodi(request):
+    userprodi = request.userprodi
+    layanan_waiting = Layanan.objects.filter(mhs__prodi=userprodi.prodi, status='Waiting').count() or 0,
+    layanan = Layanan.objects.filter(mhs__prodi=userprodi.prodi, status='Waiting').order_by('-date_in')[:3]  # Ambil 10 notifikasi terbaru
+    data = [
+        {
+            'mhs': str(l.mhs),
+            'jenis_layanan': l.layanan_jenis.nama_layanan,
+            'date_in': l.date_in,
+            'avatar': str(l.mhs.photo)
+        }
+        for l in layanan
+    ]
+    return JsonResponse({'count': layanan_waiting, 'data': data})
+
 
 @check_userprodi
 @admin_prodi_required
@@ -50,7 +87,7 @@ def nosurat(request):
     else:
         form = formNosuratAdd(request.POST)
 
-    data = NoSurat.objects.filter(jurusan=userprodi.prodi.jurusan )
+    data = NoSurat.objects.filter(jurusan=userprodi.prodi.jurusan).order_by('-nomor')
     context = {
         'title': 'Nomor Surat',
         'heading': 'Nomor Surat',
@@ -60,6 +97,16 @@ def nosurat(request):
         'form' : form
     }
     return render(request, 'prodi/nosurat.html', context)
+
+@check_userprodi
+@admin_prodi_required
+def nosurat_del(request):
+    userprodi = request.userprodi
+    data = NoSurat.objects.filter(jurusan=userprodi.prodi.jurusan).order_by('-date_in').first()
+    data.delete()
+    messages.success(request, 'Berhasil Mebatalkan Nomor Surat Terakhir')
+    return redirect('acd:nosurat')
+
 
 
 ###################### TTD QRCODE ########################
@@ -79,12 +126,15 @@ def ttd(request):
 
 @check_userprodi
 @admin_prodi_required
-def ttd_edit(request, id=0):
+def ttd_edit(request, id=0):      
     userprodi = request.userprodi
-    try:
-        data = TTDProdi.objects.get(id=id)
-    except ObjectDoesNotExist:
+
+    if id == '0' :
         data = None
+    else :
+        data = TTDProdi.objects.get(id=id)
+        
+
     if request.method == 'POST':
         form = formTTD(request.POST, instance=data)
         if form.is_valid():
@@ -100,7 +150,7 @@ def ttd_edit(request, id=0):
         form = formTTD(instance=data)
 
     context = {
-        'title' : 'Kelolah TTD',
+        'title' : 'TTD Qrcode',
         'heading' : 'Kelolah TTD',
         'userprodi' : userprodi,
         'photo' : userprodi.photo,
@@ -108,20 +158,38 @@ def ttd_edit(request, id=0):
     }
     return render(request, 'prodi/ttd_edit.html', context)
 
+@check_userprodi
+@admin_prodi_required
+def ttd_del(request, id):
+    data = get_object_or_404(TTDProdi, id=id)
+    data.delete()
+    messages.info(request, 'Berhasil Menghapus Data')
+    return redirect('acd:ttd')
+
 
 
 ###################### LAYANAN ########################
 
 @check_userprodi
 @admin_prodi_required
-def layanan(request):
+def layanan(request, filter):
     userprodi = request.userprodi  
-    layanan_data = Layanan.objects.all()
+    if filter == 'All':
+        layanan_data = Layanan.objects.filter(mhs__prodi=userprodi.prodi).order_by('-date_in')
+    elif filter == 'Waiting':
+        layanan_data = Layanan.objects.filter(mhs__prodi=userprodi.prodi, status='Waiting').order_by('-date_in')
+    elif filter == 'Processing':
+        layanan_data = Layanan.objects.filter(mhs__prodi=userprodi.prodi, status='Processing').order_by('-date_in')
+    elif filter == 'Completed':
+        layanan_data = Layanan.objects.filter(mhs__prodi=userprodi.prodi, status='Completed').order_by('-date_in')
+    elif filter == 'Rejected':
+        layanan_data = Layanan.objects.filter(mhs__prodi=userprodi.prodi, status='Rejected').order_by('-date_in')
     # data = User.objects.filter(last_name='Mahasiswa').select_related('usermhs').prefetch_related('skripsi_judul')
     context = {
         'title': 'Layanan',
         'heading': 'List Layanan',
         'userprodi' : userprodi,
+        'filter' : filter,
         'photo' : userprodi.photo,
         'layanan_data': layanan_data,
     }
@@ -130,7 +198,7 @@ def layanan(request):
 
 @check_userprodi
 @admin_prodi_required
-def layanan_edit(request, id):
+def layanan_edit(request, id, filter):
     userprodi = request.userprodi  
     layanan = get_object_or_404(Layanan, id=id)
     if request.method == 'POST':
@@ -140,10 +208,10 @@ def layanan_edit(request, id):
             layanan.adminp = request.user   
             layanan.save()  
             messages.success(request, 'Berhasil')
-            return redirect('acd:layanan_edit', id=layanan.id)
+            return redirect('acd:layanan_edit', id=layanan.id, filter=filter)
         else:
             messages.error(request, 'periksa kembali isian data anda!')
-            return redirect('acd:layanan_edit', id=layanan.id)
+            return redirect('acd:layanan_edit', id=layanan.id, filter=filter)
     else:
         form = formLayananEdit(instance=layanan)
 
@@ -151,6 +219,7 @@ def layanan_edit(request, id):
         'title' : 'Kelolah Layanan',
         'heading' : 'Kelolah Layanan',
         'userprodi' : userprodi,
+        'filter' : filter,
         'photo' : userprodi.photo,
         'form': form,
     }
@@ -162,6 +231,8 @@ def layanan_edit(request, id):
 @check_userprodi
 @admin_prodi_required
 def skripsi_sjudul(request):
+    userprodi = request.userprodi  
+
     if request.method == "POST":
         skripsi_id = request.POST.get("skripsi_id")
         status_ket = request.POST.get("status_ket")
@@ -172,21 +243,9 @@ def skripsi_sjudul(request):
         skripsi.status_ket = status_ket
         skripsi.save()       
         messages.success(request, f"Status Skripsi {skripsi_id} = {status}")
+    
+    data = SkripsiJudul.objects.filter(status__in=['Waiting', 'Revision', 'Approved'], prodi=userprodi.prodi)
 
-    userprodi = request.userprodi  
-    data = SkripsiJudul.objects.all()
-
-    # Buat dictionary untuk mengambil first_name penasehat akademik
-    user_mhs_dict = {
-        um.nim.username: um.penasehat_akademik.first_name if um.penasehat_akademik else "Tidak Ada"
-        for um in UserMhs.objects.select_related('penasehat_akademik')
-    }
-
-    # Tambahkan first_name penasehat akademik ke dalam setiap data SkripsiJudul
-    for skripsi in data:
-        skripsi.penasehat_akademik = user_mhs_dict.get(skripsi.mhs.username, "Tidak Ada")
-
-        
     context = {
         'title': 'Seleksi Judul',
         'heading': 'Seleksi Judul',
@@ -204,12 +263,31 @@ def skripsi_djudul(request):
     if request.method == "POST":
         skripsi_id = request.POST.get("skripsi_id")
         skripsi = get_object_or_404(SkripsiJudul, id=skripsi_id)
-        skripsi.status_sk = "Pengajuan"
-        skripsi.save()       
-        messages.success(request, f"Pengajuan SK {skripsi.mhs} berhasil diajukan ")
+        
+        # Cek apakah pbb1 dan pbb2 kosong
+        if not skripsi.pembimbing1 or not skripsi.pembimbing2 or skripsi.pembimbing2_persetujuan in['Waiting', 'Rejected']:
+            messages.error(request, "Pengajuan SK gagal! Pembimbing 1 dan Pembimbing 2 harus diisi.")
+        else:
+            skripsi.status_sk = "Pengajuan"
+            skripsi.save()
+            #update layanan agar status DIPROSES      
+            try:    
+                layanan = Layanan.objects.get(
+                        layanan_jenis__nama_layanan='Penerbitan SK Pembimbing',
+                        status__in=['Waiting', 'Processing'],
+                        mhs=skripsi.mhs
+                    )
+                layanan.status = 'Processing'
+                layanan.hasil_test = 'telah diajukan oleh prodi, menunggu bagian fakultas menerbitkan SK'
+                layanan.save() 
+                messages.success(request, f"Layana Mahasiswa berhasil diperbaharui")
+            except Layanan.DoesNotExist:
+                # Tidak ada data layanan, program tetap jalan
+                messages.info(request, "Tidak ada layanan yang perlu diperbarui")
 
+            messages.success(request, f"Pengajuan SK {skripsi.mhs} berhasil diajukan")
     userprodi = request.userprodi  
-    data = SkripsiJudul.objects.all()       
+    data = SkripsiJudul.objects.filter(prodi=userprodi.prodi).order_by('-date_in')       
     context = {
         'title': 'Daftar Judul',
         'heading': 'Daftar Judul',
@@ -222,19 +300,36 @@ def skripsi_djudul(request):
 
 @check_userprodi
 @admin_prodi_required
-def skripsi_ejudul(request, id):
+def skripsi_ejudul(request, nim):
     userprodi = request.userprodi  
-    judul = get_object_or_404(SkripsiJudul, id=id)
+    mhs = get_object_or_404(UserMhs, nim__username = nim)
+    judul, create = SkripsiJudul.objects.get_or_create(
+        mhs__nim__username=nim,
+        defaults={
+            'mhs': mhs,
+            'prodi': mhs.prodi,
+            'status': 'Added',
+        }
+    )
+
+    if judul.pembimbing2:
+        pbb2_lama = judul.pembimbing2.nip.username
+    else:
+        pbb2_lama = None
+
     if request.method == 'POST':
         form = formSkripsiJudulEdit(request.POST, instance=judul)
         if form.is_valid():
-            judul = form.save(commit=False)  
-            judul.save()  
-            messages.success(request, 'Berhasil')
-            return redirect('acd:skripsi_ejudul', id=judul.id)
-        else:
-            messages.error(request, 'periksa kembali isian data anda!')
-            return redirect('acd:skripsi_ejudul', id=judul.id)
+            judulform = form.save(commit=False)
+            pbb2_baru = request.POST.get('pembimbing2')
+            
+            print(pbb2_baru, pbb2_lama)
+            if pbb2_baru != pbb2_lama:
+                judulform.pembimbing2_persetujuan = 'Waiting' 
+                messages.info(request, 'Pembimbing 2 menunggu persetujuan') 
+            judulform.save()  
+            messages.success(request, 'Berhasil Mengupdate Judul Skripsi')
+            return redirect('acd:skripsi_ejudul', nim=nim)
     else:
         form = formSkripsiJudulEdit(instance=judul)
 
@@ -244,5 +339,423 @@ def skripsi_ejudul(request, id):
         'userprodi' : userprodi,
         'photo' : userprodi.photo,
         'form': form,
+        'judul': judul,
     }
     return render(request, 'prodi/skripsi_ejudul.html', context)
+
+
+###################### PROPOSAL ########################
+
+@check_userprodi
+@admin_prodi_required
+def proposal(request):
+    userprodi = request.userprodi      
+    data = Proposal.objects.filter(mhs_judul__prodi=userprodi.prodi, seminar_tgl__isnull=False).order_by('-date_in')
+
+    context = {
+        'title': 'Proposal',
+        'heading': 'Proposal Penelitian',
+        'userprodi' : userprodi,
+        'photo' : userprodi.photo,
+        'data': data,
+    }
+    return render(request, 'prodi/proposal.html', context)
+
+
+@check_userprodi
+@admin_prodi_required
+def proposal_edit(request, nim):
+    userprodi = request.userprodi  
+    judul = get_object_or_404(SkripsiJudul, mhs__nim__username = nim)
+    proposal, create = Proposal.objects.get_or_create(
+        mhs_judul__mhs__nim__username=nim,
+        defaults={
+            'mhs_judul': judul,
+            'pembimbing1': judul.pembimbing1,
+            'pembimbing2': judul.pembimbing2,
+            'adminp': userprodi,
+        }
+    )
+
+    if request.method == 'POST':
+        form = formProposal(request.POST, instance=proposal)
+        if form.is_valid():
+            tosave = form.save(commit=False)
+            tosave.adminp = userprodi
+            tosave.mhs_judul = judul
+            tosave.pembimbing1 = judul.pembimbing1
+            tosave.pembimbing2 = judul.pembimbing2
+            if tosave.no_surat is None:
+                tahun = datetime.now().year
+                nosurat_cek = NoSuratFakultas.objects.filter(tahun=tahun).order_by('-nomor').first()
+                if nosurat_cek:
+                    nosurat_baru = nosurat_cek.nomor + 1
+                else:
+                    nosurat_baru = 1  
+                kodesurat = KodeSurat.objects.get(jenis='Undangan Seminar Proposal')
+
+                addnosurat = NoSuratFakultas.objects.create(
+                    adminp = request.user,
+                    tahun = tahun,
+                    nomor = nosurat_baru, 
+                    perihal = 'Undangan Seminar Proposal ' + str(judul.mhs),
+                    tujuan = 'Dosen Pembimbing dan Penguji',
+                    kode = kodesurat.kode
+                )
+                tosave.no_surat =  str(nosurat_baru) + str(kodesurat.kode) + str(tahun)               
+            tosave.save()
+
+            #update layanan agar status DIPROSES            
+            layanan = Layanan.objects.filter(mhs=judul.mhs, layanan_jenis__nama_layanan='Undangan Seminar Proposal', status__in=['Processing', 'Waiting']).first()
+            if layanan:
+                context_pro = web_name(request)
+                layanan.status = 'Completed'
+                layanan.hasil_test = 'Undangan Telah Diterbitkan, download di tautan berikut:'
+                layanan.hasil_link = context_pro.get("baseurl", "") + "acd/print_undangan/Proposal/" + str(tosave.id)
+                layanan.save()
+
+            messages.success(request, "Undangan Berhasil Diproses")
+            return redirect('acd:proposal_edit', nim=nim)
+    else:
+        form = formProposal(instance=proposal)  
+
+    context = {
+        'title': 'Proposal',
+        'heading': 'Set Undangan Proposal',
+        'userprodi' : userprodi,
+        'photo' : userprodi.photo,
+        'judul': judul,
+        'proposal': proposal,
+        'form': form,
+    }
+    return render(request, 'prodi/proposal_edit.html', context)
+
+
+
+
+######################### HASIL ########################
+@check_userprodi
+@admin_prodi_required
+def hasil(request):
+    userprodi = request.userprodi      
+    data = Hasil.objects.filter(mhs_judul__prodi=userprodi.prodi).order_by('-date_in')
+
+    context = {
+        'title': 'Hasil',
+        'heading': 'Hasil Penelitian',
+        'userprodi' : userprodi,
+        'photo' : userprodi.photo,
+        'data': data,
+    }
+    return render(request, 'prodi/hasil.html', context)
+
+
+@check_userprodi
+@admin_prodi_required
+def hasil_edit(request, nim):
+    userprodi = request.userprodi  
+    judul = get_object_or_404(SkripsiJudul, mhs__nim__username = nim)
+    hasil, create = Hasil.objects.get_or_create(
+        mhs_judul__mhs__nim__username=nim,
+        defaults={
+            'mhs_judul': judul,
+            'pembimbing1': judul.pembimbing1,
+            'pembimbing2': judul.pembimbing2,
+            'adminp': userprodi,
+        }
+    )
+
+    if request.method == 'POST':
+        form = formHasil(request.POST, instance=hasil)
+        if form.is_valid():
+            tosave = form.save(commit=False)
+            tosave.adminp = userprodi
+            tosave.mhs_judul = judul
+            tosave.prodi = judul.prodi
+            tosave.pembimbing1 = judul.pembimbing1
+            tosave.pembimbing2 = judul.pembimbing2
+            if tosave.no_surat is None:
+                tahun = datetime.now().year
+                nosurat_cek = NoSuratFakultas.objects.filter(tahun=tahun).order_by('-nomor').first()
+                if nosurat_cek:
+                    nosurat_baru = nosurat_cek.nomor + 1
+                else:
+                    nosurat_baru = 1  
+                kodesurat = KodeSurat.objects.get(jenis='Undangan Seminar Hasil')
+
+                addnosurat = NoSuratFakultas.objects.create(
+                    adminp = request.user,
+                    tahun = tahun,
+                    nomor = nosurat_baru, 
+                    perihal = 'Undangan Seminar Hasil ' + str(judul.mhs),
+                    tujuan = 'Dosen Pembimbing dan Penguji',
+                    kode = kodesurat.kode
+                )
+                tosave.no_surat =  str(nosurat_baru) + str(kodesurat.kode) + str(tahun)               
+            tosave.save()
+
+            #update layanan agar status DIPROSES            
+            layanan = Layanan.objects.filter(mhs=judul.mhs, layanan_jenis__nama_layanan='Undangan Seminar Hasil', status__in=['Processing', 'Waiting']).first()
+            if layanan:
+                context_pro = web_name(request)
+                layanan.status = 'Completed'
+                layanan.hasil_test = 'Undangan Telah Diterbitkan, download di tautan berikut:'
+                layanan.hasil_link = context_pro.get("baseurl", "") + "acd/print_undangan/Hasil/" + str(tosave.id)
+                layanan.save()
+
+            messages.success(request, "Undangan Berhasil Diproses")
+            return redirect('acd:hasil_edit', nim=nim)
+    else:
+        form = formHasil(instance=hasil)  
+
+    context = {
+        'title': 'Hasil',
+        'heading': 'Set Undangan Hasil',
+        'userprodi' : userprodi,
+        'photo' : userprodi.photo,
+        'judul': judul,
+        'form': form,
+    }
+    return render(request, 'prodi/hasil_edit.html', context)
+
+
+
+######################### UJIAN ########################
+@check_userprodi
+@admin_prodi_required
+def ujian(request):
+    userprodi = request.userprodi      
+    data = Ujian.objects.filter(mhs_judul__prodi=userprodi.prodi, ujian_tgl__isnull=False).order_by('-date_in')
+
+    context = {
+        'title': 'Ujian',
+        'heading': 'Ujian Hasil Penelitian',
+        'userprodi' : userprodi,
+        'photo' : userprodi.photo,
+        'data': data,
+    }
+    return render(request, 'prodi/ujian.html', context)
+
+@check_userprodi
+@admin_prodi_required
+def ujian_edit(request, nim):
+    userprodi = request.userprodi  
+    judul = get_object_or_404(SkripsiJudul, mhs__nim__username = nim)
+    ujian, create = Ujian.objects.get_or_create(
+        mhs_judul__mhs__nim__username=nim,
+        defaults={
+            'mhs_judul': judul,
+            'pembimbing1': judul.pembimbing1,
+            'pembimbing2': judul.pembimbing2,
+        }
+    )
+
+    if request.method == 'POST':
+        form = formUjian(request.POST, instance=ujian)
+        if form.is_valid():
+            tosave = form.save(commit=False)
+            tosave.mhs_judul = judul
+            tosave.pembimbing1 = judul.pembimbing1
+            tosave.pembimbing2 = judul.pembimbing2             
+            tosave.save()
+
+            #update layanan agar status DIPROSES            
+            layanan = Layanan.objects.filter(mhs=judul.mhs, layanan_jenis__nama_layanan='Undangan Ujian Tutup', status__in=['Processing', 'Waiting']).first()
+            if layanan:
+                context_pro = web_name(request)
+                layanan.status = 'Processing'
+                layanan.hasil_test = 'Undangan Telah Disetujui Prodi, menunggu bagian fakultas menerbitkan undangan'
+                layanan.save()
+
+            messages.success(request, "Undangan Berhasil Diproses")
+    else:
+        form = formUjian(instance=ujian)  
+
+    context = {
+        'title': 'Ujian',
+        'heading': 'Set Undangan Ujian',
+        'userprodi' : userprodi,
+        'photo' : userprodi.photo,
+        'judul': judul,
+        'ujian': ujian,
+        'bebaskuliah': SuketBebasKuliah.objects.filter(mhs=judul.mhs).first(),
+        'bebasplagiasi': SuketBebasPlagiasi.objects.filter(mhs=judul.mhs).first(),
+        'skpbb': skPembimbing.objects.filter(mhs=judul.mhs).order_by('-date_in').first(),
+        'form': form,
+    }
+    return render(request, 'prodi/ujian_edit.html', context)
+
+
+
+######################### BEBAS BEBAN KULIAH ########################
+@check_userprodi
+@admin_prodi_required
+def suket_bebaskuliah(request):
+    userprodi = request.userprodi      
+    data = SuketBebasKuliah.objects.filter(mhs__prodi=userprodi.prodi).order_by('-date_in')
+
+    context = {
+        'title': 'Suket Bebas Kuliah',
+        'heading': 'Suket Bebas Beban Kuliah',
+        'userprodi' : userprodi,
+        'photo' : userprodi.photo,
+        'data': data,
+    }
+    return render(request, 'prodi/suket_bebaskuliah.html', context)
+
+
+@check_userprodi
+@admin_prodi_required
+def suket_bebaskuliah_edit(request, nim):
+    userprodi = request.userprodi
+    mhs = get_object_or_404(UserMhs, nim__username = nim)
+    datasuket = SuketBebasKuliah.objects.filter(mhs=mhs).first()
+
+    if request.method == 'POST':
+        form = formSuketBebasKuliah(request.POST, instance=datasuket)
+        if form.is_valid():
+            suket = form.save(commit=False)  
+            suket.adminp = request.user   
+            suket.jurusan = userprodi.prodi.jurusan   
+            suket.mhs = mhs
+            if suket.no_surat is None:
+                tahun = datetime.now().year
+                nosurat_cek = NoSurat.objects.filter(jurusan=userprodi.prodi.jurusan,tahun=tahun).order_by('-nomor').first()
+                if nosurat_cek:
+                    nosurat_baru = nosurat_cek.nomor + 1
+                else:
+                    nosurat_baru = 1  
+                addnosurat = NoSurat.objects.create(
+                    adminp = request.user,
+                    tahun = tahun,
+                    nomor = nosurat_baru,
+                    jurusan  = userprodi.prodi.jurusan,
+                    perihal = 'Suket Bebas Beban Kuliah',
+                    tujuan = str(mhs),
+                )
+                suket.no_surat =  str(nosurat_baru) + str(userprodi.prodi.jurusan.kode_surat) + str(tahun)
+            suket.save()
+            messages.success(request, 'Berhasil Menerbitkan Surat')
+            #update layanan agar status DIPROSES            
+            layanan = Layanan.objects.filter(mhs=mhs, layanan_jenis__nama_layanan='Suket Bebas Beban Kuliah', status__in=['Processing', 'Waiting']).first()
+            if layanan:
+                context_pro = web_name(request)
+                layanan.status = 'Completed'
+                layanan.hasil_test = 'Surat Keterangan Bebas Beban Kuliah, download di tautan berikut:'
+                layanan.hasil_link = context_pro.get("baseurl", "") + "acd/print_suket_bebaskuliah/" + str(suket.id)
+                layanan.save()                  
+                messages.success(request, 'Berhasil Mengupdate Layanan')
+            
+        else:
+            messages.error(request, 'periksa kembali isian data anda!')
+        return redirect('acd:suket_bebaskuliah_edit', nim=nim)
+    else:
+        form = formSuketBebasKuliah(instance=datasuket)
+
+    context = {
+        'title': 'Suket Bebas Kuliah',
+        'heading': 'Edit Suket Bebas Kuliah',
+        'userprodi' : userprodi,
+        'photo' : userprodi.photo,
+        'mhs' : mhs,
+        'form': form,
+    }
+    return render(request, 'prodi/suket_bebaskuliah_edit.html', context)
+
+
+@check_userprodi
+@admin_prodi_required
+def suket_bebaskuliah_del(request, id):
+    data = get_object_or_404(SuketBebasKuliah, id=id)
+    data.delete()
+    messages.info(request, 'Berhasil Menghapus Surat')
+    return redirect('acd:suket_bebaskuliah')
+
+
+
+######################### BEBAS PALGIASI ########################
+@check_userprodi
+@admin_prodi_required
+def suket_bebasplagiasi(request):
+    userprodi = request.userprodi      
+    data = SuketBebasPlagiasi.objects.filter(mhs__prodi=userprodi.prodi).order_by('-date_in')
+
+    context = {
+        'title': 'Suket Bebas Plagiasi',
+        'heading': 'Surat Keterangan Bebas Plagiasi',
+        'userprodi' : userprodi,
+        'photo' : userprodi.photo,
+        'data': data,
+    }
+    return render(request, 'prodi/suket_bebasplagiasi.html', context)
+
+
+@check_userprodi
+@admin_prodi_required
+def suket_bebasplagiasi_edit(request, nim):
+    userprodi = request.userprodi
+    mhs = get_object_or_404(UserMhs, nim__username = nim)
+    datasuket = SuketBebasPlagiasi.objects.filter(mhs=mhs).first()
+
+    if request.method == 'POST':
+        form = formSuketBebasPlagiasi(request.POST, instance=datasuket)
+        if form.is_valid():
+            suket = form.save(commit=False)  
+            suket.adminp = request.user   
+            suket.jurusan = userprodi.prodi.jurusan   
+            suket.mhs = mhs
+            if suket.no_surat is None:
+                tahun = datetime.now().year
+                nosurat_cek = NoSurat.objects.filter(jurusan=userprodi.prodi.jurusan,tahun=tahun).order_by('-nomor').first()
+                if nosurat_cek:
+                    nosurat_baru = nosurat_cek.nomor + 1
+                else:
+                    nosurat_baru = 1  
+
+                addnosurat = NoSurat.objects.create(
+                    adminp = request.user,
+                    tahun = tahun,
+                    nomor = nosurat_baru,
+                    jurusan  = userprodi.prodi.jurusan,
+                    perihal = 'Suket Bebas Plagiasi',
+                    tujuan = str(mhs),
+                )
+                suket.no_surat =  str(nosurat_baru) + str(userprodi.prodi.jurusan.kode_surat) + str(tahun)
+            suket.save()
+            messages.success(request, 'Berhasil Menerbitkan Surat')
+            #update layanan agar status DIPROSES            
+            layanan = Layanan.objects.filter(mhs=mhs, layanan_jenis__nama_layanan='Surat Keterangan Bebas Plagiasi', status__in=['Processing', 'Waiting']).first()
+            if layanan:
+                context_pro = web_name(request)
+                layanan.status = 'Completed'
+                layanan.hasil_test = 'Surat Keterangan Plagiasi telah terbit, download di tautan berikut:'
+                layanan.hasil_link = context_pro.get("baseurl", "") + "acd/print_suket_bebasplagiasi/" + str(suket.id)
+                layanan.save()                  
+                messages.success(request, 'Berhasil Mengupdate Layanan')
+            
+        else:
+            messages.error(request, 'periksa kembali isian data anda!')
+        return redirect('acd:suket_bebasplagiasi_edit', nim=nim)
+    else:
+        form = formSuketBebasPlagiasi(instance=datasuket)
+
+    context = {
+        'title': 'Suket Bebas Plagiasi',
+        'heading': 'Edit Surat Keterangan Bebas Plagiasi',
+        'userprodi' : userprodi,
+        'photo' : userprodi.photo,
+        'mhs' : mhs,
+        'form': form,
+    }
+    return render(request, 'prodi/suket_bebasplagiasi_edit.html', context)
+
+
+@check_userprodi
+@admin_prodi_required
+def suket_bebasplagiasi_del(request, id):
+    data = get_object_or_404(SuketBebasPlagiasi, id=id)
+    data.delete()
+    messages.info(request, 'Berhasil Menghapus Surat')
+    return redirect('acd:suket_bebasplagiasi')
+
+

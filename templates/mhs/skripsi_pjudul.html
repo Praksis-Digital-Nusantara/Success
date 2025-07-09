@@ -2,43 +2,319 @@
 
 {% block content1 %}
 <div class="dashboard-content">
-	<div class="profile-section">
-	<div class="container-header">
-		<nav class="container-breadcrumb">
-			<ul>
-				<li>
-					<a href="{% url 'acd:dashboard' %}">
-						<i class="ri-home-line"></i>
-					</a>
-				</li>
-				<li>
-					<i class="ri-arrow-right-s-line"></i>
-				</li>
-				<li>
-					<a href="{% url 'acd:skripsi' %}">Skripsi</a>
-				</li>
-				<li>
-					<i class="ri-arrow-right-s-line"></i>
-				</li>
-				<li>
-					<a href="">{{ heading }}</a>
-				</li>
-			</ul>
-		</nav>
-	</div>
+	<!-- Form Card Container -->
+	<div class="form-card">
+		{% if form.status.value == 'Revision' %}
+		<div class="alert alert-warning mb-4">
+			<i class="ri-notification-line me-2"></i>
+			Komentar PA = {{ form.status_ket.value }}
+		</div>
+		{% endif %}
+
 		{% if messages %}
 		{% for message in messages %}
-			<div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} mb-4">
-				<i class="{% if message.tags == 'success' %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
-				{{ message }}
-			</div>
+			{% if 'skripsi' in message.tags %}
+				<div class="alert {% if 'success' in message.tags %}alert-success{% else %}alert-danger{% endif %} mb-4">
+					<i class="{% if 'success' in message.tags %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
+					{{ message }}
+				</div>
+			{% endif %}
 		{% endfor %}
 		{% endif %}
-		<form method="post"  enctype="multipart/form-data">
+		
+		<!-- Form Header -->
+		<div class="form-header">
+			<div class="form-header-icon">
+				<i class="ri-file-text-line"></i>
+			</div>
+			<div class="form-header-content">
+				<h2>Pengajuan Judul Skripsi</h2>
+				<p>Silakan isi form pengajuan judul skripsi dengan lengkap dan teliti</p>
+			</div>
+		</div>
+
+		<!-- Form Content -->
+		<form method="post" enctype="multipart/form-data" class="layanan-form">
 			{% csrf_token %}
-			{{ form.as_p }}					
-			<button type="submit" class="btn btn-primary">Proses</button>
-		</form> 
+			
+			<!-- Judul 1 Section -->
+			<div class="form-section">
+				<div class="form-group">
+					<label for="id_judul1" class="form-label">
+						<i class="ri-hashtag"></i>
+						Judul 1
+					</label>
+					{{ form.judul1 }}
+				</div>
+				
+				<div class="form-row">
+					<div class="form-group">
+						<label for="id_judul1_masalah" class="form-label">
+							<i class="ri-question-line"></i>
+							Masalah
+						</label>
+						{{ form.judul1_masalah }}
+					</div>
+					<div class="form-group">
+						<label for="id_judul1_solusi" class="form-label">
+							<i class="ri-lightbulb-line"></i>
+							Solusi
+						</label>
+						{{ form.judul1_solusi }}
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="id_judul1_j1" class="form-label">
+						<i class="ri-book-open-line"></i>
+						Jurnal Rujukan
+					</label>
+					<div class="form-row">
+						<div class="form-group">
+							{{ form.judul1_j1 }}
+						</div>
+						<div class="form-group">
+							{{ form.judul1_j1l }}
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group">
+							{{ form.judul1_j2 }}
+						</div>
+						<div class="form-group">
+							{{ form.judul1_j2l }}
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group">
+							{{ form.judul1_j3 }}
+						</div>
+						<div class="form-group">
+							{{ form.judul1_j3l }}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Judul 2 Section -->
+			<div class="form-section">
+				<div class="form-group">
+					<label for="id_judul2" class="form-label">
+						<i class="ri-hashtag"></i>
+						Judul 2
+					</label>
+					{{ form.judul2 }}
+				</div>
+				
+				<div class="form-row">
+					<div class="form-group">
+						<label for="id_judul2_masalah" class="form-label">
+							<i class="ri-question-line"></i>
+							Masalah
+						</label>
+						{{ form.judul2_masalah }}
+					</div>
+					<div class="form-group">
+						<label for="id_judul2_solusi" class="form-label">
+							<i class="ri-lightbulb-line"></i>
+							Solusi
+						</label>
+						{{ form.judul2_solusi }}
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="id_judul2_j1" class="form-label">
+						<i class="ri-book-open-line"></i>
+						Jurnal Rujukan
+					</label>
+					<div class="form-row">
+						<div class="form-group">
+							{{ form.judul2_j1 }}
+						</div>
+						<div class="form-group">
+							{{ form.judul2_j1l }}
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group">
+							{{ form.judul2_j2 }}
+						</div>
+						<div class="form-group">
+							{{ form.judul2_j2l }}
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group">
+							{{ form.judul2_j3 }}
+						</div>
+						<div class="form-group">
+							{{ form.judul2_j3l }}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Judul 3 Section -->
+			<div class="form-section">
+				<div class="form-group">
+					<label for="id_judul3" class="form-label">
+						<i class="ri-hashtag"></i>
+						Judul 3
+					</label>
+					{{ form.judul3 }}
+				</div>
+				
+				<div class="form-row">
+					<div class="form-group">
+						<label for="id_judul3_masalah" class="form-label">
+							<i class="ri-question-line"></i>
+							Masalah
+						</label>
+						{{ form.judul3_masalah }}
+					</div>
+					<div class="form-group">
+						<label for="id_judul3_solusi" class="form-label">
+							<i class="ri-lightbulb-line"></i>
+							Solusi
+						</label>
+						{{ form.judul3_solusi }}
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="id_judul3_j1" class="form-label">
+						<i class="ri-book-open-line"></i>
+						Jurnal Rujukan
+					</label>
+					<div class="form-row">
+						<div class="form-group">
+							{{ form.judul3_j1 }}
+						</div>
+						<div class="form-group">
+							{{ form.judul3_j1l }}
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group">
+							{{ form.judul3_j2 }}
+						</div>
+						<div class="form-group">
+							{{ form.judul3_j2l }}
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group">
+							{{ form.judul3_j3 }}
+						</div>
+						<div class="form-group">
+							{{ form.judul3_j3l }}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Form Actions -->
+			<div class="form-actions">
+				<button type="submit" name="submit_skripsi" class="btn btn-primary">
+					<i class="ri-send-plane-line"></i>
+					Proses Pengajuan
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+{% comment %} DISKUSI DENGAN PA {% endcomment %}
+
+<div class="dashboard-content">
+	{% if messages %}
+		{% for message in messages %}
+			{% if 'chatpa' in message.tags %}
+				<div class="alert {% if 'success' in message.tags %}alert-success{% else %}alert-danger{% endif %} mb-4">
+					<i class="{% if 'success' in message.tags %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
+					{{ message }}
+				</div>
+			{% endif %}
+		{% endfor %}
+	{% endif %}
+
+	<!-- Chat Card Container -->
+	<div class="form-card">
+		<!-- Chat Header -->
+		<div class="form-header">
+			<div class="form-header-icon">
+				<i class="ri-chat-3-line"></i>
+			</div>
+			<div class="form-header-content">
+				<h2>Diskusi dengan Penasehat Akademik</h2>
+				<p>Berdiskusi langsung dengan {{ usermhs.penasehat_akademik }}</p>
+			</div>
+		</div>
+
+		<div class="messages-container">    
+			<!-- Main chat area -->
+			<div class="chat-area">
+				<div class="chat-header">
+					<div class="chat-contact-info">
+						<img src="/{{ pa.photo }}" alt="Contact">
+						<div>
+							<h4>{{ usermhs.penasehat_akademik }}</h4>
+							<p>Penasehat Akademik</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="chat-messages">
+					{% for chat in chatpa %}
+						{% if chat.sender == 'Dosen' %}           
+							<div class="message received">
+								<img src="/{{ pa.photo }}" alt="Contact">
+								<div class="message-content">
+									<div class="message-bubble">
+										{{ chat.message }}
+									</div>
+									<span class="message-time">{{ chat.date_in|date:"H:i" }}</span>
+								</div>
+							</div>
+						{% else %}	
+			
+							<div class="message sent">
+								<div class="message-content">
+									<div class="message-bubble">
+										{{ chat.message }}
+									</div>
+									<span class="message-time">{{ chat.date_in|date:"H:i" }}</span>
+								</div>
+							</div>
+
+						{% endif %}
+						
+					{% empty %}
+						<div class="text-center py-4">
+							<i class="ri-chat-1-line text-muted" style="font-size: 3rem;"></i>
+							<p class="text-muted mt-2">Belum ada percakapan</p>
+						</div>
+					{% endfor %}
+				</div>		
+
+				<!-- Chat Input -->
+				<div class="chat-input">
+					<form method="post" class="chat-input-form">
+						{% csrf_token %}
+						<div class="input-wrapper-input">
+							<div class="form-group flex-grow-1">
+								{{ form_chatpa.message }}
+							</div>
+							<button type="submit" name="submit_chatpa" class="btn btn-primary">
+								<i class="ri-send-plane-fill"></i>
+								<span class="btn-text">Kirim</span>
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 {% endblock content1 %}

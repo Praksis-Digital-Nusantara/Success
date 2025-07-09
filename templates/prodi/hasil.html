@@ -1,0 +1,137 @@
+{% extends "prodi/base.html" %}
+
+{% block content1 %}
+<div class="dashboard-content">
+	<div class="student-list-container">
+		<div class="list-header">
+			<div class="list-title">
+				<h2>{{ heading }}</h2>
+				<p>{{web_name}}</p>
+			</div>
+				<div class="list-filters">
+					<div class="table-actions">
+						<div class="action-group">
+							<div class="search-bar-table">
+								<i class="ri-search-line"></i>
+								<input type="text" id="searchInput" placeholder="Search table...">
+							</div>
+						</div>
+						<div class="action-group">
+							<button class="btn primary" onclick="openModal('tambah_data')">
+								<i class="ri-add-line"></i>
+								<span>Add</span>
+							</button>
+						</div>
+					</div>
+				</div>
+
+		</div>
+
+		<div class="table-options">
+			<label for="recordsPerPage">Records per page:</label>
+			<select id="recordsPerPage" onchange="updateTable()">
+				<option value="10" selected>10</option>
+				<option value="25">25</option>
+				<option value="50">50</option>
+				<option value="100">100</option>
+			</select>
+		</div>
+
+		<div class="student-table">
+			<div class="table-responsive">
+				<table>
+					<thead>
+					<tr>
+						<th>No</th>
+						<th>Date In</th>
+						<th>Mahasiswa</th>
+						<th>Judul</th>
+						<th>Waktu Seminar</th>
+						<th>Tempat</th>
+						<th>Aksi</th>
+					</tr>
+					</thead>
+					<tfoot>
+					<tr>
+						<th>No</th>
+						<th>Date In</th>
+						<th>Mahasiswa</th>
+						<th>Judul</th>
+						<th>Waktu Seminar</th>
+						<th>Tempat</th>
+						<th width="10%">Aksi</th>
+					</tr>
+					</tfoot>
+					<tbody>
+					{% for datatb in data %}
+						<tr>
+							<td>{{ forloop.counter }}</td>
+							<td>{{ datatb.date_in }}</td> 
+							<td>{{ datatb.mhs_judul.mhs }}</td>
+							<td>{{ datatb.mhs_judul }}</td>
+							<td>{{ datatb.seminar_tgl }}
+								<br>{{ datatb.seminar_jam }}
+								</td>							  				
+							<td>{{ datatb.seminar_tempat }}
+								{% if datatb.seminar_link != '' and datatb.seminar_link != '-'  and datatb.seminar_link %}
+									<br>
+									<a target="_blank" href="{{ datatb.seminar_link }}">
+										<button class="action-btn">Link Seminar</button>
+										</a>
+								{% endif %}								
+								</td>							  				
+							<td><a href="{% url 'acd:hasil_edit' datatb.mhs_judul.mhs.nim.username %}">
+									<button class="action-btn"><i class="ri-pencil-fill"></i></button>
+									</a>
+								<br>
+								<a target="_blank" href="{% url 'acd:print_undangan' 'Hasil' datatb.id %}">
+									<button class="action-btn">Undangan</button>
+									</a>
+							</td>					  
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>	
+			</div>
+			<div id="pagination" class="pagination">
+				<button id="prev" class="btn warning">Prev</button>
+				<span id="pageNumber" class="page-number">1</span>
+				<button id="next" class="btn warning">Next</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- OPENING ELEMEN MODAL -->
+<div id="tambah_data" class="modal-edit">
+	<div class="modal-content-edit">
+		<span class="close" onclick="closeModal('tambah_data')">&times;</span>
+		<h2>Perihal dan Tujuan</h2>
+		<form onsubmit="return redirectToNim()">
+			{% csrf_token %}
+			<div class="form-group">
+				<label for="nim">Masukkan NIM Mahasiswa</label>
+				<input type="text" class="form-control" id="nim" name="nim" required>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-primary">Buat Undangan</button>
+			</div>		
+		</form>
+	</div>
+</div>
+<!-- OPENING ELEMENT MODAL -->
+
+
+<script>
+    function redirectToNim() {
+        const nim = document.getElementById('nim').value;
+        if (nim) {
+            window.location.href = `/acd/hasil_edit/${nim}`; // arahkan ke URL yang diinginkan
+        }
+        return false; // cegah form submit default
+    }
+</script>
+
+
+{% endblock content1 %}
+

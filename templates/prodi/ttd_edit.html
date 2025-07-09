@@ -2,51 +2,69 @@
 
 {% block content1 %}
 <div class="dashboard-content">
-	<div class="profile-section">
-	<div class="container-header">
-		<nav class="container-breadcrumb">
-			<ul>
-				<li>
-					<a href="{% url 'acd:dashboard' %}">
-						<i class="ri-home-line"></i>
+	<div class="layanan-form-container">
+		<div class="form-card">
+			<div class="form-header">
+				<div class="form-header-icon">
+					<i class="ri-user-settings-line"></i>
+				</div>
+				<div class="form-header-content">
+					<h2>Edit Tanda Tangan</h2>
+					<p>Perbarui data perihal, tujuan, jabatan, dan penanda tangan surat.</p>
+				</div>
+			</div>
+			<form method="post" enctype="multipart/form-data" class="layanan-form">
+				{% csrf_token %}
+				<div class="form-section">
+					<div class="form-group">
+						<label for="id_perihal" class="form-label">
+							<i class="ri-file-text-line"></i>
+							Perihal
+						</label>
+						{{ form.perihal }}
+					</div>
+				</div>
+				<div class="form-section">
+					<div class="form-group">
+						<label for="id_tujuan" class="form-label">
+							<i class="ri-user-location-line"></i>
+							Tujuan
+						</label>
+						{{ form.tujuan }}
+					</div>
+				</div>
+				<div class="form-section">
+					<div class="form-group">
+						<label for="id_ttd_jabatan" class="form-label">
+							<i class="ri-briefcase-4-line"></i>
+							Jabatan
+						</label>
+						{{ form.ttd_jabatan }}
+					</div>
+				</div>
+				<div class="form-section">
+					<div class="form-group">
+						<label for="id_ttd_user" class="form-label">
+							<i class="ri-user-3-line"></i>
+							Penanda Tangan
+						</label>
+						{{ form.ttd_user }}
+					</div>
+				</div>
+				<div class="form-actions">
+					<a href="{% url 'acd:ttd' %}">
+						<button type="button" class="btn btn-secondary">
+							<i class="ri-arrow-left-line"></i>
+							Kembali
+						</button>
 					</a>
-				</li>
-				<li>
-					<i class="ri-arrow-right-s-line"></i>
-				</li>
-				<li>
-					<a href="{% url 'acd:ttd' %}">TTD</a>
-				</li>
-				<li>
-					<i class="ri-arrow-right-s-line"></i>
-				</li>
-				<li>
-					<a href="">{{ heading }}</a>
-				</li>
-			</ul>
-		</nav>
-	</div>		
-		<form method="post"  enctype="multipart/form-data">
-			{% csrf_token %}
-			<div class="form-group">
-				<label for="id_perihal">Perihal</label>
-				{{ form.perihal }}
-			</div>
-			<div class="form-group">
-				<label for="id_tujuan">Tujuan</label>
-				{{ form.tujuan }}
-			</div>
-			<div class="form-group">
-				<label for="id_ttd_jabatan">Jabatan</label>
-				{{ form.ttd_jabatan }}
-			</div>
-			<div class="form-group">
-				<label for="id_ttd_user">Penanda Tangan</label>
-				{{ form.ttd_user }}
-			</div>
-			{% comment %} {{ form.as_p }}					 {% endcomment %}
-			<button type="submit" class="btn btn-primary">Proses</button>
-		</form> 
+					<button type="submit" class="btn btn-primary">
+						<i class="ri-save-line"></i>
+						Proses
+					</button>
+				</div>
+			</form>
+		</div>
 	</div>
 </div>
 {% endblock content1 %}

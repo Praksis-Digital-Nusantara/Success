@@ -1,0 +1,13 @@
+﻿username,email,first_name,last_name,is_active,password,prodi,telp,status_kepegawaian,tempat_lahir,tgl_lahir,nidn,pangkat,golongan,jafung,bidang_keahlian
+199110192022032006,dosen@unsulbar.com,"Haryanti Putri Rizal, S.Pd., M.Pd.",Dosen,1,dosen,Pendidikan IPA - S1,,PNS,,1900-01-01,0019109108,Penata Muda Tk I,III/b,Asisten Ahli,S2 Pendidikan IPA
+199505092022032014,dosen@unsulbar.com,"Meili Yanti, S.Pd., M.Pd.",Dosen,1,dosen,Pendidikan IPA - S1,,PNS,,1900-01-01,0009059503,Penata Muda Tk I,III/b,Asisten Ahli,S2 Pendidikan IPA
+199009092022032007,dosen@unsulbar.com,"Ayu Indayanti Ismail, S.Si, M.Si",Dosen,1,dosen,Pendidikan IPA - S1,,PNS,,1900-01-01,0009099007,Penata Muda Tk I,III/b,Asisten Ahli,S2 Biokimia
+199303052022032014,dosen@unsulbar.com,"Aulia Rahmadhani, S.Pd., M.Pd.",Dosen,1,dosen,Pendidikan IPA - S1,,PNS,,1900-01-01,0905039303,Penata Muda Tk I,III/b,Asisten Ahli,S2 Pendidikan IPA
+199411192024062001,dosen@unsulbar.com,"Wahyuni Adam, M.Pd",Dosen,1,dosen,Pendidikan IPA - S1,,CPNS,,1900-01-01,,Penata Muda Tk I,III/b,Asisten Ahli,S2 Pendidikan IPA
+199207312024062002,dosen@unsulbar.com,"Jumriani, M.Pd",Dosen,1,dosen,Pendidikan IPA - S1,,CPNS,,1900-01-01,,Penata Muda Tk I,III/b,Asisten Ahli,S2 - Pendidikan Sains
+199304102024061001,dosen@unsulbar.com,"Hilman Qudratuddarsi, M.Ed",Dosen,1,dosen,Pendidikan IPA - S1,,CPNS,,1900-01-01,,Penata Muda Tk I,III/b,Asisten Ahli,S2-Science Education
+199110102024062001,dosen@unsulbar.com,"Nor Indayanti, S.Pd., M.Pd",Dosen,1,dosen,Pendidikan IPA - S1,,CPNS,,1900-01-01,,Penata Muda Tk I,III/b,Asisten Ahli,S2-Pendidikan IPA
+199107092024062001,dosen@unsulbar.com,"Nur Rahmah, M. Pd",Dosen,1,dosen,Pendidikan IPA - S1,,CPNS,,1900-01-01,2109079104,Penata Muda Tk I,III/b,Asisten Ahli,S2-Pendidikan IPA
+199802172024062001,dosen@unsulbar.com,"A. Mutmainnah Taslim, S.Pd., M.Pd",Dosen,1,dosen,Pendidikan IPA - S1,,CPNS,,1900-01-01,,Penata Muda Tk I,III/b,Asisten Ahli,S2-Penelitian dan Evaluasi Pendidikan
+dsn_ipa_001,dosen@unsulbar.com,"Ayyub Yunus, S.Pd., M.Pd",Dosen,1,dosen,Pendidikan IPA - S1,,CPNS,,1900-01-01,,Penata Muda Tk I,III/b,Asisten Ahli,
+199004282021212001,dosen@unsulbar.com,"Dr. Nurhikma Rama Dhana, S. Pd., M. Pd.",Dosen,1,dosen,Pendidikan IPA - S1,,PPPK,,1900-01-01,0928049001,Penata,III/c,Lektor,S3 Pendidikan Biologi
