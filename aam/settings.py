@@ -28,6 +28,7 @@ SECRET_KEY = 'django-insecure-%kg=+$o2wx!(znw!%5!htm5l%y=hb07&+@tjc5%8!ct+v^co9#
 # ALLOWED_HOSTS = []
 DEBUG = True
 ALLOWED_HOSTS = []  
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'app.bisdigunm.com', 'www.app.bisdigunm.com']
 
 
 # Application definition
@@ -85,8 +86,8 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'db_esuccess',  # Ganti dengan nama database yang Anda buat di phpMyAdmin
-        'USER': 'root',  # Nama pengguna MySQL, biasanya 'root' di XAMPP
+        'NAME': 'db_esuccess',  # Ganti dengan nama database yang Anda buat di phpMyAdmin /bisdigun_app_success
+        'USER': 'root',  # Nama pengguna MySQL, biasanya 'root' di XAMPP /bisdigun_app_root
         'PASSWORD': 'Hermanto+12',  # Kata sandi pengguna MySQL, jika tidak ada, biarkan kosong
         'HOST': 'localhost',  # Host server database, localhost untuk XAMPP
         'PORT': '3306',  # Port MySQL (default 3306)
@@ -136,6 +137,11 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+# for production
+# STATIC_URL = '/static/'
+# STATIC_ROOT = '/home/bisdigun/success/static'
+
+# ln -s /home/bisdigun/success/static /home/bisdigun/app.bisdigunm.com/static
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'  
