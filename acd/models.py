@@ -115,7 +115,11 @@ class UserDosen(models.Model):
         super().save(*args, **kwargs)
     
     def __str__(self):
-        return f"{self.nip}"
+
+        prodi_nama = self.prodi.nama_prodi if self.prodi else "_"
+        return f"{self.nip} - ({prodi_nama})"
+
+
     
 
 

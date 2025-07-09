@@ -29,7 +29,7 @@ body {
 .nav-logo a {
     font-size: 1.6rem;
     font-weight: 700;
-    color: #ec880c;
+    color: #227923;
     text-decoration: none;
     transition: all 0.3s ease;
 }
@@ -385,7 +385,7 @@ body {
     justify-content: center;  /* Add this to center content */
     gap: 0.5rem;
     padding: 0.6rem 1.2rem;
-    background: linear-gradient(135deg, #fa8d03, #de8412);
+    background: linear-gradient(135deg, #4CAF50, #136815);
     color: #fff;
     width: 200px;
     text-decoration: none;
@@ -606,7 +606,7 @@ body {
 
 .program-categories li.active,
 .program-categories li:hover {
-    background: linear-gradient(135deg, #e48511, #f18a08);
+    background: linear-gradient(135deg, #4CAF50, #136815);
     color: #fff;
 }
 
@@ -905,7 +905,7 @@ body {
 }
 
 .about-text .subtitle {
-    color: #ec880c;
+    color: #227923;
     font-size: 1.2rem;
     margin-bottom: 2rem;
 }
@@ -978,7 +978,7 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #ffbe6f, #ec880c);
+    background: linear-gradient(135deg, #4CAF50, #136815);
     color: #fff;
 }
 
@@ -1165,7 +1165,7 @@ body {
 .footer-logo h3 {
     font-size: 2rem;
     margin-bottom: 1rem;
-    background: linear-gradient(135deg, #f19524, #136815);
+    background: linear-gradient(135deg, #4CAF50, #136815);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }

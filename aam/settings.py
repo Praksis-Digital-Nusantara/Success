@@ -85,14 +85,17 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'djg_focus',  # Ganti dengan nama database yang Anda buat di phpMyAdmin
+        'NAME': 'db_esuccess',  # Ganti dengan nama database yang Anda buat di phpMyAdmin
         'USER': 'root',  # Nama pengguna MySQL, biasanya 'root' di XAMPP
-        'PASSWORD': '',  # Kata sandi pengguna MySQL, jika tidak ada, biarkan kosong
+        'PASSWORD': 'Hermanto+12',  # Kata sandi pengguna MySQL, jika tidak ada, biarkan kosong
         'HOST': 'localhost',  # Host server database, localhost untuk XAMPP
         'PORT': '3306',  # Port MySQL (default 3306)
     }
 }
 
+#ADMINSUPERADMIN user= admin pass= PraksisDigitalNusantara#090725
+#ADMINFAKULTAS user= fakultas pass= Fakultas#090725
+#ADMINPRODI user= admin = Prodi#090725
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
