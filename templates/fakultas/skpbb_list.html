@@ -8,16 +8,6 @@
 				<h2>{{ heading }}</h2>
 				<p>{{web_name}}</p>
 			</div>
-			<div class="list-filters">
-				<div class="table-actions">
-					<div class="action-group">
-						<div class="search-bar-table">
-							<i class="ri-search-line"></i>
-							<input type="text" id="searchInput" placeholder="Search table...">
-						</div>
-					</div>
-				</div>
-			</div>
 		</div>
 
 		<div class="student-table">
@@ -30,15 +20,15 @@
 				</div>
 			{% endfor %}
 			{% endif %}
-			<table>
+			<table id="layananTable" class="display" style="width:100%">
 				<thead>
 				<tr>
-					<th>No</th>
+					<th style="white-space: nowrap;">No</th>
 					<th>Date In</th>
 					<th>Mahasiswa</th>
 					<th>Prodi</th>
 					<th>Pembimbing</th>
-					<th>Judul</th>
+					<th style="white-space: nowrap;">Judul yang Diajukan Mahasiswa</th>
 					<th>Aksi</th>
 				</tr>
 				</thead>
@@ -49,7 +39,7 @@
 					<th>Mahasiswa</th>
 					<th>Prodi</th>
 					<th>Pembimbing</th>
-					<th>Judul</th>
+					<th>Judul yang Diajukan Mahasiswa</th>
 					<th width="10%">Aksi</th>
 				</tr>
 				</tfoot>
@@ -63,7 +53,7 @@
 						<td>1. {{ datatb.pembimbing1 }}					  
 								<br>2. {{ datatb.pembimbing2 }}
 								</td>					  
-						<td>{{ datatb.judul }}</td>					  
+						<td><div class="response-text">{{ datatb.judul }}</div></td>					  
 						<td>
 							<a href="{% url "acd:print_skpbb" datatb.id %}" target="_blank"> 
 								<button class="action-btn primary"><i class="ri-printer-line"></i>Cetak</button>		

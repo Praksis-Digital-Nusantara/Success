@@ -8,30 +8,9 @@
 				<h2>{{ heading }}</h2>
 				<p>{{web_name}}</p>
 			</div>
-			<div class="list-filters">
-				<div class="table-actions">
-					<div class="action-group">
-						<div class="search-bar-table">
-							<i class="ri-search-line"></i>
-							<input type="text" id="searchInput" placeholder="Search table...">
-						</div>
-					</div>
-				</div>
-			</div>
 		</div>
-
-		<div class="table-options">
-			<label for="recordsPerPage">Records per page:</label>
-			<select id="recordsPerPage" onchange="updateTable()">
-				<option value="10" selected>10</option>
-				<option value="25">25</option>
-				<option value="50">50</option>
-				<option value="100">100</option>
-			</select>
-		</div>
-
 		<div class="student-table">
-			<table>
+			<table id="layananTable" class="display" style="width:100%">
 				<thead>
 				<tr>
 					<th>No</th>
@@ -82,11 +61,6 @@
 				{% endfor %}
 				</tbody>
 			</table>
-		</div>
-		<div id="pagination" class="pagination">
-			<button id="prev" class="btn warning">Prev</button>
-			<span id="pageNumber" class="page-number">1</span>
-			<button id="next" class="btn warning">Next</button>
 		</div>
 	</div>
 </div>

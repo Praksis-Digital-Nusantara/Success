@@ -1,2 +1,2 @@
-# Focus
-Aplikasi Web Fakultas Ilmu Pendidikan UNSULBAR
+# E-SUCCESS
+Aplikasi Web Fakultas Ekonomi dan Bisnis
