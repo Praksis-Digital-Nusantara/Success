@@ -116,8 +116,8 @@ class UserDosen(models.Model):
     
     def __str__(self):
 
-        prodi_nama = self.prodi.nama_prodi if self.prodi else "_"
-        return f"{self.nip} - ({prodi_nama})"
+        # prodi_nama = self.prodi.nama_prodi if self.prodi else "_"
+        return f"{self.nip}"
 
 
     

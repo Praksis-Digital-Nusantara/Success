@@ -168,16 +168,16 @@
 
 
 <!-- JS FOR ALERT -->
-<script>
-    setTimeout(() => {
-        const alerts = document.querySelectorAll('.alert2');
-        alerts.forEach(alert => {
-            alert.style.transition = "opacity 0.5s ease-out";
-            alert.style.opacity = "0";
-            setTimeout(() => alert.remove(), 500);
-        });
-    }, 4000); // hilang setelah 4 detik
-</script>
+    <script>
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('.alert2');
+            alerts.forEach(alert => {
+                alert.style.transition = "opacity 0.5s ease-out";
+                alert.style.opacity = "0";
+                setTimeout(() => alert.remove(), 500);
+            });
+        }, 4000); // hilang setelah 4 detik
+    </script>
 
     <!-- JS FOR SIDEBAR/OPENG/CLOSE -->
     <script>
@@ -271,28 +271,48 @@
     </script>
 
 
-<!-- Add this before closing body tag -->
-<script>
-    const notificationButton = document.querySelector('.ri-notification-3-line');
-    const notificationModal = document.getElementById('notificationModal');
+    <!-- Add this before closing body tag -->
+    <script>
+        const notificationButton = document.querySelector('.ri-notification-3-line');
+        const notificationModal = document.getElementById('notificationModal');
 
-    notificationButton.addEventListener('click', (e) => {
-        e.stopPropagation();
-        notificationModal.classList.toggle('show-notification');
-    });
+        notificationButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notificationModal.classList.toggle('show-notification');
+        });
 
-    // Close notification modal when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!notificationModal.contains(e.target) && !notificationButton.contains(e.target)) {
-            notificationModal.classList.remove('show-notification');
-        }
-    });
-</script>
+        // Close notification modal when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!notificationModal.contains(e.target) && !notificationButton.contains(e.target)) {
+                notificationModal.classList.remove('show-notification');
+            }
+        });
+    </script>
 
+
+  <!-- DataTables CSS & JS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+  <script>
+      $(document).ready(function() {
+        $('#layananTable').DataTable({
+          dom: 'Bfrtip',
+          buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+          responsive: true
+        });
+      });
+    </script>  
 {% block script_costum %} 
 {% endblock script_costum %} 
-
-
 {% block script_modal %} 
 <script>
     function openModal(modalId) {
@@ -314,31 +334,7 @@
         }
     }
 </script>
-  <!-- DataTables CSS & JS -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-  <script>
-      $(document).ready(function() {
-        $('#layananTable').DataTable({
-          dom: 'Bfrtip',
-          buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
-          responsive: true
-        });
-      });
-    </script>
-  
 {% endblock script_modal %} 
-
-
 </body>
 </html>
 

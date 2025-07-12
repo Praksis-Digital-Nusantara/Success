@@ -86,7 +86,7 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'db_esuccess',  # Ganti dengan nama database yang Anda buat di phpMyAdmin /bisdigun_app_success
+        'NAME': 'esuccess',  # Ganti dengan nama database yang Anda buat di phpMyAdmin /bisdigun_app_success
         'USER': 'root',  # Nama pengguna MySQL, biasanya 'root' di XAMPP /bisdigun_app_root
         'PASSWORD': 'Hermanto+12',  # Kata sandi pengguna MySQL, jika tidak ada, biarkan kosong
         'HOST': 'localhost',  # Host server database, localhost untuk XAMPP
@@ -145,7 +145,8 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'  
- 
+
+#  ln -s /home/bisdigun/success/media /home/bisdigun/success.feb-unm.web.id/media
 
 
 # Default primary key field type

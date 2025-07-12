@@ -144,11 +144,13 @@ class formLayananEdit(forms.ModelForm):
 class formSkripsiJudulEdit(forms.ModelForm):
     pembimbing1 = forms.ModelChoiceField(
         queryset=UserDosen.objects.all(), 
-        widget=forms.Select(attrs={'class': 'form-control'})
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Pembimbing 1"
     )
     pembimbing2 = forms.ModelChoiceField(
         queryset=UserDosen.objects.all(), 
-        widget=forms.Select(attrs={'class': 'form-control'})
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Pembimbing 2"
     )
 
     class Meta:

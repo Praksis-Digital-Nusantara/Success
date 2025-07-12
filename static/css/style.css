@@ -194,6 +194,11 @@ body.login-page {
     font-weight: 400;
 }
 
+/* choices 3rd */
+.choices__inner {
+    border-radius: 8px !important;
+}
+
 .login-btn {
     width: 100%;
     padding: 16px 24px;

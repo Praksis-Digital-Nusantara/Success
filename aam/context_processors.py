@@ -12,18 +12,18 @@ def web_name(request):
         'university_name': 'Universitas Negeri Makassar',
         'faculty_name': 'Fakultas Ekonomi dan Bisnis',
         'faculty_short_name': 'FEB',
-        'address': 'Gedung Laboratorium Terpadu Padhang-Padhang, Sulawesi Barat',
-        'address_ttd': 'Majene',
-        'telp': '(0422) 22559',
-        'fax': '(0422) 22559',
+        'address': 'Jalan Raya Pendidikan Makassar, Kode Pos - 90222',
+        'address_ttd': 'Makassar',
+        'telp': '(0411) 889464 - 881244',
+        'fax': '(0411) 889464',
         'website': 'http://feb.unm.ac.id/',
-        'email': 'fe@unm.ac.id',
+        'email': 'tatausaha.fe@unm.ac.id',
         'api_qrcode' : 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=',
     }
 
 # Izin adding versi static kak, (proble browsing chace css)
 def versioned_static(request):
-    version = 'v1.0.46'  # You can update this version number when needed
+    version = 'v1.0.49'  # You can update this version number when needed
     return {
         'STATIC_VERSION': version,
     }

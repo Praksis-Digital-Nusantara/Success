@@ -68,4 +68,25 @@
 	</div>
 </div>
 {% endblock content1 %}
+{% block script_costum %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script>
+		document.addEventListener('DOMContentLoaded', function () {
+	  var element = document.getElementById('id_ttd_user');
+	  if (element) {
+		new Choices(element, {
+		  searchEnabled: true,
+		  itemSelectText: '',
+		  searchResultLimit: 10,
+		  shouldSort: true,
+		  removeItemButton: true, // untuk multiple select
+		  position: 'bottom', // Dropdown muncul di bawah
+		  searchPlaceholderValue: 'Cari penasehat akademik...',
+		});
+	  }
+	});
+</script>
+{% endblock script_costum %}
+
 
