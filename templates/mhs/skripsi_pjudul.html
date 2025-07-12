@@ -257,7 +257,13 @@
 			<div class="chat-area">
 				<div class="chat-header">
 					<div class="chat-contact-info">
-						<img src="/{{ pa.photo }}" alt="Contact">
+						{% if pa.photo %}
+							<img src="/media/{{ pa.photo }}" alt="Contact">
+						{% else %}
+							<div class="contact-avatar-placeholder">
+								<i class="ri-user-line"></i>
+							</div>
+						{% endif %}
 						<div>
 							<h4>{{ usermhs.penasehat_akademik }}</h4>
 							<p>Penasehat Akademik</p>
@@ -269,7 +275,13 @@
 					{% for chat in chatpa %}
 						{% if chat.sender == 'Dosen' %}           
 							<div class="message received">
-								<img src="/{{ pa.photo }}" alt="Contact">
+								{% if pa.photo %}
+									<img src="/media/{{ pa.photo }}" alt="Contact">
+								{% else %}
+									<div class="message-avatar-placeholder">
+										<i class="ri-user-line"></i>
+									</div>
+								{% endif %}
 								<div class="message-content">
 									<div class="message-bubble">
 										{{ chat.message }}

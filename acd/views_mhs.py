@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 
-from .models import UserMhs
+from .models import UserMhs, UserDosen
 from .models import Layanan, LayananJenis
 from .models import SuketBebasPlagiasi, SuketBebasKuliah
 from .models import SkripsiJudul, chatPA, skPembimbing, Proposal, Hasil, IzinPenelitian, Ujian
@@ -223,6 +223,7 @@ def skripsi_pjudul(request):
     # Ambil data pembimbing akademik
     # nip_pa = usermhs.penasehat_akademik
     # pa = UserDosen.objects.get(nip=nip_pa)
+    pa = usermhs.penasehat_akademik #untuk saya tampilkan foto di chat
 
     context = {
         'title': 'Pengajuan Judul',
@@ -232,7 +233,7 @@ def skripsi_pjudul(request):
         'form': form_skripsi,
         'form_chatpa': form_chatpa,
         'chatpa': chatpa_list,  # Kirim semua chat ke template
-        # 'pa': pa,
+        'pa': pa,
     }
     return render(request, 'mhs/skripsi_pjudul.html', context)
 
