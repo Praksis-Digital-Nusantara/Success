@@ -2148,27 +2148,27 @@ td {
 }
 
 .grade-badge.a {
-    background-color: #E8F5E9;
-    color: #2E7D32;
-    border: 1px solid #A5D6A7;
+    background-color: #00a40d;
+    color: #ffffff;
+    /* border: 1px solid #ffffff; */
 }
 
 .grade-badge.b {
-    background-color: #E3F2FD;
-    color: #1565C0;
-    border: 1px solid #90CAF9;
+    background-color: #0074ca;
+    color: #ffffff;
+    /* border: 1px solid #008dff; */
 }
 
 .grade-badge.c {
-    background-color: #FFF3E0;
-    color: #EF6C00;
-    border: 1px solid #FFCC80;
+    background-color: #EF6C00;
+    color: #ffffff;
+    /* border: 1px solid #FFCC80; */
 }
 
 .grade-badge.d {
-    background-color: #FFEBEE;
-    color: #C62828;
-    border: 1px solid #EF9A9A;
+    background-color: #C62828;
+    color: #ffffff;
+    /* border: 1px solid #EF9A9A; */
 }
 
 .grade-badge:hover {
@@ -3177,7 +3177,22 @@ body.dark-mode .close:focus {
 }
 
 /* Button Sizes */
-.btn.x-small { padding: 6px 12px; font-size: 12px; }
+
+/* Button Sizes */
+.btn.x-small { 
+    padding: 4px 10px; 
+    font-size: 12px; 
+    background-color: #E8F5E9;
+    color: #2E7D32;
+    border: 1px solid #A5D6A7;
+}
+
+.btn.x-small:hover {
+    background: transparent; /* Transparent background on hover */
+    color: #01a40d; /* Text color matches original background/border */
+    border-color: #01a40d; /* Ensure border remains the same color */
+}
+
 .btn.small { padding: 8px 16px; font-size: 14px; }
 .btn.medium { padding: 12px 24px; font-size: 16px; }
 .btn.large { padding: 16px 32px; font-size: 18px; }

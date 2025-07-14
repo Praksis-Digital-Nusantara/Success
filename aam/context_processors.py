@@ -23,7 +23,7 @@ def web_name(request):
 
 # Izin adding versi static kak, (proble browsing chace css)
 def versioned_static(request):
-    version = 'v1.0.49'  # You can update this version number when needed
+    version = 'v1.0.535n'  # You can update this version number when needed
     return {
         'STATIC_VERSION': version,
     }
