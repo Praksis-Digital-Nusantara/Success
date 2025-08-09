@@ -13,3 +13,14 @@ class ProfileUpdate(forms.ModelForm):
         }
 
 
+class RoleChangeForm(forms.Form):
+    user_target = forms.ModelChoiceField(
+        queryset=User.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Username"
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)  # Ambil user jika ada
+        super().__init__(*args, **kwargs)
+

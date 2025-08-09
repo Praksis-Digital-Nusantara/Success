@@ -22,8 +22,8 @@ admin.site.register(UserDosen, UserDsnImport)
 
 @admin.register(Layanan)
 class LayananAdmin(admin.ModelAdmin):
-    list_display = ('date_in', 'mhs', 'prodi', 'layanan_jenis', 'status', 'adminp')  # Kolom yang ditampilkan
-    list_filter = ('prodi', 'layanan_jenis', 'status')  # Filter berdasarkan kolom
+    list_display = ('date_in', 'mhs', 'layanan_jenis', 'status', 'adminp')  # Kolom yang ditampilkan
+    list_filter = ('layanan_jenis', 'status')  # Filter berdasarkan kolom
     search_fields = ('mhs', 'layanan_jenis')  # Pencarian
     ordering = ('-date_in',)  # Urutan data
 
@@ -55,9 +55,15 @@ class CustomUserAdmin(UserAdmin):
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
 
+
+
+class LayananJenisAdmin(admin.ModelAdmin):
+    list_display = ('nama_layanan', 'level_proses')
+
+admin.site.register(LayananJenis, LayananJenisAdmin)
+
 admin.site.register(KodeSurat)
 admin.site.register(Prodi)
 admin.site.register(Jurusan)
 admin.site.register(Pejabat)
-admin.site.register(LayananJenis)
 admin.site.register(SkripsiJudul)

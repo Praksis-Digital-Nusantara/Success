@@ -25,6 +25,22 @@
 					</a>					
 				</p>
 			</div>
+			<div class="list-filters">
+				<div class="table-actions">
+					<div class="action-group">
+						<div class="search-bar-table">
+							<i class="ri-search-line"></i>
+							<input type="text" id="searchInput" placeholder="Search table...">
+						</div>
+					</div>
+					<div class="action-group">
+						<button class="btn secondary" id="exportTable">
+							<i class="ri-download-line"></i>
+							<span>Export</span>
+						</button>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		{% if messages %}
@@ -38,7 +54,7 @@
 
 		<div class="student-table">
 			<div class="table-responsive">
-			<table id="layananTable" class="display" style="width:100%">
+			<table>
 				<thead>
 				<tr>
 					<th style="white-space: nowrap;">No</th>

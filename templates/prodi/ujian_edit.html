@@ -1,9 +1,9 @@
 {% extends "prodi/base.html" %}
 
 {% block content1 %}
-<div class="dashboard-content">
-	<div class="profile-section">
-	<div class="container-header">
+
+<div class="layanan-form-container">
+	<div class="profile-section-ujian">
 		<nav class="container-breadcrumb">
 			<ul>
 				<li>
@@ -25,7 +25,7 @@
 				</li>
 			</ul>
 		</nav>
-	</div>
+
 
 		<div class="student-table">
 			<div class="table-responsive">
@@ -124,52 +124,88 @@
 				</table>	
 			</div>
 		</div>
-		<br>
-		<br>
-		<div class="container-header">
-			<h3>Form Edit Ujian</h3>
-			<p>Silahkan isi form dibawah ini untuk mengedit undangan ujian.</p>
-		</div>
-
-		<form method="post" enctype="multipart/form-data">
-		{% csrf_token %}
-			<div class="form-row">
-				<div class="form-group">
-					<label for="id_ujian_tgl">Tanggal Ujian</label>
-					{{ form.ujian_tgl }}
-				</div>
-				<div class="form-group">
-					<label for="id_ujian_jam">Jam Ujian</label>
-					{{ form.ujian_jam }}
-				</div>
-			</div>
-			<div class="form-row">
-				<div class="form-group">
-					<label for="id_ujian_tempat">Tempat Ujian</label>
-					{{ form.ujian_tempat }}
-				</div>
-				<div class="form-group">
-					<label for="id_ujian_link">Link Ujian</label>
-					{{ form.ujian_link }}
-				</div>
-			</div>
-			<div class="form-row">
-				<div class="form-group">
-					<label for="id_penguji1">Penguji I</label>
-					{{ form.penguji1 }}
-				</div>
-				<div class="form-group">
-					<label for="id_penguji2">Penguji II</label>
-					{{ form.penguji2 }}
-				</div>
-			</div>
-			<div class="form-actions">
-				<button type="submit" class="btn primary">Proses</button>
-			</div>
-		</form>
 	</div>
 </div>
+
+
+<div class="form-card">
+	<div class="form-header">
+		<div class="form-header-icon">
+			<i class="ri-edit-line"></i>
+		</div>
+		<div class="form-header-content">
+			<h2>Form Edit Ujian</h2>
+			<p>Silahkan isi form dibawah ini untuk mengedit undangan ujian.</p>
+		</div>
+	</div>
+
+	<form method="post" enctype="multipart/form-data" class="layanan-form">
+	{% csrf_token %}
+		<div class="form-row">
+			<div class="form-group">
+				<label for="id_ujian_tgl">Tanggal Ujian</label>
+				{{ form.ujian_tgl }}
+			</div>
+			<div class="form-group">
+				<label for="id_ujian_jam">Jam Ujian</label>
+				{{ form.ujian_jam }}
+			</div>
+		</div>
+		<div class="form-row">
+			<div class="form-group">
+				<label for="id_ujian_tempat">Tempat Ujian</label>
+				{{ form.ujian_tempat }}
+			</div>
+			<div class="form-group">
+				<label for="id_ujian_link">Link Ujian</label>
+				{{ form.ujian_link }}
+			</div>
+		</div>
+		<div class="form-row">
+			<div class="form-group">
+				<label for="id_penguji1">Penguji I</label>
+				{{ form.penguji1 }}
+			</div>
+			<div class="form-group">
+				<label for="id_penguji2">Penguji II</label>
+				{{ form.penguji2 }}
+			</div>
+		</div>			
+		<div class="form-actions">
+			<button type="submit" class="btn primary">Proses</button>
+		</div>
+	</form>
+</div>
+
 {% endblock content1 %}
+
+
+{% block script_costum %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+	  var elementIds = ['id_penguji1', 'id_penguji2'];
+	  elementIds.forEach(function(elementId) {
+		var element = document.getElementById(elementId);
+		if (element) {
+		  new Choices(element, {
+			searchEnabled: true,
+			itemSelectText: '',
+			shouldSort: false,
+			removeItemButton: true,
+			searchResultLimit: 10,
+			searchFields: ['label', 'value'],
+			position: 'bottom',
+			searchPlaceholderValue: 'Cari Dosen',
+			noResultsText: 'Tidak ditemukan',
+			noChoicesText: 'Tidak ada pilihan',
+		  });
+		}
+	  });
+	});
+</script>
+{% endblock script_costum %}
 
 
 

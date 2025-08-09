@@ -137,17 +137,26 @@
 					Kembali
 				</button>
 			</a>
+			<a onclick="return confirm('Yakin ingin menghapus data ini?');" href="{% url 'acd:proposal_del' proposal.id %}">
+				<button type="button" class="btn btn-warning">
+					<i class="ri-delete-bin-line"></i>
+					Hapus
+				</button>
+			</a>
 			<button type="submit" class="btn primary">Update</button>
 		</div>
 	</form>
 
 {% endblock content1 %}
+
+
+
 {% block script_costum %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
-	  var elementIds = ['id_penguji1', 'id_penguji2', 'id_ttd'];
+	  var elementIds = ['id_penguji1', 'id_penguji2'];
 	  elementIds.forEach(function(elementId) {
 		var element = document.getElementById(elementId);
 		if (element) {
@@ -159,7 +168,7 @@
 			searchResultLimit: 10,
 			searchFields: ['label', 'value'],
 			position: 'bottom',
-			searchPlaceholderValue: 'Search Data',
+			searchPlaceholderValue: 'Cari Dosen',
 			noResultsText: 'Tidak ditemukan',
 			noChoicesText: 'Tidak ada pilihan',
 		  });
@@ -168,7 +177,6 @@
 	});
 </script>
 {% endblock script_costum %}
-
 
 
 

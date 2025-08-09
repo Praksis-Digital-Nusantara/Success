@@ -8,18 +8,11 @@
 				<h2>{{ heading }}</h2>
 				<p>{{web_name}}</p>
 			</div>
+			
 		</div>
 
 		<div class="student-table">
 			<div class="table-responsive">
-			{% if messages %}
-			{% for message in messages %}
-				<div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} mb-4">
-					<i class="{% if message.tags == 'success' %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
-					{{ message }}
-				</div>
-			{% endfor %}
-			{% endif %}
 			<table id="layananTable" class="display" style="width:100%">
 				<thead>
 				<tr>

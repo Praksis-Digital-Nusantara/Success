@@ -1,0 +1,118 @@
+{% extends "fakultas/base.html" %}
+
+{% block content1 %}
+
+<div class="layanan-form-container">
+	<div class="profile-section-ujian">
+		<div class="student-table">
+			<div class="table-responsive">
+				<table>
+					<tbody>
+						<tr>
+							<td width="10%">Mahasiswa</td>
+							<td width="5%">:</td>
+							<td>{{ mhs.nim }}</td>					  
+						</tr>
+						<tr>
+							<td width="10%">Program Studi</td>
+							<td width="5%">:</td>
+							<td>{{ mhs.prodi }}</td>					  
+						</tr>
+						<tr>
+							<td width="10%">Tempat/Tanggal Lahir</td>
+							<td width="5%">:</td>
+							<td>{{ mhs.tempat_lahir }}, {{ mhs.tgl_lahir }}</td>			  
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="form-card">
+
+	<div class="form-header">
+		<div class="form-header-icon">
+			<i class="ri-file-text-line"></i>
+		</div>
+		<div class="form-header-content">
+			<h2>{{ heading }}</h2>
+			<p>Silahkan edit data berikut ini</p>
+		</div>
+	</div>
+	<form method="post" enctype="multipart/form-data" class="layanan-form">
+		{% csrf_token %}
+
+		<div class="form-group">
+			<label for="id_no_surat">Nomor Surat</label>
+			{{ form.no_surat }}
+		</div>
+
+		<div class="form-group">
+			<label for="id_semester">Semester</label>
+			{{ form.semester }}
+		</div>
+
+		<div class="form-group">
+			<label for="id_tahun_akademik">Tahun Akademik</label>
+			{{ form.tahun_akademik }}
+		</div>
+
+		<div class="form-group">
+			<label for="id_ortu_nama">Nama Orang Tua</label>
+			{{ form.ortu_nama }}
+		</div>
+		<div class="form-group">
+			<label for="id_ortu_nip">NIP Orang Tua</label>
+			{{ form.ortu_nip }}
+		</div>
+		<div class="form-group">
+			<label for="id_ortu_gol">Golongan Orang Tua</label>
+			{{ form.ortu_gol }}
+		</div>
+		<div class="form-group">
+			<label for="id_ortu_pekerjaan">Pekerjaan Orang Tua</label>
+			{{ form.ortu_pekerjaan }}
+		</div>
+		<div class="form-group">
+			<label for="id_ortu_instansi">Instansi Orang Tua</label>
+			{{ form.ortu_instansi }}
+		</div>
+		<div class="form-group">
+			<label for="id_ortu_alamat">Alamat Orang Tua</label>
+			{{ form.ortu_alamat }}
+		</div>
+
+		<div class="form-group">
+			<label for="id_ttd">Pejabat Bertandatangan</label>
+			{{ form.ttd }}
+		</div>
+		<div class="form-group">
+			<label for="id_ttd_status">Jenis TTD</label>
+			{{ form.ttd_status }}
+		</div>
+
+		<div class="form-actions">
+			<a href="{% url 'acd:suket_aktifkuliah' %}">
+				<button type="button" class="btn btn-secondary">
+					<i class="ri-arrow-left-line"></i>
+					Kembali
+				</button>
+			</a>
+			<button type="submit" class="btn primary">Proses</button>
+		</div>
+	</form>
+
+
+
+
+{% endblock content1 %}
+
+
+
+
+
+
+
+

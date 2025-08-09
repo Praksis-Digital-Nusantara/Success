@@ -4,16 +4,26 @@ from uuid import UUID
 
 from . import views
 from . import views_fakultas
+from . import views_fakultas_suket
 from . import views_prodi
 from . import views_prodi_set
 from . import views_mhs
 from .view_print import print_pengajuanjudul
 from . import views_dosen
 from .view_print import (print_skpbb, 
+                        print_skpgj,
                         print_pengesahan,
                         print_undangan,
                         print_penelitian,
-                        print_suket
+                        print_yudisium,
+                        print_yudisium_nilai,
+                        print_suket_aktifkuliah,
+                        print_suket_bebaskuliah,
+                        print_suket_bebasplagiasi,
+                        print_suket_izinobservasi,
+                        print_suket_rekomendasi,
+                        print_suket_izinlab,
+                        print_surat_tugas
                         )
 
 
@@ -25,11 +35,32 @@ urlpatterns = [
     path('nosurat_fakultas_del', views_fakultas.nosurat_fakultas_del, name='nosurat_fakultas_del'),    
     path('skpbb_pengajuan', views_fakultas.skpbb_pengajuan, name='skpbb_pengajuan'),    
     path('skpbb_list', views_fakultas.skpbb_list, name='skpbb_list'),    
+    path('skpgj_pengajuan', views_fakultas.skpgj_pengajuan, name='skpgj_pengajuan'),    
+    path('skpgj_list', views_fakultas.skpgj_list, name='skpgj_list'),    
     path('izinpenelitian_pengajuan', views_fakultas.izinpenelitian_pengajuan, name='izinpenelitian_pengajuan'),    
     path('izinpenelitian_list', views_fakultas.izinpenelitian_list, name='izinpenelitian_list'),    
     path('ujian_list/<str:filter>', views_fakultas.ujian_list, name='ujian_list'),    
     path('ujian_proses/<str:id>', views_fakultas.ujian_proses, name='ujian_proses'),     
-    path('layanan_fakultas/<str:filter>', views_fakultas.layanan_fakultas, name='layanan_fakultas'), # saya tambahkan filter untuk layanan fakultas - ndx
+    path('ujian_yudisium/<str:id>', views_fakultas.ujian_yudisium, name='ujian_yudisium'),     
+    path('layanan_fakultas/<str:filter>', views_fakultas.layanan_fakultas, name='layanan_fakultas'),
+    path('layanan_fakultas_edit/<uuid:id>/<str:filter>', views_fakultas.layanan_fakultas_edit, name='layanan_fakultas_edit'), 
+    path('suket_aktifkuliah', views_fakultas_suket.suket_aktifkuliah, name='suket_aktifkuliah'),   
+    path('suket_aktifkuliah_edit/<str:nim>', views_fakultas_suket.suket_aktifkuliah_edit, name='suket_aktifkuliah_edit'),   
+    path('suket_aktifkuliah_del/<str:id>', views_fakultas_suket.suket_aktifkuliah_del, name='suket_aktifkuliah_del'), 
+    path('suket_izinobservasi', views_fakultas_suket.suket_izinobservasi, name='suket_izinobservasi'),   
+    path('suket_izinobservasi_edit/<str:nim>', views_fakultas_suket.suket_izinobservasi_edit, name='suket_izinobservasi_edit'),   
+    path('suket_izinobservasi_del/<str:id>', views_fakultas_suket.suket_izinobservasi_del, name='suket_izinobservasi_del'), 
+    path('suket_izinlab', views_fakultas_suket.suket_izinlab, name='suket_izinlab'),   
+    path('suket_izinlab_edit/<str:nim>', views_fakultas_suket.suket_izinlab_edit, name='suket_izinlab_edit'),   
+    path('suket_izinlab_del/<str:id>', views_fakultas_suket.suket_izinlab_del, name='suket_izinlab_del'), 
+    path('suket_rekomendasi', views_fakultas_suket.suket_rekomendasi, name='suket_rekomendasi'),   
+    path('suket_rekomendasi_edit/<str:nim>', views_fakultas_suket.suket_rekomendasi_edit, name='suket_rekomendasi_edit'),   
+    path('suket_rekomendasi_del/<str:id>', views_fakultas_suket.suket_rekomendasi_del, name='suket_rekomendasi_del'), 
+    path('surat_tugas', views_fakultas_suket.surat_tugas, name='surat_tugas'),   
+    path('surat_tugas_edit/<str:id>', views_fakultas_suket.surat_tugas_edit, name='surat_tugas_edit'),   
+    path('surat_tugas_del/<str:id>', views_fakultas_suket.surat_tugas_del, name='surat_tugas_del'), 
+    path('surat_tugas_delnamadosen/<str:id>/<str:surat>', views_fakultas_suket.surat_tugas_delnamadosen, name='surat_tugas_delnamadosen'), 
+    path('surat_tugas_delnamamhs/<str:id>/<str:surat>', views_fakultas_suket.surat_tugas_delnamamhs, name='surat_tugas_delnamamhs'), 
 
 
     ###### ADMIN PRODI ######   
@@ -49,10 +80,13 @@ urlpatterns = [
     path('skripsi_ejudul/<str:nim>/', views_prodi.skripsi_ejudul, name='skripsi_ejudul'),     
     path('proposal', views_prodi.proposal, name='proposal'),   
     path('proposal_edit/<str:nim>', views_prodi.proposal_edit, name='proposal_edit'),   
+    path('proposal_nilai/<str:id>', views_prodi.proposal_nilai, name='proposal_nilai'),   
+    path('proposal_del/<str:id>', views_prodi.proposal_del, name='proposal_del'),   
     path('hasil', views_prodi.hasil, name='hasil'),   
     path('hasil_edit/<str:nim>', views_prodi.hasil_edit, name='hasil_edit'),   
     path('ujian', views_prodi.ujian, name='ujian'),   
     path('ujian_edit/<str:nim>', views_prodi.ujian_edit, name='ujian_edit'),   
+    path('ujian_nilai/<str:id>', views_prodi.ujian_nilai, name='ujian_nilai'),   
     path('suket_bebaskuliah', views_prodi.suket_bebaskuliah, name='suket_bebaskuliah'),   
     path('suket_bebaskuliah_edit/<str:nim>', views_prodi.suket_bebaskuliah_edit, name='suket_bebaskuliah_edit'),   
     path('suket_bebaskuliah_del/<str:id>', views_prodi.suket_bebaskuliah_del, name='suket_bebaskuliah_del'),   
@@ -80,6 +114,8 @@ urlpatterns = [
     path('profile_dosen', views_dosen.profile_dosen, name='profile_dosen'),
     path('judul_seleksi', views_dosen.judul_seleksi, name='judul_seleksi'),
     path('pbb2_persetujuan', views_dosen.pbb2_persetujuan, name='pbb2_persetujuan'),
+    path('dsn_skpbb', views_dosen.dsn_skpbb, name='dsn_skpbb'),
+    path('dsn_skpgj', views_dosen.dsn_skpgj, name='dsn_skpgj'),
     path('proposal_dsn/<str:filter>', views_dosen.proposal_dsn, name='proposal_dsn'),
     path('proposal_dsn_nilai/<str:id>', views_dosen.proposal_dsn_nilai, name='proposal_dsn_nilai'),
     path('hasil_dsn/<str:filter>', views_dosen.hasil_dsn, name='hasil_dsn'),
@@ -90,17 +126,27 @@ urlpatterns = [
 
     ###### PRINT ######   
     path('print_skpbb/<uuid:id>', print_skpbb.print_skpbb, name='print_skpbb'),
+    path('print_skpgj/<uuid:id>', print_skpgj.print_skpgj, name='print_skpgj'),
     path('print_pengesahan/<str:jn>/<uuid:id>', print_pengesahan.print_pengesahan, name='print_pengesahan'),
     path('print_undangan/<str:jn>/<uuid:id>', print_undangan.print_undangan, name='print_undangan'),
     path('print_undangan_ujian/<uuid:id>', print_undangan.print_undangan_ujian, name='print_undangan_ujian'),
     path('print_persetujuan_penelitian/<uuid:id>', print_pengesahan.print_persetujuan_penelitian, name='print_persetujuan_penelitian'),
     path('print_izinpenelitian/<uuid:id>', print_penelitian.print_izinpenelitian, name='print_izinpenelitian'),
-    path('print_suket_bebaskuliah/<uuid:id>', print_suket.print_suket_bebaskuliah, name='print_suket_bebaskuliah'),
-    path('print_suket_bebasplagiasi/<uuid:id>', print_suket.print_suket_bebasplagiasi, name='print_suket_bebasplagiasi'),
+    path('print_suket_bebaskuliah/<uuid:id>', print_suket_bebaskuliah.print_suket_bebaskuliah, name='print_suket_bebaskuliah'),
+    path('print_suket_bebasplagiasi/<uuid:id>', print_suket_bebasplagiasi.print_suket_bebasplagiasi, name='print_suket_bebasplagiasi'),
+    path('print_suket_aktifkuliah/<uuid:id>', print_suket_aktifkuliah.print_suket_aktifkuliah, name='print_suket_aktifkuliah'),
+    path('print_suket_izinobservasi/<uuid:id>', print_suket_izinobservasi.print_suket_izinobservasi, name='print_suket_izinobservasi'),
+    path('print_suket_izinlab/<uuid:id>', print_suket_izinlab.print_suket_izinlab, name='print_suket_izinlab'),
+    path('print_suket_rekomendasi/<uuid:id>', print_suket_rekomendasi.print_suket_rekomendasi, name='print_suket_rekomendasi'),
+    path('print_yudisium/<uuid:id>', print_yudisium.print_yudisium, name='print_yudisium'),
+    path('print_yudisium_nilai/<uuid:id>', print_yudisium_nilai.print_yudisium_nilai, name='print_yudisium_nilai'),
+    path('print_surat_tugas/<uuid:id>', print_surat_tugas.print_surat_tugas, name='print_surat_tugas'),
+   
 
 
     ###### ALL ######
     path('changepass', views.changepass, name='changepass'),     
+    path('changerole', views.changerole, name='changerole'),     
     path('dashboard', views.index, name='dashboard'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),      
     path('', views.index, name='index'),      

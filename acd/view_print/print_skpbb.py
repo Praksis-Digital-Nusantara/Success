@@ -29,15 +29,19 @@ def print_skpbb(request, id):
     text_x = A4[0] / 2
     pos_y -= 5
 
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "KEPUTUSAN DEKAN FAKULTAS KEGURUAN DAN ILMU PENDIDIKAN:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "UNIVERSITAS SULAWESI BARAT:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 20, "Nomor : " + sk.nosurat, 'N', 'C')
+    fakultas = context.get("faculty_name", "")
+    universitas = context.get("university_name", "")
+    prodi = sk.mhs.prodi.nama_prodi 
+
+    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "KEPUTUSAN DEKAN", 'B', 'C')
+    pos_y -= dl(p, A4[0] / 2, pos_y, 15, fakultas.upper() + " " + universitas.upper(), 'B', 'C')
+    pos_y -= dl(p, A4[0] / 2, pos_y, 20, "NOMOR : " + sk.nosurat, 'B', 'C')
     pos_y -= dl(p, A4[0] / 2, pos_y, 20, "TENTANG:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "PENETAPAN PEMBIMBING PROPOSAL, HASIL PENELITIAN:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "DAN UJIAN SKRIPSI MAHASISWA FAKULTAS KEGURUAN DAN:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "ILMU PENDIDIKAN UNIVERSITAS SULAWESI BARAT:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 25, "DEKAN FAKULTAS KEGURUAN DAN ILMU PENDIDIKAN:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "UNIVERSITAS SULAWESI BARAT:", 'B', 'C')
+    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "PENGANGKATAN PEMBIMBING", 'B', 'C')
+    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "BAGI MAHASISWA PROGRAM STUDI " + prodi.upper(), 'B', 'C')
+    pos_y -= dl(p, A4[0] / 2, pos_y, 15, fakultas.upper(), 'B', 'C')
+    pos_y -= dl(p, A4[0] / 2, pos_y, 15, universitas.upper(), 'B', 'C')
+    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "TAHUN " + str(sk.date_in.year), 'B', 'C')
 
 
     def draw_aligned_text(canvas, label1, label2, label3, value, y_offset):
@@ -70,17 +74,17 @@ def print_skpbb(request, id):
 
     
     # print (judul)
-    pos_y = draw_aligned_text(p, "Menimbang", ":", "a.", "bahwa untuk membantu mahasiswa Fakultas Keguruan dan Ilmu Pendidikan Universitas Sulawesi Barat dalam menyelesaikan  Skripsinya, maka perlu mengangkat Pembimbing Proposal, Hasil Penelitian dan Ujian Skripsi Mahasiswa", 20)   
-    pos_y = draw_aligned_text(p, "", "", "b.", "bahwa untuk keperluan dimaksud, maka mereka yang tersebut namanya dalam surat Keputusan ini dianggap memenuhi syarat akademik dan dipandang cakap sebagai Pembimbing Proposal, Hasil Penelitian dan Ujian Skripsi Mahasiswa",  0)   
-    pos_y = draw_aligned_text(p, "", "", "c.", "bahwa sehubungan dengan point a dan b di atas, perlu diterbitkan Surat Keputusan sebagai Pembimbing Proposal, Hasil Penelitian dan Ujian Skripsi  mahasiswa.",  0)
+    pos_y = draw_aligned_text(p, "Menimbang", ":", "", "Usulan Ketua Program Studi Manajemen dan Dekan Fakultas Ekonomi Universitas Negeri Makassar dengan nomor surat " + sk.nosurat + " pada tanggal " + tanggal_indo(sk.date_in) + " tentang Usulan Penerbitan SK Pembimbingan.", 20)
+    pos_y -= 15   
+    pos_y = draw_aligned_text(p, "", "", "1.", "Bahwa dalam rangka kelancaran penyelesaian studi untuk penulisan Skripsi bagi mahasiswa Program Studi Manajemen, maka dipandang perlu menetapkan Pembimbing.",  0)   
+    pos_y = draw_aligned_text(p, "", "", "2.", "Bahwa untuk maksud tersebut di atas, maka dipandang perlu menerbitkan surat keputusannya",  0)
 
-    pos_y = draw_aligned_text(p, "Mengingat", ":", "1.", "Undang – Undang Nomor 20 Tahun 2003 tentang Sistem Pendidikan Nasional", 20)   
-    pos_y = draw_aligned_text(p, "", "", "2.", "Undang – Undang Nomor 12 Tahun 2012 tentang Pendidikan Tinggi",  0)   
-    pos_y = draw_aligned_text(p, "", "", "3.", "Peraturan Pemerintah Nomor 4 Tahun 2014 tentang Pengelolaan dan Penyelenggaraan Pendidikan.",  0)
-    pos_y = draw_aligned_text(p, "", "", "4.", "Peraturan Presiden Republik Indonesia Nomor 8 Tahun 2012 tentang Kerangka Kualifikasi Nasional Indonesia",  0)
-    pos_y = draw_aligned_text(p, "", "", "5.", "Peraturan Pemerintah Nomor 36 Tahun 2013, tentang Pendirian Universitas Sulawesi Barat Tanggal 13 Mei 2013",  0)
-    pos_y = draw_aligned_text(p, "", "", "6.", "Surat Keputusan Rektor Unsulbar 12451/M/KP/2019, tentang pengangkatan Dekan Fakultas Keguruan dan Ilmu Pendidikan Universitas Sulawesi Barat",  0)
+    pos_y = draw_aligned_text(p, "Mengingat", ":", "1.", "Surat Keputusan Fakultas Ekonomi Nomor 2875/D/T/2007;", 20)   
+    pos_y = draw_aligned_text(p, "", "", "2.", "Peraturan Rektor Universitas Negeri Makassar Nomor 1 Tahun 2022 tentang Peraturan Akademik di Universitas Negeri Makassar;",  0)   
+    pos_y = draw_aligned_text(p, "", "", "3.", "Keputusan Rapat Pimpinan Fakultas dan Ketua Prodi tanggal 7 November 2023;",  0)
 
+
+    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "MEMUTUSKAN:", 'B', 'C')
 
     def draw_aligned_text(canvas, label1, label2, value, y_offset):
         canvas.setFont("Times-Roman", 12)
@@ -109,18 +113,14 @@ def print_skpbb(request, id):
         pos_y -= text_height + 2  # Beri jarak antar baris setelah teks        
         return pos_y
 
-    pos_y = draw_aligned_text(p, "Menetapkan", ":", "KEPUTUSAN DEKAN FAKULTAS KEGURUAN DAN ILMU PENDIDIKAN",  20)
+    
 
-    p.showPage()
-    pos_y = 750
+    pos_y = draw_aligned_text(p, "Menetapkan", ":", "Keputusan Dekan " + context.get("faculty_name", "") + " " + context.get("university_name", "") ,  20)
 
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "MEMUTUSKAN:", 'B', 'C')
+    # p.showPage()
+    # pos_y = 750
 
-    pos_y = draw_aligned_text(p, "Memperhatikan", ":", "Usulan dari Program Studi tentang nama mahasiswa yang menyusun proposal dan  nama  pembimbing I dan pembimbing II",  20)
-
-
-
-    pos_y = draw_aligned_text(p, "KESATU", ":", "Mengangkat saudara (i) :",  20)
+    pos_y = draw_aligned_text(p, "Pertama", ":", "Mengangkat saudara (i) :",  20)
     pos_y = draw_aligned_text(p, "", "", "1." + sk.pembimbing1.nip.first_name,  0)
     pos_y = draw_aligned_text(p, "", "", "2." + sk.pembimbing2.nip.first_name,  0)
     pos_y = draw_aligned_text(p, "", "", "Sebagai Pembimbing Proposal, Hasil,Penelitian dan Ujian Skripsi mahasiswa atas nama  : " + sk.mhs.nim.first_name + "  Nim : " + sk.mhs.nim.username,  0)

@@ -7,19 +7,11 @@
 			<div class="list-title">
 				<h2>{{ heading }}</h2>
 				<p>{{web_name}}</p>
-			</div>
+			</div>			
 		</div>
 
 		<div class="student-table">
 			<div class="table-responsive">
-			{% if messages %}
-			{% for message in messages %}
-				<div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} mb-4">
-					<i class="{% if message.tags == 'success' %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
-					{{ message }}
-				</div>
-			{% endfor %}
-			{% endif %}
 			<table id="layananTable" class="display" style="width:100%">
 				<thead>
 				<tr>
@@ -50,12 +42,17 @@
 						<td>{{ datatb.ujian_tgl }} {{ datatb.ujian_jam }}</td>					  
 						<td>{{ datatb.ujian_tempat }}	</td>				  
 						<td>
-							<a href="{% url "acd:ujian_proses" datatb.id %}"> 
-								<button class="btn primary x-small"><i class="ri-pencil-fill"></i></button>
+							<a href="{% url 'acd:ujian_proses' datatb.id %}"> 
+								<button class="btn warning x-small"><i class="ri-pencil-fill"></i></button>
 							</a>
-							{% if datatb.no_surat %}			
-							<a href="{% url "acd:print_undangan_ujian" datatb.id %}" target="_blank"> 
-								<button class="btn success x-small"><i class="ri-printer-line"></i></button>	
+							{% if datatb.no_surat %}
+							<br>			
+							<a href="{% url 'acd:print_undangan_ujian' datatb.id %}" target="_blank"> 
+								<button class="btn primary x-small"><i class="ri-printer-line"></i></button>	
+							</a>
+							<br>			
+							<a href="{% url 'acd:ujian_yudisium' datatb.id %}"> 
+								<button class="btn success x-small"><i class="ri-award-line"></i></button>
 							</a>
 							{% endif %}			
 						</td>					

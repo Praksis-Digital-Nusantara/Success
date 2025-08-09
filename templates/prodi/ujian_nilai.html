@@ -1,0 +1,113 @@
+{% extends "prodi/base.html" %}
+
+{% block content1 %}
+<br>
+<div class="form-card">
+	<div class="form-header">
+		<div class="form-header-icon">
+			<i class="ri-edit-line"></i>
+		</div>
+		<div class="form-header-content">
+			<h2>Daftar Nilai</h2>
+			<p>{{ heading }}</p>
+		</div>
+	</div>
+
+	<div class="student-table">
+		<div class="table-responsive">
+			<table>
+				<tbody>
+					<tr>
+						<td width="10%">Mahasiswa</td>
+						<td width="5%">:</td>
+						<td>{{ data.mhs_judul.mhs }}</td>					  
+					</tr>
+					<tr>
+						<td>Program Studi</td>
+						<td>:</td>
+						<td>{{ data.mhs_judul.mhs.prodi  }}</td>					  
+					</tr>
+					<tr>
+						<td>data</td>
+						<td>:</td>
+						<td><div class="response-text">{{ data.mhs_judul }}</div></td>					  
+					</tr>
+					<tr>
+						<td>Ketua Sidang</td>
+						<td>:</td>
+						<td>{{ data.dekan }}</td>					  
+						<td>{{ data.nilai5.nilai_angka|floatformat:"2" }}</td>					  
+					</tr>
+					<tr>
+						<td>Sekretaris Sidang</td>
+						<td>:</td>
+						<td>{{ data.kaprodi }}</td>					  
+						<td>{{ data.nilai6.nilai_angka|floatformat:"2" }}</td>					  
+					</tr>
+					<tr>
+						<td>Pembimbing I</td>
+						<td>:</td>
+						<td>{{ data.pembimbing1 }}</td>					  
+						<td>{{ data.nilai1.nilai_angka|floatformat:"2" }}</td>					  
+					</tr>
+					<tr>
+						<td>Pembimbing II</td>
+						<td>:</td>
+						<td>{{ data.pembimbing2 }}</td>		
+						<td>{{ data.nilai2.nilai_angka|floatformat:"2" }}</td>			  
+					</tr>						
+					<tr>
+						<td>Penguji I</td>
+						<td>:</td>
+						<td>{{ data.penguji1 }}</td>		
+						<td>{{ data.nilai3.nilai_angka|floatformat:"2" }}</td>			  
+					</tr>
+					<tr>
+						<td>Penguji II</td>
+						<td>:</td>
+						<td>{{ data.penguji2 }}</td>	
+						<td>{{ data.nilai4.nilai_angka|floatformat:"2" }}</td>				  
+					</tr>						
+				</tbody>
+			</table>	
+		</div>
+	</div>
+
+{% endblock content1 %}
+
+
+
+{% block script_costum %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+	  var elementIds = ['id_penguji1', 'id_penguji2'];
+	  elementIds.forEach(function(elementId) {
+		var element = document.getElementById(elementId);
+		if (element) {
+		  new Choices(element, {
+			searchEnabled: true,
+			itemSelectText: '',
+			shouldSort: false,
+			removeItemButton: true,
+			searchResultLimit: 10,
+			searchFields: ['label', 'value'],
+			position: 'bottom',
+			searchPlaceholderValue: 'Cari Dosen',
+			noResultsText: 'Tidak ditemukan',
+			noChoicesText: 'Tidak ada pilihan',
+		  });
+		}
+	  });
+	});
+</script>
+{% endblock script_costum %}
+
+
+
+
+
+
+
+

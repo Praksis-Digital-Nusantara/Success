@@ -1,98 +1,42 @@
 {% extends "base_login.html" %}
 
-
 {% block content %}
 <!-- Login Page -->
-  <div class="container">
-      <i id="theme-toggle" class="ri-moon-line"></i>
-      <div class="logo">
-          <img src="https://unm.ac.id/wp-content/uploads/2022/02/logo-unm-blu-800x186.png" alt="Success">
-      </div>
-      <p class="info">{{ title }} | {{web_name}}</p>
-	  <form method="post">
-		{% csrf_token %}
-		{{ form.as_p }}
-		<button type="submit">Ganti Password</button>
-  </div>
-{% endblock content %}
-
-{% block content1 %}
-<div class="container">
-	<div class="page-inner">
-	  <div class="page-header">
-		<h3 class="fw-bold mb-3"></h3>
-		<ul class="breadcrumbs mb-3">
-		  <li class="nav-home">
-			<a href="{% url 'acd:dashboard' %}">
-			  <i class="icon-home"></i>
-			</a>
-		  </li>
-		  <li class="separator">
-			<i class="icon-arrow-right"></i>
-		  </li>
-		  <li class="nav-item">
-			<a href="{% url 'acd:changepass' %}">Change Password</a>
-		  </li>	  
-		</ul>
-	  </div>	  
-	  <div class="row">
-		<div class="col-md-12">
-		  <div class="card">
-			<div class="card-header">
-			  <div class="row">
-				<div class="col-md-1">
-					<div class="avatar avatar-xxl p-3">
-						<img src="/{{ photo }}" alt="..." class="avatar-img rounded-circle">
-					</div>
-				</div>
-				<div class="col-md-10">
-					<div class="align-items-left p-3">
-						<h4>{{user.username}}</h4>
-						<h5>{{user.first_name}}</h5>
-					</div>
-				</div>
-			  </div>
-			</div>
-			<div class="card-body">
-				<form method="post">
+<div class="login-container">
+    <div class="login-card">
+        <!-- Theme Toggle -->
+        <div class="theme-toggle-wrapper">
+            <i id="theme-toggle" class="ri-moon-line"></i>
+        </div>
+        
+        <!-- Logo Section -->
+        <div class="login-header">
+            <h1 class="login-title">RESET PASSWORD</h1>
+            <p class="login-subtitle"> {{web_name}}</p>
+        </div>
+        
+        <!-- Login Form -->
+        <form method="post">
 					{% csrf_token %}
 					{{ form.as_p }}
 					<button type="submit" class="btn btn-primary">Ganti Password</button>
-				</form>				
-		  </div>
-		</div>
-
-		
-	  </div>
-	</div>
-  </div>
+				</form>	
+        
+        <!-- Footer -->
+        <div class="login-footer">
+            <p>&copy; 2024 {{web_name}}. All rights reserved.</p>
+        </div>
+    </div>
+    
+    <!-- Background Decoration -->
+    <div class="login-bg-decoration">
+        <div class="bg-circle bg-circle-1"></div>
+        <div class="bg-circle bg-circle-2"></div>
+        <div class="bg-circle bg-circle-3"></div>
+    </div>
+</div>
+{% endblock content %}
 
 
   
-{% endblock content1 %} 
-
-
-
-{% block script_costum %} 
-{% if messages %}
-    {% for message in messages %}
-        <script>
-            swal({
-                title: "{% if message.tags == 'success' %}Good job!{% else %}Gagal Menyimpan!{% endif %}",
-                text: "{{ message }}",
-                icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
-                buttons: {
-                    confirm: {
-                        text: "OK",
-                        value: true,
-                        visible: true,
-                        className: "{% if message.tags == 'success' %}btn btn-success{% else %}btn btn-danger{% endif %}",
-                        closeModal: true,
-                    },
-                },
-            });
-        </script>
-    {% endfor %}
-{% endif %}
-{% endblock script_costum %} 
 

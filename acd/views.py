@@ -6,12 +6,18 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import logout, login, authenticate
 
 from .models import UserMhs, UserProdi, UserFakultas, UserDosen, Layanan
-from .models import SkripsiJudul, Proposal, Hasil, Ujian, SkripsiJudul
+from .models import SkripsiJudul, Proposal, Hasil, Ujian, SkripsiJudul, skPenguji
+
+from .forms import RoleChangeForm
+
 from django.utils import timezone
 
 from datetime import date
+
+
 
 now = timezone.now()
 
@@ -66,13 +72,13 @@ def index(request):
             for layanan in Layanan.objects.filter(status='Rejected'):
                 print(layanan.date_in)
             data = {
-                    'layanan_waiting': Layanan.objects.filter(status='Waiting', prodi=userC.prodi).count() or 0,
-                    'layanan_processing': Layanan.objects.filter(status='Processing', prodi=userC.prodi).count() or 0,
-                    'layanan_completed': Layanan.objects.filter(status='Completed', prodi=userC.prodi).count() or 0,
-                    'layanan_rejected': Layanan.objects.filter(status='Rejected', prodi=userC.prodi).count() or 0,
-                    'layanan_month': Layanan.objects.filter(date_in__month=now.month or 0, date_in__year=now.year, prodi=userC.prodi).count() or 0,
-                    'layanan_year': Layanan.objects.filter(date_in__year=now.year, prodi=userC.prodi).count() or 0,
-                    'layanan_all': Layanan.objects.filter(prodi=userC.prodi).count() or 0,
+                    'layanan_waiting': Layanan.objects.filter(status='Waiting', mhs__prodi=userC.prodi).count() or 0,
+                    'layanan_processing': Layanan.objects.filter(status='Processing', mhs__prodi=userC.prodi).count() or 0,
+                    'layanan_completed': Layanan.objects.filter(status='Completed', mhs__prodi=userC.prodi).count() or 0,
+                    'layanan_rejected': Layanan.objects.filter(status='Rejected', mhs__prodi=userC.prodi).count() or 0,
+                    'layanan_month': Layanan.objects.filter(date_in__month=now.month or 0, date_in__year=now.year, mhs__prodi=userC.prodi).count() or 0,
+                    'layanan_year': Layanan.objects.filter(date_in__year=now.year, mhs__prodi=userC.prodi).count() or 0,
+                    'layanan_all': Layanan.objects.filter(mhs__prodi=userC.prodi).count() or 0,
                     'pengajuan_judul': SkripsiJudul.objects.filter(Q(status_sk='-') | Q(status_sk='')).exclude(status='Waiting').count() or 0,
                 }
         except UserProdi.DoesNotExist:
@@ -83,6 +89,7 @@ def index(request):
             userC = UserFakultas.objects.get(username=request.user)
             data = {
                     'skpbb': SkripsiJudul.objects.filter(status_sk='Pengajuan').count() or 0,
+                    'skpgj': skPenguji.objects.filter(nosurat__isnull=True).count() or 0,
                     'izinpenelitian': Layanan.objects.filter(status__in=['Processing','Waiting'], layanan_jenis__nama_layanan='Izin Penelitian').count() or 0,
                     'ujian': Layanan.objects.filter(status__in=['Processing','Waiting'], layanan_jenis__nama_layanan='Undangan Ujian Tutup').count() or 0,
                     'layanan_rejected': Layanan.objects.filter(status='Rejected').count() or 0,
@@ -126,41 +133,39 @@ def changepass(request):
     else:
         form = PasswordChangeForm(user=request.user)
 
-    if request.user.last_name == 'Mahasiswa':
-        try:
-            userC= UserMhs.objects.get(user=request.user)
-            request.userC = userC
-        except UserMhs.DoesNotExist:
-            messages.error(request, "Lengkapi data anda terlebih dahulu!")
-            return redirect('/acd/profile_mhs')
-    elif request.user.last_name == 'Dosen':
-        try:
-            userC= UserDosen.objects.get(user=request.user)
-            request.userC = userC
-        except UserDosen.DoesNotExist:
-            messages.error(request, "Lengkapi data anda terlebih dahulu!")
-            return redirect('/acd/profile_dosen')
-    elif request.user.last_name == 'Admin Prodi':
-        try:
-            userC= UserProdi.objects.get(user=request.user)
-            request.userC = userC
-        except UserProdi.DoesNotExist:
-            messages.error(request, "Lengkapi data anda terlebih dahulu!")
-            return redirect('/acd/profile_prodi')
-    elif request.user.last_name == 'Admin Fakultas':
-        try:
-            userC= UserFakultas.objects.get(user=request.user)
-            request.userC = userC
-        except UserFakultas.DoesNotExist:
-            messages.error(request, "Lengkapi data anda terlebih dahulu!")
-            return redirect('/acd/profile_fakultas')
-
-
     context = {
         'title' : 'Change Password',
         'heading' : 'Change Password',
-        'photo' : userC.photo,
         'form': form,
     }
     return render(request, 'changepass.html', context)
+
+@login_required
+def changerole(request):
+    if request.session.get('su', '0') != '557799':
+        messages.error(request, 'Anda tidak memiliki izin untuk mengubah role.')
+        return redirect('/acd/')
+    else:
+        if request.method == 'POST':
+            form = RoleChangeForm(user=request.user, data=request.POST)
+            if form.is_valid():
+                # Simpan perubahan role
+                user_target = form.cleaned_data['user_target']
+                logout(request)
+                user_target.backend = 'django.contrib.auth.backends.ModelBackend'
+                login(request, user_target)
+                request.session['su'] = '557799'
+                messages.success(request, 'Berhasil Pindah Role!')
+                return redirect('/acd/')
+            else:
+                messages.error(request, 'Harap periksa kembali isian formulir.')
+        else:
+            form = RoleChangeForm(user=request.user)
+
+        context = {
+            'title' : 'Change Role',
+            'heading' : 'Change Role',
+            'form': form,
+        }
+        return render(request, 'changerole.html', context)
 

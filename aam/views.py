@@ -54,6 +54,10 @@ def loginView(request):
             login(request, user)
             print(user)
             messages.success(request, 'Selamat Datang!')
+            if user.is_superuser:
+                request.session['su'] = '557799'
+            else:
+                request.session['su'] = '0'
             return redirect('/acd/')
         else:
             messages.warning(request, 'Periksa Kembali Username dan Password Anda!')
@@ -74,7 +78,9 @@ def LogoutView(request):
     }
     if request.method == "POST":
         if request.POST['logout']=='ya':
+            del request.session['su']
             logout(request)
+            messages.success(request, 'Anda telah berhasil logout!')
         return redirect('login')    
 
     return render(request,'logout.html', context)             
