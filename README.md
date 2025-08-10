@@ -10,17 +10,17 @@
 ## ✅ Daftar Task & Catatan
 
 ### ✨ Pengembangan dan Update
-- [x] Modal surat otomatis *(update by Anto)* **aman**
-- [x] Update SK pembimbing sesuai SK Drive *(Anto)* – **Aman**
-- [x] Cetak SK (icon download) *(Anto)* **aman**
-- [x] Update print view format undangan proposal *(Anto)* – **Aman**
+- [AMAN] Modal surat otomatis *(update by Anto)* **aman**
+- [AMAN] Update SK pembimbing sesuai SK Drive *(Anto)* – **Aman**
+- [AMAN] Cetak SK (icon download) *(Anto)* **aman**
+- [AMAN] Update print view format undangan proposal *(Anto)* – **Aman**
 - [ ] Model surat: format disesuaikan kembali untuk setiap layanan *(Anto)*
 - [ ] Format undangan ujian *(Anto)*
-- [x] Set UI undangan ujian diperbaiki *(Anto)*
-- [x] Dashboard: title name dosen (last name) *(Anto)* **aman**
+- [AMAN] Set UI undangan ujian diperbaiki *(Anto)*
+- [AMAN] Dashboard: title name dosen (last name) *(Anto)* **aman**
 - [ ] Modal perihal izin penelitian diperbaiki *(Anto)*
-- [ ] UI modal surat tugas diperbaiki *(Anto)*
-- [x] Table dosen *(Anto)*
+- [AMAN] UI modal surat tugas diperbaiki *(Anto)*
+- [AMAN] Table dosen *(Anto)*
 - [ ] WA Agent *(Anto & Risal)* _(Optional)_
 
 ### 👥 Manajemen User dan Dashboard

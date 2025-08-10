@@ -49,13 +49,13 @@
 							<td>{{ datatb.tgl_mulai }} - {{ datatb.tgl_selesai }}</td>
 							<td></td>									  				
 							<td><a href="{% url 'acd:surat_tugas_edit' datatb.id %}">
-									<button class="btn primary x-small"><i class="ri-pencil-fill"></i></button>
+									<button class="btn primary small"><i class="ri-pencil-fill"></i></button>
 									</a>
 								 <a target="_blank" href="{% url 'acd:print_surat_tugas' datatb.id %}">
-									<button class="btn success x-small"><i class="ri-printer-line"></i></button>
+									<button class="btn success small"><i class="ri-printer-line"></i></button>
 									</a> 
 								<a onclick="return confirm('Yakin ingin menghapus data ini?');" href="{% url 'acd:surat_tugas_del' datatb.id %}">
-									<button class="btn danger x-small"><i class="ri-delete-bin-line"></i></button>
+									<button class="btn danger small"><i class="ri-delete-bin-line"></i></button>
 									</a>
 							</td>					  
 						</tr>
