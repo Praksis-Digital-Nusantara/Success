@@ -20,6 +20,8 @@
 				</div>
 
 		</div>
+
+
 		<div class="student-table">
 			<div class="table-responsive">
 				<table id="layananTable" class="display" style="width:100%">
@@ -64,13 +66,17 @@
 								{% endif %}								
 								</td>							  				
 							<td><a href="{% url 'acd:proposal_edit' datatb.mhs_judul.mhs.nim.username %}">
-								<button class="btn primary x-small"><i class="ri-pencil-fill"></i></button>
+								<button class="btn warning x-small"><i class="ri-pencil-fill"></i></button>
 									</a>
 									
 								<br>
 								<a target="_blank" href="{% url 'acd:print_undangan' 'Proposal' datatb.id %}">
-									<button class="action-btn primary"><i class="ri-mail-star-line"></i>Undangan</button>
+									<button class="btn primary x-small"><i class="ri-mail-star-line"></i>Undangan</button>
 									</a>
+								<br>
+								<a target="_blank" href="{% url 'acd:proposal_nilai' datatb.id %}">
+									<button class="btn success x-small"><i class="ri-award-line"></i>Nilai</button>
+								</a>
 							</td>					  
 						</tr>
 					{% endfor %}

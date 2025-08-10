@@ -7,12 +7,13 @@ from django.utils import timezone
 
 from .models import Prodi, Pejabat, UserFakultas
 from .models import NoSuratFakultas, Layanan, KodeSurat
-from .models import SkripsiJudul, skPembimbing, IzinPenelitian, Ujian
+from .models import SkripsiJudul, Proposal, skPembimbing, skPenguji, IzinPenelitian, Ujian, Yudisium
 from .models import SuketBebasKuliah, SuketBebasPlagiasi
 
 
-from .forms_fakultas import formProfile, formProdiEdit, formPejabatEdit
-from .forms_fakultas import formNoSurat, formUjian
+from .forms_fakultas import formLayananFakultasEdit
+from .forms_fakultas import formProfile, formProdiEdit
+from .forms_fakultas import formNoSurat, formUjian, formYudisium
 
 from .decorators_fakultas import check_userfakultas
 from .decorators_fakultas import fakultas_required
@@ -42,6 +43,59 @@ def profile_fakultas(request):
         'form': form,
     }
     return render(request, 'fakultas/set/profile.html', context)
+
+
+##########################  LAYANAN ######################################
+# saya tambahkan filter untuk layanan fakultas - ndx
+@fakultas_required
+@check_userfakultas
+def layanan_fakultas(request, filter):           
+    userfakultas = request.userfakultas
+    
+    if filter != 'All':
+        layanan_data = Layanan.objects.filter(layanan_jenis__level_proses='Fakultas',status=filter).order_by('-date_in')
+    else:
+        layanan_data = Layanan.objects.filter(layanan_jenis__level_proses='Fakultas').order_by('-date_in')
+    
+    context = {
+        'title': 'Layanan',
+        'heading': 'List Layanan',
+        'userfakultas' : userfakultas,
+        'filter' : filter,
+        'photo' : userfakultas.photo,
+        'layanan_data': layanan_data,
+    }
+    return render(request, 'fakultas/layanan_fakultas.html', context)
+
+
+@fakultas_required
+@check_userfakultas
+def layanan_fakultas_edit(request, id, filter):
+    userfakultas = request.userfakultas  
+    layanan = get_object_or_404(Layanan, id=id)
+    if request.method == 'POST':
+        form = formLayananFakultasEdit(request.POST, request.FILES, instance=layanan)
+        if form.is_valid():
+            layanan = form.save(commit=False)  
+            layanan.adminp = request.user   
+            layanan.save()  
+            messages.success(request, 'Berhasil')
+            return redirect('acd:layanan_fakultas_edit', id=layanan.id, filter=filter)
+        else:
+            messages.error(request, 'periksa kembali isian data anda!')
+            return redirect('acd:layanan_fakultas_edit', id=layanan.id, filter=filter)
+    else:
+        form = formLayananFakultasEdit(instance=layanan)
+
+    context = {
+        'title' : 'Kelolah Layanan',
+        'heading' : 'Kelolah Layanan',
+        'userfakultas' : userfakultas,
+        'filter' : filter,
+        'photo' : userfakultas.photo,
+        'form': form,
+    }
+    return render(request, 'fakultas/layanan_fakultas_edit.html', context)
 
 
 ########### NOMOR SURAT #####################################################
@@ -183,6 +237,72 @@ def skpbb_pengajuan(request):
         'data' : data,
     }
     return render(request, 'fakultas/skpbb_pengajuan.html', context)
+
+
+
+########### SK PENGUJI #####################################################
+@fakultas_required
+@check_userfakultas
+def skpgj_list(request):           
+    userfakultas = request.userfakultas
+    data = skPenguji.objects.filter(nosurat__isnull=False).order_by('-date_in')
+    context = {
+        'title': 'SK Penguji - List',
+        'heading': 'Daftar SK Penguji',
+        'userfakultas' : userfakultas,
+        'photo' : userfakultas.photo,
+        'data' : data,
+    }
+    return render(request, 'fakultas/skpgj_list.html', context)
+
+
+@fakultas_required
+@check_userfakultas
+def skpgj_pengajuan(request):           
+    userfakultas = request.userfakultas
+
+    if request.method == "POST":
+        id = request.POST.get("id")
+        skpgj = skPenguji.objects.filter(id=id).first()
+        # Ambil nosurat, jika kosong ambil di sistem
+        nosurat = request.POST.get("nosurat")
+        if nosurat == "" :
+            tahun = datetime.now().year
+            nosurat_cek = NoSuratFakultas.objects.filter(tahun=tahun).order_by('-nomor').first()
+            if nosurat_cek:
+                nosurat_baru = nosurat_cek.nomor + 1
+            else:
+                nosurat_baru = 1  
+            kodesurat = KodeSurat.objects.get(jenis='SK Penguji')
+
+            addnosurat = NoSuratFakultas.objects.create(
+                adminp = request.user,
+                tahun = tahun,
+                nomor = nosurat_baru, 
+                perihal = 'SK Penguji ' + str(skpgj.proposal.mhs_judul.mhs),
+                tujuan = 'Dosen Penguji Skripsi',
+                kode = kodesurat.kode
+            )
+            nosurat =  str(nosurat_baru) + str(kodesurat.kode) + str(tahun) 
+        
+        if skpgj:
+            skpgj.nosurat = nosurat
+            skpgj.date_in = tgl_now
+            skpgj.ttd = Pejabat.objects.get(jabatan='Dekan', tgl_selesai__gte=tgl_now)
+            skpgj.save()
+            messages.success(request, f"SK Penguji berhasil diterbitkan ")
+
+
+    data = skPenguji.objects.filter(nosurat__isnull=True).order_by('-date_in')
+    context = {
+        'title': 'SK Penguji - Pengajuan',
+        'heading': 'Pengajuan SK Penguji',
+        'userfakultas' : userfakultas,
+        'photo' : userfakultas.photo,
+        'data' : data,
+    }
+    return render(request, 'fakultas/skpgj_pengajuan.html', context)
+
 
 
 
@@ -373,34 +493,61 @@ def ujian_proses(request, id):
     }
     return render(request, 'fakultas/ujian_proses.html', context)
 
-
-##########################  LAYANAN ######################################
-# saya tambahkan filter untuk layanan fakultas - ndx
 @fakultas_required
 @check_userfakultas
-def layanan_fakultas(request, filter):           
-    userfakultas = request.userfakultas
+def ujian_yudisium(request, id):
+    userfakultas = request.userfakultas  
+    data = get_object_or_404(Ujian, id=id)
+    yudisium, created = Yudisium.objects.get_or_create(ujian=data)
     
-    if filter == 'Waiting':
-        layanan_data = Layanan.objects.filter(status='Waiting').order_by('-date_in')
-    elif filter == 'Processing':
-        layanan_data = Layanan.objects.filter(status='Processing').order_by('-date_in')
-    elif filter == 'Completed':
-        layanan_data = Layanan.objects.filter(status='Completed').order_by('-date_in')
-    elif filter == 'Rejected':
-        layanan_data = Layanan.objects.filter(status='Rejected').order_by('-date_in')
+    if request.method == "POST":
+        form = formYudisium(request.POST, instance=yudisium)
+        if form.is_valid():
+            # Ambil nosurat, jika kosong ambil dari sistem
+            nosurat = request.POST.get("no_surat")
+            if not nosurat:
+                tahun = datetime.now().year
+                nosurat_cek = NoSuratFakultas.objects.filter(tahun=tahun).order_by('-nomor').first()
+                nosurat_baru = nosurat_cek.nomor + 1 if nosurat_cek else 1
+                kodesurat = KodeSurat.objects.get(jenis='Berita Acara Yudisium')
+
+                addnosurat = NoSuratFakultas.objects.create(
+                    adminp=request.user,
+                    tahun=tahun,
+                    nomor=nosurat_baru, 
+                    perihal='Yudisium Mahasiswa',
+                    tujuan=str(data.mhs_judul.mhs),
+                    kode=kodesurat.kode
+                )
+                nosurat = f"{nosurat_baru}{kodesurat.kode}{tahun}"
+                messages.info(request, 'Nosurat diambil dari sistem') 
+
+            update = form.save(commit=False)
+            update.no_surat = nosurat
+            update.ujian = data
+            update.save()
+            messages.success(request, 'Data Yudisium berhasil diperbarui!')
+            return redirect('acd:ujian_yudisium', id=id)            
+        else:
+            messages.error(request, 'Periksa kembali isian data anda!')
     else:
-        layanan_data = Layanan.objects.all().order_by('-date_in')
-    
+        form = formYudisium(instance=yudisium)
+
     context = {
-        'title': 'Layanan',
-        'heading': 'List Layanan',
-        'userfakultas' : userfakultas,
-        'filter' : filter,
-        'photo' : userfakultas.photo,
-        'layanan_data': layanan_data,
+        'title': 'Ujian',
+        'heading': 'Nilai Ujian',
+        'form': form,  # Perbaikan di sini, sebelumnya salah
+        'userfakultas': userfakultas,
+        'photo': userfakultas.photo,
+        'data': data,
     }
-    return render(request, 'fakultas/layanan.html', context)
+    return render(request, 'fakultas/ujian_yudisium.html', context)
+
+
+
+
+
+
 
 
 

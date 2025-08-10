@@ -20,17 +20,17 @@
 				</div>
 
 		</div>
+
 		<div class="student-table">
 			<div class="table-responsive">
 				<table id="layananTable" class="display" style="width:100%">
 					<thead>
 					<tr>
-						<th style="white-space: nowrap;">No</th>
+						<th>No</th>
 						<th>Mahasiswa</th>
-						<th style="white-space: nowrap;">Judul yang diajukan untuk ujian</th>
-						<th style="white-space: nowrap;">Waktu Ujian</th>
-						<th style="white-space: nowrap;">Tempat</th>
-						<th>Pembimbing</th>
+						<th>Judul</th>
+						<th>Waktu Ujian</th>
+						<th>Prmbimbing</th>
 						<th>Penguji</th>
 						<th>Aksi</th>
 					</tr>
@@ -39,10 +39,9 @@
 					<tr>
 						<th>No</th>
 						<th>Mahasiswa</th>
-						<th>Judul yang diajukan untuk ujian</th>
-						<th style="white-space: nowrap;">Waktu Ujian</th>
-						<th>Tempat</th>
-						<th>Pembimbing</th>
+						<th>Judul</th>
+						<th>Waktu Ujian</th>
+						<th>Prmbimbing</th>
 						<th>Penguji</th>
 						<th width="10%">Aksi</th>
 					</tr>
@@ -54,9 +53,10 @@
 							<td>{{ datatb.mhs_judul.mhs }}</td>
 							<td><div class="response-text">{{ datatb.mhs_judul }}</div></td>
 							<td>{{ datatb.ujian_tgl }}
-								<br>{{ datatb.ujian_jam }}
-								</td>							  				
-							<td>{{ datatb.ujian_tempat }}
+								<br>
+								{{ datatb.ujian_jam }}
+								<br>
+								{{ datatb.ujian_tempat }}
 								{% if datatb.ujian_link != '' and datatb.ujian_link != '-'  and datatb.ujian_link %}
 									<br>
 									<a target="_blank" href="{{ datatb.ujian_link }}">
@@ -64,22 +64,28 @@
 										</a>
 								{% endif %}								
 								</td>		
-							<td>1. {{ datatb.pembimbing1.nip.first_name }}{{ datatb.nilai1}}
+							<td>
+								1. {{ datatb.pembimbing1.nip.first_name }}
 								<br>
 								2. {{ datatb.pembimbing2.nip.first_name }}
-							</td>					  				
-							<td>1. {{ datatb.penguji1.nip.first_name }}
+							</td>
+							<td>
+								1. {{ datatb.penguji1.nip.first_name }}
 								<br>
 								2. {{ datatb.penguji2.nip.first_name }}
 							</td>					  				
 							<td>
 								{% if datatb.no_surat %}
 									<a target="_blank" href="{% url 'acd:print_undangan_ujian' datatb.id %}">
-									<button class="action-btn primary"><i class="ri-mail-star-line"></i>Undangan</button>
+									<button class="btn primary x-small"><i class="ri-mail-star-line"></i>Undangan</button>
 									</a>
+									<br>
+									<a target="_blank" href="{% url 'acd:ujian_nilai' datatb.id %}">
+									<button class="btn success x-small"><i class="ri-award-line"></i>Nilai</button>
+								</a>
 								{% else  %}									
-									<button class="action-btn primary">Menunggu Fakultas</button>
-								{% endif %}
+									<button class="btn warning x-small">Menunggu Fakultas</button>
+								{% endif %}								
 								</td>					  
 						</tr>
 					{% endfor %}

@@ -97,7 +97,7 @@ def layananAdd(request):
                 layanan = form.save(commit=False)  
                 layanan.mhs = usermhs 
                 layanan.prodi = usermhs.prodi
-                if layanan_jenis.nama_layanan == 'Izin Penelitian' or layanan_jenis.nama_layanan == 'Undangan Ujian Tutup':
+                if layanan_jenis.level_proses == 'Fakultas':
                     layanan.status = 'Processing'
                     layanan.hasil_test = 'menunggu diproses oleh admin Falultas'
                 else:
@@ -297,7 +297,6 @@ def proposal_reg_up(request):
                 layanan = Layanan(
                     mhs=usermhs,
                     layanan_jenis=LayananJenis.objects.get(nama_layanan='Undangan Seminar Proposal'),
-                    prodi=usermhs.prodi,
                     status='Waiting',
                     layanan_isi=request.POST.get('layanan_isi'),
                 )  # Menambahkan layanan baru
@@ -380,7 +379,6 @@ def ujian_reg_up(request):
                 layanan = Layanan(
                     mhs=usermhs,
                     layanan_jenis=LayananJenis.objects.get(nama_layanan='Undangan Ujian Tutup'),
-                    prodi=usermhs.prodi,
                     status='Waiting',
                     layanan_isi=request.POST.get('layanan_isi'),
                     )  # Menambahkan layanan baru

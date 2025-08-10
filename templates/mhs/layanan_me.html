@@ -28,10 +28,10 @@
 				</div>
 			{% endfor %}
 			{% endif %}
-			<table id="layananTable" class="display" style="width:100%">
+			<table>
 				<thead>
 				<tr>
-					<th style="white-space: nowrap;">No</th>
+					<th>No</th>
 					<th>Date In</th>
 					<th>Jenis Layanan</th>
 					<th>Detail Layanan</th>
@@ -56,17 +56,17 @@
 					<td>
 					{% if layanan.layanan_file != '' %} 
 						<a target="_blank" href='/media/{{ layanan.layanan_file }}'>
-							<button class="btn success x-small"><i class="ri-file-line"></i> File</button>
+							<button class="btn secondary x-small"><i class="ri-file-line"></i> File</button>
 						</a>
 						{% endif %}
 						{% if layanan.layanan_jenis.nama_layanan == 'Undangan Seminar Proposal' %} 
 						<a href='/acd/proposal_reg'>
-							<button class="btn success x-small"><i class="ri-file-line"></i>Lampiran</button>
+							<button class="btn secondary x-small"><i class="ri-file-line"></i>Lampiran</button>
 						</a>
 						{% endif %}
 						{% if layanan.layanan_jenis.nama_layanan == 'Undangan Ujian Tutup' %} 
 						<a href='/acd/ujian_reg'>
-							<button class="btn success x-small"><i class="ri-file-line"></i>Lampiran</button>
+							<button class="btn secondary x-small"><i class="ri-file-line"></i>Lampiran</button>
 						</a>
 						{% endif %}
 						<br>
@@ -74,25 +74,25 @@
 					</td>					  
 					<td>
 					{% if layanan.status == 'Waiting'  %}
-						<span class="grade-badge c">{{ layanan.status }}</span>
+						<span class="status-badge waiting">{{ layanan.status }}</span>
 					{% elif layanan.status == 'Processing'  %}
-						<span class="grade-badge b">{{ layanan.status }}</span>
+						<span class="status-badge processing">{{ layanan.status }}</span>
 					{% elif layanan.status == 'Rejected'  %}
-						<span class="grade-badge d">{{ layanan.status }}</span>
+						<span class="status-badge rejected">{{ layanan.status }}</span>
 					{% elif layanan.status == 'Completed'  %}
-						<span class="grade-badge a">{{ layanan.status }}</span>
+						<span class="status-badge completed">{{ layanan.status }}</span>
 					{% endif %}
 					<br>
 					<div class="response-text">{{ layanan.hasil_test }}</div>
 					<br>
 					{% if layanan.hasil_link %}
 						<a target="_blank" href="{{ layanan.hasil_link }}">
-							<button class="btn success x-small"><i class="ri-file-line"></i> Link</button>
+							<button class="btn secondary x-small"><i class="ri-file-line"></i> Link</button>
 						</a>
 					{% endif %}
 					{% if layanan.hasil_file %}
 						<a target="_blank" href="/media/{{ layanan.hasil_file }}">
-							<button class="btn success x-small"><i class="ri-file-line"></i> File</button>
+							<button class="btn secondary x-small"><i class="ri-file-line"></i> File</button>
 						</a>
 					{% endif %}
 					</td>

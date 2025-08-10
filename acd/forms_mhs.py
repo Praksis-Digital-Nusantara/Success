@@ -35,6 +35,7 @@ class formProfile(forms.ModelForm):
                 ],
                 attrs={'class': 'form-control'}
             ),
+            
             'telp': forms.NumberInput(attrs={'class': 'form-control'}),
             'photo': forms.FileInput(attrs={'class': 'form-control'}),
             'tempat_lahir': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
@@ -67,7 +68,7 @@ class formAddLayanan(forms.ModelForm):
         }
 
     layanan_jenis = forms.ModelChoiceField(
-        queryset=LayananJenis.objects.all(),
+        queryset=LayananJenis.objects.all().order_by('nama_layanan'),
         empty_label="Pilih Jenis Layanan",
         widget=forms.Select(attrs={'class': 'form-control'}),
         label="Jenis Layanan"

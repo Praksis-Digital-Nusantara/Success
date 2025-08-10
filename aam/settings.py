@@ -27,8 +27,8 @@ SECRET_KEY = 'django-insecure-%kg=+$o2wx!(znw!%5!htm5l%y=hb07&+@tjc5%8!ct+v^co9#
 
 # ALLOWED_HOSTS = []
 DEBUG = True
-ALLOWED_HOSTS = []  
-# ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'app.bisdigunm.com', 'www.app.bisdigunm.com']
+# ALLOWED_HOSTS = []  
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.63', 'app.bisdigunm.com', 'www.app.bisdigunm.com']
 
 
 # Application definition
@@ -86,7 +86,7 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'esuccess',  # Ganti dengan nama database yang Anda buat di phpMyAdmin /bisdigun_app_success
+        'NAME': 'djg_success',  # Ganti dengan nama database yang Anda buat di phpMyAdmin /bisdigun_app_success
         'USER': 'root',  # Nama pengguna MySQL, biasanya 'root' di XAMPP /bisdigun_app_root
         'PASSWORD': 'Hermanto+12',  # Kata sandi pengguna MySQL, jika tidak ada, biarkan kosong
         'HOST': 'localhost',  # Host server database, localhost untuk XAMPP

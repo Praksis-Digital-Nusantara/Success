@@ -1,4 +1,8 @@
 {% extends "prodi/base.html" %}
+
+
+
+
 {% block content1 %}
 <div class="dashboard-content">
 	<div class="student-list-container">
@@ -8,6 +12,7 @@
 				<p>{{web_name}}</p>
 			</div>
 		</div>
+
 		<div class="student-table">
 			<div class="table-responsive">
 			<table id="layananTable" class="display" style="width:100%">
@@ -19,7 +24,7 @@
 					<th>Jenis Layanan</th>
 					<th>Detail Layanan</th>
 					<th style="white-space: nowrap;">Status Layanan</th>
-					<th style="white-space: nowrap;">Aksi</th>
+					<th>Aksi</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -32,17 +37,17 @@
 					<td>
 						{% if layanan.layanan_file %}
 							<a target="_blank" href="/media/{{ layanan.layanan_file }}">
-								<button class="btn success x-small"><i class="ri-file-line"></i> File</button>
+								<button class="btn secondary x-small"><i class="ri-file-line"></i> File</button>
 							</a>
 						{% endif %}
 						{% if layanan.layanan_jenis.nama_layanan == 'Undangan Seminar Proposal' %}
 							<a href="/acd/proposal_edit/{{layanan.mhs.nim.username}}">
-								<button class="btn success x-small"><i class="ri-file-line"></i> Berkas Kelengkapan</button>
+								<button class="btn secondary x-small"><i class="ri-file-line"></i> Berkas Kelengkapan</button>
 							</a>
 						{% endif %}
 						{% if layanan.layanan_jenis.nama_layanan == 'Undangan Ujian Tutup' %}
 							<a href="/acd/ujian_edit/{{layanan.mhs.nim.username}}">
-								<button class="btn success x-small"><i class="ri-file-line"></i> Berkas Kelengkapan</button>
+								<button class="btn secondary x-small"><i class="ri-file-line"></i> Berkas Kelengkapan</button>
 							</a>
 						{% endif %}
 						<br>
@@ -50,13 +55,13 @@
 					</td>				  
 					<td>
 						{% if layanan.status == 'Waiting'  %}
-							<span class="grade-badge c">{{ layanan.status }}</span>
+							<span class="status-badge waiting">{{ layanan.status }}</span>
 						{% elif layanan.status == 'Processing'  %}
-							<span class="grade-badge b">{{ layanan.status }}</span>
+							<span class="status-badge processing">{{ layanan.status }}</span>
 						{% elif layanan.status == 'Rejected'  %}
-							<span class="grade-badge d">{{ layanan.status }}</span>
+							<span class="status-badge rejected">{{ layanan.status }}</span>
 						{% elif layanan.status == 'Completed'  %}
-							<span class="grade-badge a">{{ layanan.status }}</span>
+							<span class="status-badge completed">{{ layanan.status }}</span>
 						{% endif %}
 						{% if layanan.hasil_test %}
 							<div class="response-text">{{ layanan.hasil_test }}</div>
@@ -64,12 +69,12 @@
 						<div class="button-group">
 							{% if layanan.hasil_link %}
 								<a target="_blank" href="{{ layanan.hasil_link }}">
-									<button class="btn success x-small"><i class="ri-link"></i>Download File</button>
+									<button class="btn secondary x-small"><i class="ri-link"></i>Download File</button>
 								</a>  
 							{% endif %}
 							{% if layanan.hasil_file %}
 								<a target="_blank" href="/media/{{ layanan.hasil_file }}">
-									<button class="btn success x-small"><i class="ri-link"></i>File</button>
+									<button class="btn secondary x-small"><i class="ri-link"></i>File</button>
 								</a>
 							{% endif %}
 						</div>

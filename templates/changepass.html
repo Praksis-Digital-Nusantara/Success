@@ -1,98 +1,75 @@
-{% extends "base_login.html" %}
-
-
-{% block content %}
-<!-- Login Page -->
-  <div class="container">
-      <i id="theme-toggle" class="ri-moon-line"></i>
-      <div class="logo">
-          <img src="https://unm.ac.id/wp-content/uploads/2022/02/logo-unm-blu-800x186.png" alt="Success">
-      </div>
-      <p class="info">{{ title }} | {{web_name}}</p>
-	  <form method="post">
-		{% csrf_token %}
-		{{ form.as_p }}
-		<button type="submit">Ganti Password</button>
-  </div>
-{% endblock content %}
+{% extends 'dosen/base.html' %}
+{% load static %}
 
 {% block content1 %}
-<div class="container">
-	<div class="page-inner">
-	  <div class="page-header">
-		<h3 class="fw-bold mb-3"></h3>
-		<ul class="breadcrumbs mb-3">
-		  <li class="nav-home">
-			<a href="{% url 'acd:dashboard' %}">
-			  <i class="icon-home"></i>
-			</a>
-		  </li>
-		  <li class="separator">
-			<i class="icon-arrow-right"></i>
-		  </li>
-		  <li class="nav-item">
-			<a href="{% url 'acd:changepass' %}">Change Password</a>
-		  </li>	  
-		</ul>
-	  </div>	  
-	  <div class="row">
-		<div class="col-md-12">
-		  <div class="card">
-			<div class="card-header">
-			  <div class="row">
-				<div class="col-md-1">
-					<div class="avatar avatar-xxl p-3">
-						<img src="/{{ photo }}" alt="..." class="avatar-img rounded-circle">
-					</div>
-				</div>
-				<div class="col-md-10">
-					<div class="align-items-left p-3">
-						<h4>{{user.username}}</h4>
-						<h5>{{user.first_name}}</h5>
-					</div>
-				</div>
-			  </div>
-			</div>
-			<div class="card-body">
-				<form method="post">
-					{% csrf_token %}
-					{{ form.as_p }}
-					<button type="submit" class="btn btn-primary">Ganti Password</button>
-				</form>				
-		  </div>
-		</div>
 
-		
-	  </div>
-	</div>
-  </div>
+<div class="dashboard-content">
+    <div class="profile-container">
+        <div class="settings-section">
+            <h4 class="section-title">Reset Password</h4>
+            <form method="post">
+                {% csrf_token %}
+    <div class="form-row">
+        <div class="form-group">
+            <label for="{{ form.old_password.id_for_label }}">{{ form.old_password.label }}</label>
+            {{ form.old_password }} 
+            {% if form.old_password.errors %}
+                <div class="error-message">
+                    {% for error in form.old_password.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %} 
+        </div>
+    </div>
 
+    <div class="form-row">
+        <div class="form-group">
+            <label for="{{ form.new_password1.id_for_label }}">{{ form.new_password1.label }}</label>
+            {{ form.new_password1 }}
+            {% if form.new_password1.errors %}
+                <div class="error-message">
+                    {% for error in form.new_password1.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="form-hint">Password minimal 8 karakter</div>
+        </div>
+    </div>
 
-  
+    <div class="form-row">
+        <div class="form-group">
+            <label for="{{ form.new_password2.id_for_label }}">{{ form.new_password2.label }}</label>
+            {{ form.new_password2 }}
+            {% if form.new_password2.errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.new_password2.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="form-actions">
+                    <button type="submit" class="btn primary">
+                        <i class="ri-lock-password-line"></i> Reset Password
+                    </button>
+                    <a href="{% url 'acd:index' %}" class="btn secondary">
+                        <i class="ri-arrow-left-line"></i> Kembali
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock content1 %} 
-
-
-
-{% block script_costum %} 
-{% if messages %}
-    {% for message in messages %}
-        <script>
-            swal({
-                title: "{% if message.tags == 'success' %}Good job!{% else %}Gagal Menyimpan!{% endif %}",
-                text: "{{ message }}",
-                icon: "{% if message.tags == 'success' %}success{% else %}error{% endif %}",
-                buttons: {
-                    confirm: {
-                        text: "OK",
-                        value: true,
-                        visible: true,
-                        className: "{% if message.tags == 'success' %}btn btn-success{% else %}btn btn-danger{% endif %}",
-                        closeModal: true,
-                    },
-                },
-            });
-        </script>
-    {% endfor %}
-{% endif %}
-{% endblock script_costum %} 
-

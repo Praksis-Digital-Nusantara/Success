@@ -1,0 +1,107 @@
+{% extends "fakultas/base.html" %}
+
+
+
+
+{% block content1 %}
+<div class="dashboard-content">
+	<div class="student-list-container">
+		<div class="list-header">
+			<div class="list-title">
+				<h2>{{ heading }}</h2>
+				<p>{{web_name}}</p>
+			</div>
+			<div class="list-filters">
+				<div class="table-actions">
+					<div class="action-group">
+						<div class="search-bar-table">
+							<i class="ri-search-line"></i>
+							<input type="text" id="searchInput" placeholder="Search table...">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="student-table">
+			<div class="table-responsive">
+			<table id="layananTable" class="display" style="width:100%">
+				<thead>
+					<tr>
+					<th style="white-space: nowrap;">No</th>
+					<th>Date In</th>
+					<th>Mahasiswa</th>
+					<th>Jenis Layanan</th>
+					<th>Detail Layanan</th>
+					<th style="white-space: nowrap;">Status Layanan</th>
+					<th>Aksi</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for layanan in layanan_data %}
+					<tr>
+					<td>{{ forloop.counter }}</td>
+					<td>{{ layanan.date_in|date:"d M Y H:i" }}</td>
+					<td>{{ layanan.mhs }}</td>
+					<td>{{ layanan.layanan_jenis }}</td>
+					<td>
+						{% if layanan.layanan_file %}
+							<a target="_blank" href="/media/{{ layanan.layanan_file }}">
+								<button class="btn secondary x-small"><i class="ri-file-line"></i> File</button>
+							</a>
+						{% endif %}
+						{% if layanan.layanan_jenis.nama_layanan == 'Undangan Seminar Proposal' %}
+							<a href="/acd/proposal_edit/{{layanan.mhs.nim.username}}">
+								<button class="btn secondary x-small"><i class="ri-file-line"></i> Berkas Kelengkapan</button>
+							</a>
+						{% endif %}
+						{% if layanan.layanan_jenis.nama_layanan == 'Undangan Ujian Tutup' %}
+							<a href="/acd/ujian_edit/{{layanan.mhs.nim.username}}">
+								<button class="btn secondary x-small"><i class="ri-file-line"></i> Berkas Kelengkapan</button>
+							</a>
+						{% endif %}
+						<br>
+						<div class="response-text">{{ layanan.layanan_isi }}</div>
+					</td>				  
+					<td>
+						{% if layanan.status == 'Waiting'  %}
+							<span class="status-badge waiting">{{ layanan.status }}</span>
+						{% elif layanan.status == 'Processing'  %}
+							<span class="status-badge processing">{{ layanan.status }}</span>
+						{% elif layanan.status == 'Rejected'  %}
+							<span class="status-badge rejected">{{ layanan.status }}</span>
+						{% elif layanan.status == 'Completed'  %}
+							<span class="status-badge completed">{{ layanan.status }}</span>
+						{% endif %}
+						{% if layanan.hasil_test %}
+							<div class="response-text">{{ layanan.hasil_test }}</div>
+						{% endif %}
+						<div class="button-group">
+							{% if layanan.hasil_link %}
+								<a target="_blank" href="{{ layanan.hasil_link }}">
+									<button class="btn secondary x-small"><i class="ri-link"></i>Download File</button>
+								</a>  
+							{% endif %}
+							{% if layanan.hasil_file %}
+								<a target="_blank" href="/media/{{ layanan.hasil_file }}">
+									<button class="btn secondary x-small"><i class="ri-link"></i>File</button>
+								</a>
+							{% endif %}
+						</div>
+					</td> 
+					<td>	
+						<a href="{% url 'acd:layanan_fakultas_edit' layanan.id filter %}">
+							<button class="btn primary x-small"><i class="ri-pencil-fill"></i></button>
+						</a>
+					</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			</div>
+		</div>
+	</div>
+</div>
+		
+{% endblock content1 %}
+

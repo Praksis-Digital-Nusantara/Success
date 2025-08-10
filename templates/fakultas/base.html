@@ -31,31 +31,63 @@
                         <a href="{% url "acd:dashboard" %}"><i class="ri-dashboard-line"></i> Dashboard</a>
                     </li>  
                     <li class="{% if title == 'Nomor Surat' %}active{% endif %}">
-                        <a href="{% url 'acd:nosurat_fakultas' %}"><i class="ri-file-list-3-line"></i> Nomor Surat</a>
+                        <a href="{% url 'acd:nosurat_fakultas' %}"><i class="ri-hashtag"></i> Nomor Surat</a>
+                    </li>
+                    <li class="{% if title == 'Layanan' %}active{% endif %}">
+                        <a href="{% url 'acd:layanan_fakultas' 'All' %}"><i class="ri-service-line"></i> Layanan</a>
                     </li>
                     <li class="has-dropdown  {% if title == 'SK Pembimbing - Pengajuan' or title == 'SK Pembimbing - List' %}active{% endif %}">
-                        <a href="#"><i class="ri-file-text-line"></i></i>SK Pembimbing<i class="ri-arrow-down-s-line dropdown-icon"></i></a>
+                        <a href="#"><i class="ri-user-star-line"></i>SK Pembimbing<i class="ri-arrow-down-s-line dropdown-icon"></i></a>
                         <ul class="submenu">
-                            <li class="{% if title == 'SK Pembimbing - Pengajuan' %}active{% endif %}"><a href="{% url 'acd:skpbb_pengajuan' %}"><i class="ri-file-list-3-line"></i> Pengajuan</a></li>
-                            <li class="{% if title == 'SK Pembimbing - List' %}active{% endif %}"><a href="{% url 'acd:skpbb_list' %}"><i class="ri-file-list-3-line"></i> SK Terbit</a></li>
+                            <li class="{% if title == 'SK Pembimbing - Pengajuan' %}active{% endif %}"><a href="{% url 'acd:skpbb_pengajuan' %}"><i class="ri-add-box-line"></i> Pengajuan</a></li>
+                            <li class="{% if title == 'SK Pembimbing - List' %}active{% endif %}"><a href="{% url 'acd:skpbb_list' %}"><i class="ri-list-check-2"></i> SK Terbit</a></li>
+                        </ul>
+                    </li>                    
+                    <li class="has-dropdown  {% if title == 'SK Penguji - Pengajuan' or title == 'SK Penguji - List' %}active{% endif %}">
+                        <a href="#"><i class="ri-user-search-line"></i>SK Penguji<i class="ri-arrow-down-s-line dropdown-icon"></i></a>
+                        <ul class="submenu">
+                            <li class="{% if title == 'SK Penguji - Pengajuan' %}active{% endif %}"><a href="{% url 'acd:skpgj_pengajuan' %}"><i class="ri-add-box-line"></i> Pengajuan</a></li>
+                            <li class="{% if title == 'SK Penguji - List' %}active{% endif %}"><a href="{% url 'acd:skpgj_list' %}"><i class="ri-list-check-2"></i> SK Terbit</a></li>
                         </ul>
                     </li>                    
                     <li class="has-dropdown  {% if title == 'Izin Penelitian - Pengajuan' or title == 'Izin Penelitian - List' %}active{% endif %}">
-                        <a href="#"><i class="ri-file-text-line"></i></i>Izin Penelitian<i class="ri-arrow-down-s-line dropdown-icon"></i></a>
+                        <a href="#"><i class="ri-file-search-line"></i>Izin Penelitian<i class="ri-arrow-down-s-line dropdown-icon"></i></a>
                         <ul class="submenu">
-                            <li class="{% if title == 'Izin Penelitian - Pengajuan' %}active{% endif %}"><a href="{% url 'acd:izinpenelitian_pengajuan' %}"><i class="ri-file-list-3-line"></i> Pengajuan</a></li>
-                            <li class="{% if title == 'Izin Penelitian - List' %}active{% endif %}"><a href="{% url 'acd:izinpenelitian_list' %}"><i class="ri-file-list-3-line"></i>Terbit</a></li>
+                            <li class="{% if title == 'Izin Penelitian - Pengajuan' %}active{% endif %}"><a href="{% url 'acd:izinpenelitian_pengajuan' %}"><i class="ri-add-box-line"></i> Pengajuan</a></li>
+                            <li class="{% if title == 'Izin Penelitian - List' %}active{% endif %}"><a href="{% url 'acd:izinpenelitian_list' %}"><i class="ri-list-check-2"></i>Terbit</a></li>
                         </ul>
                     </li>                
                     <li class="has-dropdown  {% if title == 'Ujian Tutup - Pengajuan' or title == 'Ujian Tutup - Terbit' %}active{% endif %}">
-                        <a href="#"><i class="ri-file-text-line"></i></i>Ujian Tutup Skripsi<i class="ri-arrow-down-s-line dropdown-icon"></i></a>
+                        <a href="#"><i class="ri-book-open-line"></i>Ujian Tutup Skripsi<i class="ri-arrow-down-s-line dropdown-icon"></i></a>
                         <ul class="submenu">
-                            <li class="{% if title == 'Ujian Tutup - Pengajuan' %}active{% endif %}"><a href="{% url 'acd:ujian_list' 'pengajuan' %}"><i class="ri-file-list-3-line"></i> Pengajuan</a></li>
-                            <li class="{% if title == 'Ujian Tutup - Terbit' %}active{% endif %}"><a href="{% url 'acd:ujian_list' 'terbit' %}"><i class="ri-file-list-3-line"></i>Terbit</a></li>
+                            <li class="{% if title == 'Ujian Tutup - Pengajuan' %}active{% endif %}">
+                                <a href="{% url 'acd:ujian_list' 'pengajuan' %}"><i class="ri-add-box-line"></i> Pengajuan</a>
+                            </li>
+                            <li class="{% if title == 'Ujian Tutup - Terbit' %}active{% endif %}">
+                                <a href="{% url 'acd:ujian_list' 'terbit' %}"><i class="ri-list-check-2"></i>Terbit</a>
+                            </li>
                         </ul>
-                    </li>                                 
+                    </li>    
+
+                    <li class="{% if title == 'Suket Aktif Kuliah' %}active{% endif %}">
+                        <a href="{% url 'acd:suket_aktifkuliah' %}"><i class="ri-file-list-3-line"></i> Suket Aktif Kuliah</a>
+                    </li>                             
+                    <li class="{% if title == 'Surat Izin Observasi' %}active{% endif %}">
+                        <a href="{% url 'acd:suket_izinobservasi' %}"><i class="ri-file-list-3-line"></i> Surat Izin Observasi</a>
+                    </li>    
+                    <li class="{% if title == 'Surat Izin Laboratorium' %}active{% endif %}">
+                        <a href="{% url 'acd:suket_izinlab' %}"><i class="ri-file-list-3-line"></i> Surat Izin Laboratorium</a>
+                    </li>    
+                    <li class="{% if title == 'Surat Rekomendasi' %}active{% endif %}">
+                        <a href="{% url 'acd:suket_rekomendasi' %}"><i class="ri-file-list-3-line"></i> Surat Rekomendasi</a>
+                    </li>    
+                    <li class="{% if title == 'Surat Tugas ' %}active{% endif %}">
+                        <a href="{% url 'acd:surat_tugas' %}"><i class="ri-file-list-3-line"></i> Surat Tugas </a>
+                    </li>    
+
+
                     <li class="{% if title == 'Profile' %}active{% endif %}">
-                        <a href="{% url 'acd:profile_fakultas' %}"><i class="ri-calendar-line"></i>Profile</a>
+                        <a href="{% url 'acd:profile_fakultas' %}"><i class="ri-user-3-line"></i>Profile</a>
                     </li>                 
                 </ul>
             </nav>
@@ -82,6 +114,9 @@
                 </div>
                 <div class="header-right">
                     <div class="user-menu">
+                        {% if request.session.su == '557799' %}
+                        <a href="{% url 'acd:changerole' %}" class="btn success x-small">Change Role</a>
+					    {% endif %}
                         <i class="ri-contrast-2-fill"></i>
                         <i class="ri-notification-3-line"></i>
                         <img src="/media/{{ photo }}" alt="User Avatar" class="avatar">
@@ -193,6 +228,7 @@
 
 
 <script src="{% static 'js/acd/main.js' %}?v={{ STATIC_VERSION }}"></script>
+
 <!-- DataTables CSS & JS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
@@ -214,8 +250,9 @@
       });
     });
   </script>
+  
 
-{% block script_costum %} 
+{% block script_costum %}
 {% endblock script_costum %} 
 
 

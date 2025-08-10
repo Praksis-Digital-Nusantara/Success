@@ -115,11 +115,7 @@ class UserDosen(models.Model):
         super().save(*args, **kwargs)
     
     def __str__(self):
-
-        # prodi_nama = self.prodi.nama_prodi if self.prodi else "_"
         return f"{self.nip}"
-
-
     
 
 
@@ -303,6 +299,11 @@ class LayananJenis(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) 
     nama_layanan = models.CharField(max_length=255)
     prasyarat_layanan = models.TextField()
+    level_proses = models.CharField(max_length=15, choices=[
+                    ('Fakultas', 'Fakultas'),
+                    ('Jurusan', 'Jurusan'),
+                    ('Prodi', 'Prodi'),
+                ])
     def __str__(self):
         return f"{self.nama_layanan}"
 
@@ -324,16 +325,10 @@ class Layanan(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     date_in = models.DateTimeField(auto_now_add=True)
     mhs = models.ForeignKey(UserMhs, on_delete=models.SET_NULL, null=True, blank=True)
-    prodi = models.ForeignKey(Prodi, on_delete=models.SET_NULL, null=True, blank=True)
     layanan_jenis = models.ForeignKey(LayananJenis, on_delete=models.SET_NULL, null=True, blank=True)
     layanan_isi = models.TextField()
     layanan_file = models.FileField(upload_to=rename_layanan_file, null=True, blank=True)
-    status = models.CharField(max_length=50, default='Waiting', choices=[
-        ('Waiting', 'Waiting'),
-        ('Processing', 'Processing'),
-        ('Completed', 'Completed'),
-        ('Rejected', 'Rejected'), 
-        ])
+    status = models.CharField(max_length=50, default='Waiting')
     adminp = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='layanan_adminp')
     hasil_test = models.TextField(null=True, blank=True)
     hasil_file = models.FileField(upload_to=rename_layanan_file_balas, null=True, blank=True)
@@ -422,9 +417,6 @@ class skPembimbing(models.Model):
 
 
 
-
-
-
 ###################### PROPOSAL  ########################################
 
 
@@ -469,6 +461,16 @@ class Proposal(models.Model):
     persetujuan_proposal = models.FileField(upload_to='layanan/syaratproposal/', null=True, blank=True)
     kartu_seminar = models.FileField(upload_to='layanan/syaratproposal/', null=True, blank=True)
     rek_koran = models.FileField(upload_to='layanan/syaratproposal/', null=True, blank=True)
+
+
+##########################  SK PENGUJI  ########################################
+class skPenguji(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    date_in = models.DateTimeField(auto_now_add=True)
+    nosurat = models.CharField(max_length=50, blank=True, null=True)
+    proposal = models.ForeignKey(Proposal, on_delete=models.SET_NULL, related_name="skpgj_proposal", null=True) 
+    ttd = models.ForeignKey(Pejabat, on_delete=models.SET_NULL, related_name="skpgj_pejabatttd", null=True)
+
 
 
 ##########################  PENELITIAN  ########################################
@@ -577,6 +579,20 @@ class Ujian(models.Model):
     krs_berjalan = models.FileField(upload_to='layanan/syaratujian/', null=True, blank=True)
     rekomendasi_akademik = models.FileField(upload_to='layanan/syaratujian/', null=True, blank=True)
 
+
+class Yudisium(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    date_in = models.DateTimeField(blank=True, null=True)
+    no_surat = models.CharField(max_length=50, blank=True, null=True)
+    ujian = models.ForeignKey(Ujian, on_delete=models.SET_NULL, related_name="yudisium_ujian", null=True)
+    ipk = models.FloatField(blank=True, null=True)
+    kualifikasi = models.CharField(max_length=20, blank=True, null=True) 
+    catatan = models.TextField(blank=True, null=True) 
+    ttd = models.ForeignKey(Pejabat, on_delete=models.SET_NULL, related_name="yudisium_ttd", blank=True, null=True)
+
+
+#################################### SURAT LAINNYA ####################################
+
 class SuketBebasKuliah(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     date_in = models.DateTimeField(auto_now_add=True)
@@ -597,3 +613,86 @@ class SuketBebasPlagiasi(models.Model):
     ttd = models.ForeignKey(Pejabat, on_delete=models.SET_NULL, related_name="sbp_ttd", blank=True, null=True)
     ttd_status = models.CharField(max_length=20, default='QRcode')
 
+class SuketAktifKuliah(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    date_in = models.DateTimeField(auto_now_add=True)
+    adminp = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="sak_admin", blank=True, null=True)
+    no_surat = models.CharField(max_length=50, blank=True, null=True)
+    mhs = models.ForeignKey(UserMhs, on_delete=models.SET_NULL, related_name="sak_mhs", blank=True, null=True)
+    semester = models.CharField(max_length=20, blank=True, null=True)
+    tahun_akademik = models.CharField(max_length=20, blank=True, null=True)
+    ortu_nama = models.CharField(max_length=50, blank=True, null=True)
+    ortu_nip = models.CharField(max_length=30, blank=True, null=True)
+    ortu_gol = models.CharField(max_length=30, blank=True, null=True)
+    ortu_pekerjaan = models.CharField(max_length=100, blank=True, null=True)
+    ortu_instansi = models.CharField(max_length=100, blank=True, null=True)
+    ortu_alamat = models.CharField(max_length=255, blank=True, null=True)
+    ttd = models.ForeignKey(Pejabat, on_delete=models.SET_NULL, related_name="sak_ttd", blank=True, null=True)
+    ttd_status = models.CharField(max_length=20, default='QRcode')
+
+
+class SuketIzinObservasi(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    date_in = models.DateTimeField(auto_now_add=True)
+    adminp = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="sio_admin", blank=True, null=True)
+    no_surat = models.CharField(max_length=50, blank=True, null=True)
+    mhs = models.ForeignKey(UserMhs, on_delete=models.SET_NULL, related_name="sio_mhs", blank=True, null=True)
+    semester = models.CharField(max_length=20, blank=True, null=True)
+    tahun_akademik = models.CharField(max_length=20, blank=True, null=True)
+    perihal = models.CharField(max_length=255, blank=True, null=True)
+    tujuan = models.CharField(max_length=100, blank=True, null=True)
+    ttd = models.ForeignKey(Pejabat, on_delete=models.SET_NULL, related_name="sio_ttd", blank=True, null=True)
+    ttd_status = models.CharField(max_length=20, default='QRcode')
+
+
+class SuketRekomendasi(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    date_in = models.DateTimeField(auto_now_add=True)
+    adminp = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="srk_admin", blank=True, null=True)
+    no_surat = models.CharField(max_length=50, blank=True, null=True)
+    mhs = models.ForeignKey(UserMhs, on_delete=models.SET_NULL, related_name="srk_mhs", blank=True, null=True)
+    perihal = models.TextField(blank=True, null=True)
+    alasan_rekomendasi = models.TextField(blank=True, null=True)
+    ttd = models.ForeignKey(Pejabat, on_delete=models.SET_NULL, related_name="srk_ttd", blank=True, null=True)
+    ttd_status = models.CharField(max_length=20, default='QRcode')
+
+class SuketIzinLab(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    date_in = models.DateTimeField(auto_now_add=True)
+    adminp = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="sil_admin", blank=True, null=True)
+    no_surat = models.CharField(max_length=50, blank=True, null=True)
+    mhs = models.ForeignKey(UserMhs, on_delete=models.SET_NULL, related_name="sil_mhs", blank=True, null=True)
+    judul = models.ForeignKey(SkripsiJudul, on_delete=models.SET_NULL, related_name="sil_judul", blank=True, null=True)
+    lab = models.TextField(blank=True, null=True)
+    waktu_mulai = models.DateField(blank=True, null=True)
+    waktu_selesai = models.DateField(blank=True, null=True)
+    ttd = models.ForeignKey(Pejabat, on_delete=models.SET_NULL, related_name="sil_ttd", blank=True, null=True)
+    ttd_status = models.CharField(max_length=20, default='QRcode')
+
+
+class SuratTugas(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    date_in = models.DateTimeField(auto_now_add=True)
+    adminp = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="st_admin", blank=True, null=True)
+    no_surat = models.CharField(max_length=50, blank=True, null=True)
+    nama_kegiatan = models.TextField(blank=True, null=True)
+    tgl_mulai = models.DateField(blank=True, null=True)
+    tgl_selesai = models.DateField(blank=True, null=True)
+    jam = models.TimeField(blank=True, null=True)
+    tempat = models.CharField(max_length=255, blank=True, null=True)
+    ttd = models.ForeignKey(Pejabat, on_delete=models.SET_NULL, related_name="st_ttd", blank=True, null=True)
+    ttd_status = models.CharField(max_length=20, default='QRcode')
+
+class SuratTugas_NamaDosen(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    urut = models.IntegerField(blank=True, null=True)
+    surat = models.ForeignKey(SuratTugas, on_delete=models.SET_NULL, related_name="std_surat", blank=True, null=True) 
+    dosen = models.ForeignKey(UserDosen, on_delete=models.SET_NULL, related_name="std_dosen", blank=True, null=True) 
+    jabatan = models.CharField(max_length=255, blank=True, null=True)
+
+class SuratTugas_NamaMhs(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    urut = models.IntegerField(blank=True, null=True)
+    surat = models.ForeignKey(SuratTugas, on_delete=models.SET_NULL, related_name="stm_surat", blank=True, null=True) 
+    mhs = models.ForeignKey(UserMhs, on_delete=models.SET_NULL, related_name="stm_mhs", blank=True, null=True) 
+    jabatan = models.CharField(max_length=255, blank=True, null=True)

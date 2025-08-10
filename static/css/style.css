@@ -2121,13 +2121,18 @@ td {
 }
 
 .status-badge.completed {
-    background: #e6f4ea;
-    color: #1e7e34;
+    background-color: #00a40d;
+    color: #ffffff;
 }
 
 .status-badge.cancelled {
     background: #fde7e9;
     color: #dc3545;
+}
+
+.status-badge.processing {
+    background-color: #EF6C00;
+    color: #ffffff;
 }
 
 .status-badge.progress {

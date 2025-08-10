@@ -12,23 +12,15 @@
 
 		<div class="student-table">
 			<div class="table-responsive">
-			{% if messages %}
-			{% for message in messages %}
-				<div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} mb-4">
-					<i class="{% if message.tags == 'success' %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
-					{{ message }}
-				</div>
-			{% endfor %}
-			{% endif %}
 			<table id="layananTable" class="display" style="width:100%">
 				<thead>
 				<tr>
-					<th style="white-space: nowrap;">No</th>
+					<th>No</th>
 					<th>Date In</th>
 					<th>Mahasiswa</th>
 					<th>Prodi</th>
 					<th>Pembimbing</th>
-					<th style="white-space: nowrap;">Judul yang Diajukan Mahasiswa</th>
+					<th>Judul</th>
 					<th>Aksi</th>
 				</tr>
 				</thead>
@@ -39,7 +31,7 @@
 					<th>Mahasiswa</th>
 					<th>Prodi</th>
 					<th>Pembimbing</th>
-					<th>Judul yang Diajukan Mahasiswa</th>
+					<th>Judul</th>
 					<th width="10%">Aksi</th>
 				</tr>
 				</tfoot>
@@ -50,10 +42,10 @@
 						<td>{{ datatb.date_in|date:"d M Y H:i"  }}</td>
 						<td>{{ datatb.mhs }}</td>					  
 						<td>{{ datatb.prodi }}</td>					  
-						<td>1. {{ datatb.pembimbing1 }}					  
-								<br>2. {{ datatb.pembimbing2 }}
+						<td>1. {{ datatb.pembimbing1.nip.first_name }}					  
+								<br>2. {{ datatb.pembimbing2.nip.first_name }}
 								</td>					  
-						<td><div class="response-text">{{ datatb.judul }}</div></td>					  
+						<td>{{ datatb.judul }}</td>					  
 						<td>
 							<a href="{% url "acd:print_skpbb" datatb.id %}" target="_blank"> 
 								<button class="action-btn primary"><i class="ri-printer-line"></i>Cetak</button>		

@@ -1,0 +1,236 @@
+{% extends "fakultas/base.html" %}
+{% block content1 %}
+
+<div class="form-card">
+	<div class="form-header">
+		<div class="form-header-icon">
+			<i class="ri-file-text-line"></i>
+		</div>
+		<div class="form-header-content">
+			<h2>{{ heading }}</h2>
+			<p>Silahkan edit data berikut ini</p>
+		</div>
+	</div>
+
+	<!-- Form utama surat tugas -->
+	<form method="post" class="layanan-form">
+		{% csrf_token %}
+		<div class="form-group">
+			<label for="id_no_surat">Nomor Surat</label>
+			{{ form.no_surat }}
+		</div>
+		<div class="form-group">
+			<label for="id_nama_kegiatan">Nama Kegiatan</label>
+			{{ form.nama_kegiatan }}
+		</div>
+		<div class="form-row">
+			<div class="form-group">
+				<label for="id_tgl_mulai">Tanggal Mulai</label>
+				{{ form.tgl_mulai }}
+			</div>
+			<div class="form-group">
+				<label for="id_tgl_selesai">Tanggal Selesai</label>
+				{{ form.tgl_selesai }}
+			</div>
+		</div>
+		<div class="form-row">
+			<div class="form-group">
+				<label for="id_jam">Jam Kegiatan</label>
+				{{ form.jam }}
+			</div>
+			<div class="form-group">
+				<label for="id_tempat">Lokasi Kegiatan</label>
+				{{ form.tempat }}
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="id_ttd">Pejabat Bertandatangan</label>
+			{{ form.ttd }}
+		</div>
+		<div class="form-group">
+			<label for="id_ttd_status">Jenis TTD</label>
+			{{ form.ttd_status }}
+		</div>
+		<div class="form-actions">
+			<a href="{% url 'acd:surat_tugas' %}">
+				<button type="button" class="btn btn-secondary">
+					<i class="ri-arrow-left-line"></i> Kembali
+				</button>
+			</a>
+			<button type="submit" class="btn primary">Update Surat</button>
+		</div>
+	</form>
+
+	<!-- Form isian nama dosen -->
+	{% if surat.id %}
+	<hr>	
+	<div class="layanan-form">
+		<h3>Nama Dosen yang Ditugaskan</h3>
+		<table class="display" style="width:100%">
+			<thead>
+			<tr>
+				<th style="white-space: nowrap;">No</th>
+				<th>Nama</th>
+				<th>Jabatan</th>
+				<th>Aksi</th>				
+			</tr>
+			</thead>
+			<tfoot>
+			<tr>
+				<th>No</th>
+				<th>Nama</th>
+				<th>Jabatan</th>
+				<th>Aksi</th>
+				
+			</tr>
+			</tfoot>
+			<tbody id="tableBody">
+			{% for datatb in nama_dosen %}
+				<tr>
+					<td>{{ forloop.counter }}</td>
+					<td>{{ datatb.dosen }}</td>
+					<td>{{ datatb.jabatan}}</td>
+					<td>
+						<a onclick="return confirm('Yakin ingin menghapus data ini?');" href="{% url 'acd:surat_tugas_delnamadosen' datatb.id surat.id %}">
+							<button class="btn danger x-small"><i class="ri-delete-bin-line"></i></button>
+							</a>
+					</td>					  
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+
+		<div class="form-actions">
+			<button class="btn primary" onclick="openModal('tambah_namadosen')"><i class="ri-add-line"></i></button>
+		</div>
+	</div>
+
+
+	<hr>	
+	<div class="layanan-form">
+		<h3>Nama Mahasiswa yang Ditugaskan</h3>
+		<table class="display" style="width:100%">
+			<thead>
+			<tr>
+				<th style="white-space: nowrap;">No</th>
+				<th>Nama</th>
+				<th>Jabatan</th>
+				<th>Aksi</th>				
+			</tr>
+			</thead>
+			<tfoot>
+			<tr>
+				<th>No</th>
+				<th>Nama</th>
+				<th>Jabatan</th>
+				<th>Aksi</th>
+				
+			</tr>
+			</tfoot>
+			<tbody id="tableBody">
+			{% for datatb in nama_mhs %}
+				<tr>
+					<td>{{ forloop.counter }}</td>
+					<td>{{ datatb.mhs }}</td>
+					<td>{{ datatb.jabatan}}</td>
+					<td>
+						<a onclick="return confirm('Yakin ingin menghapus data ini?');" href="{% url 'acd:surat_tugas_delnamamhs' datatb.id surat.id %}">
+							<button class="btn danger x-small"><i class="ri-delete-bin-line"></i></button>
+							</a>
+					</td>					  
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+
+		<div class="form-actions">
+			<button class="btn primary" onclick="openModal('tambah_namamhs')"><i class="ri-add-line"></i></button>
+		</div>
+	</div>
+	{% endif %}
+</div>
+
+
+<!-- OPENING ELEMEN MODAL -->
+<div id="tambah_namadosen" class="modal-edit">
+	<div class="modal-content-edit">
+		<span class="close" onclick="closeModal('tambah_namadosen')">&times;</span>
+		<h2 style="text-align: left;">Tambah Data Dosen</h2>
+		<form method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+			<input type="hidden" name="dosen_submitted" value="1">
+		<div class="form-group">
+			<label for="id_dosen">Nama Dosen</label>
+			{% comment %} <label style="text-align: left;">Nama Dosen</label> {% endcomment %}
+			{{ form_nama_dosen.dosen }}
+		</div>
+		<div class="form-group">
+			<label for="id_jabatan">Jabatan</label>
+			{% comment %} <label style="text-align: left;">Jabatan</label> {% endcomment %}
+			{{ form_nama_dosen.jabatan }}
+		</div>
+		<div class="form-group">
+			<button type="submit" class="btn primary">
+				<i class="ri-save-line"></i>
+				Tambah
+			</button>
+		</div>
+	</form>
+	</div>
+</div>
+<div id="tambah_namamhs" class="modal-edit">
+	<div class="modal-content-edit">
+		<span class="close" onclick="closeModal('tambah_namamhs')">&times;</span>
+		<h2 style="text-align: left;">Tambah Data Mahasiswa</h2>
+		<form method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+			<input type="hidden" name="mhs_submitted" value="1">
+		<div class="form-group">
+			<label for="id_mhs">Nama Mahasiswa</label>
+			{{ form_nama_mhs.mhs }}
+		</div>
+		<div class="form-group">
+			<label for="id_jabatan">Jabatan</label>
+			{{ form_nama_mhs.jabatan }}
+		</div>
+		<div class="form-group">
+			<button type="submit" class="btn primary">
+				<i class="ri-save-line"></i>
+				Tambah
+			</button>
+		</div>
+	</form>
+	</div>
+</div>
+<!-- OPENING ELEMENT MODAL -->
+
+{% endblock content1 %}
+
+
+{% block script_costum %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+	  var elementIds = ['id_dosen','id_mhs'];
+	  elementIds.forEach(function(elementId) {
+		var element = document.getElementById(elementId);
+		if (element) {
+		  new Choices(element, {
+			searchEnabled: true,
+			itemSelectText: '',
+			shouldSort: false,
+			removeItemButton: true,
+			searchResultLimit: 10,
+			searchFields: ['label', 'value'],
+			position: 'bottom',
+			searchPlaceholderValue: 'Cari Dosen',
+			noResultsText: 'Tidak ditemukan',
+			noChoicesText: 'Tidak ada pilihan',
+		  });
+		}
+	  });
+	});
+</script>
+{% endblock script_costum %}
+

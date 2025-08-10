@@ -94,6 +94,9 @@
                 </div>
                 <div class="header-right">
                     <div class="user-menu">
+                        {% if request.session.su == '557799' %}
+                        <a href="{% url 'acd:changerole' %}" class="btn success x-small">Change Role</a>
+					    {% endif %}
                         <i class="ri-contrast-2-fill"></i>
                         <div class="notification-icon">
                             <i class="ri-notification-3-line"></i>
@@ -193,8 +196,6 @@
 
 <script src="{% static 'js/acd/main.js' %}?v={{ STATIC_VERSION }}"></script>
 
-
-
 <script>
     function updateNotificationCount() {
         fetch("{% url 'acd:notif_prodi' %}")
@@ -258,6 +259,7 @@
         setInterval(updateNotificationModal, 10000); // Perbarui setiap 10 detik
     });
 </script>
+
 <!-- DataTables CSS & JS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
@@ -279,6 +281,9 @@
       });
     });
   </script>
+
+
+
 
 {% block script_costum %} 
 {% endblock script_costum %} 

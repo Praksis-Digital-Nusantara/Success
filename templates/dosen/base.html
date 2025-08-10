@@ -35,14 +35,20 @@
                     <li class="{% if title == 'Persetujuan Pembimbing 2' %}active{% endif %}">
                         <a href="{% url "acd:pbb2_persetujuan" %}"><i class="ri-chat-check-line"></i> Persetujuan Pembimbing 2</a>
                     </li>  
+                    <li class="{% if title == 'SK Pembimbing' %}active{% endif %}">
+                        <a href="{% url "acd:dsn_skpbb" %}"><i class="ri-file-shield-2-line"></i> SK Pembimbing</a>
+                    </li>  
+                    <li class="{% if title == 'SK Penguji' %}active{% endif %}">
+                        <a href="{% url "acd:dsn_skpgj" %}"><i class="ri-file-shield-2-line"></i> SK Penguji</a>
+                    </li>  
                     <li class="{% if title == 'Proposal Mahasiswa' %}active{% endif %}">
-                        <a href="{% url "acd:proposal_dsn" 'Semua' %}"><i class="ri-file-shield-2-line"></i>Seminar Proposal</a>
+                        <a href="{% url "acd:proposal_dsn" 'Semua' %}"><i class="ri-file-shield-2-line"></i> Proposal Mahasiswa</a>
                     </li>  
                     <li class="{% if title == 'Hasil Mahasiswa' %}active{% endif %}">
-                        <a href="{% url "acd:hasil_dsn" 'Semua' %}"><i class="ri-checkbox-circle-line"></i>Seminar Hasil</a>
+                        <a href="{% url "acd:hasil_dsn" 'Semua' %}"><i class="ri-checkbox-circle-line"></i> Hasil Mahasiswa</a>
                     </li>  
                     <li class="{% if title == 'Ujian Mahasiswa' %}active{% endif %}">
-                        <a href="{% url "acd:ujian_dsn" 'Semua' %}"><i class="ri-file-list-2-line"></i> Ujian Skripsi</a>
+                        <a href="{% url "acd:ujian_dsn" 'Semua' %}"><i class="ri-file-list-2-line"></i> Ujian Mahasiswa</a>
                     </li>  
                     <li class="{% if title == 'Profile' %}active{% endif %}">
                         <a href="{% url 'acd:profile_dosen' %}"><i class="ri-user-settings-line"></i>Profile</a>
@@ -72,6 +78,9 @@
                 </div>
                 <div class="header-right">
                     <div class="user-menu">
+                        {% if request.session.su == '557799' %}
+                        <a href="{% url 'acd:changerole' %}" class="btn success x-small">Change Role</a>
+					    {% endif %}
                         <i class="ri-contrast-2-fill"></i>
                         <i class="ri-notification-3-line"></i>
                         <img src="/media/{{ photo }}" alt="User Avatar" class="avatar">
@@ -344,7 +353,11 @@
         }
     });
     </script>
-    <!-- DataTables CSS & JS -->
+{% endblock script_search %}
+
+
+
+<!-- DataTables CSS & JS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -365,8 +378,6 @@
       });
     });
   </script>
-
-{% endblock script_search %}
 
 
 {% block script_costum %} 

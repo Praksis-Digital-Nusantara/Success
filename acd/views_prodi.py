@@ -17,6 +17,7 @@ from .models import (UserMhs, Layanan,
                      Hasil,
                      Ujian,
                      Proposal, 
+                     skPenguji, 
                      skPembimbing, 
                      TTDProdi,
                      NoSuratFakultas,
@@ -361,6 +362,27 @@ def proposal(request):
     }
     return render(request, 'prodi/proposal.html', context)
 
+@check_userprodi
+@admin_prodi_required
+def proposal_del(request, id):
+    data = get_object_or_404(Proposal, id=id)
+    if data:
+        data.no_surat = None
+        data.seminar_tgl = None
+        data.seminar_jam = None
+        data.seminar_tempat = None
+        data.penguji1 = None
+        data.penguji2 = None
+        data.ttd_status = None
+        data.ttd = None
+        data.save()
+        messages.success(request, "Undangan Berhasil Dihapus")
+        return redirect('acd:proposal')
+    else:
+        messages.error(request, "Undangan Tidak Ditemukan")
+        return redirect('acd:proposal')
+
+
 
 @check_userprodi
 @admin_prodi_required
@@ -405,6 +427,15 @@ def proposal_edit(request, nim):
                 tosave.no_surat =  str(nosurat_baru) + str(kodesurat.kode) + str(tahun)               
             tosave.save()
 
+            #update untuk pembuatan SK Penguji
+            skpenguji, created = skPenguji.objects.get_or_create(
+                proposal=proposal,
+                defaults={
+                    'proposal': proposal,
+                }
+            )
+
+
             #update layanan agar status DIPROSES            
             layanan = Layanan.objects.filter(mhs=judul.mhs, layanan_jenis__nama_layanan='Undangan Seminar Proposal', status__in=['Processing', 'Waiting']).first()
             if layanan:
@@ -429,6 +460,22 @@ def proposal_edit(request, nim):
         'form': form,
     }
     return render(request, 'prodi/proposal_edit.html', context)
+
+
+@check_userprodi
+@admin_prodi_required
+def proposal_nilai(request, id):
+    userprodi = request.userprodi  
+    data = get_object_or_404(Proposal, id=id)
+    context = {
+        'title': 'Proposal',
+        'heading': 'Nilai Proposal',
+        'userprodi' : userprodi,
+        'photo' : userprodi.photo,
+        'data': data,
+    }
+    return render(request, 'prodi/proposal_nilai.html', context)
+
 
 
 
@@ -584,6 +631,21 @@ def ujian_edit(request, nim):
         'form': form,
     }
     return render(request, 'prodi/ujian_edit.html', context)
+
+
+@check_userprodi
+@admin_prodi_required
+def ujian_nilai(request, id):
+    userprodi = request.userprodi  
+    data = get_object_or_404(Ujian, id=id)
+    context = {
+        'title': 'Ujian',
+        'heading': 'Nilai Ujian',
+        'userprodi' : userprodi,
+        'photo' : userprodi.photo,
+        'data': data,
+    }
+    return render(request, 'prodi/ujian_nilai.html', context)
 
 
 

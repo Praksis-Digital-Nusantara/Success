@@ -47,7 +47,7 @@ def print_undangan(request, jn, id):
         return pos_y 
     
 
-    pos_y = draw_aligned_text(p, "Nomor", undangan.no_surat, tanggal_indo(undangan.date_in),  15)   
+    pos_y = draw_aligned_text(p, "Nomor", undangan.no_surat, "Makassar, " + tanggal_indo(undangan.date_in), 15) 
     pos_y = draw_aligned_text(p, "Lampiran", "1 (satu) Naskah", "",  15)   
     pos_y = draw_aligned_text(p, "Perihal", "Undangan Seminar " + jn, "",  15)   
 
@@ -64,15 +64,14 @@ def print_undangan(request, jn, id):
         canvas.drawString(posd_x + 130, pos_y, label3)
         return pos_y 
 
-    pos_y = draw_aligned_text(p, "1.", "Pembimbing I", undangan.pembimbing1.nip.first_name,  30)   
-    pos_y = draw_aligned_text(p, "2.", "Pembimbing II", undangan.pembimbing2.nip.first_name,  15)   
-    pos_y = draw_aligned_text(p, "3.", "Penguji I", undangan.penguji1.nip.first_name,  15)   
-    pos_y = draw_aligned_text(p, "4.", "Penguji II", undangan.penguji2.nip.first_name,  15)   
+    pos_y = draw_aligned_text(p, "", "Ketua Prodi", undangan.ttd.pejabat.nip.first_name, 30)
+    pos_y = draw_aligned_text(p, "", "Pembimbing I", undangan.pembimbing1.nip.first_name,  15)   
+    pos_y = draw_aligned_text(p, "", "Pembimbing II", undangan.pembimbing2.nip.first_name,  15)   
+    pos_y = draw_aligned_text(p, "", "Penanggap", undangan.penguji1.nip.first_name,  15)   
+    pos_y = draw_aligned_text(p, "", "Moderator", undangan.pembimbing1.nip.first_name,  15)   
 
-    pos_y -= dl(p, posd_x, pos_y, 30, "di-", 'N', 'L')
-    pos_y -= dl(p, posd_x, pos_y, 15, "Tempat", 'N', 'L')
-
-    pos_y -= dl(p, posd_x, pos_y, 30, "Dalam rangka pelaksanaan Seminar " + jn + " mahasiswa atas nama :", 'N', 'L')
+    pos_y -= dl(p, posd_x, pos_y, 30, "Dengan Hormat", 'N', 'L')
+    pos_y -= dl(p, posd_x, pos_y, 15, "Kami mengundang Bapak/Ibu untuk menghadiri Seminar " + jn + " Penelitian Mahasiswa dalam rangka penyelesaian Skripsi atas nama:", 'N', 'L')
 
     def draw_aligned_text(canvas, label, value, y_offset):
         canvas.setFont("Times-Roman", 12)
@@ -89,20 +88,19 @@ def print_undangan(request, jn, id):
                 canvas.drawString(posd_x + 110, pos_y, line)
         return pos_y  
     
-    pos_y = draw_aligned_text(p, "Nama", undangan.mhs_judul.mhs.nim.first_name,  15) 
+    pos_y = draw_aligned_text(p, "Nama", undangan.mhs_judul.mhs.nim.first_name,  30) 
     pos_y = draw_aligned_text(p, "NIM", undangan.mhs_judul.mhs.nim.username,  15) 
+    pos_y = draw_aligned_text(p, "Jurusan", undangan.mhs_judul.prodi.jurusan.nama_jurusan, 15)
     pos_y = draw_aligned_text(p, "Program Studi", undangan.mhs_judul.prodi.nama_prodi,  15) 
     pos_y = draw_aligned_text(p, "judul", undangan.mhs_judul.judul,  15) 
 
-    pos_y -= dl(p, posd_x, pos_y, 30, "Maka bersama ini Kami undang Bapak/Ibu untuk hadir dan menguji pada seminar tersebut yang", 'N', 'L')
-    pos_y -= dl(p, posd_x, pos_y, 15, "dilaksanakan:", 'N', 'L')
-
+    pos_y -= dl(p, posd_x, pos_y, 15, "Seminar tersebut akan diselenggarakan pada:", 'N', 'L')
     pos_y = draw_aligned_text(p, "Hari/Tanggal", tanggal_indo(undangan.seminar_tgl, undangan.seminar_tgl),  15) 
-    pos_y = draw_aligned_text(p, "Tempat", undangan.seminar_tempat,  15) 
     pos_y = draw_aligned_text(p, "Pukul", str(undangan.seminar_jam) + " WITA - Selesai",  15) 
+    pos_y = draw_aligned_text(p, "Tempat", undangan.seminar_tempat,  15) 
 
 
-    pos_y -= dl(p, posd_x, pos_y, 30, "Demikian disampaikan, atas perhatian dan kerjasamanya diucapkan terimakasih", 'N', 'L')
+    pos_y -= dl(p, posd_x, pos_y, 30, "Atas kehadiran dan kerja sama Bapak/Ibu kami ucapkan terima kasih.", 'N', 'L')
 
 
     panjang_nama_pejabat = A4[0] - ( p.stringWidth(undangan.ttd.pejabat.nip.first_name, "Times-Bold", 12) + 60)

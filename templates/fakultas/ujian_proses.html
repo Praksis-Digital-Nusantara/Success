@@ -215,32 +215,7 @@
 </style>
 
 {% endblock content1 %}
-{% block script_costum %}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-<script>
-	document.addEventListener('DOMContentLoaded', function () {
-	  var elementIds = ['id_penguji1', 'id_penguji2', 'id_dekan', 'id_wd', 'id_kaprodi'];
-	  elementIds.forEach(function(elementId) {
-		var element = document.getElementById(elementId);
-		if (element) {
-		  new Choices(element, {
-			searchEnabled: true,
-			itemSelectText: '',
-			shouldSort: false,
-			removeItemButton: true,
-			searchResultLimit: 10,
-			searchFields: ['label', 'value'],
-			position: 'bottom',
-			searchPlaceholderValue: 'Cari Pembimbing',
-			noResultsText: 'Tidak ditemukan',
-			noChoicesText: 'Tidak ada pilihan',
-		  });
-		}
-	  });
-	});
-</script>
-{% endblock script_costum %}
+
 
 
 

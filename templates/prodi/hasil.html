@@ -27,19 +27,11 @@
 
 		</div>
 
-		<div class="table-options">
-			<label for="recordsPerPage">Records per page:</label>
-			<select id="recordsPerPage" onchange="updateTable()">
-				<option value="10" selected>10</option>
-				<option value="25">25</option>
-				<option value="50">50</option>
-				<option value="100">100</option>
-			</select>
-		</div>
+		
 
 		<div class="student-table">
 			<div class="table-responsive">
-				<table>
+				<table id="layananTable" class="display" style="width:100%">
 					<thead>
 					<tr>
 						<th>No</th>
@@ -92,11 +84,6 @@
 					{% endfor %}
 					</tbody>
 				</table>	
-			</div>
-			<div id="pagination" class="pagination">
-				<button id="prev" class="btn warning">Prev</button>
-				<span id="pageNumber" class="page-number">1</span>
-				<button id="next" class="btn warning">Next</button>
 			</div>
 		</div>
 	</div>

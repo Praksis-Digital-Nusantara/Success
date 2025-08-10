@@ -10,6 +10,7 @@ from uuid import UUID
 from .utils import cek_kemiripan_judul  
 
 from .models import UserMhs, SkripsiJudul, chatPA, Proposal, ProposalNilai,  Hasil, HasilNilai,  Ujian, UjianNilai, UserDosen
+from .models import skPembimbing, skPenguji
 
 from .forms_dosen import formProfile, formChatPA, formProposalNilai, formHasilNilai, formUjianNilai
 
@@ -159,6 +160,40 @@ def pbb2_persetujuan(request):
         'data': data,
     }
     return render(request, 'dosen/pbb2_persetujuan.html', context)
+
+
+################################ SK PENGUJI / PEMBIMBING ####################################
+
+@dosen_required
+@check_userdosen
+def dsn_skpbb(request):      
+    userdosen = request.userdosen 
+    data = skPembimbing.objects.filter(Q(pembimbing1=userdosen) | Q(pembimbing2=userdosen)).order_by('-date_in')
+    context = {
+        'title': 'SK Pembimbing',
+        'heading': 'SK Pembimbing',
+        'userdosen' : userdosen,
+        'photo' : userdosen.photo,
+        'data': data,
+        'filter': filter,
+    }
+    return render(request, 'dosen/dsn_skpbb.html', context)
+    
+@dosen_required
+@check_userdosen
+def dsn_skpgj(request):      
+    userdosen = request.userdosen 
+    data = skPenguji.objects.filter(Q(proposal__penguji1=userdosen) | Q(proposal__penguji2=userdosen)).order_by('-date_in')
+    context = {
+        'title': 'SK Penguji',
+        'heading': 'SK Penguji',
+        'userdosen' : userdosen,
+        'photo' : userdosen.photo,
+        'data': data,
+        'filter': filter,
+    }
+    return render(request, 'dosen/dsn_skpgj.html', context)
+
 
 
 ################################ PORPOSAL ####################################

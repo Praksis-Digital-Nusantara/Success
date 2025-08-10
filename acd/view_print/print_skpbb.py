@@ -25,19 +25,23 @@ def print_skpbb(request, id):
     pos_y = draw_kop_surat_fakultas(p, context)
 
     # JUDUL SURAT 
-    p.setFont("Times-Bold", 12)
+    p.setFont("Times-Bold", 10)
     text_x = A4[0] / 2
     pos_y -= 5
 
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "KEPUTUSAN DEKAN FAKULTAS KEGURUAN DAN ILMU PENDIDIKAN:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "UNIVERSITAS SULAWESI BARAT:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 20, "Nomor : " + sk.nosurat, 'N', 'C')
+    fakultas = context.get("faculty_name", "")
+    universitas = context.get("university_name", "")
+    prodi = sk.mhs.prodi.nama_prodi 
+
+    pos_y -= dl(p, A4[0] / 2, pos_y, 1, "KEPUTUSAN DEKAN", 'B', 'C')
+    pos_y -= dl(p, A4[0] / 2, pos_y, 15, fakultas.upper() + " " + universitas.upper(), 'B', 'C')
+    pos_y -= dl(p, A4[0] / 2, pos_y, 20, "NOMOR : " + sk.nosurat, 'B', 'C')
     pos_y -= dl(p, A4[0] / 2, pos_y, 20, "TENTANG:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "PENETAPAN PEMBIMBING PROPOSAL, HASIL PENELITIAN:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "DAN UJIAN SKRIPSI MAHASISWA FAKULTAS KEGURUAN DAN:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "ILMU PENDIDIKAN UNIVERSITAS SULAWESI BARAT:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 25, "DEKAN FAKULTAS KEGURUAN DAN ILMU PENDIDIKAN:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "UNIVERSITAS SULAWESI BARAT:", 'B', 'C')
+    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "PENGANGKATAN PEMBIMBING", 'B', 'C')
+    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "BAGI MAHASISWA PROGRAM STUDI " + prodi.upper(), 'B', 'C')
+    pos_y -= dl(p, A4[0] / 2, pos_y, 15, fakultas.upper(), 'B', 'C')
+    pos_y -= dl(p, A4[0] / 2, pos_y, 15, universitas.upper(), 'B', 'C')
+    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "TAHUN " + str(sk.date_in.year), 'B', 'C')
 
 
     def draw_aligned_text(canvas, label1, label2, label3, value, y_offset):
@@ -52,8 +56,8 @@ def print_skpbb(request, id):
         style = ParagraphStyle(
             'JustifyStyle',
             fontName="Times-Roman",
-            fontSize=12,
-            leading=14,
+            fontSize=10,
+            leading=12,
             alignment=TA_JUSTIFY,
             textColor=colors.black
         )
@@ -70,17 +74,17 @@ def print_skpbb(request, id):
 
     
     # print (judul)
-    pos_y = draw_aligned_text(p, "Menimbang", ":", "a.", "bahwa untuk membantu mahasiswa Fakultas Keguruan dan Ilmu Pendidikan Universitas Sulawesi Barat dalam menyelesaikan  Skripsinya, maka perlu mengangkat Pembimbing Proposal, Hasil Penelitian dan Ujian Skripsi Mahasiswa", 20)   
-    pos_y = draw_aligned_text(p, "", "", "b.", "bahwa untuk keperluan dimaksud, maka mereka yang tersebut namanya dalam surat Keputusan ini dianggap memenuhi syarat akademik dan dipandang cakap sebagai Pembimbing Proposal, Hasil Penelitian dan Ujian Skripsi Mahasiswa",  0)   
-    pos_y = draw_aligned_text(p, "", "", "c.", "bahwa sehubungan dengan point a dan b di atas, perlu diterbitkan Surat Keputusan sebagai Pembimbing Proposal, Hasil Penelitian dan Ujian Skripsi  mahasiswa.",  0)
+    pos_y = draw_aligned_text(p, "Menimbang", ":", "", "Usulan Ketua Program Studi Manajemen dan Dekan Fakultas Ekonomi Universitas Negeri Makassar dengan nomor surat " + sk.nosurat + " pada tanggal " + tanggal_indo(sk.date_in) + " tentang Usulan Penerbitan SK Pembimbingan.", 20)
+    pos_y -= 10   
+    pos_y = draw_aligned_text(p, "", "", "1.", "Bahwa dalam rangka kelancaran penyelesaian studi untuk penulisan Skripsi bagi mahasiswa Program Studi Manajemen, maka dipandang perlu menetapkan Pembimbing.",  0)   
+    pos_y = draw_aligned_text(p, "", "", "2.", "Bahwa untuk maksud tersebut di atas, maka dipandang perlu menerbitkan surat keputusannya",  0)
 
-    pos_y = draw_aligned_text(p, "Mengingat", ":", "1.", "Undang – Undang Nomor 20 Tahun 2003 tentang Sistem Pendidikan Nasional", 20)   
-    pos_y = draw_aligned_text(p, "", "", "2.", "Undang – Undang Nomor 12 Tahun 2012 tentang Pendidikan Tinggi",  0)   
-    pos_y = draw_aligned_text(p, "", "", "3.", "Peraturan Pemerintah Nomor 4 Tahun 2014 tentang Pengelolaan dan Penyelenggaraan Pendidikan.",  0)
-    pos_y = draw_aligned_text(p, "", "", "4.", "Peraturan Presiden Republik Indonesia Nomor 8 Tahun 2012 tentang Kerangka Kualifikasi Nasional Indonesia",  0)
-    pos_y = draw_aligned_text(p, "", "", "5.", "Peraturan Pemerintah Nomor 36 Tahun 2013, tentang Pendirian Universitas Sulawesi Barat Tanggal 13 Mei 2013",  0)
-    pos_y = draw_aligned_text(p, "", "", "6.", "Surat Keputusan Rektor Unsulbar 12451/M/KP/2019, tentang pengangkatan Dekan Fakultas Keguruan dan Ilmu Pendidikan Universitas Sulawesi Barat",  0)
+    pos_y = draw_aligned_text(p, "Mengingat", ":", "1.", "Surat Keputusan Fakultas Ekonomi Nomor 2875/D/T/2007;", 15)   
+    pos_y = draw_aligned_text(p, "", "", "2.", "Peraturan Rektor Universitas Negeri Makassar Nomor 1 Tahun 2022 tentang Peraturan Akademik di Universitas Negeri Makassar;",  0)   
+    pos_y = draw_aligned_text(p, "", "", "3.", "Keputusan Rapat Pimpinan Fakultas dan Ketua Prodi tanggal 7 November 2023;",  0)
 
+
+    pos_y -= dl(p, A4[0] / 2, pos_y, 10, "MEMUTUSKAN:", 'B', 'C')
 
     def draw_aligned_text(canvas, label1, label2, value, y_offset):
         canvas.setFont("Times-Roman", 12)
@@ -93,8 +97,8 @@ def print_skpbb(request, id):
         style = ParagraphStyle(
             'JustifyStyle',
             fontName="Times-Roman",
-            fontSize=12,
-            leading=14,
+            fontSize=10,
+            leading=12,
             alignment=TA_JUSTIFY,
             textColor=colors.black
         )
@@ -109,38 +113,52 @@ def print_skpbb(request, id):
         pos_y -= text_height + 2  # Beri jarak antar baris setelah teks        
         return pos_y
 
-    pos_y = draw_aligned_text(p, "Menetapkan", ":", "KEPUTUSAN DEKAN FAKULTAS KEGURUAN DAN ILMU PENDIDIKAN",  20)
+    
 
-    p.showPage()
-    pos_y = 750
+    pos_y = draw_aligned_text(p, "Menetapkan", ":", "Keputusan Dekan " + context.get("faculty_name", "") + " " + context.get("university_name", "") ,  20)
 
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "MEMUTUSKAN:", 'B', 'C')
+    pos_y = draw_aligned_text(
+    p,
+    "Pertama",
+    ":",
+    "Menunjuk sebagai pembimbing Skripsi Saudara(i): " '<b>'+
+    sk.mhs.nim.first_name +'</b>' ", NIM: " + sk.mhs.nim.username +
+    ", Program Studi " + prodi + ", " + fakultas + ", " + universitas +
+    ", dengan Judul \"" '<b>'+ sk.judul + '</b>'"\".",
+    10)
+    pos_y = draw_aligned_text(p, "", "", "Oleh:",  0)
+    pos_y = draw_aligned_text(p, "", "", '1. <b>' + sk.pembimbing1.nip.first_name + '</b>',  0)
+    pos_y = draw_aligned_text(p, "", "", '2. <b>' + sk.pembimbing2.nip.first_name + '</b>',  0)
 
-    pos_y = draw_aligned_text(p, "Memperhatikan", ":", "Usulan dari Program Studi tentang nama mahasiswa yang menyusun proposal dan  nama  pembimbing I dan pembimbing II",  20)
 
+    pos_y = draw_aligned_text(p, "Kedua", ":", "Jika selama maksimal enam bulan tidak ada komunikasi/interaksi akademik antara mahasiswa dengan Tim Pembimbingnya, maka Surat Keputusan ini batal dengan sendirinya.",  5)
+    pos_y = draw_aligned_text(p, "Ketiga", ":", "Segala biaya yang dikeluarkan sehubungan dengan keputusan ini dibebankan pada anggaran yang tersedia pada Fakultas Ekonomi Universitas Negeri Makassar.",  5)
+    pos_y = draw_aligned_text(p, "Keempat", ":", "Surat Keputusan ini berlaku pada tanggal ditetapkan, sampai dengan selesainya ujian tutup yang bersangkutan, dengan ketentuan apabila dikemudian hari ternyata terdapat kekeliruan dalam Surat Keputusan ini, akan diperbaiki sebagaimana mestinya.",  5)
 
-
-    pos_y = draw_aligned_text(p, "KESATU", ":", "Mengangkat saudara (i) :",  20)
-    pos_y = draw_aligned_text(p, "", "", "1." + sk.pembimbing1.nip.first_name,  0)
-    pos_y = draw_aligned_text(p, "", "", "2." + sk.pembimbing2.nip.first_name,  0)
-    pos_y = draw_aligned_text(p, "", "", "Sebagai Pembimbing Proposal, Hasil,Penelitian dan Ujian Skripsi mahasiswa atas nama  : " + sk.mhs.nim.first_name + "  Nim : " + sk.mhs.nim.username,  0)
-
-    pos_y = draw_aligned_text(p, "KEDUA", ":", "Saudara (i) yang tercantum dalam Surat Keputusan ini diberikan wewenang dan tanggung jawab untuk membimbing mahasiswa dalam Seminar Proposal, Seminar Hasil Penelitian dan Ujian Skripsi.",  20)
-    pos_y = draw_aligned_text(p, "KETIGA", ":", "Surat Keputusan ini disampaikan kepada masing-masing yang bersangkutan untuk diketahui dan dilaksanakan dengan penuh rasa tanggung jawab.",  20)
-    pos_y = draw_aligned_text(p, "KEEMPAT", ":", "Surat Keputusan ini berlaku sejak tanggal ditetapkan dengan ketentuan, apabila dikemudian hari ternyata terdapat kekeliruan dalam penetapan Surat Keputusan ini, maka akan diperbaiki sebagaiman mestinya.",  20)
-
-    panjang_nama_dekan = A4[0] - ( p.stringWidth(sk.ttd.pejabat.nip.first_name, "Times-Bold", 12) + 60)
-    panjang_tanggal = A4[0] - ( p.stringWidth("pada tanggal : " + tanggal_indo(sk.date_in), "Times-Bold", 12) + 60)
+    panjang_nama_dekan = A4[0] - ( p.stringWidth(sk.ttd.pejabat.nip.first_name, "Times-Bold", 10) + 60)
+    panjang_tanggal = A4[0] - ( p.stringWidth("pada tanggal : " + tanggal_indo(sk.date_in), "Times-Bold", 10) + 60)
     if panjang_nama_dekan < panjang_tanggal :
         pos_x_ttd = panjang_nama_dekan
     else :
         pos_x_ttd = panjang_tanggal
 
-    pos_y -= dl(p, pos_x_ttd, pos_y, 15, "Ditetapkan di : " + context.get("address_ttd", ""), 'N', 'L')
-    pos_y -= dl(p, pos_x_ttd, pos_y, 15, "pada tanggal : " +  tanggal_indo(sk.date_in), 'NU', 'L')
+    pos_y -= dl(p, pos_x_ttd, pos_y, 10, "Ditetapkan di : " + context.get("address_ttd", ""), 'N', 'L')
+    pos_y -= dl(p, pos_x_ttd, pos_y, 10, "pada tanggal : " +  tanggal_indo(sk.date_in), 'NU', 'L')
     p.drawImage(ImageReader(context.get("api_qrcode", "") + context.get("baseurl", "") + 't/skpbb/' + str(sk.id)), pos_x_ttd+10, pos_y-50, width=40, height=40)
     pos_y -= dl(p, pos_x_ttd, pos_y, 70, sk.ttd.pejabat.nip.first_name, 'BU', 'L')
-    pos_y -= dl(p, pos_x_ttd, pos_y, 15, "NIP. " + sk.ttd.pejabat.nip.username, 'B', 'L')
+    pos_y -= dl(p, pos_x_ttd, pos_y, 10, "NIP. " + sk.ttd.pejabat.nip.username, 'B', 'L')
+
+        # Tembusan
+    pos_y -= -20  # Beri jarak dari bagian sebelumnya
+    p.setFont("Times-Roman", 8)
+    p.drawString(posd_x, pos_y, "Tembusan:")
+    pos_y -= 10
+    p.drawString(posd_x + 15, pos_y, "1. Rektor UNM")
+    pos_y -= 10
+    p.drawString(posd_x + 15, pos_y, "2. Ketua Prodi FE UNM")
+    pos_y -= 10
+    p.drawString(posd_x + 15, pos_y, "3. Mahasiswa/i ybs.")
+
 
 
     # Menutup halaman dan menyimpan PDF

@@ -1,0 +1,74 @@
+{% extends "base_login.html" %}
+
+{% block content %}
+<!-- Login Page -->
+<div class="login-container">
+    <div class="login-card">
+        <!-- Theme Toggle -->
+        <div class="theme-toggle-wrapper">
+            <i id="theme-toggle" class="ri-moon-line"></i>
+        </div>
+        
+        <!-- Logo Section -->
+        <div class="login-header">
+            <h1 class="login-title">CHANGE ROLE</h1>
+            <p class="login-subtitle"> {{web_name}}</p>
+        </div>
+        
+        <!-- Login Form -->
+        <form method="post" class="layanan-form-role">
+				{% csrf_token %}
+				<div class="form-group">
+					<label for="id_user_target">Pilih Dosen</label>
+					{{ form.user_target }}
+				</div>
+					<button type="submit" class="btn primary btn-block">Pilih User</button>
+				</form>	
+        
+        <!-- Footer -->
+        <div class="login-footer">
+            <p>&copy; 2024 {{web_name}}. All rights reserved.</p>
+        </div>
+    </div>
+    
+    <!-- Background Decoration -->
+    <div class="login-bg-decoration">
+        <div class="bg-circle bg-circle-1"></div>
+        <div class="bg-circle bg-circle-2"></div>
+        <div class="bg-circle bg-circle-3"></div>
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block script_costum %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+	  var elementIds = ['id_user_target'];
+	  elementIds.forEach(function(elementId) {
+		var element = document.getElementById(elementId);
+		if (element) {
+		  new Choices(element, {
+			searchEnabled: true,
+			itemSelectText: '',
+			shouldSort: false,
+			removeItemButton: true,
+			searchResultLimit: 10,
+			searchFields: ['label', 'value'],
+			position: 'bottom',
+			searchPlaceholderValue: 'Cari Dosen',
+			noResultsText: 'Tidak ditemukan',
+			noChoicesText: 'Tidak ada pilihan',
+		  });
+		}
+	  });
+	});
+</script>
+{% endblock script_costum %}
+
+
+
+  
+

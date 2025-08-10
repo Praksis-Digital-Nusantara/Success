@@ -41,7 +41,7 @@ def draw_kop_surat_fakultas(p, context):
     draw_centered_text(p, "Laman: " +  context.get("website","") + " Email: " +  context.get("email",""), 10, 10)
 
     # Garis bawah
-    p.setLineWidth(2)
+    p.setLineWidth(1.5)
     p.line(50, pos_y - 10, width - 50, pos_y - 10)
 
     return pos_y - 30  # Kembalikan posisi Y terakhir untuk digunakan di konten lain
@@ -117,16 +117,25 @@ def tanggal_indo(tanggal_obj, hari_obj=None):
     tahun = tanggal_obj.strftime("%Y")
     tanggal_format = f"{tanggal_hari} {bulan_indonesia} {tahun}"
 
-    if hari_obj:
-        if isinstance(hari_obj, str):
-            hari_obj = datetime.strptime(hari_obj, "%Y-%m-%d").date()
-        nama_hari = hari_dict.get(hari_obj.strftime("%A"), hari_obj.strftime("%A"))
-        return f"{nama_hari}, {tanggal_format}"
-    else:
+    if hari_obj is None:
         return tanggal_format
+    if hari_obj == "hari_only":
+        if isinstance(tanggal_obj, str):
+            tanggal_obj = datetime.strptime(tanggal_obj, "%Y-%m-%d").date()
+        nama_hari = hari_dict.get(tanggal_obj.strftime("%A"), tanggal_obj.strftime("%A"))
+        return f"{nama_hari}"
+    elif hari_obj == "tgl_only":
+        return tanggal_format
+    else:
+        if isinstance(tanggal_obj, str):
+            tanggal_obj = datetime.strptime(tanggal_obj, "%Y-%m-%d").date()
+        nama_hari = hari_dict.get(tanggal_obj.strftime("%A"), tanggal_obj.strftime("%A"))
+        return f"{nama_hari}, {tanggal_format}"
+        
 
+def dl(canvas, dl_pos_x, pos_y, dl_pos_y, dl_text, dl_style="N", dl_align='L', width=500):
+    from reportlab.pdfbase.pdfmetrics import stringWidth
 
-def dl(canvas, dl_pos_x, pos_y, dl_pos_y, dl_text, dl_style="N", dl_align='L'):
     pos_y -= dl_pos_y  # Pindah ke baris berikutnya
     dl_style = dl_style.upper()
 
@@ -143,21 +152,64 @@ def dl(canvas, dl_pos_x, pos_y, dl_pos_y, dl_text, dl_style="N", dl_align='L'):
     elif is_italic:
         font = "Times-Italic"
     else:
-        font = "Times-Roman"  # Default (jika "N")
+        font = "Times-Roman"
 
-    canvas.setFont(font, 12)
+    font_size = 12
+    canvas.setFont(font, font_size)
 
-    # Gambar teks dengan alignment yang dipilih
-    if dl_align == 'C':
-        canvas.drawCentredString(dl_pos_x, pos_y, dl_text)
-        text_width = canvas.stringWidth(dl_text, font, 12) / 2
-    else:
-        canvas.drawString(dl_pos_x, pos_y, dl_text)
-        text_width = canvas.stringWidth(dl_text, font, 12)
+    def split_text(text, font, size, max_width):
+        """Pisahkan teks menjadi baris-baris agar sesuai dengan lebar maksimal."""
+        words = text.split()
+        lines = []
+        current_line = ""
+        for word in words:
+            trial_line = f"{current_line} {word}".strip()
+            if stringWidth(trial_line, font, size) <= max_width:
+                current_line = trial_line
+            else:
+                lines.append(current_line)
+                current_line = word
+        if current_line:
+            lines.append(current_line)
+        return lines
 
-    # Jika underline aktif, tambahkan garis di bawah teks
-    if is_underline:
-        line_y = pos_y - 2  # Garis sedikit di bawah teks
-        canvas.line(dl_pos_x, line_y, dl_pos_x + text_width, line_y)
+    lines = split_text(dl_text, font, font_size, width)
 
-    return dl_pos_y  # Kembalikan posisi yang diperbarui
+    for i, line in enumerate(lines):
+        line_y = pos_y - (i * (font_size + 2))  # Jarak antar baris
+        is_last_line = (i == len(lines) - 1)
+
+        if dl_align == 'J' and not is_last_line:
+            words = line.split()
+            total_text_width = sum(stringWidth(word, font, font_size) for word in words)
+            space_width = (width - total_text_width) / (len(words) - 1) if len(words) > 1 else 0
+            x = dl_pos_x
+            for j, word in enumerate(words):
+                canvas.drawString(x, line_y, word)
+                word_width = stringWidth(word, font, font_size)
+                x += word_width + (space_width if j < len(words) - 1 else 0)
+        else:
+            if dl_align == 'C':
+                canvas.drawCentredString(dl_pos_x, line_y, line)
+            elif dl_align == 'R':
+                canvas.drawRightString(dl_pos_x, line_y, line)
+            else:  # Left
+                canvas.drawString(dl_pos_x, line_y, line)
+
+        # Tambahkan underline jika diperlukan
+        if is_underline:
+            if dl_align == 'R':
+                text_width = stringWidth(line, font, font_size)
+                start_x = dl_pos_x - text_width
+                end_x = dl_pos_x
+            elif dl_align == 'C':
+                text_width = stringWidth(line, font, font_size)
+                start_x = dl_pos_x - text_width / 2
+                end_x = dl_pos_x + text_width / 2
+            else:
+                start_x = dl_pos_x
+                end_x = dl_pos_x + stringWidth(line, font, font_size)
+            canvas.line(start_x, line_y - 2, end_x, line_y - 2)
+
+    # Kembalikan tinggi total yang digunakan
+    return dl_pos_y + (len(lines) - 1) * (font_size + 2)

@@ -1,11 +1,16 @@
 from django import forms
-from .models import Prodi, Pejabat
+from django.forms import modelformset_factory
+from .models import Prodi, Pejabat, Layanan, LayananJenis
 from .models import UserFakultas, UserDosen
 from .models import NoSuratFakultas, KodeSurat
-from .models import Ujian
+from .models import Ujian, Yudisium
+from .models import SuketAktifKuliah, SuketIzinObservasi, SuketRekomendasi, SuketIzinLab
+from .models import SuratTugas, SuratTugas_NamaDosen, SuratTugas_NamaMhs
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.db.models import Q
+
+
 
 tgl_now = timezone.now()
 
@@ -77,38 +82,28 @@ class formProdiEdit(forms.ModelForm):
         }
 
 
-
-class formPejabatEdit(forms.ModelForm):
+class formLayananFakultasEdit(forms.ModelForm):
     class Meta:
-        model = Pejabat
-        fields = [
-            'jabatan', 
-            'prodi',  
-            'pejabat', 
-            'tgl_mulai', 
-            'tgl_selesai', 
-            'label', 
-            'plt', 
+        model = Layanan
+        fields = [    
+            'status',
+            'hasil_test',
+            'hasil_file',
+            'hasil_link',
         ]
         widgets = {
-            'jabatan': forms.Select(attrs={'class': 'form-control'}),
-            'prodi': forms.Select(attrs={'class': 'form-control'}),
-            'pejabat': forms.Select(attrs={'class': 'form-control'}),
-            'tgl_mulai': forms.DateInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'date'}),
-            'tgl_selesai': forms.DateInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'date'}),
-            'label': forms.TextInput(attrs={'class': 'form-control'}),
-            'plt': forms.NullBooleanSelect(attrs={'class': 'form-control'}),
-
+            'status': forms.Select(
+                choices=[
+                    ('Processing', 'Processing'),
+                    ('Rejected', 'Rejected'),
+                    ('Completed', 'Completed'),
+                ],
+                attrs={'class': 'form-control'}
+            ),
+            'hasil_test': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': '...'}),
+            'hasil_link': forms.TextInput(attrs={'class': 'form-control'}),
+            'hasil_file': forms.FileInput(attrs={'class': 'form-control'}),
         }
-        labels = {
-            'jabatan': 'Jabatan',
-            'nama_prodi': 'Nama Program Studi',
-            'pejabat': 'Nama Pejabat',
-            'tgl_mulai': 'Tanggal Mulai',
-            'tgl_selesai': 'Tanggal Selesai',
-            'label': 'Label Jabatan',
-        }
-
 
 
 
@@ -206,4 +201,279 @@ class formUjian(forms.ModelForm):
             'dekan': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
         }
 
+
+class formYudisium(forms.ModelForm):
+    ttd = forms.ModelChoiceField(
+        queryset=Pejabat.objects.filter(
+            tgl_selesai__gte=tgl_now, jabatan__in=['Dekan', 'Wakil Dekan I']
+        ),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Pejabat"
+    )
+
+    class Meta:
+        model = Yudisium
+        fields = [    
+            'date_in',
+            'no_surat',
+            'ipk',
+            'kualifikasi',
+            'catatan',
+            'ttd',
+        ]
+        widgets = {
+            'date_in': forms.DateInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'date'}),
+            'no_surat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '*kosongkan jika ambil nomor dari sistem'}),
+            'catatan': forms.TextInput(attrs={'class': 'form-control'}),
+            'ipk': forms.NumberInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'number', 'step': '0.01'}),
+            'kualifikasi': forms.Select(
+                                choices=[
+                                    ('Pujian', 'Pujian'),
+                                    ('Sangat Memuaskan', 'Sangat Memuaskan'),
+                                    ('Memuaskan', 'Memuaskan'),
+                                ],
+                                attrs={'class': 'form-control'}
+                            ),
+            'ttd': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+        }
+
+
+# SUKET AKTIF KULIAH
+class formSuketAktifKuliah(forms.ModelForm):
+    ttd = forms.ModelChoiceField(
+        queryset=Pejabat.objects.filter(tgl_selesai__gte=tgl_now, jabatan__in=['Wakil Dekan I']),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Pejabat"
+    )
+
+    class Meta:
+        model = SuketAktifKuliah
+        fields = [
+            'no_surat',
+            'semester',
+            'tahun_akademik',
+            'ortu_nama',
+            'ortu_nip',
+            'ortu_gol',
+            'ortu_pekerjaan',
+            'ortu_instansi',
+            'ortu_alamat',
+            'ttd_status',
+            'ttd',
+        ]
+        widgets = {
+            'no_surat': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '*kosongkan jika ambil nomor dari sistem'
+            }),
+            'semester': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Contoh: II / Dua'
+            }),
+            'tahun_akademik': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Contoh: 2024/2025'
+            }),
+            'ortu_nama': forms.TextInput(attrs={'class': 'form-control'}),
+            'ortu_nip': forms.TextInput(attrs={'class': 'form-control'}),
+            'ortu_gol': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Contoh: III.a'
+            }),
+            'ortu_pekerjaan': forms.TextInput(attrs={'class': 'form-control'}),
+            'ortu_instansi': forms.TextInput(attrs={'class': 'form-control'}),
+            'ortu_alamat': forms.TextInput(attrs={'class': 'form-control'}),
+            'ttd_status': forms.Select(
+                choices=[
+                    ('QRcode', 'QRcode'),
+                    ('Manual', 'Manual'),
+                ],
+                attrs={'class': 'form-control'}
+            ),
+            # 'ttd' dikustomisasi di luar Meta
+        }
+
+
+# SUKET AKTIF KULIAH
+class formSuketIzinObservasi(forms.ModelForm):
+    ttd = forms.ModelChoiceField(
+        queryset=Pejabat.objects.filter(tgl_selesai__gte=tgl_now, jabatan__in=['Wakil Dekan I']),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Pejabat"
+    )
+
+    class Meta:
+        model = SuketIzinObservasi
+        fields = [
+            'no_surat',
+            'semester',
+            'tahun_akademik',
+            'perihal',
+            'tujuan',
+            'ttd_status',
+            'ttd',
+        ]
+        widgets = {
+            'no_surat': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '*kosongkan jika ambil nomor dari sistem'
+            }),
+            'semester': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Contoh: II / Dua'
+            }),
+            'tahun_akademik': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Contoh: 2024/2025 Genap'
+            }),
+            'perihal': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'izin melakukan observasi uji coba angket sekolah'
+            }),
+            'tujuan': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Kepala SMAN 1 Indonesia'
+            }),
+            'ttd_status': forms.Select(
+                choices=[
+                    ('QRcode', 'QRcode'),
+                    ('Manual', 'Manual'),
+                ],
+                attrs={'class': 'form-control'}
+            ),
+            # 'ttd' dikustomisasi di luar Meta
+        }
+
+
+
+
+class formSuketIzinLab(forms.ModelForm):
+    ttd = forms.ModelChoiceField(
+        queryset=Pejabat.objects.filter(tgl_selesai__gte=tgl_now, jabatan__in=['Wakil Dekan I']),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Pejabat"
+    )
+
+    class Meta:
+        model = SuketIzinLab
+        fields = [
+            'no_surat',
+            'lab',
+            'waktu_mulai',
+            'waktu_selesai',
+            'ttd_status',
+            'ttd',
+        ]
+        widgets = {
+            'no_surat': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '*kosongkan jika ambil nomor dari sistem'
+            }),
+            'lab': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'contoh : Laboratorium Biologi Dasar, Laboratorium Microbiologi'
+            }),
+            'waktu_mulai': forms.DateInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'date'}),
+            'waktu_selesai': forms.DateInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'date'}),
+            'ttd_status': forms.Select(
+                choices=[
+                    ('QRcode', 'QRcode'),
+                    ('Manual', 'Manual'),
+                ],
+                attrs={'class': 'form-control'}
+            ),
+            # 'ttd' dikustomisasi di luar Meta
+        }
+
+
+class formSuketRekomendasi(forms.ModelForm):
+    ttd = forms.ModelChoiceField(
+        queryset=Pejabat.objects.filter(tgl_selesai__gte=tgl_now, jabatan__in=['Wakil Dekan II']),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Pejabat"
+    )
+
+    class Meta:
+        model = SuketRekomendasi
+        fields = [
+            'no_surat',
+            'perihal',
+            'alasan_rekomendasi',
+            'ttd_status',
+            'ttd',
+        ]
+        widgets = {
+            'no_surat': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '*kosongkan jika ambil nomor dari sistem'
+            }),
+            'perihal': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'contoh : Untuk mengikuti program Beasiswa LAZ Hadji Kalla yang diselenggarakan oleh  Asnaf Gharimin'
+            }),
+            'alasan_rekomendasi': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'contoh : karena mahasiswa tersebut tidak mampu dan tidak bisa mengikuti proses ujian skripsi bila belum melunasi seluru biaya UKT/SPP'
+            }),
+            'ttd_status': forms.Select(
+                choices=[
+                    ('QRcode', 'QRcode'),
+                    ('Manual', 'Manual'),
+                ],
+                attrs={'class': 'form-control'}
+            ),
+            # 'ttd' dikustomisasi di luar Meta
+        }
+
+
+
+class formSuratTugas(forms.ModelForm):
+    ttd = forms.ModelChoiceField(
+        queryset=Pejabat.objects.filter(tgl_selesai__gte=tgl_now, jabatan__in=['Dekan','Wakil Dekan II']),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Pejabat"
+    )
+
+    class Meta:
+        model = SuratTugas
+        fields = [
+            'no_surat',
+            'nama_kegiatan',
+            'tgl_mulai',
+            'tgl_selesai',
+            'jam',
+            'tempat',
+            'ttd_status',
+            'ttd',
+        ]
+        widgets = {
+            'no_surat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '*Kosongkan jika dari sistem'}),
+            'nama_kegiatan': forms.TextInput(attrs={'class': 'form-control'}),
+            'tgl_mulai': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'tgl_selesai': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'jam': forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
+            'tempat': forms.TextInput(attrs={'class': 'form-control'}),
+            'ttd_status': forms.Select(
+                choices=[('QRcode', 'QRcode'), ('Manual', 'Manual')],
+                attrs={'class': 'form-control'}
+            ),
+        }
+
+class formSuratTugas_NamaDosen(forms.ModelForm):
+    class Meta:
+        model = SuratTugas_NamaDosen
+        fields = ['dosen', 'jabatan']
+        widgets = {
+            'dosen': forms.Select(attrs={'class': 'form-control'}),
+            'jabatan': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Contoh: Dosen'}),
+        }
+
+class formSuratTugas_NamaMhs(forms.ModelForm):
+    class Meta:
+        model = SuratTugas_NamaMhs
+        fields = ['mhs', 'jabatan']
+        widgets = {
+            'mhs': forms.Select(attrs={'class': 'form-control'}),
+            'jabatan': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Contoh: Mahasiswa'}),
+        }
 

@@ -1,0 +1,107 @@
+{% extends "fakultas/base.html" %}
+
+{% block content1 %}
+<div class="dashboard-content">
+	<div class="student-list-container">
+		<div class="list-header">
+			<div class="list-title">
+				<h2>{{ heading }}</h2>
+				<p>{{web_name}}</p>
+			</div>			
+		</div>
+
+		<div class="student-table">
+			<div class="table-responsive">
+			<table id="layananTable" class="display" style="width:100%">
+				<thead>
+				<tr>
+					<th style="white-space: nowrap;">No</th>
+					<th>Date In</th>
+					<th>Mahasiswa</th>
+					<th>Prodi</th>
+					<th>Penguji</th>
+					<th>Aksi</th>
+				</tr>
+				</thead>
+				<tfoot>
+				<tr>
+					<th>No</th>
+					<th>Date In</th>
+					<th>Mahasiswa</th>
+					<th>Prodi</th>
+					<th>Penguji</th>
+					<th width="10%">Aksi</th>
+				</tr>
+				</tfoot>
+				<tbody>
+				{% for datatb in data %}
+					<tr>
+						<td>{{ forloop.counter }}</td>
+						<td>{{ datatb.date_in|date:"d M Y H:i"  }}</td>
+						<td>{{ datatb.proposal.mhs_judul.mhs }}</td>					  
+						<td>{{ datatb.proposal.mhs_judul.mhs.prodi }}</td>					  
+						<td>1. {{ datatb.proposal.penguji1.nip.first_name }}					  
+								<br>2. {{ datatb.proposal.penguji2.nip.first_name  }}
+								</td>								  
+						<td>
+							<button class="btn primary x-small" onclick="openModal('terbitkanSK', '{{ datatb.id }}')">Proses</button>					
+						</td>					
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="terbitkanSK" class="modal-edit"> 
+    <div class="modal-content-edit">
+        <span class="close" onclick="closeModal('terbitkanSK')">&times;</span>
+        <h2>Perihal dan Tujuan</h2>
+		<form method="post">
+			{% csrf_token %}
+			<input type="hidden" name="id" id="dataID">
+				<div class="form-group">
+					<label for="nosurat">Nomor Surat </label>
+					<input type="text" class="form-control" id="nosurat" name="nosurat" placeholder="Kosongkan Jika Ambil Nomor Otomatis">
+				</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-primary">Terbitkan SK</button>
+			</div>		
+		</form>
+    </div>
+</div>
+
+{% endblock content1 %} 
+
+
+
+{% block script_costum %} 
+<script>
+	function openModal(modalId, dataID) {
+		document.getElementById(modalId).style.display = 'block'; // Tampilkan modal
+		document.getElementById('dataID').value = dataID; // Masukkan userId ke input hidden
+		var modal = document.getElementById(modalId);
+        modal.style.display = "block";
+	}
+	
+    function closeModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        var modals = document.getElementsByClassName('modal-edit');
+        for (var i = 0; i < modals.length; i++) {
+            if (event.target == modals[i]) {
+                modals[i].style.display = "none";
+            }
+        }
+    }
+</script>
+{% endblock script_costum %} 
+
+
+
