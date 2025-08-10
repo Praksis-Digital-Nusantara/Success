@@ -193,7 +193,7 @@
 										{% for skpbb_data in skpbb %}
 										<a target='_blank' href="{% url 'acd:print_skpbb' skpbb_data.id %}" class="sk-item">
 											<i class="ri-file-text-line"></i>
-											<span>{{ skpbb_data.date_in }}</span>
+											<span>Download {{ skpbb_data.date_in }}</span>
 										</a>
 										{% endfor %}
 									</div>

@@ -8,33 +8,17 @@
 				<h2>{{ heading }}</h2>
 				<p>{{web_name}}</p>
 			</div>
-			<div class="list-filters">
-				<div class="table-actions">
-					<div class="action-group">
-						<div class="search-bar-table">
-							<i class="ri-search-line"></i>
-							<input type="text" id="searchInput" placeholder="Search table...">
-						</div>
-					</div>
-					<div class="action-group">
-						<button class="btn secondary" id="exportTable">
-							<i class="ri-download-line"></i>
-							<span>Export</span>
-						</button>
-					</div>
-				</div>
-			</div>
 		</div>
 
 		<div class="student-table">
 			<div class="table-responsive">
-			<table>
+			<table id="layananTable" class="display" style="width:100%">
 				<thead>
 				<tr>
 					<th style="white-space: nowrap;">No</th>
 					<th>Mahasiswa</th>
 					<th>Prodi</th>
-					<th style="white-space: nowrap;">Judul yang di seleksi pembimbing</th>
+					<th style="white-space: nowrap;">Daftar judul mahasiswa</th>
 					<th>Aksi</th>
 				</tr>
 				</thead>
@@ -43,7 +27,7 @@
 					<th>No</th>
 					<th>Mahaasiswa</th>
 					<th>Prodi</th>
-					<th>Judul</th>
+					<th>Daftar judul mahasiswa</th>
 					<th>Aksi</th>
 				</tr>
 				</tfoot>
@@ -53,19 +37,19 @@
 						<td>{{ forloop.counter }}</td>
 						<td>{{ datatb.mhs }}</td>
 						<td>{{ datatb.prodi }}</td>
-						<td><div class="response-text">
+						<td>
 							{% if datatb.judul %}
-								{{ datatb.judul }}
+								{{ datatb.judul|truncatechars:50 }}
 							{% else %}
-								1. {{ datatb.judul1 }}<br>
-								2. {{ datatb.judul2 }}<br>
-								3. {{ datatb.judul3 }}
+								1. {{ datatb.judul1|truncatechars:50 }}<br>
+								2. {{ datatb.judul2|truncatechars:50 }}<br>
+								3. {{ datatb.judul3|truncatechars:50 }}
 							{% endif %}			
-							</div>											
+																
 							</td>							  				
 						<td>
 							{% if datatb.status == 'Waiting' %}
-								<a href="{% url 'acd:judul_seleksi_detail' datatb.id %}" class="btn primary small"><i class="ri-check-double-line"></i> Proses</a>
+								<a href="{% url 'acd:judul_seleksi_detail' datatb.id %}" class="btn primary small"><i class="ri-loader-4-line"></i> Proses</a>
 							{% else %}
 								<a href="{% url 'acd:judul_seleksi_detail' datatb.id %}" class="btn success small"><i class="ri-check-double-line"></i> {{ datatb.status }}</a>
 							{% endif %}

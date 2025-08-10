@@ -25,22 +25,6 @@
 					</a>					
 				</p>
 			</div>
-			<div class="list-filters">
-				<div class="table-actions">
-					<div class="action-group">
-						<div class="search-bar-table">
-							<i class="ri-search-line"></i>
-							<input type="text" id="searchInput" placeholder="Search table...">
-						</div>
-					</div>
-					<div class="action-group">
-						<button class="btn secondary" id="exportTable">
-							<i class="ri-download-line"></i>
-							<span>Export</span>
-						</button>
-					</div>
-				</div>
-			</div>
 		</div>
 
 		{% if messages %}
@@ -54,7 +38,7 @@
 
 		<div class="student-table">
 			<div class="table-responsive">
-			<table>
+				<table id="layananTable" class="display" style="width:100%">
 				<thead>
 				<tr>
 					<th style="white-space: nowrap;">No</th>
@@ -91,7 +75,7 @@
 							<br> 2. {{ datatb.penguji2 }}
 						</td>							  				
 						<td>
-							<a href="{% url 'acd:proposal_dsn_nilai' datatb.id %}" class="btn primary x-small"><i class="ri-percent-line"></i>Nilai</a>						
+							<a href="{% url 'acd:proposal_dsn_nilai' datatb.id %}" class="btn primary small"><i class="ri-percent-line"></i>Nilai</a>						
 						</td>					  
 					</tr>
 				{% endfor %}
