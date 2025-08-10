@@ -1637,6 +1637,7 @@ body.dark-mode .notification-footer {
     display: flex;
     flex-direction: column;
     gap: 6px;
+    text-align: left;
 }
 
 .form-group label {
@@ -1644,6 +1645,7 @@ body.dark-mode .notification-footer {
     color: #616161;
     margin-bottom: 4px;
     font-size: 13px;
+    text-align: left;
 }
 
 .form-control, .settings-section input[type="text"], .settings-section input[type="date"], .settings-section input[type="file"], .settings-section select, .settings-section textarea {

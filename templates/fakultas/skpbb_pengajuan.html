@@ -47,7 +47,7 @@
 								</td>					  
 						<td>{{ datatb.judul }}</td>					  
 						<td>
-							<button class="btn primary x-small" onclick="openModal('terbitkanSK', '{{ datatb.id }}')">Proses</button>					
+							<button class="btn primary small" onclick="openModal('terbitkanSK', '{{ datatb.id }}')"><i class="ri-loader-4-line"></i>Proses</button>					
 						</td>					
 					</tr>
 				{% endfor %}
@@ -62,17 +62,20 @@
 <div id="terbitkanSK" class="modal-edit"> 
     <div class="modal-content-edit">
         <span class="close" onclick="closeModal('terbitkanSK')">&times;</span>
-        <h2>Perihal dan Tujuan</h2>
+        <h2 style="text-align: left;">Perihal dan Tujuan</h2>
 		<form method="post">
 			{% csrf_token %}
 			<input type="hidden" name="skripsi_id" id="skripsiId">
 				<div class="form-group">
-					<label for="nosurat">Nomor Surat </label>
+					<label for="nosurat" style="text-align: left;">Nomor Surat </label>
 					<input type="text" class="form-control" id="nosurat" name="nosurat" placeholder="Kosongkan Jika Ambil Nomor Otomatis">
 				</div>
-			<div class="modal-footer">
-				<button type="submit" class="btn btn-primary">Terbitkan SK</button>
-			</div>		
+				<div class="form-group">
+					<button type="submit" class="btn primary">
+						<i class="ri-save-line"></i>
+						Update Data
+					</button>
+				</div>	
 		</form>
     </div>
 </div>

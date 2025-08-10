@@ -1,7 +1,7 @@
 {% extends "fakultas/base.html" %}
 {% block content1 %}
 
-<div class="form-card">
+<div class="form-card" style="margin-top: 10px;">
 	<div class="form-header">
 		<div class="form-header-icon">
 			<i class="ri-file-text-line"></i>
@@ -65,8 +65,11 @@
 	{% if surat.id %}
 	<hr>	
 	<div class="layanan-form">
-		<h3>Nama Dosen yang Ditugaskan</h3>
-		<table class="display" style="width:100%">
+		<div class="list-title">
+			<h3>Nama Dosen yang Ditugaskan</h3>
+			<p>FEB - One Click Universal Service</p>
+		</div>
+		<table class="display"  style="width:100%; margin-top: 10px;">
 			<thead>
 			<tr>
 				<th style="white-space: nowrap;">No</th>
@@ -108,8 +111,11 @@
 
 	<hr>	
 	<div class="layanan-form">
-		<h3>Nama Mahasiswa yang Ditugaskan</h3>
-		<table class="display" style="width:100%">
+		<div class="list-title">
+			<h3>Nama Mahasiswa yang Ditugaskan</h3>
+			<p>FEB - One Click Universal Service</p>
+		</div>
+		<table class="display" style="width:100%; margin-top: 10px;">
 			<thead>
 			<tr>
 				<th style="white-space: nowrap;">No</th>

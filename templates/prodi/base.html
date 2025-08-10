@@ -277,7 +277,8 @@
       $('#layananTable').DataTable({
         dom: 'Bfrtip',
         buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
-        responsive: true
+        responsive: true,
+        pageLength: 30, // Jumlah default baris per halaman
       });
     });
   </script>

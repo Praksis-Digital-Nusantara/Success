@@ -11,16 +11,6 @@
 				<h2>{{ heading }}</h2>
 				<p>{{web_name}}</p>
 			</div>
-			<div class="list-filters">
-				<div class="table-actions">
-					<div class="action-group">
-						<div class="search-bar-table">
-							<i class="ri-search-line"></i>
-							<input type="text" id="searchInput" placeholder="Search table...">
-						</div>
-					</div>
-				</div>
-			</div>
 		</div>
 
 		<div class="student-table">
@@ -34,7 +24,7 @@
 					<th>Jenis Layanan</th>
 					<th>Detail Layanan</th>
 					<th style="white-space: nowrap;">Status Layanan</th>
-					<th>Aksi</th>
+					<th style="white-space: nowrap;">Aksi</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -91,7 +81,7 @@
 					</td> 
 					<td>	
 						<a href="{% url 'acd:layanan_fakultas_edit' layanan.id filter %}">
-							<button class="btn primary x-small"><i class="ri-pencil-fill"></i></button>
+							<button class="btn primary small"><i class="ri-pencil-fill"></i></button>
 						</a>
 					</td>
 					</tr>
