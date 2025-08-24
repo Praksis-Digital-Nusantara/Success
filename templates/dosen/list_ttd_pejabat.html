@@ -1,0 +1,121 @@
+{% extends "dosen/base.html" %}
+
+{% block content1 %}
+<div class="dashboard-content">
+	<div class="student-list-container">
+		<div class="list-header">
+			<div class="list-title">
+				<h2>{{ heading }}</h2>
+				<p>{{ web_name }}</p>
+			</div>
+		</div>
+
+		<div class="student-table">
+			<div class="table-responsive">
+				<table id="layananTable" class="display" style="width:100%">
+					<thead>
+						<tr>
+							<th style="white-space: nowrap;">No</th>
+							<th style="white-space: nowrap;">Mahasiswa/Dosen</th>
+							<th style="white-space: nowrap;">Dated</th>
+							<th style="white-space: nowrap;">Prodi</th>
+							<th style="white-space: nowrap;">Perihal</th>
+							<th style="white-space: nowrap;">Aksi</th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+							<th>No</th>
+							<th>Mahasiswa/Dosen</th>
+							<th>Dated</th>
+							<th>Prodi</th>
+							<th>Perihal</th>
+							<th>Aksi</th>
+						</tr>
+					</tfoot>
+					<tbody>
+						{% for datatb in dokumen_ttd_pejabat %}
+						<tr>
+							<td>{{ forloop.counter }}</td>
+							<td>{{ datatb.mhs }}   
+								{% if datatb.jenis_dokumen|lower == "surat_tugas" %}
+									{% for std in datatb.std_surat.all %}
+										{{ std.dosen }} {{ std.mhs }}<br>
+									{% endfor %}
+								{% else %}
+								{% endif %}
+							</td>
+							<td>{{ datatb.date_in }}</td>
+							<td>{{ datatb.mhs.prodi }}{{ std.dosen.prodi }}
+								{% if datatb.jenis_dokumen|lower == "surat_tugas" %}
+								{% for std in datatb.std_surat.all %}
+								{{ std.dosen.prodi }}<br>
+								{% endfor %}
+								{% else %}
+								{% endif %}
+							</td>
+							<td>
+								{{ datatb.perihal }} {{ datatb.nama_kegiatan }} {{ datatb.lab }}
+								{% if datatb.jenis_dokumen|lower == "sk_pembimbing" %}
+									SK Pembimbing
+								{% endif %}
+								{% if datatb.jenis_dokumen|lower == "suket_aktifkuliah" %}
+									SK Aktif Kuliah
+								{% endif %}
+							</td>							
+							<td>
+								{% if datatb.jenis_dokumen == 'observasi' %}
+									<a href="{% url 'acd:batalkan_ttd_observasi' datatb.id %}" onclick="return confirm('Batalkan TTD surat observasi ini?')">
+										<button class="btn danger small"><i class="ri-close-line"></i></i> Batalkan</button>
+									</a>
+									<a href="{% url 'acd:ubah_ttd_observasi' datatb.id %}" onclick="return confirm('Ubah TTD surat observasi ini ke Manual?')">
+										<button class="btn success small"><i class="ri-qr-scan-line"></i></i>Manual</button>
+									</a>
+								{% elif datatb.jenis_dokumen == 'suket_aktifkuliah' %}
+									<a href="{% url 'acd:batalkan_ttd_suket_aktifkuliah' datatb.id %}" onclick="return confirm('Batalkan TTD surat aktif kuliah ini?')">
+										<button class="btn danger small"><i class="ri-close-line"></i></i> Batalkan</button>
+									</a>
+									<a href="{% url 'acd:ubah_ttd_suket_aktifkuliah' datatb.id %}" onclick="return confirm('Ubah TTD surat aktif kuliah ini ke Manual?')">
+										<button class="btn success small"><i class="ri-qr-scan-line"></i></i>Manual</button>
+									</a>
+								{% elif datatb.jenis_dokumen == 'rekomendasi' %}
+									<a href="{% url 'acd:batalkan_ttd_rekomendasi' datatb.id %}" onclick="return confirm('Batalkan TTD surat rekomendasi ini?')">
+										<button class="btn danger small"><i class="ri-close-line"></i></i> Batalkan</button>
+									</a>
+									<a href="{% url 'acd:ubah_ttd_rekomendasi' datatb.id %}" onclick="return confirm('Ubah TTD surat rekomendasi ini ke Manual?')">
+										<button class="btn success small"><i class="ri-qr-scan-line"></i></i>Manual</button>
+									</a>
+								{% elif datatb.jenis_dokumen == 'surat_tugas' %}
+									<a href="{% url 'acd:batalkan_ttd_surat_tugas' datatb.id %}" onclick="return confirm('Batalkan TTD surat tugas ini?')">
+										<button class="btn danger small"><i class="ri-close-line"></i> Batalkan</button>
+									</a>
+									<a href="{% url 'acd:ubah_ttd_surat_tugas' datatb.id %}" onclick="return confirm('Ubah TTD surat tugas ini ke Manual?')">
+										<button class="btn success small"><i class="ri-qr-scan-line"></i></i>Manual</button>
+									</a>
+
+								{% elif datatb.jenis_dokumen == 'sk_pembimbing' %}
+										<a href="{% url 'acd:batalkan_ttd_skpembimbing' datatb.id %}" onclick="return confirm('Batalkan TTD SK Pembimbing ini?')">
+											<button class="btn danger small"><i class="ri-close-line"></i> Batalkan</button>
+										</a>
+								{% elif datatb.jenis_dokumen == 'suket_izinlab' %}
+										<a href="{% url 'acd:batalkan_ttd_suket_izinlab' datatb.id %}" onclick="return confirm('Batalkan TTD Suket Izin Lab ini?')">
+											<button class="btn danger small"><i class="ri-close-line"></i> Batalkan</button>
+										</a>
+										<a href="{% url 'acd:ubah_ttd_suket_izinlab' datatb.id %}" onclick="return confirm('Ubah TTD Suket Izin Lab ini ke Manual?')">
+											<button class="btn success small"><i class="ri-qr-scan-line"></i></i>Manual</button>
+										</a>
+								{% endif %}
+							</td>
+						</tr>
+						{% empty %}
+						<tr>
+							<td colspan="7">Tidak ada dokumen yang ditandatangani.</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content1 %}

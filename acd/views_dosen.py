@@ -9,14 +9,14 @@ from uuid import UUID
 
 from .utils import cek_kemiripan_judul  
 
-from .models import UserMhs, SkripsiJudul, chatPA, Proposal, ProposalNilai,  Hasil, HasilNilai,  Ujian, UjianNilai, UserDosen
+from .models import UserMhs, SkripsiJudul, chatPA, Proposal, ProposalNilai,  Hasil, HasilNilai,  Ujian, UjianNilai, UserDosen, Pejabat, SuketIzinObservasi, SuketRekomendasi, SuratTugas, SuketIzinLab, SuketAktifKuliah
 from .models import skPembimbing, skPenguji
 
 from .forms_dosen import formProfile, formChatPA, formProposalNilai, formHasilNilai, formUjianNilai
+from django.utils import timezone
 
 from .decorators_dosen import check_userdosen
 from .decorators_dosen import dosen_required
-
 
 
 @dosen_required
@@ -598,4 +598,151 @@ def ujian_dsn_nilai(request, id):
     }
     return render(request, 'dosen/ujian_dsn_nilai.html', context)
 
+@dosen_required
+@check_userdosen
+def dokumen_ttd_pejabat(request):
+    now = timezone.now()
+    userdosen = request.userdosen
 
+    pejabat_aktif = Pejabat.objects.filter(
+        pejabat=userdosen,
+        tgl_mulai__lte=now,
+        tgl_selesai__gte=now
+    ).first()
+
+    dokumen_ttd_pejabat = []
+    if pejabat_aktif:
+        observasi = list(SuketIzinObservasi.objects.filter(ttd=pejabat_aktif))
+        rekomendasi = list(SuketRekomendasi.objects.filter(ttd=pejabat_aktif))
+        sk_pembimbing = list(skPembimbing.objects.filter(ttd=pejabat_aktif))
+        surat_tugas = list(SuratTugas.objects.filter(ttd=pejabat_aktif))
+        suket_izinlab = list(SuketIzinLab.objects.filter(ttd=pejabat_aktif))
+        suket_aktifkuliah = list(SuketAktifKuliah.objects.filter(ttd=pejabat_aktif))
+
+        for item in observasi:
+            item.jenis_dokumen = 'observasi'
+        for item in rekomendasi:
+            item.jenis_dokumen = 'rekomendasi'
+        for item in sk_pembimbing:
+            item.jenis_dokumen = 'sk_pembimbing'
+        for item in surat_tugas:
+            item.jenis_dokumen = 'surat_tugas'
+        for item in suket_izinlab:
+            item.jenis_dokumen = 'suket_izinlab'
+        for item in suket_aktifkuliah:
+            item.jenis_dokumen = 'suket_aktifkuliah'
+
+        # Gabungkan semua list dokumen
+        dokumen_ttd_pejabat = observasi + rekomendasi + sk_pembimbing + surat_tugas + suket_izinlab + suket_aktifkuliah
+
+    context = {
+        'title': 'Dokumen Ditandatangani',
+        'heading': 'Dokumen Ditandatangani',
+        'userdosen': userdosen,
+        'photo': userdosen.photo,
+        'dokumen_ttd_pejabat': dokumen_ttd_pejabat,
+        'pejabat_aktif': pejabat_aktif,
+    }
+    return render(request, 'dosen/list_ttd_pejabat.html', context)
+
+
+@dosen_required
+@check_userdosen
+def batalkan_ttd_observasi(request, id):
+    obj = get_object_or_404(SuketIzinObservasi, id=id)
+    obj.ttd = None
+    obj.save()
+    messages.success(request, "TTD observasi berhasil dibatalkan.")
+    return redirect('acd:dokumen_ttd_pejabat')
+@dosen_required
+@check_userdosen
+def ubah_ttd_observasi(request, id):
+    obj = get_object_or_404(SuketIzinObservasi, id=id)
+    obj.ttd_status = "Manual"
+    obj.save()
+    messages.success(request, "TTD observasi diubah menjadi Manual.")
+    return redirect('acd:dokumen_ttd_pejabat')
+
+
+@dosen_required
+@check_userdosen
+def batalkan_ttd_rekomendasi(request, id):
+    obj = get_object_or_404(SuketRekomendasi, id=id)
+    obj.ttd = None
+    obj.save()
+    messages.success(request, "TTD rekomendasi berhasil dibatalkan.")
+    return redirect('acd:dokumen_ttd_pejabat')
+
+@dosen_required
+@check_userdosen
+def ubah_ttd_rekomendasi(request, id):
+    obj = get_object_or_404(SuketRekomendasi, id=id)
+    obj.ttd_status = "Manual"
+    obj.save()
+    messages.success(request, "TTD rekomendasi diubah menjadi Manual.")
+    return redirect('acd:dokumen_ttd_pejabat')
+
+
+@dosen_required
+@check_userdosen
+def batalkan_ttd_skpembimbing(request, id):
+    obj = get_object_or_404(skPembimbing, id=id)
+    obj.ttd = None
+    obj.save()
+    messages.success(request, "TTD SK pembimbing berhasil dibatalkan.")
+    return redirect('acd:dokumen_ttd_pejabat')
+
+
+@dosen_required
+@check_userdosen
+def batalkan_ttd_surat_tugas(request, id):
+    obj = get_object_or_404(SuratTugas, id=id)
+    obj.ttd = None
+    obj.save()
+    messages.success(request, "TTD SK Tugas berhasil dibatalkan.")
+    return redirect('acd:dokumen_ttd_pejabat')
+
+@dosen_required
+@check_userdosen
+def ubah_ttd_surat_tugas(request, id):
+    obj = get_object_or_404(SuratTugas, id=id)
+    obj.ttd_status = "Manual"
+    obj.save()
+    messages.success(request, "TTD Surat Tugas diubah menjadi Manual.")
+    return redirect('acd:dokumen_ttd_pejabat')
+
+@dosen_required
+@check_userdosen
+def batalkan_ttd_suket_izinlab(request, id):
+    obj = get_object_or_404(SuketIzinLab, id=id)
+    obj.ttd = None
+    obj.save()
+    messages.success(request, "TTD Suket Izin Lab berhasil dibatalkan.")
+    return redirect('acd:dokumen_ttd_pejabat')
+
+@dosen_required
+@check_userdosen
+def ubah_ttd_suket_izinlab(request, id):
+    obj = get_object_or_404(SuketIzinLab, id=id)
+    obj.ttd_status = "Manual"
+    obj.save()
+    messages.success(request, "TTD Suket Izin Lab diubah menjadi Manual.")
+    return redirect('acd:dokumen_ttd_pejabat')
+
+@dosen_required
+@check_userdosen
+def batalkan_ttd_suket_aktifkuliah(request, id):
+    obj = get_object_or_404(SuketAktifKuliah, id=id)
+    obj.ttd = None
+    obj.save()
+    messages.success(request, "TTD Suket Aktif Kuliah berhasil dibatalkan.")
+    return redirect('acd:dokumen_ttd_pejabat')
+
+@dosen_required
+@check_userdosen
+def ubah_ttd_suket_aktifkuliah(request, id):
+    obj = get_object_or_404(SuketAktifKuliah, id=id)
+    obj.ttd_status = "Manual"
+    obj.save()
+    messages.success(request, "TTD Suket Aktif Kuliah diubah menjadi Manual.")
+    return redirect('acd:dokumen_ttd_pejabat')

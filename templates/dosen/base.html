@@ -29,6 +29,13 @@
                     <li class="{% if title == 'Dashboard' %}active{% endif %}">
                         <a href="{% url "acd:dashboard" %}"><i class="ri-dashboard-line"></i> Dashboard</a>
                     </li>  
+                    {% if is_pejabat_aktif %}
+                    <li class="{% if title == 'Dokumen Ditandatangani' %}active{% endif %}">
+                        <a href="{% url 'acd:dokumen_ttd_pejabat' %}">
+                            <i class="ri-qr-code-fill"></i> Dokumen yang di TTD
+                        </a>
+                    </li>
+                    {% endif %}
                     <li class="{% if title == 'Seleksi Judul' %}active{% endif %}">
                         <a href="{% url "acd:judul_seleksi" %}"><i class="ri-filter-line"></i> Seleksi Judul</a>
                     </li>  

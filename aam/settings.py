@@ -70,6 +70,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'aam.context_processors.web_name',
                 'aam.context_processors.versioned_static', #saya tambahkan untuk version stylesnya
+                'acd.context_processors.pejabat_aktif',  # Tambahkan ini
             ],
         },
     },

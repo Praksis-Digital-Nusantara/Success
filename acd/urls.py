@@ -123,6 +123,18 @@ urlpatterns = [
     path('ujian_dsn/<str:filter>', views_dosen.ujian_dsn, name='ujian_dsn'),
     path('ujian_dsn_nilai/<str:id>', views_dosen.ujian_dsn_nilai, name='ujian_dsn_nilai'),
     path('judul_seleksi_detail/<uuid:id>', views_dosen.judul_seleksi_detail, name='judul_seleksi_detail'),
+    path('dokumen_ttd_pejabat', views_dosen.dokumen_ttd_pejabat, name='dokumen_ttd_pejabat'),
+    path('batalkan_ttd_observasi/<uuid:id>/', views_dosen.batalkan_ttd_observasi, name='batalkan_ttd_observasi'),
+    path('ubah_ttd_observasi/<uuid:id>/', views_dosen.ubah_ttd_observasi, name='ubah_ttd_observasi'),
+    path('batalkan_ttd_rekomendasi/<uuid:id>/', views_dosen.batalkan_ttd_rekomendasi, name='batalkan_ttd_rekomendasi'),
+    path('ubah_ttd_rekomendasi/<uuid:id>/', views_dosen.ubah_ttd_rekomendasi, name='ubah_ttd_rekomendasi'),
+    path('batalkan_ttd_skpembimbing/<uuid:id>/', views_dosen.batalkan_ttd_skpembimbing, name='batalkan_ttd_skpembimbing'),
+    path('batalkan_ttd_surat_tugas/<uuid:id>/', views_dosen.batalkan_ttd_surat_tugas, name='batalkan_ttd_surat_tugas'),
+    path('ubah_ttd_surat_tugas/<uuid:id>/', views_dosen.ubah_ttd_surat_tugas, name='ubah_ttd_surat_tugas'),
+    path('batalkan_ttd_suket_izinlab/<uuid:id>/', views_dosen.batalkan_ttd_suket_izinlab, name='batalkan_ttd_suket_izinlab'),
+    path('ubah_ttd_suket_izinlab/<uuid:id>/', views_dosen.ubah_ttd_suket_izinlab, name='ubah_ttd_suket_izinlab'),
+    path('batalkan_ttd_suket_aktifkuliah/<uuid:id>/', views_dosen.batalkan_ttd_suket_aktifkuliah, name='batalkan_ttd_suket_aktifkuliah'),
+    path('ubah_ttd_suket_aktifkuliah/<uuid:id>/', views_dosen.ubah_ttd_suket_aktifkuliah, name='ubah_ttd_suket_aktifkuliah'),
 
     ###### PRINT ######   
     path('print_skpbb/<uuid:id>', print_skpbb.print_skpbb, name='print_skpbb'),

@@ -50,13 +50,13 @@
 							<td>{{ datatb.mhs }}</td>
 							<td>{{ datatb.tujuan }}</td>									  				
 							<td><a href="{% url 'acd:suket_izinobservasi_edit' datatb.mhs.nim.username %}">
-									<button class="btn primary x-small"><i class="ri-pencil-fill"></i></button>
+									<button class="btn primary small"><i class="ri-pencil-fill"></i></button>
 									</a>
 								<a target="_blank" href="{% url 'acd:print_suket_izinobservasi' datatb.id %}">
-									<button class="btn success x-small"><i class="ri-printer-line"></i></button>
+									<button class="btn success small"><i class="ri-printer-line"></i></button>
 									</a>
 								<a onclick="return confirm('Yakin ingin menghapus data ini?');" href="{% url 'acd:suket_izinobservasi_del' datatb.id %}">
-									<button class="btn danger x-small"><i class="ri-delete-bin-line"></i></button>
+									<button class="btn danger small"><i class="ri-delete-bin-line"></i></button>
 									</a>
 							</td>					  
 						</tr>
