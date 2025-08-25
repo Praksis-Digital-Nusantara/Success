@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from acd.models import Proposal, Hasil, Ujian
+from acd.models import Proposal, Hasil, Ujian, IzinPenelitian, SuketIzinObservasi
 from datetime import datetime
+from django.shortcuts import get_object_or_404
 
 tanggal_now = datetime.now().date()
 
@@ -32,13 +33,6 @@ def about(request):
         'heading' : 'TENTANG APLIKASI' 
     }
     return render(request,'about.html', context) 
-
-def verTTD(request):
-    context = {
-        'title' : 'Verifikasi TTD',
-        'heading' : 'Verifikasi TTD',
-    }
-    return render(request,'ver_ttd.html', context) 
 
 def loginView(request):
     context = {
@@ -84,3 +78,23 @@ def LogoutView(request):
         return redirect('login')    
 
     return render(request,'logout.html', context)             
+
+# Verifikasi TTD Izin Penelitian
+def ver_ttd_izp(request, id):
+    data = get_object_or_404(IzinPenelitian, id=id)
+    context = {
+        'title' : 'Verifikasi TTD Izin Penelitian',
+        'heading' : 'Verifikasi TTD Izin Penelitian',
+        'data' : data,
+    }
+    return render(request,'verif_ttd/ver_ttd_izp.html', context) 
+
+# Verifikasi TTD Seminar
+def ver_ttd_sio(request, id):
+    data = get_object_or_404(SuketIzinObservasi, id=id)
+    context = {
+        'title' : 'Verifikasi TTD Izin Observasi',
+        'heading' : 'Verifikasi TTD Izin Observasi',
+        'data' : data,
+    }
+    return render(request,'verif_ttd/ver_ttd_sio.html', context) 

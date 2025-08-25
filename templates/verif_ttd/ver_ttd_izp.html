@@ -1,0 +1,113 @@
+{% extends "verif_ttd/base.html" %}
+{% block content %}
+   <div class="container">
+        <div class="card">
+            <!-- Header -->
+            <div class="card-header">
+                <div class="header-icon">
+                    <i class="ri-shield-check-line"></i>
+                </div>
+                <h1 class="header-title">Verifikasi TTD</h1>
+                <p class="header-subtitle">Dokumen Digital Terverifikasi</p>
+                <div class="status-badge status-verified">
+                    <i class="ri-checkbox-circle-fill"></i>
+                    <span>
+                        {% if data.ttd_status == "QRcode" %}
+                            Terverifikasi
+                        {% else %}
+                            {{ data.ttd_status }}
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="card-body">
+                <div class="info-grid">
+                    <!-- Mahasiswa -->
+                    <div class="info-group">
+                        <div class="group-title">
+                            <i class="ri-graduation-cap-line"></i>
+                            Mahasiswa
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Nama</span>
+                            <span class="info-value">{{ data.mhs_judul.mhs.nim.first_name }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">NIM</span>
+                            <span class="info-value">{{ data.mhs_judul.mhs.nim.username }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Prodi</span>
+                            <span class="info-value">{{ data.mhs_judul.mhs.prodi.nama_prodi }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Penelitian -->
+                    <div class="info-group">
+                        <div class="group-title">
+                            <i class="ri-file-text-line"></i>
+                            Penelitian
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Judul</span>
+                            <span class="info-value">{{ data.mhs_judul.judul }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Pembimbing</span>
+                            <span class="info-value">{{ data.mhs_judul.pembimbing1.nip.first_name }}, {{ data.mhs_judul.pembimbing2.nip.first_name }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Lokasi</span>
+                            <span class="info-value">{{ data.lokasi }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Tanggal</span>
+                            <span class="info-value">{{ data.date_in|date:"d M Y" }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Penandatangan -->
+                    <div class="info-group">
+                        <div class="group-title">
+                            <i class="ri-user-star-line"></i>
+                            Penandatangan
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Jabatan</span>
+                            <span class="info-value">{{ data.ttd.jabatan }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Nama</span>
+                            <span class="info-value">{{ data.ttd.pejabat.nip.first_name }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">NIP</span>
+                            <span class="info-value">{{ data.ttd.pejabat.nip.username }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Status</span>
+                            <span class="info-value">
+                                <span class="signature-status signature-verified">
+                                    <i class="ri-shield-check-fill"></i>
+                                  {% if data.ttd_status == "QRcode" %}
+                                    Terverifikasi
+                                {% else %}
+                                    {{ data.ttd_status }}
+                                {% endif %}
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="card-footer">
+                <p class="footer-text">Sistem Verifikasi Digital 2025</p>
+                <p class="verification-code">ID: #VRF-{{ data.mhs_judul.mhs.nim.username }}-2025</p>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

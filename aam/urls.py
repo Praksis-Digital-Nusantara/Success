@@ -27,8 +27,10 @@ handler404 = custom_404
 
 urlpatterns = [
     path('acd/', include(('acd.urls', 'acd'), namespace='acd')),
-    path('login', views.loginView, name='login'),
-    path('t', views.verTTD, name='ttd'),
+    path('login/', views.loginView, name='login'),
+    # path('t', views.verTTD, name='ttd'),
+    path('t/izp/<uuid:id>/', views.ver_ttd_izp, name='ver_ttd_izp'),
+    path('t/sio/<uuid:id>/', views.ver_ttd_sio, name='ver_ttd_sio'),
     path('about', views.about, name='about'),
     path('', views.index, name='index'),
     path('admin/', admin.site.urls),

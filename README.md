@@ -18,17 +18,17 @@
 - [ ] Format undangan ujian *(Anto)*
 - [AMAN] Set UI undangan ujian diperbaiki *(Anto)*
 - [AMAN] Dashboard: title name dosen (last name) *(Anto)* **aman**
-- [ ] Modal perihal izin penelitian diperbaiki *(Anto)*
+- [AMAN] Modal perihal izin penelitian diperbaiki *(Anto)*
 - [AMAN] UI modal surat tugas diperbaiki *(Anto)*
 - [AMAN] Table dosen *(Anto)*
 - [ ] WA Agent *(Anto & Risal)* _(Optional)_
 
 ### 👥 Manajemen User dan Dashboard
-- [ ] Approve/batalkan user oleh pimpinan *(Risal)*
+- [AMAN] Approve/batalkan user oleh pimpinan *(Risal)*
 - [ ] Notifikasi ke pembimbing/penguji ke dashboard *(Risal)*
 - [ ] Dashboard mahasiswa: nilai ditambahkan *(Risal)*
-- [ ] List izin penelitian, approve/cancel dan tanda tangan *(Risal)*
-- [ ] Verifikasi tanda tangan *(Risal)*
+- [AMAN] List izin penelitian, approve/cancel dan tanda tangan *(Risal)*
+- [AMAN] Verifikasi tanda tangan *(Risal)*
 - [ ] Output QR code untuk tanda tangan *(Risal)*
 - [ ] Logo hijau lembar pengesahan ujian skripsi/tugas akhir *(Risal)*  
   _Fitur download di roadmap tugas akhir_
