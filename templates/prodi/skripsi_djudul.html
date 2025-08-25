@@ -36,7 +36,7 @@
 					<th style="white-space: nowrap;">Judul yang Disetujui Pembimbing</th>
 					<th>Pembimbing</th>
 					<th style="white-space: nowrap;">Status SK</th>
-					<th>Aksi</th>
+					<th style="white-space: nowrap;">Aksi</th>
 				</tr>
 				</thead>
 				<tfoot>
@@ -67,7 +67,7 @@
 							{{ datatb.pembimbing2.nip.first_name }} 	
 							
 							</td>					  
-						<td>{{ datatb.status_sk }}</td>					  
+						<td> {{ datatb.status_sk }}		</td>		  
 						<td>
 							<a href="{% url "acd:skripsi_ejudul" datatb.mhs.nim.username %}">
 							<button class="btn primary x-small"><i class="ri-pencil-fill"></i></button>		
@@ -91,12 +91,12 @@
 <div id="olahJudulModal" class="modal-edit"> 
     <div class="modal-content-edit">
         <span class="close" onclick="closeModal('olahJudulModal')">&times;</span>
-        <h2>Ajukan Penerbitan SK ke Fakultas?</h2>
+        <h3>Ajukan Penerbitan SK ke Fakultas?</h3>
 		<form method="post">
 			{% csrf_token %}
 			<input type="hidden" name="skripsi_id" id="skripsiId">
 			<div class="modal-footer">
-				<button type="submit" class="btn btn-primary">Ya, Ajukan Sekarang.</button>
+				<button type="submit" class="btn primary btn-block">Ya, Ajukan Sekarang.</button>
 			</div>		
 		</form>
     </div>

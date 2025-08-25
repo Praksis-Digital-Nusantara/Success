@@ -82,9 +82,9 @@
 					{% elif layanan.status == 'Completed'  %}
 						<span class="status-badge completed">{{ layanan.status }}</span>
 					{% endif %}
-					<br>
-					<div class="response-text">{{ layanan.hasil_test }}</div>
-					<br>
+					<div class="response-text">{% if layanan.status == "Waiting" or layanan.status == "Processing" %}Mohon menunggu...{% elif layanan.status == "Completed" or layanan.status == "Rejected" %}{{ layanan.hasil_test|default:"-" }}
+						{% endif %}
+					</div>
 					{% if layanan.hasil_link %}
 						<a target="_blank" href="{{ layanan.hasil_link }}">
 							<button class="btn secondary x-small"><i class="ri-file-line"></i> Link</button>

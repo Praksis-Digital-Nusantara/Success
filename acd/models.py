@@ -458,9 +458,10 @@ class Proposal(models.Model):
     # syarat untuk proposal
     krs = models.FileField(upload_to='layanan/syaratproposal/', null=True, blank=True)
     khs = models.FileField(upload_to='layanan/syaratproposal/', null=True, blank=True)
+    ksm = models.FileField(upload_to='layanan/syaratproposal/', null=True, blank=True)
     persetujuan_proposal = models.FileField(upload_to='layanan/syaratproposal/', null=True, blank=True)
     kartu_seminar = models.FileField(upload_to='layanan/syaratproposal/', null=True, blank=True)
-    rek_koran = models.FileField(upload_to='layanan/syaratproposal/', null=True, blank=True)
+    konsultasi_skripsi = models.FileField(upload_to='layanan/syaratproposal/', null=True, blank=True)
 
 
 ##########################  SK PENGUJI  ########################################

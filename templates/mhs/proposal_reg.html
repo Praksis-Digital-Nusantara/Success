@@ -69,21 +69,21 @@
 						{{ form.krs }}
 						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
 					</div>
-				</div>
+				</div> 
 
 				<div class="requirement-item">
 					<div class="requirement-info">
 						<div class="requirement-icon"><i class="ri-file-shield-2-line"></i></div>
 						<div class="requirement-text">
-							<h4 class="requirement-title">KHS</h4>
-							<p class="requirement-desc">File Kartu Hasil Studi.</p>
+							<h4 class="requirement-title">KSM</h4>
+							<p class="requirement-desc">File Kartu Studi Mahasiswa</p>
 						</div>
 					</div>
 					<div class="requirement-actions">
-						{% if proposal.khs %}
-						<a target="_blank" href="/media/{{ proposal.khs }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
+						{% if proposal.ksm %}
+						<a target="_blank" href="/media/{{ proposal.ksm }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
 						{% endif %}
-						{{ form.khs }}
+						{{ form.ksm }}
 						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
 					</div>
 				</div>
@@ -92,8 +92,8 @@
 					<div class="requirement-info">
 						<div class="requirement-icon"><i class="ri-file-shield-2-line"></i></div>
 						<div class="requirement-text">
-							<h4 class="requirement-title">Persetujuan Proposal</h4>
-							<p class="requirement-desc">Lampirkan file Persetujuan Proposal.</p>
+							<h4 class="requirement-title">Lembar Pengesahan</h4>
+							<p class="requirement-desc">File Lembar Pengesahan</p>
 						</div>
 					</div>
 					<div class="requirement-actions">
@@ -109,8 +109,25 @@
 					<div class="requirement-info">
 						<div class="requirement-icon"><i class="ri-file-shield-2-line"></i></div>
 						<div class="requirement-text">
-							<h4 class="requirement-title">Kartu Seminar</h4>
-							<p class="requirement-desc">Lampirkan file Persetujuan Proposal.</p>
+							<h4 class="requirement-title">Lembar Transkrip Nilai</h4>
+							<p class="requirement-desc">File Daftar Tabulasi Nilai</p>
+						</div>
+					</div>
+					<div class="requirement-actions">
+						{% if proposal.khs %}
+						<a target="_blank" href="/media/{{ proposal.khs }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
+						{% endif %}
+						{{ form.khs }}
+						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
+					</div>
+				</div>
+
+				<div class="requirement-item">
+					<div class="requirement-info">
+						<div class="requirement-icon"><i class="ri-file-shield-2-line"></i></div>
+						<div class="requirement-text">
+							<h4 class="requirement-title">Kartu Kontrol Seminar</h4>
+							<p class="requirement-desc">Lampirkan Kartu Kontrol Seminar.</p>
 						</div>
 					</div>
 					<div class="requirement-actions">
@@ -126,15 +143,15 @@
 					<div class="requirement-info">
 						<div class="requirement-icon"><i class="ri-file-shield-2-line"></i></div>
 						<div class="requirement-text">
-							<h4 class="requirement-title">Rekening Koran untuk mahasiswa Bidikmisi</h4>
-							<p class="requirement-desc">Lampirkan file Rekening Koran untuk mahasiswa Bidikmisi.</p>
+							<h4 class="requirement-title">Buku Konsultasi Skripsi</h4>
+							<p class="requirement-desc">Lampirkan file Konsultasi Skripsi</p>
 						</div>
 					</div>
 					<div class="requirement-actions">
-						{% if proposal.rek_koran %}
-						<a target="_blank" href="/media/{{ proposal.rek_koran }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
+						{% if proposal.konsultasi_skripsi %}
+						<a target="_blank" href="/media/{{ proposal.konsultasi_skripsi }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
 						{% endif %}
-						{{ form.rek_koran }}
+						{{ form.konsultasi_skripsi }}
 						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
 					</div>
 				</div>
@@ -147,7 +164,7 @@
 			<p>Undangan Anda Telah Terbit</p>
 			<h2><a target="_blank" class="btn primary" href="{% url 'acd:print_undangan' 'Proposal' proposal.id %}"><i class="ri-printer-line"></i>Cetak Undangan</a></h2>
 			{% else %}
-			<p>Pastikan data diatas telah lengkap, sebelum klik tombol daftar dibawah.</p>
+			<p>Simpan!! dan pastikan data diatas telah lengkap, sebelum klik tombol daftar dibawah.</p>
 			<button class="btn primary" onclick="openModal('modal_001')">
 							<i class="ri-add-line"></i>
 							<span>DAFTAR SEKARANG!</span>
@@ -161,15 +178,15 @@
 <div id="modal_001" class="modal-edit">
 	<div class="modal-content-edit">
 		<span class="close" onclick="closeModal('modal_001')">&times;</span>
-		<h2>Pengajuan Seminar Proposal</h2>
+		<h2 style="text-align: left;">Pengajuan Seminar Proposal</h2>
 		<form method="post" action='/acd/proposal_reg_up' enctype="multipart/form-data">
 			{% csrf_token %}
-			<div class="form-group" style="text-align: left;">
+			<div class="form-group" style="text-align: left; margin-bottom: -10px;">
 				<label for="layanan_isi">Keterangan / Komentar Tambahan </label>
 				<input type="text" class="form-control" id="layanan_isi" name="layanan_isi" required>
 			</div>
 			<div class="form-actions">
-				<button type="submit" class="btn primary">
+				<button type="submit" class="btn primary btn-block" style="margin-top: -10px;">
 					<i class="ri-save-line"></i>
 					Daftar Sekarang
 				</button>

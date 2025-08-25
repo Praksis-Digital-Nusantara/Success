@@ -2127,6 +2127,16 @@ td {
     color: #ffffff;
 }
 
+.status-badge.waiting {
+    background-color: #e3d588;
+    color: #ffffff;
+}
+
+.status-badge.rejected {
+    background-color: #c4930a;
+    color: #ffffff;
+}
+
 .status-badge.cancelled {
     background: #fde7e9;
     color: #dc3545;

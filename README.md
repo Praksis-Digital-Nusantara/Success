@@ -29,12 +29,12 @@
 - [ ] Dashboard mahasiswa: nilai ditambahkan *(Risal)*
 - [AMAN] List izin penelitian, approve/cancel dan tanda tangan *(Risal)*
 - [AMAN] Verifikasi tanda tangan *(Risal)*
-- [ ] Output QR code untuk tanda tangan *(Risal)*
+- [AMAN] Output QR code untuk tanda tangan *(Risal)*
 - [ ] Logo hijau lembar pengesahan ujian skripsi/tugas akhir *(Risal)*  
   _Fitur download di roadmap tugas akhir_
 
 ### 🧾 Format Surat dan Dokumen
-- [ ] Lembar pengesahan (disesuaikan dengan Drive) *(Anto)*
+- [AMAN] Lembar pengesahan (disesuaikan dengan Drive) *(Anto)*
 - [ ] Format lembar pengesahan disesuaikan *(Admin Fakultas)*
 - [ ] Persyaratan ujian – field wajib dicek *(Konfirmasi ke Admin)*
 - [ ] Berita acara & rekap nilai – **Konfirmasi format ke Fakultas**

@@ -449,7 +449,8 @@ def proposal_edit(request, nim):
             return redirect('acd:proposal_edit', nim=nim)
     else:
         form = formProposal(instance=proposal)  
-
+    
+    skpbb = skPembimbing.objects.filter(mhs=judul.mhs).order_by('-date_in')
     context = {
         'title': 'Proposal',
         'heading': 'Set Undangan Proposal',
@@ -458,6 +459,7 @@ def proposal_edit(request, nim):
         'judul': judul,
         'proposal': proposal,
         'form': form,
+        'skpbb': skpbb,
     }
     return render(request, 'prodi/proposal_edit.html', context)
 

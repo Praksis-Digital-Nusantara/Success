@@ -168,13 +168,14 @@ class formChatPA(forms.ModelForm):
 class formProposalReg(forms.ModelForm):
     class Meta:
         model = Proposal
-        fields = ['krs', 'khs', 'persetujuan_proposal', 'kartu_seminar', 'rek_koran']
+        fields = ['krs', 'ksm', 'khs', 'persetujuan_proposal', 'kartu_seminar', 'konsultasi_skripsi']
         widgets = {
             'krs': forms.FileInput(attrs={'class': 'form-control'}),
+            'ksm': forms.FileInput(attrs={'class': 'form-control'}),
             'khs': forms.FileInput(attrs={'class': 'form-control'}),
             'persetujuan_proposal': forms.FileInput(attrs={'class': 'form-control'}),
             'kartu_seminar': forms.FileInput(attrs={'class': 'form-control'}),
-            'rek_koran': forms.FileInput(attrs={'class': 'form-control'}),
+            'konsultasi_skripsi': forms.FileInput(attrs={'class': 'form-control'}),
         }
 
     def __init__(self, *args, **kwargs):

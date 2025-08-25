@@ -42,10 +42,10 @@
 							</td>					  
 						</tr>
 						<tr>
-							<td>KHS</td>
+							<td>KSM</td>
 							<td>:</td>
-							<td>{% if proposal.khs %}
-									<a target="_blank" href="/media/{{ proposal.khs }}"><button class="btn success small">Lihat File</button></a>
+							<td>{% if proposal.ksm %}
+									<a target="_blank" href="/media/{{ proposal.ksm }}"><button class="btn success small">Lihat File</button></a>
 								{% endif %}
 							</td>					  
 						</tr>
@@ -58,21 +58,39 @@
 							</td>					  
 						</tr>
 						<tr>
-							<td>Kartu Seminar</td>
+							<td>Lembar Transkrip Nilai</td>
+							<td>:</td>
+							<td>{% if proposal.khs %}
+									<a target="_blank" href="/media/{{ proposal.khs }}"><button class="btn success small">Lihat File</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+						<tr>
+							<td>Kartu Kontrol Seminar</td>
 							<td>:</td>
 							<td>{% if proposal.kartu_seminar %}
 									<a target="_blank" href="/media/{{ proposal.kartu_seminar }}"><button class="btn success small">Lihat File</button></a>
 								{% endif %}
 							</td>					  
 						</tr>
-						<tr>
-							<td>Rekening Koran Bagi Bidik Misi</td>
+						<tr> 
+							<td>Konsultasi Skripsi</td>
 							<td>:</td>
-							<td>{% if proposal.rek_koran %}
-									<a target="_blank" href="/media/{{ proposal.rek_koran }}"><button class="btn success small">Lihat File</button></a>
+							<td>{% if proposal.konsultasi_skripsi %}
+									<a target="_blank" href="/media/{{ proposal.konsultasi_skripsi }}"><button class="btn success small">Lihat File</button></a>
 								{% endif %}
 							</td>					  
 						</tr>
+						{% for skpbb_data in skpbb %}
+						<tr> 
+							<td>SK Pembimbing</td>
+							<td>:</td>
+							<td>{% if proposal.konsultasi_skripsi %}
+									<a target="_blank" href="{% url 'acd:print_skpbb' skpbb_data.id %}"><button class="btn success small">SK {{ skpbb_data.date_in }}</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+						{% endfor %}
 					</tbody>
 				</table>	
 			</div>

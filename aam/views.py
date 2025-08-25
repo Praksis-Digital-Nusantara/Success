@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from acd.models import Proposal, Hasil, Ujian, IzinPenelitian, SuketIzinObservasi
+from acd.models import Proposal, Hasil, Ujian, IzinPenelitian, SuketIzinObservasi, skPembimbing
 from datetime import datetime
 from django.shortcuts import get_object_or_404
 
@@ -98,3 +98,13 @@ def ver_ttd_sio(request, id):
         'data' : data,
     }
     return render(request,'verif_ttd/ver_ttd_sio.html', context) 
+
+# Verikasi TTD SK Pembimbing
+def ver_ttd_skpbb(request, id):
+    data = get_object_or_404(skPembimbing, id=id)
+    context = {
+        'title' : 'Verifikasi TTD SK Pembimbing',
+        'heading' : 'Verifikasi TTD SK Pembimbing',
+        'data' : data,
+    }
+    return render(request,'verif_ttd/ver_ttd_skpbb.html', context) 

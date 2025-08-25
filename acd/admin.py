@@ -3,6 +3,7 @@ from .models import UserMhs, UserProdi, UserDosen, UserFakultas
 from .models import LayananJenis, Layanan
 from .models import Prodi, Jurusan, Pejabat
 from .models import KodeSurat, SkripsiJudul
+from .models import IzinPenelitian, skPenguji, skPembimbing, chatPA, NoSurat, NoSuratFakultas, TTDProdi, ProposalNilai, Proposal, skPenguji, HasilNilai, Hasil, UjianNilai, Ujian, Yudisium
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 
@@ -67,3 +68,17 @@ admin.site.register(Prodi)
 admin.site.register(Jurusan)
 admin.site.register(Pejabat)
 admin.site.register(SkripsiJudul)
+admin.site.register(IzinPenelitian)
+admin.site.register(skPenguji)
+admin.site.register(skPembimbing)
+admin.site.register(chatPA)
+admin.site.register(NoSurat)
+admin.site.register(NoSuratFakultas)
+admin.site.register(TTDProdi)
+admin.site.register(ProposalNilai)
+admin.site.register(Proposal)
+admin.site.register(HasilNilai)
+admin.site.register(Hasil)
+admin.site.register(UjianNilai)
+admin.site.register(Ujian)
+admin.site.register(Yudisium)

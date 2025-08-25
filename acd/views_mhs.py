@@ -285,7 +285,7 @@ def proposal_reg_up(request):
     usermhs = request.usermhs
     proposal = Proposal.objects.get(mhs_judul__mhs=usermhs)
     if request.method == 'POST':
-        if proposal.krs == "" or proposal.krs == "" or proposal.persetujuan_proposal == "" or proposal.kartu_seminar == "":
+        if proposal.krs == "" or proposal.krs == "" or proposal.persetujuan_proposal == "" or proposal.kartu_seminar == "" or proposal.konsultasi_skripsi == "":
             messages.error(request, 'Berkas persyaratan belum lengkap, silakan lengkapi terlebih dahulu.')
             return redirect('/acd/proposal_reg')
         else:
