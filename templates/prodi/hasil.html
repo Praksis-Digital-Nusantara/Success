@@ -8,23 +8,6 @@
 				<h2>{{ heading }}</h2>
 				<p>{{web_name}}</p>
 			</div>
-				<div class="list-filters">
-					<div class="table-actions">
-						<div class="action-group">
-							<div class="search-bar-table">
-								<i class="ri-search-line"></i>
-								<input type="text" id="searchInput" placeholder="Search table...">
-							</div>
-						</div>
-						<div class="action-group">
-							<button class="btn primary" onclick="openModal('tambah_data')">
-								<i class="ri-add-line"></i>
-								<span>Add</span>
-							</button>
-						</div>
-					</div>
-				</div>
-
 		</div>
 
 		
@@ -73,12 +56,16 @@
 								{% endif %}								
 								</td>							  				
 							<td><a href="{% url 'acd:hasil_edit' datatb.mhs_judul.mhs.nim.username %}">
-									<button class="btn warning small"><i class="ri-pencil-fill"></i></button>
+									<button class="btn danger small"><i class="ri-pencil-fill"></i></button>
 									</a>
 								<br>
 								<a target="_blank" href="{% url 'acd:print_undangan' 'Hasil' datatb.id %}">
 									<button class="btn primary small"><i class="ri-mail-star-line"></i>Undangan</button>
 									</a>
+									<br>
+								<a target="_blank" href="{% url 'acd:hasil_nilai' datatb.id %}">
+									<button class="btn success small"><i class="ri-award-line"></i>Nilai</button>
+								</a>
 							</td>					  
 						</tr>
 					{% endfor %}

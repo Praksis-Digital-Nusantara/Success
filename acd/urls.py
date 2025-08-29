@@ -84,6 +84,7 @@ urlpatterns = [
     path('proposal_del/<str:id>', views_prodi.proposal_del, name='proposal_del'),   
     path('hasil', views_prodi.hasil, name='hasil'),   
     path('hasil_edit/<str:nim>', views_prodi.hasil_edit, name='hasil_edit'),   
+    path('hasil_nilai/<str:id>', views_prodi.hasil_nilai, name='hasil_nilai'),   
     path('ujian', views_prodi.ujian, name='ujian'),   
     path('ujian_edit/<str:nim>', views_prodi.ujian_edit, name='ujian_edit'),   
     path('ujian_nilai/<str:id>', views_prodi.ujian_nilai, name='ujian_nilai'),   

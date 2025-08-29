@@ -36,37 +36,37 @@
 						<td>Ketua Sidang</td>
 						<td>:</td>
 						<td>{{ data.dekan }}</td>					  
-						<td>{{ data.nilai5.nilai_angka|floatformat:"2" }}</td>					  
+						<td>{{ data.nilai5.nilai_angka|floatformat:"2"|default:"Belum ada Nilai" }}</td>					  
 					</tr>
 					<tr>
 						<td>Sekretaris Sidang</td>
 						<td>:</td>
 						<td>{{ data.kaprodi }}</td>					  
-						<td>{{ data.nilai6.nilai_angka|floatformat:"2" }}</td>					  
+						<td>{{ data.nilai6.nilai_angka|floatformat:"2"|default:"Belum ada Nilai" }}</td>					  
 					</tr>
 					<tr>
 						<td>Pembimbing I</td>
 						<td>:</td>
 						<td>{{ data.pembimbing1 }}</td>					  
-						<td>{{ data.nilai1.nilai_angka|floatformat:"2" }}</td>					  
+						<td>{{ data.nilai1.nilai_angka|floatformat:"2"|default:"Belum ada Nilai" }}</td>					  
 					</tr>
 					<tr>
 						<td>Pembimbing II</td>
 						<td>:</td>
 						<td>{{ data.pembimbing2 }}</td>		
-						<td>{{ data.nilai2.nilai_angka|floatformat:"2" }}</td>			  
+						<td>{{ data.nilai2.nilai_angka|floatformat:"2"|default:"Belum ada Nilai" }}</td>			  
 					</tr>						
 					<tr>
 						<td>Penguji I</td>
 						<td>:</td>
 						<td>{{ data.penguji1 }}</td>		
-						<td>{{ data.nilai3.nilai_angka|floatformat:"2" }}</td>			  
+						<td>{{ data.nilai3.nilai_angka|floatformat:"2"|default:"Belum ada Nilai" }}</td>			  
 					</tr>
 					<tr>
 						<td>Penguji II</td>
 						<td>:</td>
 						<td>{{ data.penguji2 }}</td>	
-						<td>{{ data.nilai4.nilai_angka|floatformat:"2" }}</td>				  
+						<td>{{ data.nilai4.nilai_angka|floatformat:"2"|default:"Belum ada Nilai" }}</td>				  
 					</tr>						
 				</tbody>
 			</table>	

@@ -41,13 +41,13 @@
 				<table id="layananTable" class="display" style="width:100%">
 				<thead>
 				<tr>
-					<th>No</th>
-					<th>Mahasiswa</th>
-					<th>Prodi</th>
-					<th>Judul</th>
-					<th>Pembimbing</th>
-					<th>Penguji</th>
-					<th>Aksi</th>
+					<th style="white-space: nowrap;">No</th>
+					<th style="white-space: nowrap;">Mahasiswa</th>
+					<th style="white-space: nowrap;">Prodi</th>
+					<th style="white-space: nowrap;">Judul</th>
+					<th style="white-space: nowrap;">Pembimbing</th>
+					<th style="white-space: nowrap;">Penguji</th>
+					<th style="white-space: nowrap;">Aksi</th>
 				</tr>
 				</thead>
 				<tfoot>
@@ -66,7 +66,7 @@
 					<tr>
 						<td>{{ forloop.counter }}</td>
 						<td>{{ datatb.mhs_judul.mhs }}</td>
-						<td>{{ datatb.prodi }}</td>
+						<td>{{ datatb.mhs_judul.mhs.prodi }}</td>
 						<td>{{ datatb.mhs_judul }}</td>							  				
 						<td>1. {{ datatb.pembimbing1 }}
 							<br> 2. {{ datatb.pembimbing2 }}
@@ -75,7 +75,7 @@
 							<br> 2. {{ datatb.penguji2 }}
 						</td>							  				
 						<td>
-							<a href="{% url 'acd:hasil_dsn_nilai' datatb.id %}" class="btn primary small">Nilai</a>						
+							<a href="{% url 'acd:hasil_dsn_nilai' datatb.id %}" class="btn primary small"><i class="ri-percent-line"></i>Nilai</a>						
 						</td>					  
 					</tr>
 				{% endfor %}

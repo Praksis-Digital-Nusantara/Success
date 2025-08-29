@@ -570,6 +570,20 @@ def hasil_edit(request, nim):
     return render(request, 'prodi/hasil_edit.html', context)
 
 
+@check_userprodi
+@admin_prodi_required
+def hasil_nilai(request, id):
+    userprodi = request.userprodi  
+    data = get_object_or_404(Hasil, id=id)
+    context = {
+        'title': 'Hasil',
+        'heading': 'Nilai Hasil',
+        'userprodi' : userprodi,
+        'photo' : userprodi.photo,
+        'data': data,
+    }
+    return render(request, 'prodi/hasil_nilai.html', context)
+
 
 ######################### UJIAN ########################
 @check_userprodi
