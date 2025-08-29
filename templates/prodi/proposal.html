@@ -30,7 +30,7 @@
 						<th style="white-space: nowrap;">No</th>
 						<th>Date In</th>
 						<th>Mahasiswa</th>
-						<th>Judul yang diajukan untuk seminar</th>
+						<th>Judul yang diajukan untuk seminar proposal</th>
 						<th style="white-space: nowrap;">Waktu Seminar</th>
 						<th>Tempat</th>
 						<th>Aksi</th>
@@ -41,7 +41,7 @@
 						<th>No</th>
 						<th>Date In</th>
 						<th>Mahasiswa</th>
-						<th>Judul yang diajukan untuk seminar</th>
+						<th>Judul yang diajukan untuk seminar proposal</th>
 						<th style="white-space: nowrap;">Waktu Seminar</th>
 						<th>Tempat</th>
 						<th width="10%">Aksi</th>
@@ -66,16 +66,16 @@
 								{% endif %}								
 								</td>							  				
 							<td><a href="{% url 'acd:proposal_edit' datatb.mhs_judul.mhs.nim.username %}">
-								<button class="btn warning x-small"><i class="ri-pencil-fill"></i></button>
+								<button class="btn warning small"><i class="ri-pencil-fill"></i></button>
 									</a>
 									
 								<br>
 								<a target="_blank" href="{% url 'acd:print_undangan' 'Proposal' datatb.id %}">
-									<button class="btn primary x-small"><i class="ri-mail-star-line"></i>Undangan</button>
+									<button class="btn primary small"><i class="ri-mail-star-line"></i>Undangan</button>
 									</a>
 								<br>
 								<a target="_blank" href="{% url 'acd:proposal_nilai' datatb.id %}">
-									<button class="btn success x-small"><i class="ri-award-line"></i>Nilai</button>
+									<button class="btn success small"><i class="ri-award-line"></i>Nilai</button>
 								</a>
 							</td>					  
 						</tr>

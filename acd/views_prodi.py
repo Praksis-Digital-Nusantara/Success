@@ -556,14 +556,16 @@ def hasil_edit(request, nim):
             return redirect('acd:hasil_edit', nim=nim)
     else:
         form = formHasil(instance=hasil)  
-
+    skpbb = skPembimbing.objects.filter(mhs=judul.mhs).order_by('-date_in')
     context = {
         'title': 'Hasil',
         'heading': 'Set Undangan Hasil',
         'userprodi' : userprodi,
         'photo' : userprodi.photo,
         'judul': judul,
+        'hasil': hasil,
         'form': form,
+        'skpbb': skpbb,
     }
     return render(request, 'prodi/hasil_edit.html', context)
 

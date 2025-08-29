@@ -2,7 +2,7 @@ from django import forms
 from .models import Layanan
 from .models import LayananJenis
 from .models import UserMhs, UserDosen
-from .models import SkripsiJudul, Proposal, Ujian
+from .models import SkripsiJudul, Proposal, Hasil, Ujian
 from .models import chatPA
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -198,7 +198,41 @@ class formProposalReg(forms.ModelForm):
             instance.save()
             self.save_m2m()
         return instance
+ 
+class formHasilReg(forms.ModelForm):
+    class Meta:
+        model = Hasil
+        fields = ['krs', 'ksm', 'kartu_kontrol_seminar', 'buku_konsultasi', 'persetujuan_hasil', 'transkrip', 'suket_selesai_meneliti']
+        widgets = {
+            'krs': forms.FileInput(attrs={'class': 'form-control'}),
+            'ksm': forms.FileInput(attrs={'class': 'form-control'}),
+            'kartu_kontrol_seminar': forms.FileInput(attrs={'class': 'form-control'}),
+            'buku_konsultasi': forms.FileInput(attrs={'class': 'form-control'}),
+            'persetujuan_hasil': forms.FileInput(attrs={'class': 'form-control'}),
+            'transkrip': forms.FileInput(attrs={'class': 'form-control'}),
+            'suket_selesai_meneliti': forms.FileInput(attrs={'class': 'form-control'}),
+        }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Set all fields to not required
+        for field in self.fields.values():
+            field.required = False
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        # Cek jika instance sudah ada di database (update)
+        if instance.pk:
+            old_instance = Hasil.objects.get(pk=instance.pk)
+            # Jika ada file baru diupload pada field krs
+            if self.cleaned_data.get('krs') and old_instance.krs and old_instance.krs != self.cleaned_data['krs']:
+                # Hapus file lama
+                if old_instance.krs and hasattr(old_instance.krs, 'path') and os.path.isfile(old_instance.krs.path):
+                    os.remove(old_instance.krs.path)
+        if commit:
+            instance.save()
+            self.save_m2m()
+        return instance
 
 class formUjianReg(forms.ModelForm):
     class Meta:

@@ -10,7 +10,7 @@ from .models import SkripsiJudul, chatPA, skPembimbing, Proposal, Hasil, IzinPen
 
 from .forms_mhs import formAddLayanan
 from .forms_mhs import formProfile
-from .forms_mhs import formSkripsiJudul, formProposalReg, formUjianReg
+from .forms_mhs import formSkripsiJudul, formProposalReg, formHasilReg, formUjianReg
 from .forms_mhs import formChatPA
 
 from .decorators_mhs import check_usermhs
@@ -305,6 +305,66 @@ def proposal_reg_up(request):
                 return redirect('/acd/layanan_me')
 
 
+###################### SEMINAR HASIL #######################################################
+@mahasiswa_required
+@check_usermhs
+def hasil_reg(request):
+    usermhs = request.usermhs
+    judul = SkripsiJudul.objects.get(mhs=usermhs)
+    # Mencoba mengambil Hasil yang ada, jika tidak ada, buat yang baru
+    try:
+        hasil = Hasil.objects.get(mhs_judul__mhs=usermhs)
+    except Hasil.DoesNotExist:
+        hasil = Hasil(mhs_judul=judul)  # Membuat hasil baru jika tidak ditemukan
+        hasil.save()
+    
+    if request.method == 'POST':
+        form = formHasilReg(request.POST, request.FILES, instance=hasil)
+        if form.is_valid():
+            hasil_obj = form.save(commit=False)
+            hasil_obj.mhs_judul = judul  # Pastikan judul tetap terikat
+            hasil_obj.save()  # Simpan perubahan atau data baru
+            messages.success(request, 'Data berhasil disimpan!')
+        else:
+            messages.error(request, 'Periksa kembali isian form.')
+    else:
+        form = formHasilReg(instance=hasil)
+
+    context = {
+        'title': 'Hasil',
+        'heading': 'Hasil Registrasi',
+        'usermhs': usermhs,
+        'photo': usermhs.photo,
+        'judul': judul,
+        'hasil': hasil,
+        'form': form,
+    }
+    return render(request, 'mhs/hasil_reg.html', context)
+
+@mahasiswa_required
+@check_usermhs
+def hasil_reg_up(request):
+    usermhs = request.usermhs
+    hasil = Hasil.objects.get(mhs_judul__mhs=usermhs)
+    if request.method == 'POST':
+        if hasil.krs == "" or hasil.ksm == "" or hasil.kartu_kontrol_seminar == "" or hasil.buku_konsultasi == "" or hasil.persetujuan_hasil == "" or hasil.transkrip == "" or hasil.suket_selesai_meneliti == "": 
+            messages.error(request, 'Berkas persyaratan belum lengkap, silakan lengkapi terlebih dahulu.')
+            return redirect('/acd/hasil_reg')
+        else:
+            ceklayanan = Layanan.objects.filter(mhs=usermhs, layanan_jenis__nama_layanan='Undangan Seminar Hasil',status__in=['Waiting', 'Processing']).exists()
+            if ceklayanan:
+                messages.info(request, 'Anda masih memiliki layanan dengan jenis ini yang sedang diproses.')
+                return redirect('/acd/hasil_reg')
+            else:
+                layanan = Layanan(
+                    mhs=usermhs,
+                    layanan_jenis=LayananJenis.objects.get(nama_layanan='Undangan Seminar Hasil'),
+                    status='Waiting',
+                    layanan_isi=request.POST.get('layanan_isi'),
+                )  # Menambahkan layanan baru
+                layanan.save()
+                messages.success(request, 'Pendaftar Hasil berhasil!, cek status di menu layanan')
+                return redirect('/acd/layanan_me')
 ###################### REGISTRASI UJIAN #######################################################
 
 @mahasiswa_required

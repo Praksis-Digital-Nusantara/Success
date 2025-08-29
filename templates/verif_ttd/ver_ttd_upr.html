@@ -7,11 +7,11 @@
                 <div class="header-icon">
                     <i class="ri-shield-check-line"></i>
                 </div>
-                <h1 class="header-title">SURAT </h1>
-                {% if data.ttd_pejabat %}
-                <p class="header-subtitle">Dokumen Digital Terverifikasi [SK Pembimbing]</p>
+                <h1 class="header-title">Verifikasi TTD</h1>
+                {% if data.ttd %}
+                <p class="header-subtitle">Dokumen Digital Terverifikasi [Undangan Seminar Proposal]</p>
                 {% else %}
-                <p class="header-subtitle">Dokumen Digital Tidak Terverifikasi [SK Pembimbing]</p>
+                <p class="header-subtitle">Dokumen Digital Tidak Terverifikasi [Undangan Seminar Proposal]</p>
                 {% endif %}
                 <div class="status-badge status-verified">
                     <i class="ri-checkbox-circle-fill"></i>
@@ -36,15 +36,15 @@
                         </div>
                         <div class="info-item">
                             <span class="info-label">Nama</span>
-                            <span class="info-value">{{ data.mhs.nim.first_name }}</span>
+                            <span class="info-value">{{ data.mhs_judul.mhs.nim.first_name }}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">NIM</span>
-                            <span class="info-value">{{ data.mhs.nim.username }}</span>
+                            <span class="info-value">{{ data.mhs_judul.mhs.nim.username }}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Prodi</span>
-                            <span class="info-value">{{ data.mhs.prodi.nama_prodi }}</span>
+                            <span class="info-value">{{ data.mhs_judul.mhs.prodi.nama_prodi }}</span>
                         </div>
                     </div>
 
@@ -64,7 +64,7 @@
                         </div>
                         <div class="info-item">
                             <span class="info-label">Judul</span>
-                            <span class="info-value">{{ data.judul }}</span>
+                            <span class="info-value">{{ data.mhs_judul.judul }}</span>
                         </div>
                     </div>
                     <!-- Penandatangan -->

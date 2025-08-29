@@ -32,6 +32,7 @@ urlpatterns = [
     path('t/izp/<uuid:id>/', views.ver_ttd_izp, name='ver_ttd_izp'),
     path('t/sio/<uuid:id>/', views.ver_ttd_sio, name='ver_ttd_sio'),
     path('t/skpbb/<uuid:id>/', views.ver_ttd_skpbb, name='ver_ttd_skpbb'),
+    path('t/upr/<uuid:id>/', views.ver_ttd_upr, name='ver_ttd_upr'),
     path('about', views.about, name='about'),
     path('', views.index, name='index'),
     path('admin/', admin.site.urls),

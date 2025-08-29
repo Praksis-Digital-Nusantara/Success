@@ -31,16 +31,16 @@
 
 		<div class="student-table">
 			<div class="table-responsive">
-				<table id="layananTable" class="display" style="width:100%">
+					<table id="layananTable" class="display" style="width:100%">
 					<thead>
 					<tr>
-						<th>No</th>
-						<th>Date In</th>
-						<th>Mahasiswa</th>
-						<th>Judul</th>
-						<th>Waktu Seminar</th>
-						<th>Tempat</th>
-						<th>Aksi</th>
+						<th style="white-space: nowrap;">No</th>
+						<th style="white-space: nowrap;">Date In</th>
+						<th style="white-space: nowrap;">Mahasiswa</th>
+						<th style="white-space: nowrap;">Judul yang diajukan untuk seminar hasil</th>
+						<th style="white-space: nowrap;">Waktu Seminar</th>
+						<th style="white-space: nowrap;">Tempat</th>
+						<th style="white-space: nowrap;">Aksi</th>
 					</tr>
 					</thead>
 					<tfoot>
@@ -48,7 +48,7 @@
 						<th>No</th>
 						<th>Date In</th>
 						<th>Mahasiswa</th>
-						<th>Judul</th>
+						<th>Judul yang diajukan untuk seminar hasil</th>
 						<th>Waktu Seminar</th>
 						<th>Tempat</th>
 						<th width="10%">Aksi</th>
@@ -60,7 +60,7 @@
 							<td>{{ forloop.counter }}</td>
 							<td>{{ datatb.date_in }}</td> 
 							<td>{{ datatb.mhs_judul.mhs }}</td>
-							<td>{{ datatb.mhs_judul }}</td>
+							<td><div class="response-text">{{ datatb.mhs_judul }}</div></td>
 							<td>{{ datatb.seminar_tgl }}
 								<br>{{ datatb.seminar_jam }}
 								</td>							  				
@@ -68,16 +68,16 @@
 								{% if datatb.seminar_link != '' and datatb.seminar_link != '-'  and datatb.seminar_link %}
 									<br>
 									<a target="_blank" href="{{ datatb.seminar_link }}">
-										<button class="action-btn">Link Seminar</button>
+										<button class="btn primary x-small">Link Seminar</button>
 										</a>
 								{% endif %}								
 								</td>							  				
 							<td><a href="{% url 'acd:hasil_edit' datatb.mhs_judul.mhs.nim.username %}">
-									<button class="action-btn"><i class="ri-pencil-fill"></i></button>
+									<button class="btn warning small"><i class="ri-pencil-fill"></i></button>
 									</a>
 								<br>
 								<a target="_blank" href="{% url 'acd:print_undangan' 'Hasil' datatb.id %}">
-									<button class="action-btn">Undangan</button>
+									<button class="btn primary small"><i class="ri-mail-star-line"></i>Undangan</button>
 									</a>
 							</td>					  
 						</tr>

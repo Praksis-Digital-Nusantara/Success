@@ -104,6 +104,8 @@ urlpatterns = [
     path('skripsi', views_mhs.skripsi, name='skripsi'),
     path('proposal_reg', views_mhs.proposal_reg, name='proposal_reg'),
     path('proposal_reg_up', views_mhs.proposal_reg_up, name='proposal_reg_up'),
+    path('hasil_reg', views_mhs.hasil_reg, name='hasil_reg'),
+    path('hasil_reg_up', views_mhs.hasil_reg_up, name='hasil_reg_up'),
     path('ujian_reg', views_mhs.ujian_reg, name='ujian_reg'),
     path('ujian_reg_up', views_mhs.ujian_reg_up, name='ujian_reg_up'),
     path('skripsi_pjudul', views_mhs.skripsi_pjudul, name='skripsi_pjudul'),
@@ -135,6 +137,8 @@ urlpatterns = [
     path('ubah_ttd_suket_izinlab/<uuid:id>/', views_dosen.ubah_ttd_suket_izinlab, name='ubah_ttd_suket_izinlab'),
     path('batalkan_ttd_suket_aktifkuliah/<uuid:id>/', views_dosen.batalkan_ttd_suket_aktifkuliah, name='batalkan_ttd_suket_aktifkuliah'),
     path('ubah_ttd_suket_aktifkuliah/<uuid:id>/', views_dosen.ubah_ttd_suket_aktifkuliah, name='ubah_ttd_suket_aktifkuliah'),
+    path('batalkan_ttd_undangan_proposal/<uuid:id>/', views_dosen.batalkan_ttd_undangan_proposal, name='batalkan_ttd_undangan_proposal'),
+    path('ubah_ttd_undangan_proposal/<uuid:id>/', views_dosen.ubah_ttd_undangan_proposal, name='ubah_ttd_undangan_proposal'),
 
     ###### PRINT ######   
     path('print_skpbb/<uuid:id>', print_skpbb.print_skpbb, name='print_skpbb'),
@@ -144,6 +148,7 @@ urlpatterns = [
     path('print_undangan_ujian/<uuid:id>', print_undangan.print_undangan_ujian, name='print_undangan_ujian'),
     path('print_persetujuan_penelitian/<uuid:id>', print_pengesahan.print_persetujuan_penelitian, name='print_persetujuan_penelitian'),
     path('print_izinpenelitian/<uuid:id>', print_penelitian.print_izinpenelitian, name='print_izinpenelitian'),
+    path('print_permohonan_penerbitan_sip/<uuid:id>', print_pengesahan.print_permohonan_penerbitan_sip, name='print_permohonan_penerbitan_sip'),
     path('print_suket_bebaskuliah/<uuid:id>', print_suket_bebaskuliah.print_suket_bebaskuliah, name='print_suket_bebaskuliah'),
     path('print_suket_bebasplagiasi/<uuid:id>', print_suket_bebasplagiasi.print_suket_bebasplagiasi, name='print_suket_bebasplagiasi'),
     path('print_suket_aktifkuliah/<uuid:id>', print_suket_aktifkuliah.print_suket_aktifkuliah, name='print_suket_aktifkuliah'),

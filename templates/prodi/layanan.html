@@ -45,6 +45,11 @@
 								<button class="btn secondary x-small"><i class="ri-file-line"></i> Berkas Kelengkapan</button>
 							</a>
 						{% endif %}
+						{% if layanan.layanan_jenis.nama_layanan == 'Undangan Seminar Hasil' %}
+							<a href="/acd/hasil_edit/{{layanan.mhs.nim.username}}">
+								<button class="btn secondary x-small"><i class="ri-file-line"></i> Berkas Kelengkapan</button>
+							</a>
+						{% endif %}
 						{% if layanan.layanan_jenis.nama_layanan == 'Undangan Ujian Tutup' %}
 							<a href="/acd/ujian_edit/{{layanan.mhs.nim.username}}">
 								<button class="btn secondary x-small"><i class="ri-file-line"></i> Berkas Kelengkapan</button>

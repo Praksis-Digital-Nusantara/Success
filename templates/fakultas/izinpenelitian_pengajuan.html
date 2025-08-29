@@ -40,15 +40,15 @@
 						<td>{{ forloop.counter }}</td>
 						<td>{{ datatb.date_in|date:"d M Y H:i"  }}</td>
 						<td>{{ datatb.mhs }}</td>					  
-						<td>{{ datatb.prodi }}</td>					  
+						<td>{{ datatb.mhs.prodi }}</td>					  
 						<td>{{ datatb.layanan_isi }}
 							<a target="_blank" href="/{{ datatb.layanan_file }}">
-								<button class="btn primary x-small">Lampiran</button>	
+								<button class="btn secondary x-small"><i class="ri-link"></i>Lampiran</button>	
 							</a>
 						</td>						  
 						<td>
-							<button class="btn danger x-small" onclick="openModal('tolakSK', '{{ datatb.id }}')">Tolak</button>					
-							<button class="btn primary x-small" onclick="openModal('terbitkanSK', '{{ datatb.id }}')">Proses</button>					
+							<button class="btn danger small" onclick="openModal('tolakSK', '{{ datatb.id }}')"><i class="ri-close-line"></i>Tolak</button>					
+							<button class="btn primary small" onclick="openModal('terbitkanSK', '{{ datatb.id }}')"><i class="ri-loader-4-line"></i>Proses</button>					
 						</td>					
 					</tr>
 				{% endfor %}
@@ -63,7 +63,7 @@
 <div id="terbitkanSK" class="modal-edit"> 
     <div class="modal-content-edit">
         <span class="close" onclick="closeModal('terbitkanSK')">&times;</span>
-        <h2>Perihal dan Tujuan</h2>
+        <h2 style="text-align: left;">Perihal dan Tujuan</h2>
 		<form method="post">
 			{% csrf_token %}
 			<input type="hidden" name="id" id="skripsiId">
@@ -84,7 +84,7 @@
 					<input type="text" class="form-control" id="pimpinancq" name="pimpinancq" placeholder="Menteri Pendidikan dan Kebudayaan">
 				</div>
 			<div class="modal-footer">
-				<button type="submit" class="btn btn-primary" name="action" value="terbitkan">Terbitkan</button>
+				<button type="submit" class="btn primary btn-block" name="action" value="terbitkan">Terbitkan</button>
 			</div>		
 		</form>
     </div>
@@ -94,7 +94,7 @@
 <div id="tolakSK" class="modal-edit"> 
     <div class="modal-content-edit">
         <span class="close" onclick="closeModal('tolakSK')">&times;</span>
-        <h2>Perihal dan Tujuan</h2>
+        <h2 style="text-align: left;">Perihal dan Tujuan</h2>
 		<form method="post">
 			{% csrf_token %}
 			<input type="hidden" name="id" id="skripsiIdTolak">
@@ -103,7 +103,7 @@
 					<input type="text" class="form-control" id="alasan" name="alasan" placeholder="Contoh : berkas tidak lengkap">
 				</div>
 			<div class="modal-footer">
-				<button type="submit" class="btn btn-danger" name="action" value="tolak">Tolak</button>
+				<button type="submit" class="btn danger btn-block" name="action" value="tolak">Tolak</button>
 			</div>		
 		</form>
     </div>

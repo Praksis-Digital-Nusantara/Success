@@ -618,6 +618,7 @@ def dokumen_ttd_pejabat(request):
         surat_tugas = list(SuratTugas.objects.filter(ttd=pejabat_aktif))
         suket_izinlab = list(SuketIzinLab.objects.filter(ttd=pejabat_aktif))
         suket_aktifkuliah = list(SuketAktifKuliah.objects.filter(ttd=pejabat_aktif))
+        undangan_proposal = list(Proposal.objects.filter(ttd=pejabat_aktif))
 
         for item in observasi:
             item.jenis_dokumen = 'observasi'
@@ -631,9 +632,11 @@ def dokumen_ttd_pejabat(request):
             item.jenis_dokumen = 'suket_izinlab'
         for item in suket_aktifkuliah:
             item.jenis_dokumen = 'suket_aktifkuliah'
+        for item in undangan_proposal:
+            item.jenis_dokumen = 'undangan_proposal'
 
         # Gabungkan semua list dokumen
-        dokumen_ttd_pejabat = observasi + rekomendasi + sk_pembimbing + surat_tugas + suket_izinlab + suket_aktifkuliah
+        dokumen_ttd_pejabat = observasi + rekomendasi + sk_pembimbing + surat_tugas + suket_izinlab + suket_aktifkuliah + undangan_proposal
 
     context = {
         'title': 'Dokumen Ditandatangani',
@@ -745,4 +748,22 @@ def ubah_ttd_suket_aktifkuliah(request, id):
     obj.ttd_status = "Manual"
     obj.save()
     messages.success(request, "TTD Suket Aktif Kuliah diubah menjadi Manual.")
+    return redirect('acd:dokumen_ttd_pejabat')
+
+@dosen_required
+@check_userdosen
+def batalkan_ttd_undangan_proposal(request, id):
+    obj = get_object_or_404(Proposal, id=id)
+    obj.ttd = None
+    obj.save()
+    messages.success(request, "TTD Undangan Proposal berhasil dibatalkan.")
+    return redirect('acd:dokumen_ttd_pejabat')
+
+@dosen_required
+@check_userdosen
+def ubah_ttd_undangan_proposal(request, id):
+    obj = get_object_or_404(Proposal, id=id)
+    obj.ttd_status = "Manual"
+    obj.save()
+    messages.success(request, "TTD Undangan Proposal diubah menjadi Manual.")
     return redirect('acd:dokumen_ttd_pejabat')

@@ -527,8 +527,15 @@ class Hasil(models.Model):
     nilai3 = models.ForeignKey(HasilNilai, on_delete=models.SET_NULL, related_name="hasil_nilai3", blank=True, null=True)
     nilai4 = models.ForeignKey(HasilNilai, on_delete=models.SET_NULL, related_name="hasil_nilai4", blank=True, null=True)
     nilai5 = models.ForeignKey(HasilNilai, on_delete=models.SET_NULL, related_name="hasil_nilai5", blank=True, null=True)
-
-
+    # syarat untuk hasil
+    krs = models.FileField(upload_to='layanan/syarathasil/', null=True, blank=True)
+    ksm = models.FileField(upload_to='layanan/syarathasil/', null=True, blank=True)
+    kartu_kontrol_seminar = models.FileField(upload_to='layanan/syarathasil/', null=True, blank=True)
+    buku_konsultasi = models.FileField(upload_to='layanan/syarathasil/', null=True, blank=True)
+    persetujuan_hasil = models.FileField(upload_to='layanan/syarathasil/', null=True, blank=True)
+    transkrip = models.FileField(upload_to='layanan/syarathasil/', null=True, blank=True)
+    suket_selesai_meneliti = models.FileField(upload_to='layanan/syarathasil/', null=True, blank=True)
+    
 ##########################  UJIAN  ########################################
 
 class UjianNilai(models.Model):

@@ -1,31 +1,8 @@
 {% extends "prodi/base.html" %}
 
 {% block content1 %}
-<div class="dashboard-content">
-	<div class="profile-section">
-	<div class="container-header">
-		<nav class="container-breadcrumb">
-			<ul>
-				<li>
-					<a href="{% url 'acd:dashboard' %}">
-						<i class="ri-home-line"></i>
-					</a>
-				</li>
-				<li>
-					<i class="ri-arrow-right-s-line"></i>
-				</li>
-				<li>
-					<a href="{% url 'acd:hasil' %}">hasil</a>
-				</li>
-				<li>
-					<i class="ri-arrow-right-s-line"></i>
-				</li>
-				<li>
-					<a href="">{{ heading }}</a>
-				</li>
-			</ul>
-		</nav>
-	</div>
+<div class="layanan-form-container">
+	<div class="profile-section-ujian">
 			{% if messages %}
 			{% for message in messages %}
 				<div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} mb-4">
@@ -34,8 +11,6 @@
 				</div>
 			{% endfor %}
 			{% endif %}
-
-
 		<div class="student-table">
 			<div class="table-responsive">
 				<table>
@@ -46,85 +21,191 @@
 							<td>{{ judul.mhs }}</td>					  
 						</tr>
 						<tr>
-							<td width="10%">Program Studi</td>
-							<td width="5%">:</td>
+							<td>Program Studi</td>
+							<td>:</td>
 							<td>{{ judul.prodi }}</td>					  
 						</tr>
 						<tr>
-							<td width="10%">Judul</td>
-							<td width="5%">:</td>
-							<td>{{ judul.judul }}</td>					  
+							<td>Judul</td>
+							<td>:</td>
+							<td><div class="response-text">{{ judul.judul }}</div></td>					  
 						</tr>
 						<tr>
-							<td width="10%">Pembimbing I</td>
-							<td width="5%">:</td>
+							<td>Pembimbing I</td>
+							<td>:</td>
 							<td>{{ judul.pembimbing1 }}</td>					  
 						</tr>
 						<tr>
-							<td width="10%">Pembimbing II</td>
-							<td width="5%">:</td>
+							<td>Pembimbing II</td>
+							<td>:</td>
 							<td>{{ judul.pembimbing2 }}</td>					  
 						</tr>
+						<tr>
+							<td>KRS</td>
+							<td>:</td>
+							<td>{% if hasil.krs %}
+									<a target="_blank" href="/media/{{ hasil.krs }}"><button class="btn success small">Lihat File</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+						<tr>
+							<td>KSM</td>
+							<td>:</td>
+							<td>{% if hasil.ksm %}
+									<a target="_blank" href="/media/{{ hasil.ksm }}"><button class="btn success small">Lihat File</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+						<tr>
+							<td>Kartu Kontrol Seminar</td>
+							<td>:</td>
+							<td>{% if hasil.kartu_kontrol_seminar %}
+									<a target="_blank" href="/media/{{ hasil.kartu_kontrol_seminar }}"><button class="btn success small">Lihat File</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+						<tr>
+							<td>Buku Konsultasi</td>
+							<td>:</td>
+							<td>{% if hasil.buku_konsultasi %}
+									<a target="_blank" href="/media/{{ hasil.buku_konsultasi }}"><button class="btn success small">Lihat File</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+						<tr>
+							<td>Persetujuan Seminar Hasil</td>
+							<td>:</td>
+							<td>{% if hasil.persetujuan_hasil %}
+									<a target="_blank" href="/media/{{ hasil.persetujuan_hasil }}"><button class="btn success small">Lihat File</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+						<tr>
+							<td>Transkrip Nilai</td>
+							<td>:</td>
+							<td>{% if hasil.transkrip %}
+									<a target="_blank" href="/media/{{ hasil.transkrip }}"><button class="btn success small">Lihat File</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+							<tr>
+							<td>Suket Selesai Meneliti</td>
+							<td>:</td>
+							<td>{% if hasil.suket_selesai_meneliti %}
+									<a target="_blank" href="/media/{{ hasil.suket_selesai_meneliti }}"><button class="btn success small">Lihat File</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+						{% for skpbb_data in skpbb %}
+						<tr> 
+							<td>SK Pembimbing</td>
+							<td>:</td>
+							<td>
+								<a target="_blank" href="{% url 'acd:print_skpbb' skpbb_data.id %}"><button class="btn success small">SK {{ skpbb_data.date_in }}</button></a>
+							</td>					  
+						</tr>
+						{% endfor %}
 					</tbody>
 				</table>	
 			</div>
 		</div>
-
-		<form method="post" enctype="multipart/form-data">
-		{% csrf_token %}
-			<div class="form-row">
-				<div class="form-group">
-					<label for="id_no_surat">Nomor Surat</label>
-					{{ form.no_surat }}
-				</div>
-			</div>
-			<div class="form-row">
-				<div class="form-group">
-					<label for="id_seminar_tgl">Tanggal Seminar</label>
-					{{ form.seminar_tgl }}
-				</div>
-				<div class="form-group">
-					<label for="id_seminar_jam">Jam Seminar</label>
-					{{ form.seminar_jam }}
-				</div>
-			</div>
-			<div class="form-row">
-				<div class="form-group">
-					<label for="id_seminar_tempat">Tempat Seminar</label>
-					{{ form.seminar_tempat }}
-				</div>
-				<div class="form-group">
-					<label for="id_seminar_link">Link Seminar</label>
-					{{ form.seminar_link }}
-				</div>
-			</div>
-			<div class="form-row">
-				<div class="form-group">
-					<label for="id_penguji1">Penguji I</label>
-					{{ form.penguji1 }}
-				</div>
-				<div class="form-group">
-					<label for="id_penguji2">Penguji II</label>
-					{{ form.penguji2 }}
-				</div>
-			</div>
-			<div class="form-row">
-				<div class="form-group">
-					<label for="id_ttd">Pejabat Bertandatangan</label>
-					{{ form.ttd }}
-				</div>
-				<div class="form-group">
-					<label for="id_ttd_status">Jenis TTD</label>
-					{{ form.ttd_status }}
-				</div>
-			</div>
-			<div class="form-actions">
-				<button type="submit" class="btn primary">Proses</button>
-			</div>
-		</form>
 	</div>
 </div>
+
+
+<div class="form-card">
+	<div class="form-header">
+		<div class="form-header-icon">
+			<i class="ri-edit-line"></i>
+		</div>
+		<div class="form-header-content">
+			<h2>Form Edit Proposal</h2>
+			<p>Silahkan isi form dibawah ini untuk mengedit proposal seminar.</p>
+		</div>
+	</div>
+
+
+	<form method="post" enctype="multipart/form-data" class="layanan-form">
+		{% csrf_token %}
+		<div class="form-group">
+			<label for="id_no_surat">Nomor Surat</label>
+			{{ form.no_surat }}
+		</div>
+		<div class="form-group">
+			<label for="id_seminar_tgl">Tanggal Seminar</label>
+			{{ form.seminar_tgl }}
+		</div>
+		<div class="form-group">
+			<label for="id_seminar_jam">Jam Seminar</label>
+			{{ form.seminar_jam }}
+		</div>
+		<div class="form-group">
+			<label for="id_seminar_tempat">Tempat Seminar</label>
+			{{ form.seminar_tempat }}
+		</div>
+		<div class="form-group">
+			<label for="id_seminar_link">Link Seminar</label>
+			{{ form.seminar_link }}
+		</div>
+		<div class="form-group">
+			<label for="id_penguji1">Penguji I</label>
+			{{ form.penguji1 }}
+		</div>
+		<div class="form-group">
+			<label for="id_penguji2">Penguji II</label>
+			{{ form.penguji2 }}
+		</div>
+		<div class="form-group">
+			<label for="id_ttd">Pejabat Bertandatangan</label>
+			{{ form.ttd }}
+		</div>
+		<div class="form-group">
+			<label for="id_ttd_status">Jenis TTD</label>
+			{{ form.ttd_status }}
+		</div>
+	
+		<div class="form-actions">
+			<a href="{% url 'acd:proposal' %}">
+				<button type="button" class="btn btn-secondary">
+					<i class="ri-arrow-left-line"></i>
+					Kembali
+				</button>
+			</a>
+			<button type="submit" class="btn primary">Update</button>
+		</div>
+	</form>
+
+
 {% endblock content1 %}
+
+
+{% block script_costum %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+	  var elementIds = ['id_penguji1', 'id_penguji2'];
+	  elementIds.forEach(function(elementId) {
+		var element = document.getElementById(elementId);
+		if (element) {
+		  new Choices(element, {
+			searchEnabled: true,
+			itemSelectText: '',
+			shouldSort: false,
+			removeItemButton: true,
+			searchResultLimit: 10,
+			searchFields: ['label', 'value'],
+			position: 'bottom',
+			searchPlaceholderValue: 'Cari Dosen',
+			noResultsText: 'Tidak ditemukan',
+			noChoicesText: 'Tidak ada pilihan',
+		  });
+		}
+	  });
+	});
+</script>
+{% endblock script_costum %}
+
 
 
 

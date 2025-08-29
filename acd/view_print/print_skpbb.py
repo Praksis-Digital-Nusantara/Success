@@ -134,21 +134,29 @@ def print_skpbb(request, id):
     pos_y = draw_aligned_text(p, "Kedua", ":", "Jika selama maksimal enam bulan tidak ada komunikasi/interaksi akademik antara mahasiswa dengan Tim Pembimbingnya, maka Surat Keputusan ini batal dengan sendirinya.",  5)
     pos_y = draw_aligned_text(p, "Ketiga", ":", "Segala biaya yang dikeluarkan sehubungan dengan keputusan ini dibebankan pada anggaran yang tersedia pada Fakultas Ekonomi Universitas Negeri Makassar.",  5)
     pos_y = draw_aligned_text(p, "Keempat", ":", "Surat Keputusan ini berlaku pada tanggal ditetapkan, sampai dengan selesainya ujian tutup yang bersangkutan, dengan ketentuan apabila dikemudian hari ternyata terdapat kekeliruan dalam Surat Keputusan ini, akan diperbaiki sebagaimana mestinya.",  5)
+    
+    if sk.ttd and sk.ttd.pejabat:
+        panjang_nama_dekan = A4[0] - ( p.stringWidth(sk.ttd.pejabat.nip.first_name, "Times-Bold", 10) + 60)
+        panjang_tanggal = A4[0] - ( p.stringWidth("pada tanggal : " + tanggal_indo(sk.date_in), "Times-Bold", 10) + 60)
+        if panjang_nama_dekan < panjang_tanggal :
+            pos_x_ttd = panjang_nama_dekan
+        else :
+            pos_x_ttd = panjang_tanggal
 
-    panjang_nama_dekan = A4[0] - ( p.stringWidth(sk.ttd.pejabat.nip.first_name, "Times-Bold", 10) + 60)
-    panjang_tanggal = A4[0] - ( p.stringWidth("pada tanggal : " + tanggal_indo(sk.date_in), "Times-Bold", 10) + 60)
-    if panjang_nama_dekan < panjang_tanggal :
-        pos_x_ttd = panjang_nama_dekan
-    else :
-        pos_x_ttd = panjang_tanggal
+        pos_y -= dl(p, pos_x_ttd, pos_y, 10, "Ditetapkan di : " + context.get("address_ttd", ""), 'N', 'L')
+        pos_y -= dl(p, pos_x_ttd, pos_y, 10, "pada tanggal : " +  tanggal_indo(sk.date_in), 'NU', 'L')
+        p.drawImage(ImageReader(context.get("api_qrcode", "") + context.get("baseurl", "") + 't/skpbb/' + str(sk.id)), pos_x_ttd+10, pos_y-50, width=40, height=40)
+        pos_y -= dl(p, pos_x_ttd, pos_y, 70, sk.ttd.pejabat.nip.first_name, 'BU', 'L')
+        pos_y -= dl(p, pos_x_ttd, pos_y, 10, "NIP. " + sk.ttd.pejabat.nip.username, 'B', 'L')
+    else:
+        pos_x_ttd = A4[0] - 200 
+        pos_y -= dl(p, pos_x_ttd, pos_y, 10, "Ditetapkan di : " + context.get("address_ttd", ""), 'N', 'L')
+        pos_y -= dl(p, pos_x_ttd, pos_y, 10, "pada tanggal : " +  tanggal_indo(sk.date_in), 'NU', 'L')
+        p.drawImage(ImageReader(context.get("api_qrcode", "") + context.get("baseurl", "") + 't/skpbb/' + str(sk.id)), pos_x_ttd+10, pos_y-50, width=40, height=40)
+        pos_y -= 70 
+        pos_y -= dl(p, pos_x_ttd, pos_y, 10, "[Tanda Tangan Dibatalkan]", 'B', 'L')
 
-    pos_y -= dl(p, pos_x_ttd, pos_y, 10, "Ditetapkan di : " + context.get("address_ttd", ""), 'N', 'L')
-    pos_y -= dl(p, pos_x_ttd, pos_y, 10, "pada tanggal : " +  tanggal_indo(sk.date_in), 'NU', 'L')
-    p.drawImage(ImageReader(context.get("api_qrcode", "") + context.get("baseurl", "") + 't/skpbb/' + str(sk.id)), pos_x_ttd+10, pos_y-50, width=40, height=40)
-    pos_y -= dl(p, pos_x_ttd, pos_y, 70, sk.ttd.pejabat.nip.first_name, 'BU', 'L')
-    pos_y -= dl(p, pos_x_ttd, pos_y, 10, "NIP. " + sk.ttd.pejabat.nip.username, 'B', 'L')
 
-        # Tembusan
     pos_y -= -20  # Beri jarak dari bagian sebelumnya
     p.setFont("Times-Roman", 8)
     p.drawString(posd_x, pos_y, "Tembusan:")

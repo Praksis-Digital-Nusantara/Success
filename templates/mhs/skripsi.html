@@ -334,6 +334,10 @@
 										<i class="ri-printer-line"></i>
 										Cetak Lembar Izin Penelitian
 									</a>
+									<a target="_blank" href="{% url 'acd:print_permohonan_penerbitan_sip' proposal.id %}" class="action-btn success">
+										<i class="ri-printer-line"></i>
+										Permohonan Penerbitan Izin Penelitian
+									</a>
 									<a href="{% url 'acd:layanan_add' %}" class="action-btn primary">
 										<i class="ri-customer-service-line"></i>
 										Layanan Akademik
@@ -359,16 +363,69 @@
 							<div class="timeline-badge">Tahap 6</div>
 							<h3>Seminar Hasil</h3>
 						</div>
-						
-						<div class="timeline-body">
-							<div class="timeline-description">
-								<p>Lengkapi semua berkas untuk persiapan Ujian</p>
+						{% if hasil.seminar_tgl is None %}
+							<div class="timeline-body">
+								<div class="timeline-description">
+									<p>Buat Hasil Penelitian dan konsultasikan ke Pembimbing, berikut adalah format pengesahan seminar hasil</p>
+								</div>
+								<div class="timeline-actions">
+									{% if skripsi is None %}
+										<div class="warning-message">
+											<i class="ri-error-warning-line"></i>
+											<span>Ajukan Judul Terlebih Dahulu! Lihat di Tahap 1</span>
+										</div>
+									{% elif not skripsi.pembimbing1 %}
+										<div class="warning-message">
+											<i class="ri-error-warning-line"></i>
+											<span>Pembimbing 1 Belum Diset! Lihat di Tahap 2</span>
+										</div>
+									{% elif not skripsi.pembimbing2 %}
+										<div class="warning-message">
+											<i class="ri-error-warning-line"></i>
+											<span>Pembimbing 2 Belum Diset! Lihat di Tahap 2</span>
+										</div>
+									{% elif not skripsi.izinpenelitian_mhsjudul.exists %}
+										<div class="warning-message">
+											<i class="ri-error-warning-line"></i>
+											<span>Izin Penelitian Belum Terbit! Lihat di Tahap 5</span>
+										</div>
+									{% else %}
+										<a target="_blank" href="{% url 'acd:print_pengesahan' 'hasil' skripsi.id %}" class="action-btn success">
+											<i class="ri-printer-line"></i>
+											Cetak Lembar Pengesahan
+										</a>
+										<a href="{% url 'acd:hasil_reg' %}" class="action-btn primary">
+											<i class="ri-file-add-line"></i>
+											Registrasi Hasil
+										</a>
+									{% endif %}
+								</div>
 							</div>
-						</div>
-						<div class="timeline-status pending">
-							<i class="ri-time-line"></i>
-							<span>Menunggu Tahap 5</span>
-						</div>
+							<div class="timeline-status active">
+								<i class="ri-time-line"></i>
+								<span>In Progress</span>
+							</div>
+						{% else %}
+						<div class="timeline-body">
+								<div class="timeline-description">
+									<div class="notification-time">
+										<i class="ri-calendar-line"></i>
+										<span>{{ hasil.seminar_tgl }}</span>
+									</div>
+									<p>Undangan seminar hasil penelitian Anda telah terbit, silahkan download di tautan berikut:</p>
+								</div>
+								<div class="timeline-actions">
+									<a target="_blank" href="{% url 'acd:print_undangan' 'Hasil' hasil.id %}" class="action-btn success">
+										<i class="ri-download-line"></i>
+										Cetak Undangan
+									</a>
+								</div>
+							</div>
+							<div class="timeline-status completed">
+								<i class="ri-check-line"></i>
+								<span>Selesai</span>
+							</div>
+						{% endif %}
 					</div>
 				</div>
 

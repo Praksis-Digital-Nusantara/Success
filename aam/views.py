@@ -108,3 +108,13 @@ def ver_ttd_skpbb(request, id):
         'data' : data,
     }
     return render(request,'verif_ttd/ver_ttd_skpbb.html', context) 
+
+# Verikasi TTD UPR
+def ver_ttd_upr(request, id):
+    data = get_object_or_404(Proposal, id=id)
+    context = {
+        'title' : 'Verifikasi TTD UPR',
+        'heading' : 'Verifikasi TTD UPR',
+        'data' : data,
+    }
+    return render(request,'verif_ttd/ver_ttd_upr.html', context) 
