@@ -31,7 +31,7 @@
                     </li>  
                    {% if request.is_pejabat_aktif %}
                     <li class="{% if title == 'Dokumen Ditandatangani' %}active{% endif %}">
-                        <a href="{% url 'acd:dokumen_ttd_pejabat' %}">
+                        <a href="{% url 'acd:list_ttd_pejabat' %}">
                             <i class="ri-qr-code-fill"></i> Dokumen yang di TTD
                         </a>
                     </li>

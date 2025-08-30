@@ -599,10 +599,11 @@ def ujian_dsn_nilai(request, id):
 
 @dosen_required
 @check_userdosen
-def dokumen_ttd_pejabat(request):
+def list_ttd_pejabat(request):
     now = timezone.now()
     userdosen = request.userdosen
 
+    # Cek pejabat aktif
     pejabat_aktif = Pejabat.objects.filter(
         pejabat=userdosen,
         tgl_mulai__lte=now,
@@ -613,36 +614,24 @@ def dokumen_ttd_pejabat(request):
         messages.error(request, "Anda bukan pejabat aktif.")
         return redirect('acd:dashboard')
 
+    # List model dokumen yang ingin ditampilkan
+    dokumen_models = [
+        ('observasi', SuketIzinObservasi),
+        ('rekomendasi', SuketRekomendasi),
+        ('sk_pembimbing', skPembimbing),
+        ('surat_tugas', SuratTugas),
+        ('suket_izinlab', SuketIzinLab),
+        ('suket_aktifkuliah', SuketAktifKuliah),
+        ('undangan_proposal', Proposal),
+        ('izin_penelitian', IzinPenelitian),
+    ]
+
     dokumen_ttd_pejabat = []
-    if pejabat_aktif:
-        observasi = list(SuketIzinObservasi.objects.filter(ttd=pejabat_aktif))
-        rekomendasi = list(SuketRekomendasi.objects.filter(ttd=pejabat_aktif))
-        sk_pembimbing = list(skPembimbing.objects.filter(ttd=pejabat_aktif))
-        surat_tugas = list(SuratTugas.objects.filter(ttd=pejabat_aktif))
-        suket_izinlab = list(SuketIzinLab.objects.filter(ttd=pejabat_aktif))
-        suket_aktifkuliah = list(SuketAktifKuliah.objects.filter(ttd=pejabat_aktif))
-        undangan_proposal = list(Proposal.objects.filter(ttd=pejabat_aktif))
-        izin_penelitian = list(IzinPenelitian.objects.filter(ttd=pejabat_aktif))
 
-        for item in observasi:
-            item.jenis_dokumen = 'observasi'
-        for item in rekomendasi:
-            item.jenis_dokumen = 'rekomendasi'
-        for item in sk_pembimbing:
-            item.jenis_dokumen = 'sk_pembimbing'
-        for item in surat_tugas:
-            item.jenis_dokumen = 'surat_tugas'
-        for item in suket_izinlab:
-            item.jenis_dokumen = 'suket_izinlab'
-        for item in suket_aktifkuliah:
-            item.jenis_dokumen = 'suket_aktifkuliah'
-        for item in undangan_proposal:
-            item.jenis_dokumen = 'undangan_proposal'
-        for item in izin_penelitian:
-            item.jenis_dokumen = 'izin_penelitian'
-
-        # Gabungkan semua list dokumen
-        dokumen_ttd_pejabat = observasi + rekomendasi + sk_pembimbing + surat_tugas + suket_izinlab + suket_aktifkuliah + undangan_proposal + izin_penelitian
+    for jenis, model in dokumen_models:
+        for dokumen in model.objects.filter(ttd=pejabat_aktif):
+            dokumen.jenis_dokumen = jenis
+            dokumen_ttd_pejabat.append(dokumen)
 
     context = {
         'title': 'Dokumen Ditandatangani',
@@ -654,124 +643,51 @@ def dokumen_ttd_pejabat(request):
     }
     return render(request, 'dosen/list_ttd_pejabat.html', context)
 
-
 @dosen_required
 @check_userdosen
-def batalkan_ttd_observasi(request, id):
-    obj = get_object_or_404(SuketIzinObservasi, id=id)
-    obj.ttd = None
-    obj.save()
-    messages.success(request, "TTD observasi berhasil dibatalkan.")
-    return redirect('acd:dokumen_ttd_pejabat')
+def kelola_ttd(request, model_name, id, action):
+    models_map = {
+        'observasi': SuketIzinObservasi,
+        'rekomendasi': SuketRekomendasi,
+        'sk_pembimbing': skPembimbing,
+        'surat_tugas': SuratTugas,
+        'suket_izinlab': SuketIzinLab,
+        'suket_aktifkuliah': SuketAktifKuliah,
+        'undangan_proposal': Proposal,
+        'izin_penelitian': IzinPenelitian,
+    }
 
+    model = models_map.get(model_name)
+    if not model:
+        messages.error(request, "Jenis dokumen tidak valid.")
+        return redirect('acd:list_ttd_pejabat')
+
+    obj = get_object_or_404(model, id=id)
+
+    now = timezone.now().date()
+    pejabat_aktif = Pejabat.objects.filter(
+        pejabat=request.userdosen,   # userdosen = UserDosen yang login
+        tgl_mulai__lte=now,
+        tgl_selesai__gte=now
+    ).first()
+
+    if not pejabat_aktif:
+        messages.error(request, "Anda tidak memiliki jabatan aktif saat ini.")
+        return redirect('acd:list_ttd_pejabat')
+
+    if not obj.ttd or obj.ttd != pejabat_aktif:
+        messages.error(request, "Anda tidak berhak mengubah atau membatalkan TTD ini.")
+        return redirect('acd:list_ttd_pejabat')
+
+    if action == 'batalkan':
+        obj.ttd = None
+        obj.save()
+        messages.success(request, f"TTD {model_name} berhasil dibatalkan.")
+    elif action == 'ubah':
+        obj.ttd_status = "Manual"
+        obj.save()
+        messages.success(request, f"TTD {model_name} diubah menjadi Manual.")
+    else:
+        messages.error(request, "Aksi tidak valid.")
     
-@dosen_required
-@check_userdosen
-def ubah_ttd_observasi(request, id):
-    obj = get_object_or_404(SuketIzinObservasi, id=id)
-    obj.ttd_status = "Manual"
-    obj.save()
-    messages.success(request, "TTD observasi diubah menjadi Manual.")
-    return redirect('acd:dokumen_ttd_pejabat')
-
-
-@dosen_required
-@check_userdosen
-def batalkan_ttd_rekomendasi(request, id):
-    obj = get_object_or_404(SuketRekomendasi, id=id)
-    obj.ttd = None
-    obj.save()
-    messages.success(request, "TTD rekomendasi berhasil dibatalkan.")
-    return redirect('acd:dokumen_ttd_pejabat')
-
-@dosen_required
-@check_userdosen
-def ubah_ttd_rekomendasi(request, id):
-    obj = get_object_or_404(SuketRekomendasi, id=id)
-    obj.ttd_status = "Manual"
-    obj.save()
-    messages.success(request, "TTD rekomendasi diubah menjadi Manual.")
-    return redirect('acd:dokumen_ttd_pejabat')
-
-
-@dosen_required
-@check_userdosen
-def batalkan_ttd_skpembimbing(request, id):
-    obj = get_object_or_404(skPembimbing, id=id)
-    obj.ttd = None
-    obj.save()
-    messages.success(request, "TTD SK pembimbing berhasil dibatalkan.")
-    return redirect('acd:dokumen_ttd_pejabat')
-
-
-@dosen_required
-@check_userdosen
-def batalkan_ttd_surat_tugas(request, id):
-    obj = get_object_or_404(SuratTugas, id=id)
-    obj.ttd = None
-    obj.save()
-    messages.success(request, "TTD SK Tugas berhasil dibatalkan.")
-    return redirect('acd:dokumen_ttd_pejabat')
-
-@dosen_required
-@check_userdosen
-def ubah_ttd_surat_tugas(request, id):
-    obj = get_object_or_404(SuratTugas, id=id)
-    obj.ttd_status = "Manual"
-    obj.save()
-    messages.success(request, "TTD Surat Tugas diubah menjadi Manual.")
-    return redirect('acd:dokumen_ttd_pejabat')
-
-@dosen_required
-@check_userdosen
-def batalkan_ttd_suket_izinlab(request, id):
-    obj = get_object_or_404(SuketIzinLab, id=id)
-    obj.ttd = None
-    obj.save()
-    messages.success(request, "TTD Suket Izin Lab berhasil dibatalkan.")
-    return redirect('acd:dokumen_ttd_pejabat')
-
-@dosen_required
-@check_userdosen
-def ubah_ttd_suket_izinlab(request, id):
-    obj = get_object_or_404(SuketIzinLab, id=id)
-    obj.ttd_status = "Manual"
-    obj.save()
-    messages.success(request, "TTD Suket Izin Lab diubah menjadi Manual.")
-    return redirect('acd:dokumen_ttd_pejabat')
-
-@dosen_required
-@check_userdosen
-def batalkan_ttd_suket_aktifkuliah(request, id):
-    obj = get_object_or_404(SuketAktifKuliah, id=id)
-    obj.ttd = None
-    obj.save()
-    messages.success(request, "TTD Suket Aktif Kuliah berhasil dibatalkan.")
-    return redirect('acd:dokumen_ttd_pejabat')
-
-@dosen_required
-@check_userdosen
-def ubah_ttd_suket_aktifkuliah(request, id):
-    obj = get_object_or_404(SuketAktifKuliah, id=id)
-    obj.ttd_status = "Manual"
-    obj.save()
-    messages.success(request, "TTD Suket Aktif Kuliah diubah menjadi Manual.")
-    return redirect('acd:dokumen_ttd_pejabat')
-
-@dosen_required
-@check_userdosen
-def batalkan_ttd_undangan_proposal(request, id):
-    obj = get_object_or_404(Proposal, id=id)
-    obj.ttd = None
-    obj.save()
-    messages.success(request, "TTD Undangan Proposal berhasil dibatalkan.")
-    return redirect('acd:dokumen_ttd_pejabat')
-
-@dosen_required
-@check_userdosen
-def ubah_ttd_undangan_proposal(request, id):
-    obj = get_object_or_404(Proposal, id=id)
-    obj.ttd_status = "Manual"
-    obj.save()
-    messages.success(request, "TTD Undangan Proposal diubah menjadi Manual.")
-    return redirect('acd:dokumen_ttd_pejabat')
+    return redirect('acd:list_ttd_pejabat')

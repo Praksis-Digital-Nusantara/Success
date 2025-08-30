@@ -9,7 +9,6 @@
 				<p>{{ web_name }}</p>
 			</div>
 		</div>
-
 		<div class="student-table">
 			<div class="table-responsive">
 				<table id="layananTable" class="display" style="width:100%">
@@ -65,54 +64,17 @@
 								{% endif %}
 							</td>							
 							<td>
-								{% if datatb.jenis_dokumen == 'observasi' %}
-									<a href="{% url 'acd:batalkan_ttd_observasi' datatb.id %}" onclick="return confirm('Batalkan TTD surat observasi ini?')">
-										<button class="btn danger small"><i class="ri-close-line"></i></i> Batalkan</button>
-									</a>
-									<a href="{% url 'acd:ubah_ttd_observasi' datatb.id %}" onclick="return confirm('Ubah TTD surat observasi ini ke Manual?')">
-										<button class="btn success small"><i class="ri-qr-scan-line"></i></i>Manual</button>
-									</a>
-								{% elif datatb.jenis_dokumen == 'suket_aktifkuliah' %}
-									<a href="{% url 'acd:batalkan_ttd_suket_aktifkuliah' datatb.id %}" onclick="return confirm('Batalkan TTD surat aktif kuliah ini?')">
-										<button class="btn danger small"><i class="ri-close-line"></i></i> Batalkan</button>
-									</a>
-									<a href="{% url 'acd:ubah_ttd_suket_aktifkuliah' datatb.id %}" onclick="return confirm('Ubah TTD surat aktif kuliah ini ke Manual?')">
-										<button class="btn success small"><i class="ri-qr-scan-line"></i></i>Manual</button>
-									</a>
-								{% elif datatb.jenis_dokumen == 'rekomendasi' %}
-									<a href="{% url 'acd:batalkan_ttd_rekomendasi' datatb.id %}" onclick="return confirm('Batalkan TTD surat rekomendasi ini?')">
-										<button class="btn danger small"><i class="ri-close-line"></i></i> Batalkan</button>
-									</a>
-									<a href="{% url 'acd:ubah_ttd_rekomendasi' datatb.id %}" onclick="return confirm('Ubah TTD surat rekomendasi ini ke Manual?')">
-										<button class="btn success small"><i class="ri-qr-scan-line"></i></i>Manual</button>
-									</a>
-								{% elif datatb.jenis_dokumen == 'surat_tugas' %}
-									<a href="{% url 'acd:batalkan_ttd_surat_tugas' datatb.id %}" onclick="return confirm('Batalkan TTD surat tugas ini?')">
-										<button class="btn danger small"><i class="ri-close-line"></i> Batalkan</button>
-									</a>
-									<a href="{% url 'acd:ubah_ttd_surat_tugas' datatb.id %}" onclick="return confirm('Ubah TTD surat tugas ini ke Manual?')">
-										<button class="btn success small"><i class="ri-qr-scan-line"></i></i>Manual</button>
-									</a>
-								{% elif datatb.jenis_dokumen == 'sk_pembimbing' %}
-										<a href="{% url 'acd:batalkan_ttd_skpembimbing' datatb.id %}" onclick="return confirm('Batalkan TTD SK Pembimbing ini?')">
-											<button class="btn danger small"><i class="ri-close-line"></i> Batalkan</button>
-										</a>
-								{% elif datatb.jenis_dokumen == 'suket_izinlab' %}
-										<a href="{% url 'acd:batalkan_ttd_suket_izinlab' datatb.id %}" onclick="return confirm('Batalkan TTD Suket Izin Lab ini?')">
-											<button class="btn danger small"><i class="ri-close-line"></i> Batalkan</button>
-										</a>
-										<a href="{% url 'acd:ubah_ttd_suket_izinlab' datatb.id %}" onclick="return confirm('Ubah TTD Suket Izin Lab ini ke Manual?')">
-											<button class="btn success small"><i class="ri-qr-scan-line"></i></i>Manual</button>
-										</a>
-								{% elif datatb.jenis_dokumen == 'undangan_proposal' %}
-										<a href="{% url 'acd:batalkan_ttd_undangan_proposal' datatb.id %}" onclick="return confirm('Batalkan TTD Undangan Proposal ini?')">
-											<button class="btn danger small"><i class="ri-close-line"></i> Batalkan</button>
-										</a>
-										<a href="{% url 'acd:ubah_ttd_undangan_proposal' datatb.id %}" onclick="return confirm('Ubah TTD Undangan Proposal ini ke Manual?')">
-											<button class="btn success small"><i class="ri-qr-scan-line"></i></i>Manual</button>
-										</a>
-								{% endif %}
-							</td>
+							{% if datatb.jenis_dokumen %}
+								<a href="{% url 'acd:kelola_ttd' datatb.jenis_dokumen datatb.id 'batalkan' %}" 
+								onclick="return confirm('Batalkan TTD {{ datatb.jenis_dokumen|title }} ini?')">
+									<button class="btn danger small"><i class="ri-close-line"></i> Batalkan</button>
+								</a>
+								<a href="{% url 'acd:kelola_ttd' datatb.jenis_dokumen datatb.id 'ubah' %}" 
+								onclick="return confirm('Ubah TTD {{ datatb.jenis_dokumen|title }} ini ke Manual?')">
+									<button class="btn success small"><i class="ri-qr-scan-line"></i> Manual</button>
+								</a>
+							{% endif %}
+						</td>
 						</tr>
 						{% empty %}
 						<tr>
