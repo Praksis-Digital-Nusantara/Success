@@ -10,8 +10,7 @@ from uuid import UUID
 from .utils import cek_kemiripan_judul  
 
 from .models import UserMhs, SkripsiJudul, chatPA, Proposal, ProposalNilai,  Hasil, HasilNilai,  Ujian, UjianNilai, UserDosen, Pejabat, SuketIzinObservasi, SuketRekomendasi, SuratTugas, SuketIzinLab, SuketAktifKuliah
-from .models import skPembimbing, skPenguji
-
+from .models import skPembimbing, skPenguji, IzinPenelitian
 from .forms_dosen import formProfile, formChatPA, formProposalNilai, formHasilNilai, formUjianNilai
 from django.utils import timezone
 
@@ -610,6 +609,10 @@ def dokumen_ttd_pejabat(request):
         tgl_selesai__gte=now
     ).first()
 
+    if not pejabat_aktif:
+        messages.error(request, "Anda bukan pejabat aktif.")
+        return redirect('acd:dashboard')
+
     dokumen_ttd_pejabat = []
     if pejabat_aktif:
         observasi = list(SuketIzinObservasi.objects.filter(ttd=pejabat_aktif))
@@ -619,6 +622,7 @@ def dokumen_ttd_pejabat(request):
         suket_izinlab = list(SuketIzinLab.objects.filter(ttd=pejabat_aktif))
         suket_aktifkuliah = list(SuketAktifKuliah.objects.filter(ttd=pejabat_aktif))
         undangan_proposal = list(Proposal.objects.filter(ttd=pejabat_aktif))
+        izin_penelitian = list(IzinPenelitian.objects.filter(ttd=pejabat_aktif))
 
         for item in observasi:
             item.jenis_dokumen = 'observasi'
@@ -634,9 +638,11 @@ def dokumen_ttd_pejabat(request):
             item.jenis_dokumen = 'suket_aktifkuliah'
         for item in undangan_proposal:
             item.jenis_dokumen = 'undangan_proposal'
+        for item in izin_penelitian:
+            item.jenis_dokumen = 'izin_penelitian'
 
         # Gabungkan semua list dokumen
-        dokumen_ttd_pejabat = observasi + rekomendasi + sk_pembimbing + surat_tugas + suket_izinlab + suket_aktifkuliah + undangan_proposal
+        dokumen_ttd_pejabat = observasi + rekomendasi + sk_pembimbing + surat_tugas + suket_izinlab + suket_aktifkuliah + undangan_proposal + izin_penelitian
 
     context = {
         'title': 'Dokumen Ditandatangani',
@@ -657,6 +663,8 @@ def batalkan_ttd_observasi(request, id):
     obj.save()
     messages.success(request, "TTD observasi berhasil dibatalkan.")
     return redirect('acd:dokumen_ttd_pejabat')
+
+    
 @dosen_required
 @check_userdosen
 def ubah_ttd_observasi(request, id):

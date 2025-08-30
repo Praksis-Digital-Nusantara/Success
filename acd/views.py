@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import logout, login, authenticate
 
-from .models import UserMhs, UserProdi, UserFakultas, UserDosen, Layanan
+from .models import UserMhs, UserProdi, UserFakultas, UserDosen, Layanan, Pejabat
 from .models import SkripsiJudul, Proposal, Hasil, Ujian, SkripsiJudul, skPenguji
 
 from .forms import RoleChangeForm, CustomPasswordChangeForm
@@ -20,7 +20,6 @@ from datetime import date
 
 
 now = timezone.now()
-
 
 
 
@@ -63,6 +62,12 @@ def index(request):
                     'hasil': Hasil.objects.filter(Q(pembimbing1=userC) | Q(pembimbing2=userC) | Q(penguji1=userC) | Q(penguji2=userC)).count() or 0,
                     'ujian': Ujian.objects.filter(Q(pembimbing1=userC) | Q(pembimbing2=userC) | Q(penguji1=userC) | Q(penguji2=userC)).count() or 0,
                 }
+            is_pejabat_aktif = Pejabat.objects.filter(
+                        pejabat=userC,
+                        tgl_mulai__lte=now,
+                        tgl_selesai__gte=now
+            ).exists()
+            request.is_pejabat_aktif = is_pejabat_aktif  # bisa dipakai di view & template
         except UserDosen.DoesNotExist:
             messages.error(request, "Lengkapi data anda terlebih dahulu!")
             return redirect('/acd/profile_dosen')

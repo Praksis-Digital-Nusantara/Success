@@ -1,0 +1,178 @@
+{% extends "verif_ttd/base.html" %}
+{% block content %}
+    <div class="container">
+    <div class="card 
+    {% if jenis == 'skpbb' or jenis == 'skpgj' or jenis == 'upr izp' %}
+        {% if not data.ttd or not data.ttd.pejabat %}
+            card-danger
+        {% endif %}
+    {% elif jenis == 'pgj_pa' or jenis == 'pgj_mhs' %}
+        {% if not data.status %}
+            card-danger
+        {% endif %}
+    {% endif %}">
+       <div class="card-header 
+    {% if jenis == 'skpbb' or jenis == 'skpgj' or jenis == 'upr izp'  %}
+        {% if not data.ttd or not data.ttd.pejabat %}
+            card-header-danger
+        {% endif %}
+    {% elif jenis == 'pgj_pa' or jenis == 'pgj_mhs' %}
+        {% if not data.status %}
+            card-header-danger
+        {% endif %}
+    {% endif %}">
+                <div class="header-icon">
+                    <i class="ri-shield-check-line"></i>
+                </div>
+                <h1 class="header-title">Verifikasi Dokumen</h1>
+                {% if jenis in "skpbb skpgj upr izp" %}
+                <p class="header-subtitle">Dokumen Digital [{{ title }}]</p>
+                {% endif %}
+                <div class="status-badge status-verified">
+                    <i class="ri-checkbox-circle-fill"></i>
+                    <span>
+                {% if jenis in "skpbb skpgj upr izp" %}
+                    {% if data.ttd and data.ttd.pejabat %}
+                        Terverifikasi
+                    {% else %}
+                        Tidak Terverifikasi
+                    {% endif %}
+                {% elif jenis in "pgj_pa pgj_mhs" %}
+                    {% if data.status %}
+                        Terverifikasi
+                    {% else %}
+                        Tidak Terverifikasi
+                    {% endif %}
+                {% endif %}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="card-body">
+                <div class="info-grid">
+                    <!-- Mahasiswa -->
+                    {% if jenis in "skpbb skpgj upr izp" %}
+                    <div class="info-group">
+                        <div class="group-title">
+                           <i class="ri-article-line"></i>
+                            Detail Dokumen
+                        </div>
+                           <div class="info-item">
+                            <span class="info-label">Nomor Surat</span>
+                            <span class="info-value">{{ data.nosurat }}{{ data.no_surat }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Nama</span>
+                            <span class="info-value">{{ data.mhs.nim.first_name }} {{ data.proposal.mhs_judul.mhs.nim.first_name }} {{ data.mhs_judul.mhs.nim.first_name}}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">NIM</span>
+                            <span class="info-value">{{ data.mhs.nim.username }} {{ data.proposal.mhs_judul.mhs.nim.username }}{{ data.mhs_judul.mhs.nim.username}}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Prodi</span>
+                            <span class="info-value">{{ data.mhs.prodi.nama_prodi }} {{ data.proposal.mhs_judul.mhs.prodi.nama_prodi }} {{ data.mhs_judul.mhs.prodi.nama_prodi}}</span>
+                        </div>
+                    </div>
+                    {% elif jenis in "pgj_pa pgj_mhs" %}
+                    <div class="info-group">
+                        <div class="group-title">
+                            <i class="ri-file-text-line"></i>
+                            Mahasiswa
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Nama</span>
+                            <span class="info-value">{{ data.mhs.nim.first_name }} {{ data.proposal.mhs_judul.mhs.nim.first_name }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">NIM</span>
+                            <span class="info-value">{{ data.mhs.nim.username }} {{ data.proposal.mhs_judul.mhs.nim.username }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Prodi</span>
+                            <span class="info-value">{{ data.mhs.prodi.nama_prodi }} {{ data.proposal.mhs_judul.mhs.prodi.nama_prodi }}</span>
+                        </div>
+                    </div>
+                    {% endif %}
+
+
+                    <!-- Penandatangan -->
+                    {% if jenis in "skpbb skpgj upr izp" %}
+                    <div class="info-group">
+                        <div class="group-title">
+                            <i class="ri-user-star-line"></i>
+                            Penandatangan
+                        </div>
+                     {% if data.ttd.pejabat %}
+                    <div class="info-item">
+                        <span class="info-label">Jabatan</span>
+                        <span class="info-value">{{ data.ttd.jabatan }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Nama</span>
+                        <span class="info-value">{{ data.ttd.pejabat.nip.first_name }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">NIP</span>
+                        <span class="info-value">{{ data.ttd.pejabat.nip.username }}</span>
+                    </div>
+                {% else %}
+                    <div class="info-item">
+                        <span class="info-label">Deskripsi:</span>
+                        <span class="info-value">Membatalkan tanda tangan</span>
+                    </div>
+                {% endif %}
+                        <div class="info-item">
+                            <span class="info-label">Status</span>
+                            <span class="info-value">
+                                <span class="signature-status signature-verified">
+                                    <i class="ri-shield-check-fill"></i>
+                                {% if not data.ttd.pejabat %}
+                                    Tidak Terverifikasi
+                                {% else %}
+                                    Terverifikasi
+                                {% endif %}
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    {% elif jenis == "pgj_pa" or jenis == "pgj_mhs" %}
+                    <div class="info-group">
+                        <div class="group-title">
+                            <i class="ri-user-star-line"></i>
+                            Status Pengajuan:
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Status</span>
+                            <span class="info-value">
+                                <span class="signature-status signature-verified">
+                                    <i class="ri-shield-check-fill"></i>
+                                {% if not data.status %}
+                                    {{ data.status }}
+                                {% else %}
+                                    {{ data.status }}
+                                {% endif %}
+                                </span>
+                            </span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Penasehat Akademik</span>
+                            <span class="info-value">{{ data.mhs.penasehat_akademik.nip.first_name}}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">NIP</span>
+                            <span class="info-value">{{ data.mhs.penasehat_akademik.nip.username }}</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- Footer -->
+            <div class="card-footer">
+                <p class="footer-text">Sistem Verifikasi Digital 2025</p>
+                <p class="verification-code">ID: #VRF-{{ data.id }}-2025</p>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

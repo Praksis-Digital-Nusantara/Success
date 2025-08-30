@@ -70,7 +70,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'aam.context_processors.web_name',
                 'aam.context_processors.versioned_static', #saya tambahkan untuk version stylesnya
-                'acd.context_processors.pejabat_aktif',  # Tambahkan ini
             ],
         },
     },
@@ -140,14 +139,14 @@ STATICFILES_DIRS = [
 
 # for production
 # STATIC_URL = '/static/'
-# STATIC_ROOT = '/home/bisdigun/success/static'
+# STATIC_ROOT = '/home/esuh2918/esuccess/aam/static'
+# ln -s /home/esuh2918/esuccess/aam/static /home/esuh2918/public_html/static
 
-# ln -s /home/bisdigun/success/static /home/bisdigun/app.bisdigunm.com/static
-
+# for production
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'  
 
-#  ln -s /home/bisdigun/success/media /home/bisdigun/success.feb-unm.web.id/media
+# ln -s /home/esuh2918/esuccess/aam/media /home/esuh2918/public_html/media
 
 
 # Default primary key field type
@@ -158,3 +157,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # TAMBAHAN
 
 LOGOUT_REDIRECT_URL = '/login'
+
+
+# # DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION BEGIN
+# PassengerAppRoot "/home/esuh2918/esuccess"
+# PassengerBaseURI "/"
+# PassengerPython "/home/esuh2918/virtualenv/esuccess/3.11/bin/python"
+# # DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION END
+# # DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION BEGIN
+# <IfModule Litespeed>
+# </IfModule>
+# # DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION END

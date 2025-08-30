@@ -138,13 +138,13 @@ def print_skpgj(request, id):
 
     pos_y -= dl(p, pos_x_ttd, pos_y, 15, "Ditetapkan di : " + context.get("address_ttd", ""), 'N', 'L')
     pos_y -= dl(p, pos_x_ttd, pos_y, 15, "pada tanggal : " +  tanggal_indo(sk.date_in), 'NU', 'L')
-    p.drawImage(ImageReader(context.get("api_qrcode", "") + context.get("baseurl", "") + 't/skpbb/' + str(sk.id)), pos_x_ttd+10, pos_y-50, width=40, height=40)
+    p.drawImage(ImageReader(context.get("api_qrcode", "") + context.get("baseurl", "") + 't/skpgj/' + str(sk.id)), pos_x_ttd+10, pos_y-50, width=40, height=40)
     pos_y -= dl(p, pos_x_ttd, pos_y, 70, sk.ttd.pejabat.nip.first_name, 'BU', 'L')
     pos_y -= dl(p, pos_x_ttd, pos_y, 15, "NIP. " + sk.ttd.pejabat.nip.username, 'B', 'L')
 
 
     # Menutup halaman dan menyimpan PDF
-    p.setTitle("SK Pembimbing " + str(sk.proposal.mhs_judul.mhs))
+    p.setTitle("SK Penguji " + str(sk.proposal.mhs_judul.mhs))
     p.showPage()
     p.save()
     response["Content-Disposition"] = f'inline; filename="SK Pembimbing { str(sk.proposal.mhs_judul.mhs) }.pdf"'

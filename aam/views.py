@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from acd.models import Proposal, Hasil, Ujian, IzinPenelitian, SuketIzinObservasi, skPembimbing
+from acd.models import Proposal, Hasil, Ujian, IzinPenelitian, SuketIzinObservasi, skPembimbing, skPenguji, SkripsiJudul
 from datetime import datetime
 from django.shortcuts import get_object_or_404
 
@@ -77,44 +77,51 @@ def LogoutView(request):
             messages.success(request, 'Anda telah berhasil logout!')
         return redirect('login')    
 
-    return render(request,'logout.html', context)             
+    return render(request,'logout.html', context)    
 
-# Verifikasi TTD Izin Penelitian
-def ver_ttd_izp(request, id):
-    data = get_object_or_404(IzinPenelitian, id=id)
-    context = {
-        'title' : 'Verifikasi TTD Izin Penelitian',
-        'heading' : 'Verifikasi TTD Izin Penelitian',
-        'data' : data,
-    }
-    return render(request,'verif_ttd/ver_ttd_izp.html', context) 
+def verTTD(request, jenis, id):
 
-# Verifikasi TTD Seminar
-def ver_ttd_sio(request, id):
-    data = get_object_or_404(SuketIzinObservasi, id=id)
-    context = {
-        'title' : 'Verifikasi TTD Izin Observasi',
-        'heading' : 'Verifikasi TTD Izin Observasi',
-        'data' : data,
-    }
-    return render(request,'verif_ttd/ver_ttd_sio.html', context) 
+    if jenis == "izp":
+        data = get_object_or_404(IzinPenelitian, id=id)
+        heading = "e-TTD Izin Penelitian"
+        title = "e-TTD Izin Penelitian"
 
-# Verikasi TTD SK Pembimbing
-def ver_ttd_skpbb(request, id):
-    data = get_object_or_404(skPembimbing, id=id)
-    context = {
-        'title' : 'Verifikasi TTD SK Pembimbing',
-        'heading' : 'Verifikasi TTD SK Pembimbing',
-        'data' : data,
-    }
-    return render(request,'verif_ttd/ver_ttd_skpbb.html', context) 
+    elif jenis == "sio":
+        data = get_object_or_404(SuketIzinObservasi, id=id)
+        title = "e-TTD Izin Observasi"
+        heading = "e-TTD Izin Observasi"
 
-# Verikasi TTD UPR
-def ver_ttd_upr(request, id):
-    data = get_object_or_404(Proposal, id=id)
+    elif jenis == "skpbb":
+        data = get_object_or_404(skPembimbing, id=id)
+        title = "e-TTD SK Pembimbing"
+        heading = "e-TTD SK Pembimbing"
+
+    elif jenis == "skpgj":
+        data = get_object_or_404(skPenguji, id=id)
+        title = "e-TTD SK Penguji"
+        heading = "e-TTD SK Penguji"
+
+    elif jenis == "upr":
+        data = get_object_or_404(Proposal, id=id)
+        title = "e-TTD Undangan Proposal"
+        heading = "e-TTD Undangan Proposal"
+
+    elif jenis == "pgj_mhs":
+        data = get_object_or_404(SkripsiJudul, id=id)
+        title = "e-TTD Pemeriksaan Judul"
+        heading = "e-TTD Pemeriksaan Judul"
+
+    elif jenis == "pgj_pa":
+        data = get_object_or_404(SkripsiJudul, id=id)
+        title = "e-TTD Pemeriksaan Judul"
+        heading = "e-TTD Pemeriksaan Judul"
+    else:
+        return render(request, "404.html", status=404)
+
     context = {
-        'title' : 'Verifikasi TTD UPR',
-        'heading' : 'Verifikasi TTD UPR',
-        'data' : data,
+        "title": title,
+        "heading": heading,
+        "data": data,
+        "jenis": jenis,
     }
-    return render(request,'verif_ttd/ver_ttd_upr.html', context) 
+    return render(request, "verif_ttd/ver_ttd.html", context)         
