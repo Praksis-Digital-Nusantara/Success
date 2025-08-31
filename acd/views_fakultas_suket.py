@@ -88,6 +88,7 @@ def suket_aktifkuliah_edit(request, nim):
     else:
         form = formSuketAktifKuliah(instance=datasuket)
 
+    layanan = Layanan.objects.filter().order_by('-date_in').first()
     context = {
         'title': 'Suket Aktif Kuliah',
         'heading': 'Edit Suket Aktif Kuliah',
@@ -95,6 +96,7 @@ def suket_aktifkuliah_edit(request, nim):
         'photo' : userfakultas.photo,
         'mhs' : mhs,
         'form': form,
+        'layanan': layanan,
     }
     return render(request, 'fakultas/suket_aktifkuliah_edit.html', context)     
 

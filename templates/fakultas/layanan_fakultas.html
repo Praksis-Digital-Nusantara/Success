@@ -40,6 +40,16 @@
 								<button class="btn secondary x-small"><i class="ri-file-line"></i> File</button>
 							</a>
 						{% endif %}
+						{% if layanan.layanan_jenis.nama_layanan == 'Surat Keterangan Aktif Kuliah' %}
+							<a href="/acd/suket_aktifkuliah_edit/{{layanan.mhs.nim.username}}">
+								<button class="btn secondary x-small"><i class="ri-file-line"></i>Proses Layanan</button>
+							</a>
+						{% endif %}
+						{% if layanan.layanan_jenis.nama_layanan == 'Surat Izin Observasi' %}
+							<a href="/acd/izinobservasi_edit/{{layanan.mhs.nim.username}}">
+								<button class="btn secondary x-small"><i class="ri-file-line"></i>Proses Layanan</button>
+							</a>
+						{% endif %}
 						{% if layanan.layanan_jenis.nama_layanan == 'Undangan Seminar Proposal' %}
 							<a href="/acd/proposal_edit/{{layanan.mhs.nim.username}}">
 								<button class="btn secondary x-small"><i class="ri-file-line"></i> Berkas Kelengkapan</button>

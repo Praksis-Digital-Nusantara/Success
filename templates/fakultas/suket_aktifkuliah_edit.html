@@ -23,6 +23,31 @@
 							<td width="5%">:</td>
 							<td>{{ mhs.tempat_lahir }}, {{ mhs.tgl_lahir }}</td>			  
 						</tr>
+						<tr>
+							<td width="10%">Form Layanan Isi</td>
+							<td width="5%">:</td>
+							<td>{{ layanan.layanan_jenis.nama_layanan }}</td>			  
+						</tr>
+						<tr>
+							<td width="10%">Form Layanan Isi</td>
+							<td width="5%">:</td>
+							<td>{{ layanan.layanan_isi }}</td>			  
+						</tr>
+						<tr>
+							<td width="10%">Status</td>
+							<td width="5%">:</td>
+							<td>{{ layanan.status }}</td>			  
+						</tr>
+						<tr>
+							<td>Lampiran Ajuan</td>
+							<td>:</td>
+							<td>{% if layanan.layanan_file %}
+									<a target="_blank" href="/media/{{ layanan.layanan_file }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File</p>
+									{% endif %}
+							</td>					  
+						</tr>
 					</tbody>
 				</table>
 			</div>
