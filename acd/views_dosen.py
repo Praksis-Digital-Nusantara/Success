@@ -656,6 +656,16 @@ def kelola_ttd(request, model_name, id, action):
         'undangan_proposal': Proposal,
         'izin_penelitian': IzinPenelitian,
     }
+    model_name_map = {
+        'observasi': 'Suket Izin Observasi',
+        'rekomendasi': 'Suket Rekomendasi',
+        'sk_pembimbing': 'SK Pembimbing',
+        'surat_tugas': 'Surat Tugas',
+        'suket_izinlab': 'Suket Izin Lab',
+        'suket_aktifkuliah': 'Suket Aktif Kuliah',
+        'undangan_proposal': 'Undangan Proposal',
+        'izin_penelitian': 'Izin Penelitian',
+    }
 
     model = models_map.get(model_name)
     if not model:
@@ -682,11 +692,11 @@ def kelola_ttd(request, model_name, id, action):
     if action == 'batalkan':
         obj.ttd = None
         obj.save()
-        messages.success(request, f"TTD {model_name} berhasil dibatalkan.")
+        messages.success(request, f"TTD {model_name_map[model_name]} berhasil dibatalkan.")
     elif action == 'ubah':
         obj.ttd_status = "Manual"
         obj.save()
-        messages.success(request, f"TTD {model_name} diubah menjadi Manual.")
+        messages.success(request, f"TTD {model_name_map[model_name]} diubah menjadi Manual.")
     else:
         messages.error(request, "Aksi tidak valid.")
     
