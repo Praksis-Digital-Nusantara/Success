@@ -51,11 +51,14 @@ def print_suket_aktifkuliah(request, id):
                 pos_y -= 15 
                 canvas.drawString(posd_x + 160, pos_y, line)
         return pos_y  
-    
-    pos_y = draw_aligned_text(p, "Nama", data.ttd.pejabat.nip.first_name,  15) 
-    pos_y = draw_aligned_text(p, "NIP", data.ttd.pejabat.nip.username,  15) 
-    pos_y = draw_aligned_text(p, "Pangkat/Golongan", str(data.ttd.pejabat.pangkat) + " / " + str(data.ttd.pejabat.golongan),  15) 
-    pos_y = draw_aligned_text(p, "Jabatan ", "Kepala Bagian Umum",  15)
+
+    if data.ttd and data.ttd.pejabat:
+        pos_y = draw_aligned_text(p, "Nama", data.ttd.pejabat.nip.first_name,  15) 
+        pos_y = draw_aligned_text(p, "NIP", data.ttd.pejabat.nip.username,  15) 
+        pos_y = draw_aligned_text(p, "Pangkat/Golongan", str(data.ttd.pejabat.pangkat) + " / " + str(data.ttd.pejabat.golongan),  15) 
+        pos_y = draw_aligned_text(p, "Jabatan ", "Kepala Bagian Umum",  15)
+    else:
+        pos_y = draw_aligned_text(p,"STATUS", "PEJABAT MEMBATALKAN TTD DOKUMEN",  15)
 
     pos_y -= dl(p, posd_x, pos_y, 30, "Dengan ini menerangkan dengan sesungguhnya, bahwa :", 'N', 'L')
 
@@ -105,25 +108,27 @@ def print_suket_aktifkuliah(request, id):
         width=470 
     )
     for line in wrapped_text: pos_y -= dl(p, posd_x, pos_y, 15, line, 'N', 'J', width=470)
-    
+    pos_x_ttd = 300
 
-    panjang_nama_pejabat = A4[0] - ( p.stringWidth(data.ttd.pejabat.nip.first_name, "Times-Bold", 12) + 60)
-    if panjang_nama_pejabat < 300 :
-        pos_x_ttd = panjang_nama_pejabat
-    else :
-        pos_x_ttd = 300
+    if data.ttd and data.ttd.pejabat:
+        panjang_nama_pejabat = A4[0] - ( p.stringWidth(data.ttd.pejabat.nip.first_name, "Times-Bold", 12) + 60)
+        if panjang_nama_pejabat < 300 :
+            pos_x_ttd = panjang_nama_pejabat
+        else :
+            pos_x_ttd = 300
 
-        
+            
 
-    pos_y -= dl(p, pos_x_ttd, pos_y, 50, context.get("address_ttd", "") + ", " + tanggal_indo(data.date_in), 'N', 'L')
-    pos_y -= dl(p, pos_x_ttd, pos_y, 15, "a.n Dekan", 'N', 'L')
-    pos_y -= dl(p, pos_x_ttd, pos_y, 15, "Wakil Dekan Bidang Akademik", 'N', 'L')
-    pos_y -= dl(p, pos_x_ttd, pos_y, 15, "u.b Kepala bagian Umum", 'N', 'L')
-    if data.ttd_status == 'QRcode' :
-        p.drawImage(ImageReader(context.get("api_qrcode", "") + context.get("baseurl", "") + 't/sak/' + str(data.id)), pos_x_ttd+10, pos_y-50, width=40, height=40)
-    pos_y -= dl(p, pos_x_ttd, pos_y, 70, data.ttd.pejabat.nip.first_name, 'BU', 'L')
-    pos_y -= dl(p, pos_x_ttd, pos_y, 15, "NIP. " + data.ttd.pejabat.nip.username, 'B', 'L')
-
+        pos_y -= dl(p, pos_x_ttd, pos_y, 50, context.get("address_ttd", "") + ", " + tanggal_indo(data.date_in), 'N', 'L')
+        pos_y -= dl(p, pos_x_ttd, pos_y, 15, "Wakil Dekan Bidang Kemahasiswaan", 'N', 'L')
+        pos_y -= dl(p, pos_x_ttd, pos_y, 15, "FEB UNM ", 'N', 'L')
+        # pos_y -= dl(p, pos_x_ttd, pos_y, 15, "Universitas Negeri Makassar", 'N', 'L')
+        if data.ttd_status == 'QRcode' :
+            p.drawImage(ImageReader(context.get("api_qrcode", "") + context.get("baseurl", "") + 't/sak/' + str(data.id)), pos_x_ttd+10, pos_y-50, width=40, height=40)
+        pos_y -= dl(p, pos_x_ttd, pos_y, 70, data.ttd.pejabat.nip.first_name, 'BU', 'L')
+        pos_y -= dl(p, pos_x_ttd, pos_y, 15, "NIP. " + data.ttd.pejabat.nip.username, 'B', 'L')
+    else: 
+        pos_y = draw_aligned_text(p,"STATUS", "PEJABAT MEMBATALKAN TTD DOKUMEN",  15)
 
     # Menutup halaman dan menyimpan PDF
     p.setTitle("Surat Keterangan Aktif Kuliah")

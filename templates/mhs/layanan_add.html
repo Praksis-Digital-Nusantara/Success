@@ -209,7 +209,7 @@ layananJenisDropdown.addEventListener('change', async function () {
 
         if (data.prasyarat_layanan) {
             prasyaratFields.innerHTML = data.prasyarat_layanan
-                .split(",")
+                .split("</br>")
                 .map(label => `
                     <div class="form-group">
                         <label>${label.trim()}</label>
@@ -228,9 +228,15 @@ layananJenisDropdown.addEventListener('change', async function () {
 
 // Gabungkan input ke hidden field sebelum submit
 form.addEventListener("submit", () => {
-    hiddenIsi.value = [...document.querySelectorAll(".prasyarat-input")]
-        .map(input => `${input.previousElementSibling.innerText}: ${input.value}`)
-        .join(" | ");
+    const inputs = document.querySelectorAll(".prasyarat-input");
+    let data = {};
+
+    inputs.forEach(input => {
+        let label = input.previousElementSibling.innerText;
+        data[label] = input.value; // simpan jadi key:value
+    });
+
+    document.getElementById("layanan_isi").value = JSON.stringify(data);
 });
 </script>
 {% endblock script_costum %} 

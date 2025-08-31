@@ -241,7 +241,7 @@ class formYudisium(forms.ModelForm):
 # SUKET AKTIF KULIAH
 class formSuketAktifKuliah(forms.ModelForm):
     ttd = forms.ModelChoiceField(
-        queryset=Pejabat.objects.filter(tgl_selesai__gte=tgl_now, jabatan__in=['Wakil Dekan I']),
+        queryset=Pejabat.objects.filter(tgl_selesai__gte=tgl_now, jabatan__in=['Wakil Dekan III']),
         widget=forms.Select(attrs={'class': 'form-control'}),
         empty_label="Pilih Pejabat"
     )

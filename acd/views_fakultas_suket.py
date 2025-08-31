@@ -20,6 +20,8 @@ from aam.context_processors import web_name
 
 tgl_now = timezone.now()
 
+import json
+
 
 ##########################  AKTIF KULIAH ######################################
 @fakultas_required
@@ -97,6 +99,7 @@ def suket_aktifkuliah_edit(request, nim):
         'mhs' : mhs,
         'form': form,
         'layanan': layanan,
+        "layanan_isi_parsed": json.loads(layanan.layanan_isi),
     }
     return render(request, 'fakultas/suket_aktifkuliah_edit.html', context)     
 

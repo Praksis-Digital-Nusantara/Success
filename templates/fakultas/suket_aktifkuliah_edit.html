@@ -28,11 +28,26 @@
 							<td width="5%">:</td>
 							<td>{{ layanan.layanan_jenis.nama_layanan }}</td>			  
 						</tr>
-						<tr>
-							<td width="10%">Form Layanan Isi</td>
-							<td width="5%">:</td>
-							<td>{{ layanan.layanan_isi }}</td>			  
-						</tr>
+						<td width="10%">Form Layanan Isi</td>
+						<td width="5%">:</td>
+						<td>
+						<table style="border-collapse: collapse; width: 100%; border: 1px solid #ddd; font-size: 14px;">
+							{% for key, value in layanan_isi_parsed.items %}
+							<tr>
+								<!-- Nomor urut -->
+								<td style="padding: 8px; border: 1px solid #ddd; width: 5%; text-align: center;">
+									{{ forloop.counter }}
+								</td>
+								<td style="background: #f9fafb; font-weight: 600; padding: 8px; border: 1px solid #ddd; width: 30%;">
+									{{ key }}
+								</td>
+								<td style="padding: 8px; border: 1px solid #ddd; color: #2563eb;">
+									{{ value }}
+								</td>
+							</tr>
+							{% endfor %}
+						</table>
+					</td>
 						<tr>
 							<td width="10%">Status</td>
 							<td width="5%">:</td>

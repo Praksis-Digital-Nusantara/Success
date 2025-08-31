@@ -2,7 +2,7 @@
 {% block content %}
     <div class="container">
     <div class="card 
-    {% if jenis == 'skpbb' or jenis == 'skpgj' or jenis == 'upr izp' %}
+    {% if jenis == 'skpbb' or jenis == 'skpgj' or jenis == 'upr' or jenis == 'izp' or jenis == 'sak' %}
         {% if not data.ttd or not data.ttd.pejabat %}
             card-danger
         {% endif %}
@@ -12,7 +12,7 @@
         {% endif %}
     {% endif %}">
        <div class="card-header 
-    {% if jenis == 'skpbb' or jenis == 'skpgj' or jenis == 'upr izp'  %}
+    {% if jenis == 'skpbb' or jenis == 'skpgj' or jenis == 'upr' or jenis == 'izp' or jenis == 'sak' %}
         {% if not data.ttd or not data.ttd.pejabat %}
             card-header-danger
         {% endif %}
@@ -25,13 +25,13 @@
                     <i class="ri-shield-check-line"></i>
                 </div>
                 <h1 class="header-title">Verifikasi Dokumen</h1>
-                {% if jenis in "skpbb skpgj upr izp" %}
+                {% if jenis in "skpbb skpgj upr izp sak" %}
                 <p class="header-subtitle">Dokumen Digital [{{ title }}]</p>
                 {% endif %}
                 <div class="status-badge status-verified">
                     <i class="ri-checkbox-circle-fill"></i>
                     <span>
-                {% if jenis in "skpbb skpgj upr izp" %}
+                {% if jenis in "skpbb skpgj upr izp sak" %}
                     {% if data.ttd and data.ttd.pejabat %}
                         Terverifikasi
                     {% else %}
@@ -52,7 +52,7 @@
             <div class="card-body">
                 <div class="info-grid">
                     <!-- Mahasiswa -->
-                    {% if jenis in "skpbb skpgj upr izp" %}
+                    {% if jenis in "skpbb skpgj upr izp sak" %}
                     <div class="info-group">
                         <div class="group-title">
                            <i class="ri-article-line"></i>
@@ -98,7 +98,7 @@
 
 
                     <!-- Penandatangan -->
-                    {% if jenis in "skpbb skpgj upr izp" %}
+                    {% if jenis in "skpbb skpgj upr izp sak" %}
                     <div class="info-group">
                         <div class="group-title">
                             <i class="ri-user-star-line"></i>
@@ -126,14 +126,19 @@
                         <div class="info-item">
                             <span class="info-label">Status</span>
                             <span class="info-value">
-                                <span class="signature-status signature-verified">
-                                    <i class="ri-shield-check-fill"></i>
-                                {% if not data.ttd.pejabat %}
-                                    Tidak Terverifikasi
+                             <span class="signature-status signature-verified">
+                                <i class="ri-shield-check-fill"></i>
+                                {% if data.ttd.pejabat %}
+
+                                    {% if data.ttd_status == "Manual" %}
+                                        Terverifikasi Manual
+                                    {% elif data.ttd_status == "QRcode" %}
+                                        Terverifikasi
+                                    {% endif %}
                                 {% else %}
-                                    Terverifikasi
+                                    Tidak Terverifikasi
                                 {% endif %}
-                                </span>
+                            </span>
                             </span>
                         </div>
                     </div>

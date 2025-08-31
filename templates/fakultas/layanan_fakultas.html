@@ -61,7 +61,7 @@
 							</a>
 						{% endif %}
 						<br>
-						<div class="response-text">{{ layanan.layanan_isi }}</div>
+						<div class="response-text">{{ layanan.layanan_isi|truncatechars:130 }}</div>
 					</td>				  
 					<td>
 						{% if layanan.status == 'Waiting'  %}
