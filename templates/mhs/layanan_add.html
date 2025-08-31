@@ -39,7 +39,6 @@
 						{% endif %}
 					</div>
 				</div>
-
 				<!-- Prasyarat Information -->
 				<div class="form-section" id="prasyarat-container">
 					<div class="info-card">
@@ -47,30 +46,14 @@
 							<i class="ri-information-line"></i>
 							<h4>Prasyarat Layanan</h4>
 						</div>
-						<div class="info-card-content">
-							<p id="prasyarat-layanan">Pilih jenis layanan untuk melihat prasyarat yang diperlukan.</p>
+						<div class="info-card-content" id="prasyarat-fields">
+							<p>Pilih jenis layanan untuk melihat prasyarat yang diperlukan.</p>
 						</div>
 					</div>
 				</div>
 
-				<!-- Layanan Content -->
-				<div class="form-section">
-					<div class="form-group">
-						<label for="id_layanan_isi" class="form-label">
-							<i class="ri-file-text-line"></i>
-							Deskripsi Layanan
-						</label>
-						<div class="textarea-wrapper">
-							{{ form.layanan_isi }}
-						</div>
-						{% if form.layanan_isi.errors %}
-							<div class="form-error">
-								<i class="ri-error-warning-line"></i>
-								{{ form.layanan_isi.errors }}
-							</div>
-						{% endif %}
-					</div>
-				</div>
+				<!-- Hidden field buat gabungan isi -->
+				<input type="hidden" name="layanan_isi" id="layanan_isi">
 
 				<!-- File Upload -->
 				<div class="form-section">
@@ -207,34 +190,48 @@
 		return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 	}
 
-	// Ambil elemen dropdown dan container prasyarat
-	const layananJenisDropdown = document.querySelector('#id_layanan_jenis');
-	const prasyaratContainer = document.querySelector('#prasyarat-container');
-	const prasyaratLayanan = document.querySelector('#prasyarat-layanan');
+const layananJenisDropdown = document.querySelector('#id_layanan_jenis');
+const prasyaratFields = document.querySelector('#prasyarat-fields');
+const form = document.querySelector('.layanan-form');
+const hiddenIsi = document.getElementById("layanan_isi");
 
-	// Tambahkan event listener pada dropdown
-	layananJenisDropdown.addEventListener('change', function () {
-		const layananId = this.value; // Ambil ID dari pilihan dropdown
-		if (layananId) {
-			// Lakukan AJAX request ke endpoint
-			fetch(`/acd/get-prasyarat-layanan/?layanan_id=${layananId}`)
-				.then(response => response.json())
-				.then(data => {
-					if (data.prasyarat_layanan) {
-						prasyaratLayanan.textContent = data.prasyarat_layanan; // Tampilkan prasyarat
-					} else {
-						prasyaratLayanan.textContent = 'Prasyarat tidak ditemukan.';
-					}
-				})
-				.catch(error => {
-					console.error('Error fetching prasyarat:', error);
-					prasyaratLayanan.textContent = 'Terjadi kesalahan saat mengambil prasyarat.';
-					showToast('error', 'Gagal memuat prasyarat layanan');
-				});
-		} else {
-			prasyaratLayanan.textContent = 'Pilih jenis layanan untuk melihat prasyarat.';
-		}
-	});
+// Render prasyarat dinamis
+layananJenisDropdown.addEventListener('change', async function () {
+    const layananId = this.value;
+    if (!layananId) {
+        prasyaratFields.innerHTML = "<p>Pilih jenis layanan untuk melihat prasyarat.</p>";
+        return;
+    }
+
+    try {
+        const res = await fetch(`/acd/get-prasyarat-layanan/?layanan_id=${layananId}`);
+        const data = await res.json();
+
+        if (data.prasyarat_layanan) {
+            prasyaratFields.innerHTML = data.prasyarat_layanan
+                .split(",")
+                .map(label => `
+                    <div class="form-group">
+                        <label>${label.trim()}</label>
+                        <input type="text" class="form-control prasyarat-input" placeholder="Masukkan ${label.trim()}">
+                    </div>
+                `)
+                .join("");
+        } else {
+            prasyaratFields.innerHTML = "<p>Prasyarat tidak ditemukan.</p>";
+        }
+    } catch (e) {
+        console.error(e);
+        prasyaratFields.innerHTML = "<p>Gagal memuat prasyarat.</p>";
+    }
+});
+
+// Gabungkan input ke hidden field sebelum submit
+form.addEventListener("submit", () => {
+    hiddenIsi.value = [...document.querySelectorAll(".prasyarat-input")]
+        .map(input => `${input.previousElementSibling.innerText}: ${input.value}`)
+        .join(" | ");
+});
 </script>
 {% endblock script_costum %} 
 
