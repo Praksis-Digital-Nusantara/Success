@@ -56,7 +56,7 @@ def print_suket_aktifkuliah(request, id):
         pos_y = draw_aligned_text(p, "Nama", data.ttd.pejabat.nip.first_name,  15) 
         pos_y = draw_aligned_text(p, "NIP", data.ttd.pejabat.nip.username,  15) 
         pos_y = draw_aligned_text(p, "Pangkat/Golongan", str(data.ttd.pejabat.pangkat) + " / " + str(data.ttd.pejabat.golongan),  15) 
-        pos_y = draw_aligned_text(p, "Jabatan ", "Kepala Bagian Umum",  15)
+        pos_y = draw_aligned_text(p, "Jabatan ", "Wakil Dekan Bidang Kemahasiswaan FEB UNM",  15)
     else:
         pos_y = draw_aligned_text(p,"STATUS", "PEJABAT MEMBATALKAN TTD DOKUMEN",  15)
 
