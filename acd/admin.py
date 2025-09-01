@@ -3,7 +3,7 @@ from .models import UserMhs, UserProdi, UserDosen, UserFakultas
 from .models import LayananJenis, Layanan
 from .models import Prodi, Jurusan, Pejabat
 from .models import KodeSurat, SkripsiJudul
-from .models import IzinPenelitian, skPenguji, skPembimbing, chatPA, NoSurat, NoSuratFakultas, TTDProdi, ProposalNilai, Proposal, skPenguji, HasilNilai, Hasil, UjianNilai, Ujian, Yudisium, SuketAktifKuliah, SuketBerkelakuanBaik
+from .models import IzinPenelitian, skPenguji, skPembimbing, chatPA, NoSurat, NoSuratFakultas, TTDProdi, ProposalNilai, Proposal, skPenguji, HasilNilai, Hasil, UjianNilai, Ujian, Yudisium, SuketAktifKuliah, SuketBerkelakuanBaik, SuketCutiAkademik
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 
@@ -84,3 +84,4 @@ admin.site.register(Ujian)
 admin.site.register(Yudisium)
 admin.site.register(SuketAktifKuliah)
 admin.site.register(SuketBerkelakuanBaik)
+admin.site.register(SuketCutiAkademik)

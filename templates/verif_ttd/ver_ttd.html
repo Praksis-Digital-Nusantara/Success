@@ -2,7 +2,7 @@
 {% block content %}
     <div class="container">
     <div class="card 
-    {% if jenis == 'skpbb' or jenis == 'skpgj' or jenis == 'upr' or jenis == 'izp' or jenis == 'sak' or jenis == 'skb' %}
+    {% if jenis == 'skpbb' or jenis == 'skpgj' or jenis == 'upr' or jenis == 'izp' or jenis == 'sak' or jenis == 'skb' or jenis == 'scak' %}
         {% if not data.ttd or not data.ttd.pejabat %}
             card-danger
         {% endif %}
@@ -12,7 +12,7 @@
         {% endif %}
     {% endif %}">
        <div class="card-header 
-    {% if jenis == 'skpbb' or jenis == 'skpgj' or jenis == 'upr' or jenis == 'izp' or jenis == 'sak' or jenis == 'skb' %}
+    {% if jenis == 'skpbb' or jenis == 'skpgj' or jenis == 'upr' or jenis == 'izp' or jenis == 'sak' or jenis == 'skb' or jenis == 'scak' %}
         {% if not data.ttd or not data.ttd.pejabat %}
             card-header-danger
         {% endif %}
@@ -25,13 +25,13 @@
                     <i class="ri-shield-check-line"></i>
                 </div>
                 <h1 class="header-title">Verifikasi Dokumen</h1>
-                {% if jenis in "skpbb skpgj upr izp sak" %}
+                {% if jenis in "skpbb skpgj upr izp sak scak" %}
                 <p class="header-subtitle">Dokumen Digital [{{ title }}]</p>
                 {% endif %}
                 <div class="status-badge status-verified">
                     <i class="ri-checkbox-circle-fill"></i>
                     <span>
-                {% if jenis in "skpbb skpgj upr izp sak skb" %}
+                {% if jenis in "skpbb skpgj upr izp sak skb scak" %}
                     {% if data.ttd and data.ttd.pejabat %}
                         Terverifikasi
                     {% else %}
@@ -52,7 +52,7 @@
             <div class="card-body">
                 <div class="info-grid">
                     <!-- Mahasiswa -->
-                    {% if jenis in "skpbb skpgj upr izp sak skb" %}
+                    {% if jenis in "skpbb skpgj upr izp sak skb scak" %}
                     <div class="info-group">
                         <div class="group-title">
                            <i class="ri-article-line"></i>
@@ -98,7 +98,7 @@
 
 
                     <!-- Penandatangan -->
-                    {% if jenis in "skpbb skpgj upr izp sak skb" %}
+                    {% if jenis in "skpbb skpgj upr izp sak skb scak" %}
                     <div class="info-group">
                         <div class="group-title">
                             <i class="ri-user-star-line"></i>

@@ -42,27 +42,32 @@
 						{% endif %}
 						{% if layanan.layanan_jenis.nama_layanan == 'Surat Keterangan Aktif Kuliah' %}
 							<a href="/acd/suket_aktifkuliah_edit/{{layanan.mhs.nim.username}}">
-								<button class="btn secondary x-small"><i class="ri-file-line"></i>Proses Layanan</button>
+								<button class="btn secondary x-small"><i class="ri-ball-pen-fill"></i>Proses Layanan</button>
 							</a>
 						{% endif %}
 						{% if layanan.layanan_jenis.nama_layanan == 'Surat Izin Observasi' %}
 							<a href="/acd/izinobservasi_edit/{{layanan.mhs.nim.username}}">
-								<button class="btn secondary x-small"><i class="ri-file-line"></i>Proses Layanan</button>
+								<button class="btn secondary x-small"><i class="ri-ball-pen-fill"></i>Proses Layanan</button>
 							</a>
 						{% endif %}
 						{% if layanan.layanan_jenis.nama_layanan == 'Surat Keterangan Berkelakuan Baik' %}
 							<a href="/acd/suket_berkelakuanbaik_edit/{{layanan.mhs.nim.username}}">
-								<button class="btn secondary x-small"><i class="ri-file-line"></i> Proses Layanan</button>
+								<button class="btn secondary x-small"><i class="ri-ball-pen-fill"></i> Proses Layanan</button>
 							</a>
 						{% endif %}	
+							{% if layanan.layanan_jenis.nama_layanan == 'Surat Keterangan Cuti Akademik' %}
+								<a href="/acd/suket_cutiakademik_edit/{{layanan.mhs.nim.username}}">
+									<button class="btn secondary x-small"><i class="ri-ball-pen-fill"></i> Proses Layanan</button>
+								</a>
+						{% endif %}
 						{% if layanan.layanan_jenis.nama_layanan == 'Undangan Seminar Proposal' %}
 							<a href="/acd/proposal_edit/{{layanan.mhs.nim.username}}">
-								<button class="btn secondary x-small"><i class="ri-file-line"></i> Berkas Kelengkapan</button>
+								<button class="btn secondary x-small"><i class="ri-ball-pen-fill"></i> Proses Layanan</button>
 							</a>
 						{% endif %}
 						{% if layanan.layanan_jenis.nama_layanan == 'Undangan Ujian Tutup' %}
 							<a href="/acd/ujian_edit/{{layanan.mhs.nim.username}}">
-								<button class="btn secondary x-small"><i class="ri-file-line"></i> Berkas Kelengkapan</button>
+								<button class="btn secondary x-small"><i class="ri-ball-pen-fill"></i>Proses Layanan</button>
 							</a>
 						{% endif %}
 						<br>

@@ -24,7 +24,8 @@ from .view_print import (print_skpbb,
                         print_suket_rekomendasi,
                         print_suket_izinlab,
                         print_surat_tugas,
-                        print_suket_berkelakuanbaik
+                        print_suket_berkelakuanbaik,
+                        print_suket_cutiakademik
                         )
 
 
@@ -65,6 +66,9 @@ urlpatterns = [
     path('suket_berkelakuanbaik', views_fakultas_suket.suket_berkelakuanbaik, name='suket_berkelakuanbaik'),  
     path('suket_berkelakuanbaik_edit/<str:nim>', views_fakultas_suket.suket_berkelakuanbaik_edit, name='suket_berkelakuanbaik_edit'),  
     path('suket_berkelakuanbaik_del/<str:id>', views_fakultas_suket.suket_berkelakuanbaik_del, name='suket_berkelakuanbaik_del'), 
+    path('suket_cutiakademik', views_fakultas_suket.suket_cutiakademik, name='suket_cutiakademik'),  
+    path('suket_cutiakademik_edit/<str:nim>', views_fakultas_suket.suket_cutiakademik_edit, name='suket_cutiakademik_edit'),  
+    path('suket_cutiakademik_del/<str:id>', views_fakultas_suket.suket_cutiakademik_del, name='suket_cutiakademik_del'), 
 
     ###### ADMIN PRODI ######   
     path('notif_prodi', views_prodi.notif_prodi, name='notif_prodi'),
@@ -150,7 +154,7 @@ urlpatterns = [
     path('print_yudisium_nilai/<uuid:id>', print_yudisium_nilai.print_yudisium_nilai, name='print_yudisium_nilai'),
     path('print_surat_tugas/<uuid:id>', print_surat_tugas.print_surat_tugas, name='print_surat_tugas'),
     path('print_suket_berkelakuanbaik/<uuid:id>', print_suket_berkelakuanbaik.print_suket_berkelakuanbaik, name='print_suket_berkelakuanbaik'),
-
+    path('print_suket_cutiakademik/<uuid:id>', print_suket_cutiakademik.print_suket_cutiakademik, name='print_suket_cutiakademik'),
 
     ###### ALL ######
     path('changepass', views.changepass, name='changepass'),     

@@ -100,6 +100,7 @@ def index(request):
                     'layanan_rejected': Layanan.objects.filter(status='Rejected').count() or 0,
                     'suket_berkelakuanbaik': Layanan.objects.filter(status__in=['Completed'], layanan_jenis__nama_layanan='Surat Keterangan Berkelakuan Baik').count() or 0,
                     'suket_aktifkuliah': Layanan.objects.filter(status__in=['Completed'], layanan_jenis__nama_layanan='Surat Keterangan Aktif Kuliah').count() or 0,
+                    'suket_cuti_akademik':Layanan.objects.filter(status__in=['Completed'], layanan_jenis__nama_layanan='Surat Keterangan Cuti Akademik').count() or 0,
                 }
         except UserFakultas.DoesNotExist:
             messages.error(request, "Lengkapi data anda terlebih dahulu!")

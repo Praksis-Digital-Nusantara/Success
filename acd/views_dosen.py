@@ -9,7 +9,7 @@ from uuid import UUID
 
 from .utils import cek_kemiripan_judul  
 
-from .models import UserMhs, SkripsiJudul, chatPA, Proposal, ProposalNilai,  Hasil, HasilNilai,  Ujian, UjianNilai, UserDosen, Pejabat, SuketIzinObservasi, SuketRekomendasi, SuratTugas, SuketIzinLab, SuketAktifKuliah, SuketBerkelakuanBaik
+from .models import UserMhs, SkripsiJudul, chatPA, Proposal, ProposalNilai,  Hasil, HasilNilai,  Ujian, UjianNilai, UserDosen, Pejabat, SuketIzinObservasi, SuketRekomendasi, SuratTugas, SuketIzinLab, SuketAktifKuliah, SuketBerkelakuanBaik, SuketCutiAkademik
 from .models import skPembimbing, skPenguji, IzinPenelitian
 from .forms_dosen import formProfile, formChatPA, formProposalNilai, formHasilNilai, formUjianNilai
 from django.utils import timezone
@@ -625,6 +625,7 @@ def list_ttd_pejabat(request):
         ('undangan_proposal', Proposal),
         ('izin_penelitian', IzinPenelitian),
         ('suket_berkelakuanbaik', SuketBerkelakuanBaik),
+        ('suket_cutiakademik', SuketCutiAkademik),
     ]
 
     dokumen_ttd_pejabat = []
@@ -659,6 +660,7 @@ def kelola_ttd(request, model_name, id, action):
         'undangan_proposal': Proposal,
         'izin_penelitian': IzinPenelitian,
         'suket_berkelakuanbaik': SuketBerkelakuanBaik,
+        'suket_cutiakademik': SuketCutiAkademik,
 
     }
     model_name_map = {
@@ -671,6 +673,7 @@ def kelola_ttd(request, model_name, id, action):
         'undangan_proposal': 'Undangan Proposal',
         'izin_penelitian': 'Izin Penelitian',
         'suket_berkelakuanbaik': 'Suket Berkelakuan Baik',
+        'suket_cutiakademik': 'Suket Cuti Akademik',
     }
 
     model = models_map.get(model_name)
