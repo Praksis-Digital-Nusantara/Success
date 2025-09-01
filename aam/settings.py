@@ -88,7 +88,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'djg_success',  # Ganti dengan nama database yang Anda buat di phpMyAdmin /bisdigun_app_success
         'USER': 'root',  # Nama pengguna MySQL, biasanya 'root' di XAMPP /bisdigun_app_root
-        'PASSWORD': 'Hermanto+12',  # Kata sandi pengguna MySQL, jika tidak ada, biarkan kosong
+        'PASSWORD': '',  # Kata sandi pengguna MySQL, jika tidak ada, biarkan kosong
         'HOST': 'localhost',  # Host server database, localhost untuk XAMPP
         'PORT': '3306',  # Port MySQL (default 3306)
     }

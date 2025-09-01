@@ -9,7 +9,7 @@ from uuid import UUID
 
 from .utils import cek_kemiripan_judul  
 
-from .models import UserMhs, SkripsiJudul, chatPA, Proposal, ProposalNilai,  Hasil, HasilNilai,  Ujian, UjianNilai, UserDosen, Pejabat, SuketIzinObservasi, SuketRekomendasi, SuratTugas, SuketIzinLab, SuketAktifKuliah
+from .models import UserMhs, SkripsiJudul, chatPA, Proposal, ProposalNilai,  Hasil, HasilNilai,  Ujian, UjianNilai, UserDosen, Pejabat, SuketIzinObservasi, SuketRekomendasi, SuratTugas, SuketIzinLab, SuketAktifKuliah, SuketBerkelakuanBaik
 from .models import skPembimbing, skPenguji, IzinPenelitian
 from .forms_dosen import formProfile, formChatPA, formProposalNilai, formHasilNilai, formUjianNilai
 from django.utils import timezone
@@ -624,6 +624,7 @@ def list_ttd_pejabat(request):
         ('suket_aktifkuliah', SuketAktifKuliah),
         ('undangan_proposal', Proposal),
         ('izin_penelitian', IzinPenelitian),
+        ('suket_berkelakuanbaik', SuketBerkelakuanBaik),
     ]
 
     dokumen_ttd_pejabat = []
@@ -632,6 +633,8 @@ def list_ttd_pejabat(request):
         for dokumen in model.objects.filter(ttd=pejabat_aktif):
             dokumen.jenis_dokumen = jenis
             dokumen_ttd_pejabat.append(dokumen)
+
+    dokumen_ttd_pejabat.sort(key=lambda x: x.date_in, reverse=True)
 
     context = {
         'title': 'Dokumen Ditandatangani',
@@ -655,6 +658,8 @@ def kelola_ttd(request, model_name, id, action):
         'suket_aktifkuliah': SuketAktifKuliah,
         'undangan_proposal': Proposal,
         'izin_penelitian': IzinPenelitian,
+        'suket_berkelakuanbaik': SuketBerkelakuanBaik,
+
     }
     model_name_map = {
         'observasi': 'Suket Izin Observasi',
@@ -665,6 +670,7 @@ def kelola_ttd(request, model_name, id, action):
         'suket_aktifkuliah': 'Suket Aktif Kuliah',
         'undangan_proposal': 'Undangan Proposal',
         'izin_penelitian': 'Izin Penelitian',
+        'suket_berkelakuanbaik': 'Suket Berkelakuan Baik',
     }
 
     model = models_map.get(model_name)

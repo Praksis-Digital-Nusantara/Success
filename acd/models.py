@@ -638,6 +638,17 @@ class SuketAktifKuliah(models.Model):
     ttd = models.ForeignKey(Pejabat, on_delete=models.SET_NULL, related_name="sak_ttd", blank=True, null=True)
     ttd_status = models.CharField(max_length=20, default='QRcode')
 
+class SuketBerkelakuanBaik(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    date_in = models.DateTimeField(auto_now_add=True)
+    adminp = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="skb_admin", blank=True, null=True)
+    no_surat = models.CharField(max_length=50, blank=True, null=True)
+    mhs = models.ForeignKey(UserMhs, on_delete=models.SET_NULL, related_name="skb_mhs", blank=True, null=True)
+    tujuan = models.CharField(max_length=100, blank=True, null=True)
+    semester = models.CharField(max_length=20, blank=True, null=True)
+    tahun_akademik = models.CharField(max_length=20, blank=True, null=True)
+    ttd = models.ForeignKey(Pejabat, on_delete=models.SET_NULL, related_name="skb_ttd", blank=True, null=True)
+    ttd_status = models.CharField(max_length=20, default='QRcode')
 
 class SuketIzinObservasi(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

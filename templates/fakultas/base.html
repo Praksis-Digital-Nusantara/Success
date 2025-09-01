@@ -71,7 +71,10 @@
 
                     <li class="{% if title == 'Suket Aktif Kuliah' %}active{% endif %}">
                         <a href="{% url 'acd:suket_aktifkuliah' %}"><i class="ri-file-list-3-line"></i> Suket Aktif Kuliah</a>
-                    </li>                             
+                    </li>   
+                    <li class="{% if title == 'Suket Berkelakuan Baik' %}active{% endif %}">
+                        <a href="{% url 'acd:suket_berkelakuanbaik' %}"><i class="ri-file-list-3-line"></i> Suket Berkelakuan Baik</a>
+                    </li>                          
                     <li class="{% if title == 'Surat Izin Observasi' %}active{% endif %}">
                         <a href="{% url 'acd:suket_izinobservasi' %}"><i class="ri-file-list-3-line"></i> Surat Izin Observasi</a>
                     </li>    

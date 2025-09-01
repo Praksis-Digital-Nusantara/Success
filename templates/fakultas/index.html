@@ -84,6 +84,30 @@
 		</div>
 	</div>
 	
+<div class="stats-cards">
+		<h4>Info Layanan Surat</h4>
+	</div>
+	
+	<div class="stats-cards">		
+			
+		<div class="stat-card orange">			
+			<i class="ri-article-line"></i>
+			<div class="stat-info">
+				<p>SK Keterangan Berkelakuan Baik</p>
+				<h1>{{ data.suket_berkelakuanbaik }}</h1>
+				<a href="{% url 'acd:suket_berkelakuanbaik' %}"><button class="btn warning x-small">Details</button></a>				
+			</div>			
+		</div>		
+		<div class="stat-card orange">			
+			<i class="ri-article-line"></i>
+			<div class="stat-info">
+				<p>SK Keterangan Aktif Kuliah</p>
+				<h1>{{ data.suket_aktifkuliah }}</h1>
+				<a href="{% url 'acd:suket_aktifkuliah' %}"><button class="btn warning x-small">Details</button></a>				
+			</div>			
+		</div>	
+	</div>
+	
 
 	<div class="stats-cards">
 		<h4>Info Jumlah Layanan</h4>

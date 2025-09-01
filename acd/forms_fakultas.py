@@ -4,7 +4,7 @@ from .models import Prodi, Pejabat, Layanan, LayananJenis
 from .models import UserFakultas, UserDosen
 from .models import NoSuratFakultas, KodeSurat
 from .models import Ujian, Yudisium
-from .models import SuketAktifKuliah, SuketIzinObservasi, SuketRekomendasi, SuketIzinLab
+from .models import SuketAktifKuliah, SuketIzinObservasi, SuketRekomendasi, SuketIzinLab, SuketBerkelakuanBaik
 from .models import SuratTugas, SuratTugas_NamaDosen, SuratTugas_NamaMhs
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -477,3 +477,47 @@ class formSuratTugas_NamaMhs(forms.ModelForm):
             'jabatan': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Contoh: Mahasiswa'}),
         }
 
+
+class formSuketBerkelakuanBaik(forms.ModelForm):
+    ttd = forms.ModelChoiceField(
+        queryset=Pejabat.objects.filter(tgl_selesai__gte=tgl_now, jabatan__in=['Wakil Dekan III']),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Pejabat"
+    )
+
+    class Meta:
+        model = SuketBerkelakuanBaik
+        fields = [
+            'no_surat',
+            'semester',
+            'tahun_akademik',
+            'tujuan',
+            'ttd_status',
+            'ttd',
+        ]
+        widgets = {
+            'no_surat': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '*kosongkan jika ambil nomor dari sistem'
+            }),
+            'semester': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Contoh: II / Dua'
+            }),
+            'tahun_akademik': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Contoh: 2024/2025 Genap'
+            }),
+            'tujuan': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Misal: Untuk Keperluan Ujian Tutup'
+            }),
+            'ttd_status': forms.Select(
+                choices=[
+                    ('QRcode', 'QRcode'),
+                    ('Manual', 'Manual'),
+                ],
+                attrs={'class': 'form-control'}
+            ),
+            # 'ttd' dikustomisasi di luar Meta
+        }

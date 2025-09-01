@@ -6,11 +6,11 @@ from datetime import datetime
 from django.utils import timezone
 
 from .models import NoSuratFakultas, UserMhs, UserDosen, KodeSurat, Layanan, SkripsiJudul
-from .models import SuketAktifKuliah, SuketIzinObservasi, SuketRekomendasi, SuketIzinLab
+from .models import SuketAktifKuliah, SuketIzinObservasi, SuketRekomendasi, SuketIzinLab, SuketBerkelakuanBaik
 from .models import SuratTugas, SuratTugas_NamaDosen, SuratTugas_NamaMhs
 
 
-from .forms_fakultas import formSuketAktifKuliah, formSuketIzinObservasi, formSuketRekomendasi, formSuketIzinLab
+from .forms_fakultas import formSuketAktifKuliah, formSuketIzinObservasi, formSuketRekomendasi, formSuketIzinLab, formSuketBerkelakuanBaik
 from .forms_fakultas import formSuratTugas, formSuratTugas_NamaDosen, formSuratTugas_NamaMhs
 
 from .decorators_fakultas import check_userfakultas
@@ -113,7 +113,92 @@ def suket_aktifkuliah_del(request, id):
     return redirect('acd:suket_aktifkuliah')     
 
 
+##########################  BERKELAKUAN BAIK ######################################
+@fakultas_required
+@check_userfakultas
+def suket_berkelakuanbaik(request):
+    userfakultas = request.userfakultas
+    data = SuketBerkelakuanBaik.objects.all().order_by('-date_in')
 
+    context = {
+        'title': 'Suket Berkelakuan Baik',
+        'heading': 'Suket Berkelakuan Baik',
+        'userfakultas' : userfakultas,
+        'photo' : userfakultas.photo,
+        'data': data,
+    }
+    return render(request, 'fakultas/suket_berkelakuanbaik.html', context)    
+
+
+@fakultas_required
+@check_userfakultas
+def suket_berkelakuanbaik_edit(request, nim):      
+    userfakultas = request.userfakultas
+    mhs = get_object_or_404(UserMhs, nim__username = nim)
+    datasuket = SuketBerkelakuanBaik.objects.filter(mhs=mhs).first()
+
+    if request.method == 'POST':
+        form = formSuketBerkelakuanBaik(request.POST, instance=datasuket)
+        if form.is_valid():
+            suket = form.save(commit=False)  
+            suket.adminp = request.user   
+            suket.mhs = mhs
+            if suket.no_surat is None:
+                tahun = datetime.now().year
+                nosurat_cek = NoSuratFakultas.objects.filter(tahun=tahun).order_by('-nomor').first()
+                if nosurat_cek:
+                    nosurat_baru = nosurat_cek.nomor + 1
+                else:
+                    nosurat_baru = 1  
+                kodesurat = KodeSurat.objects.get(jenis='Suket Berkelakuan Baik')
+
+                addnosurat = NoSuratFakultas.objects.create(
+                    adminp = request.user,
+                    tahun = tahun,
+                    nomor = nosurat_baru, 
+                    tujuan = 'Mahasiswa'  + str(mhs),
+                    kode = kodesurat.kode
+                )
+                nosurat =  str(nosurat_baru) + str(kodesurat.kode) + str(tahun) 
+                suket.no_surat = nosurat 
+            suket.save()
+            messages.success(request, 'Berhasil Menerbitkan Surat')
+            #update layanan agar status DIPROSES            
+            layanan = Layanan.objects.filter(mhs=mhs, layanan_jenis__nama_layanan='Surat Keterangan Berkelakuan Baik', status__in=['Processing', 'Waiting']).first()
+            if layanan:
+                context_pro = web_name(request)
+                layanan.status = 'Completed'
+                layanan.hasil_test = 'Surat Keterangan Berkelakuan Baik telah terbit, download di tautan berikut:'
+                layanan.hasil_link = context_pro.get("baseurl", "") + "acd/print_suket_berkelakuanbaik/" + str(suket.id)
+                layanan.save()                  
+                messages.success(request, 'Berhasil Mengupdate Layanan')
+            
+        else:
+            messages.error(request, 'periksa kembali isian data anda!')
+        return redirect('acd:suket_berkelakuanbaik_edit', nim=nim)
+    else:
+        form = formSuketBerkelakuanBaik(instance=datasuket)
+    layanan = Layanan.objects.filter().order_by('-date_in').first()
+    context = {
+        'title': 'Surat Berkelakuan Baik',
+        'heading': 'Edit Surat Berkelakuan Baik',
+        'userfakultas' : userfakultas,
+        'photo' : userfakultas.photo,
+        'mhs' : mhs,
+        'form': form,
+        'layanan': layanan,
+        "layanan_isi_parsed": json.loads(layanan.layanan_isi),
+    }
+    return render(request, 'fakultas/suket_berkelakuanbaik_edit.html', context)  
+
+
+@fakultas_required
+@check_userfakultas
+def suket_berkelakuanbaik_del(request, id):      
+    data = get_object_or_404(SuketBerkelakuanBaik, id=id)
+    data.delete()
+    messages.info(request, 'Berhasil Menghapus Surat Berkelakuan Baik')
+    return redirect('acd:suket_berkelakuanbaik')  
 ##########################  IZIN OBSERVASI ######################################
 @fakultas_required
 @check_userfakultas

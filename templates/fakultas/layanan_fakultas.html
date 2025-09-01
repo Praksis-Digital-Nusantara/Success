@@ -50,6 +50,11 @@
 								<button class="btn secondary x-small"><i class="ri-file-line"></i>Proses Layanan</button>
 							</a>
 						{% endif %}
+						{% if layanan.layanan_jenis.nama_layanan == 'Surat Keterangan Berkelakuan Baik' %}
+							<a href="/acd/suket_berkelakuanbaik_edit/{{layanan.mhs.nim.username}}">
+								<button class="btn secondary x-small"><i class="ri-file-line"></i> Proses Layanan</button>
+							</a>
+						{% endif %}	
 						{% if layanan.layanan_jenis.nama_layanan == 'Undangan Seminar Proposal' %}
 							<a href="/acd/proposal_edit/{{layanan.mhs.nim.username}}">
 								<button class="btn secondary x-small"><i class="ri-file-line"></i> Berkas Kelengkapan</button>

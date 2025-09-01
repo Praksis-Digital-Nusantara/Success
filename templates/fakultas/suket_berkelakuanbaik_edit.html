@@ -1,0 +1,135 @@
+{% extends "fakultas/base.html" %}
+
+{% block content1 %}
+
+<div class="layanan-form-container">
+	<div class="profile-section-ujian">
+		<div class="student-table">
+			<div class="table-responsive">
+				<table>
+					<tbody>
+						<tr>
+							<td width="10%">Mahasiswa</td>
+							<td width="5%">:</td>
+							<td>{{ mhs.nim }}</td>					  
+						</tr>
+						<tr>
+							<td width="10%">Program Studi</td>
+							<td width="5%">:</td>
+							<td>{{ mhs.prodi }}</td>					  
+						</tr>
+						<tr>
+							<td width="10%">Tempat/Tanggal Lahir</td>
+							<td width="5%">:</td>
+							<td>{{ mhs.tempat_lahir }}, {{ mhs.tgl_lahir }}</td>			  
+						</tr>
+						<tr>
+							<td width="10%">Form Layanan Isi</td>
+							<td width="5%">:</td>
+							<td>{{ layanan.layanan_jenis.nama_layanan }}</td>			  
+						</tr>
+						<td width="10%">Form Layanan Isi</td>
+						<td width="5%">:</td>
+						<td>
+						<table style="border-collapse: collapse; width: 100%; border: 1px solid #ddd; font-size: 14px;">
+							{% for key, value in layanan_isi_parsed.items %}
+							<tr>
+								<!-- Nomor urut -->
+								<td style="padding: 8px; border: 1px solid #ddd; width: 5%; text-align: center;">
+									{{ forloop.counter }}
+								</td>
+								<td style="background: #f9fafb; font-weight: 600; padding: 8px; border: 1px solid #ddd; width: 30%;">
+									{{ key }}
+								</td>
+								<td style="padding: 8px; border: 1px solid #ddd; color: #2563eb;">
+									{{ value }}
+								</td>
+							</tr>
+							{% endfor %}
+						</table>
+					</td>
+						<tr>
+							<td width="10%">Status</td>
+							<td width="5%">:</td>
+							<td>{{ layanan.status }}</td>			  
+						</tr>
+						<tr>
+							<td>Lampiran Ajuan</td>
+							<td>:</td>
+							<td>{% if layanan.layanan_file %}
+									<a target="_blank" href="/media/{{ layanan.layanan_file }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File</p>
+									{% endif %}
+							</td>					  
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="form-card">
+
+	<div class="form-header">
+		<div class="form-header-icon">
+			<i class="ri-file-text-line"></i>
+		</div>
+		<div class="form-header-content">
+			<h2>{{ heading }}</h2>
+			<p>Silahkan edit data berikut ini</p>
+		</div>
+	</div>
+	<form method="post" enctype="multipart/form-data" class="layanan-form">
+		{% csrf_token %}
+
+		<div class="form-group">
+			<label for="id_no_surat">Nomor Surat</label>
+			{{ form.no_surat }}
+		</div>
+
+		<div class="form-group">
+			<label for="id_semester">Semester</label>
+			{{ form.semester }}
+		</div>
+		<div class="form-group">
+			<label for="id_tujuan">Tujuan</label>
+			{{ form.tujuan }}
+		</div>
+		<div class="form-group">
+			<label for="id_tahun_akademik">Tahun Akademik</label>
+			{{ form.tahun_akademik }}
+		</div>
+		<div class="form-group">
+			<label for="id_ttd">Pejabat Bertandatangan</label>
+			{{ form.ttd }}
+		</div>
+		<div class="form-group">
+			<label for="id_ttd_status">Jenis TTD</label>
+			{{ form.ttd_status }}
+		</div>
+
+		<div class="form-actions">
+			<a href="{% url 'acd:suket_berkelakuanbaik' %}">
+				<button type="button" class="btn btn-secondary">
+					<i class="ri-arrow-left-line"></i>
+					Kembali
+				</button>
+			</a>
+			<button type="submit" class="btn primary">Proses</button>
+		</div>
+	</form>
+
+
+
+
+{% endblock content1 %}
+
+
+
+
+
+
+
+
