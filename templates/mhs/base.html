@@ -337,6 +337,8 @@
 <script>
     $(document).ready(function() {
       $('#layananTable').DataTable({
+        dom: 'Bfrtip',
+        buttons: ['csv', 'excel'],
         responsive: true
       });
     });
