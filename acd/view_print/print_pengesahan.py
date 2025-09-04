@@ -87,7 +87,7 @@ def print_pengesahan(request, jn, id):
     # ============================
     # POSISI PEMBIMBING
     # ============================
-    pos_y_pemb = pos_y - 60
+    pos_y_pemb = pos_y - 80
 
     # Pembimbing I (kiri)
     pos_x_pemb1 = 80
@@ -97,7 +97,7 @@ def print_pengesahan(request, jn, id):
     pos_y_pemb1 -= dl(p, pos_x_pemb1, pos_y_pemb1, 15, "NIP. " + skripsi.pembimbing1.nip.username, 'B', 'L')
 
     # Pembimbing II (kanan)
-    pos_x_pemb2 = posisi_kanan(skripsi.pembimbing2.nip.first_name)
+    pos_x_pemb2 = pos_y_pemb
     pos_y_pemb2 = pos_y_pemb
     pos_y_pemb2 -= dl(p, pos_x_pemb2, pos_y_pemb2, 15, "Pembimbing II", 'N', 'L')
     pos_y_pemb2 -= dl(p, pos_x_pemb2, pos_y_pemb2, 70, skripsi.pembimbing2.nip.first_name, 'BU', 'L')
@@ -120,7 +120,7 @@ def print_pengesahan(request, jn, id):
         pos_y_kajur -= dl(p, pos_x_kajur, pos_y_kajur, 15, "NIP. " + kajur.pejabat.nip.username, 'B', 'L')
 
     # Kaprodi (kanan)
-    pos_x_kaprodi = posisi_kanan(kaprodi.pejabat.nip.first_name)
+    pos_x_kaprodi = pos_y_pemb
     pos_y_kaprodi = pos_y_ttd
     pos_y_kaprodi -= dl(p, pos_x_kaprodi, pos_y_kaprodi, 15, kaprodi.jabatan, 'N', 'L')
     pos_y_kaprodi -= dl(p, pos_x_kaprodi, pos_y_kaprodi, 15, str(kaprodi.prodi), 'N', 'L')
@@ -206,14 +206,12 @@ def print_persetujuan_penelitian(request, id):
         return pos_y  
     
   
-    pos_y = draw_aligned_text(p, "Pembimbing I : ", skripsi.pembimbing1.nip.first_name,  55)   
+    pos_y = draw_aligned_text(p, "Pembimbing I : ", skripsi.pembimbing1.nip.first_name,  90)   
     pos_y = draw_aligned_text(p, "", "NIP. " + skripsi.pembimbing1.nip.username,  15)   
-    pos_y = draw_aligned_text(p, "Pembimbing II : ", skripsi.pembimbing2.nip.first_name,  55)   
+    pos_y = draw_aligned_text(p, "Pembimbing II : ", skripsi.pembimbing2.nip.first_name,  75)   
     pos_y = draw_aligned_text(p, "", "NIP. " + skripsi.pembimbing2.nip.username,  15)   
-    pos_y = draw_aligned_text(p, "Penguji I : ", skripsi.penguji1.nip.first_name,  55)   
+    pos_y = draw_aligned_text(p, "Penguji I : ", skripsi.penguji1.nip.first_name,  75)   
     pos_y = draw_aligned_text(p, "", "NIP. " + skripsi.penguji1.nip.username,  15)   
-    pos_y = draw_aligned_text(p, "Penguji II : ", skripsi.penguji2.nip.first_name,  55)   
-    pos_y = draw_aligned_text(p, "", "NIP. " + skripsi.penguji2.nip.username,  15)   
 
     kaprodi = Pejabat.objects.get(jabatan='Ketua Prodi', prodi=skripsi.mhs_judul.prodi)
 
@@ -224,10 +222,10 @@ def print_persetujuan_penelitian(request, id):
         pos_x_ttd = 300
 
     pos_y -= dl(p, pos_x_ttd, pos_y, 30, context.get("address_ttd", "") + ", ......................", 'N', 'L')
-    pos_y -= dl(p, pos_x_ttd, pos_y, 15, kaprodi.jabatan, 'N', 'L')
+    # pos_y -= dl(p, pos_x_ttd, pos_y, 15, kaprodi.jabatan, 'N', 'L')
     pos_y -= dl(p, pos_x_ttd, pos_y, 15, kaprodi.label, 'N', 'L')
     # p.drawImage(ImageReader(context.get("api_qrcode", "") + context.get("baseurl", "") + 't/skpbb/' + str(sk.id)), pos_x_ttd+10, pos_y-50, width=40, height=40)
-    pos_y -= dl(p, pos_x_ttd, pos_y, 55, kaprodi.pejabat.nip.first_name, 'BU', 'L')
+    pos_y -= dl(p, pos_x_ttd, pos_y, 95, kaprodi.pejabat.nip.first_name, 'BU', 'L')
     pos_y -= dl(p, pos_x_ttd, pos_y, 15, "NIP. " + kaprodi.pejabat.nip.username, 'B', 'L')
 
 

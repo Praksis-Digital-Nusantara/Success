@@ -1,0 +1,163 @@
+{% extends "dosen/base.html" %}
+
+{% block content1 %}
+<div class="dashboard-content">
+	<div class="student-list-container">
+		<div class="list-header">
+			<div class="list-title">
+				<h2>{{ heading }}</h2>
+				<p>{{web_name}}</p>
+				<p>
+					<a href="{% url 'acd:undangan_dsn' 'Semua' %}">
+						<btn class="btn {% if filter != 'Semua'  %} outlined {% endif %} warning x-small">Semua</btn>
+					</a>					
+					<a href="{% url 'acd:undangan_dsn' 'PimpinanSidang' %}">
+						<btn class="btn {% if filter != 'PimpinanSidang'  %} outlined {% endif %}  warning x-small">Pimpinan Sidang</btn>
+					</a>					
+					<a href="{% url 'acd:undangan_dsn' 'SekretarisSidang' %}">
+						<btn class="btn {% if filter != 'SekretarisSidang'  %} outlined {% endif %}  warning x-small">Sekretaris Sidang</btn>
+					</a>					
+					<a href="{% url 'acd:undangan_dsn' 'Pembimbing1' %}">
+						<btn class="btn {% if filter != 'Pembimbing1'  %} outlined {% endif %}  warning x-small">Pembimbing I</btn>
+					</a>					
+					<a href="{% url 'acd:undangan_dsn' 'Pembimbing2' %}">
+						<btn class="btn {% if filter != 'Pembimbing2'  %} outlined {% endif %}  warning x-small">Pembimbing II</btn>
+					</a>					
+					<a href="{% url 'acd:undangan_dsn' 'Penguji1' %}">
+						<btn class="btn {% if filter != 'Penguji1'  %} outlined {% endif %}  warning x-small">Penguji I</btn>
+					</a>					
+					<a href="{% url 'acd:undangan_dsn' 'Penguji2' %}">
+						<btn class="btn {% if filter != 'Penguji2'  %} outlined {% endif %}  warning x-small">Penguji II</btn>
+					</a>					
+				</p>
+			</div>
+		</div>
+
+		{% if messages %}
+		{% for message in messages %}
+				<div class="alert {% if 'success' in message.tags %}alert-success{% else %}alert-danger{% endif %} mb-4">
+					<i class="{% if 'success' in message.tags %}ri-checkbox-circle-line{% else %}ri-error-warning-line{% endif %} me-2"></i>
+					{{ message }}
+				</div>
+		{% endfor %}
+		{% endif %}
+
+		<div class="student-table">
+			<div class="table-responsive">
+			<table id="layananTable" class="display" style="width:100%">
+				<thead>
+				<tr>
+					<th style="white-space: nowrap;">No</th>
+					<th style="white-space: nowrap;">Jenis Seminar</th>
+					<th style="white-space: nowrap;">Mahasiswa</th>
+					<th style="white-space: nowrap;">Prodi</th>
+					<th style="white-space: nowrap;">Pembimbing</th>
+					<th style="white-space: nowrap;">Penguji</th>
+					<th style="white-space: nowrap;">Aksi</th>
+				</tr>
+				</thead>
+				<tfoot>
+				<tr>
+					<th>No</th>
+					<th>Jenis Seminar</th>
+					<th>Mahasiswa</th>
+					<th>Prodi</th>
+					<th>Pembimbing</th>
+					<th>Penguji</th>
+					<th width="10%">Aksi</th>
+				</tr>
+				</tfoot>
+				<tbody>
+				{% comment %} Counter untuk penomoran {% endcomment %}
+				{% regroup proposal|add:hasil|add:ujian by jenis as grouped_undangan %}
+				
+				{% comment %} Proposal {% endcomment %}
+				{% for item in proposal %}
+					<tr>
+						<td>{{ forloop.counter }}</td>
+						<td><span class="badge badge-info">Proposal</span></td>
+						<td>{{ item.mhs_judul.mhs }}</td>
+						<td>{{ item.mhs_judul.mhs.prodi }}</td>
+						<td>
+							{% if item.pembimbing1 %}{{ item.pembimbing1 }}{% endif %}
+							{% if item.pembimbing2 %}<br>{{ item.pembimbing2 }}{% endif %}
+						</td>
+						<td>
+							{% if item.penguji1 %}{{ item.penguji1 }}{% endif %}
+							{% if item.penguji2 %}<br>{{ item.penguji2 }}{% endif %}
+						</td>
+						<td>
+							<a target="_blank" href="{% url 'acd:print_undangan' 'Proposal' item.id %}">
+								<button class="btn success small">
+									<i class="ri-download-line"></i> Download
+								</button>
+							</a>
+						</td>
+					</tr>
+				{% endfor %}
+
+				{% comment %} Hasil {% endcomment %}
+				{% for item in hasil %}
+					<tr>
+						<td>{{ proposal|length|add:forloop.counter }}</td>
+						<td><span class="badge badge-warning">Hasil</span></td>
+						<td>{{ item.mhs_judul.mhs }}</td>
+						<td>{{ item.mhs_judul.mhs.prodi }}</td>
+						<td>
+							{% if item.pembimbing1 %}{{ item.pembimbing1 }}{% endif %}
+							{% if item.pembimbing2 %}<br>{{ item.pembimbing2 }}{% endif %}
+						</td>
+						<td>
+							{% if item.penguji1 %}{{ item.penguji1 }}{% endif %}
+							{% if item.penguji2 %}<br>{{ item.penguji2 }}{% endif %}
+						</td>
+						<td>
+							<a target="_blank" href="{% url 'acd:print_undangan' 'Hasil' item.id %}">
+								<button class="btn success small">
+									<i class="ri-download-line"></i> Download
+								</button>
+							</a>
+						</td>
+					</tr>
+				{% endfor %}
+
+				{% comment %} Ujian {% endcomment %}
+				{% for item in ujian %}
+					<tr>
+						<td>{{ proposal|length|add:hasil|length|add:forloop.counter }}</td>
+						<td><span class="badge badge-danger">Ujian</span></td>
+						<td>{{ item.mhs }}</td>
+						<td>{{ item.mhs.prodi }}</td>
+						<td>{{ item.judul }}</td>
+						<td>
+							{% if item.pembimbing1 %}{{ item.pembimbing1 }}{% endif %}
+							{% if item.pembimbing2 %}<br>{{ item.pembimbing2 }}{% endif %}
+						</td>
+						<td>
+							{% if item.penguji1 %}{{ item.penguji1 }}{% endif %}
+							{% if item.penguji2 %}<br>{{ item.penguji2 }}{% endif %}
+						</td>
+						<td>
+							<a target="_blank" href="{% url 'acd:print_undangan' 'Ujian' item.id %}">
+								<button class="btn success x-small">
+									<i class="ri-download-line"></i> Cetak
+								</button>
+							</a>
+						</td>
+					</tr>
+				{% endfor %}
+
+				{% comment %} Jika tidak ada data {% endcomment %}
+				{% if not proposal and not hasil and not ujian %}
+					<tr>
+						<td colspan="8" class="text-center"><em>Tidak ada undangan</em></td>
+					</tr>
+				{% endif %}
+				</tbody>
+			</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock content1 %}

@@ -32,9 +32,9 @@
 				<thead>
 				<tr>
 					<th style="white-space: nowrap;">No</th>
-					<th>Mahasiswa</th>
-					<th style="white-space: nowrap;">Judul yang Disetujui Pembimbing</th>
-					<th>Pembimbing</th>
+					<th style="white-space: nowrap;">Mahasiswa</th>
+					<th style="white-space: nowrap;">Judul yang Disetujui</th>
+					<th style="white-space: nowrap;">Pembimbing</th>
 					<th style="white-space: nowrap;">Status SK</th>
 					<th style="white-space: nowrap;">Aksi</th>
 				</tr>
@@ -43,7 +43,7 @@
 				<tr>
 					<th>No</th>
 					<th>Mahasiswa</th>
-					<th>Judul yang Disetujui Pembimbing</th>
+					<th>Judul yang Disetujui</th>
 					<th>Pembimbing</th>
 					<th>Status SK</th>
 					<th>Aksi</th>
@@ -54,7 +54,7 @@
 					<tr>
 						<td>{{ forloop.counter }}</td>
 						<td>{{ datatb.mhs }}</td>						  
-						<td><div class="response-text">{{ datatb.judul }}</div></td>					  
+						<td><div class="response-text">{% if datatb.judul %} {{ datatb.judul }} {% else %} Judul Belum Disetujui.. {% endif %}</div></td>					  
 						<td>1. {{ datatb.pembimbing1.nip.first_name }}					  
 							<br>2. {% if datatb.pembimbing2_persetujuan == 'Waiting'  %}
 								<button class="btn warning x-small">

@@ -24,6 +24,7 @@ from .models import (UserMhs, Layanan,
                      KodeSurat,
                      SuketBebasKuliah,
                      SuketBebasPlagiasi,
+                     IzinPenelitian,
                      )
 
 
@@ -428,12 +429,12 @@ def proposal_edit(request, nim):
             tosave.save()
 
             #update untuk pembuatan SK Penguji
-            skpenguji, created = skPenguji.objects.get_or_create(
-                proposal=proposal,
-                defaults={
-                    'proposal': proposal,
-                }
-            )
+            # skpenguji, created = skPenguji.objects.get_or_create(
+            #     proposal=proposal,
+            #     defaults={
+            #         'proposal': proposal,
+            #     }
+            # )
 
 
             #update layanan agar status DIPROSES            
@@ -557,6 +558,8 @@ def hasil_edit(request, nim):
     else:
         form = formHasil(instance=hasil)  
     skpbb = skPembimbing.objects.filter(mhs=judul.mhs).order_by('-date_in')
+    izinpenelitian = IzinPenelitian.objects.filter(mhs_judul=judul).order_by('-date_in')
+
     context = {
         'title': 'Hasil',
         'heading': 'Set Undangan Hasil',
@@ -566,6 +569,7 @@ def hasil_edit(request, nim):
         'hasil': hasil,
         'form': form,
         'skpbb': skpbb,
+        'izinpenelitian': izinpenelitian,
     }
     return render(request, 'prodi/hasil_edit.html', context)
 

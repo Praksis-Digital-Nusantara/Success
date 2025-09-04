@@ -413,6 +413,7 @@ class skPembimbing(models.Model):
     pembimbing1 = models.ForeignKey(UserDosen, on_delete=models.SET_NULL, to_field="nip", related_name="skpbb_pbb1", null=True)
     pembimbing2 = models.ForeignKey(UserDosen, on_delete=models.SET_NULL, to_field="nip", related_name="skpbb_pbb2", null=True)
     judul = models.CharField(max_length=255, blank=True, null=True)    
+    ttd_status = models.CharField(max_length=20, default='QRcode')
     ttd = models.ForeignKey(Pejabat, on_delete=models.SET_NULL, related_name="skpbb_pejabatttd", null=True)
 
 

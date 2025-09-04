@@ -135,6 +135,7 @@ urlpatterns = [
     path('judul_seleksi_detail/<uuid:id>', views_dosen.judul_seleksi_detail, name='judul_seleksi_detail'),
     path('list_ttd_pejabat', views_dosen.list_ttd_pejabat, name='list_ttd_pejabat'),
     path('kelola_ttd/<str:model_name>/<uuid:id>/<str:action>/',views_dosen.kelola_ttd,name='kelola_ttd'),
+    path('undangan_dsn/<str:filter>', views_dosen.undangan_dsn, name='undangan_dsn'),
     ###### PRINT ######   
     path('print_skpbb/<uuid:id>', print_skpbb.print_skpbb, name='print_skpbb'),
     path('print_skpgj/<uuid:id>', print_skpgj.print_skpgj, name='print_skpgj'),

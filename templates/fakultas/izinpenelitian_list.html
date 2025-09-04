@@ -39,7 +39,7 @@
 						<td>{{ forloop.counter }}</td>
 						<td>{{ datatb.date_in|date:"d M Y H:i"  }}</td>
 						<td>{{ datatb.mhs_judul.mhs }}</td>					  
-						<td>{{ datatb.mhs_judul }}</td>					  
+						<td><div class="response-text">{{ datatb.mhs_judul }}</div></td>					  
 						<td>{{ datatb.lokasi }}	</td>				  
 						<td>
 							<a href="{% url "acd:print_izinpenelitian" datatb.id %}" target="_blank"> 

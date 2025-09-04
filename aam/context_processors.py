@@ -6,7 +6,7 @@ from django.conf import settings
 def web_name(request):
     return {
         'baseurl': 'http://127.0.0.1:8000/',
-        'web_name': 'FEB - One Click Universal Service',
+        'web_name': 'FEB UNM - One Click Service',
         'webname': 'E-SUCCESS',
         'ministry_name': 'Kementerian Pendidikan Tinggi, Sains dan Teknologi',
         'university_name': 'Universitas Negeri Makassar',

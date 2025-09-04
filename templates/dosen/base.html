@@ -57,6 +57,9 @@
                     <li class="{% if title == 'Ujian Mahasiswa' %}active{% endif %}">
                         <a href="{% url "acd:ujian_dsn" 'Semua' %}"><i class="ri-file-list-2-line"></i> Ujian Mahasiswa</a>
                     </li>  
+                    <li class="{% if title == 'Undangan' %}active{% endif %}">
+                        <a href="{% url "acd:undangan_dsn" 'Semua' %}"><i class="ri-file-shield-2-line"></i> Undangan</a>
+                    </li>  
                     <li class="{% if title == 'Profile' %}active{% endif %}">
                         <a href="{% url 'acd:profile_dosen' %}"><i class="ri-user-settings-line"></i>Profile</a>
                     </li>                 

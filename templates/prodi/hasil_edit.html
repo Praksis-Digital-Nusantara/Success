@@ -105,6 +105,18 @@
 							</td>					  
 						</tr>
 						{% endfor %}
+			
+							<tr>
+								<td>Izin Penelitian</td>
+								<td>:</td>
+								<td>
+							{% for datatb in izinpenelitian  %}
+							<a target="_blank" href="{% url 'acd:print_izinpenelitian' datatb.id %}"><button class="btn success small">Lihat File</button></a>
+							{% empty %}
+							<td colspan="3">Tidak ada data izin penelitian.</td>
+							{% endfor %}
+								</td>					  
+							</tr>
 					</tbody>
 				</table>	
 			</div>

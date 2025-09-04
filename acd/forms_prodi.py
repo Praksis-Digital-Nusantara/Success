@@ -175,11 +175,6 @@ class formProposal(forms.ModelForm):
         widget=forms.Select(attrs={'class': 'form-control'}),
         empty_label="Pilih Dosen"
     )
-    penguji2 = forms.ModelChoiceField(
-        queryset=UserDosen.objects.all(),
-        widget=forms.Select(attrs={'class': 'form-control'}),
-        empty_label="Pilih Dosen"
-    )
     
     class Meta:
         model = Proposal
@@ -190,7 +185,6 @@ class formProposal(forms.ModelForm):
             'seminar_tempat',
             'seminar_link',
             'penguji1',
-            'penguji2',
             'ttd_status',
             'ttd',
         ]
@@ -201,7 +195,6 @@ class formProposal(forms.ModelForm):
             'seminar_tempat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Zoom Meeting ID : 00000000 Passcode: xxxxx', 'required': 'required'}),
             'seminar_link': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'link zoom jika ada'}),
             'penguji1': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
-            'penguji2': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
             'ttd_status': forms.Select(
                                 choices=[
                                     ('QRcode', 'QRcode'),

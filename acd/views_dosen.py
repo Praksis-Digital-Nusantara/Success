@@ -479,6 +479,71 @@ def ujian_dsn(request, filter):
     }
     return render(request, 'dosen/ujian_dsn.html', context)
 
+######## UNDANGAN ########
+@dosen_required
+@check_userdosen
+def undangan_dsn(request, filter):    
+    userdosen = request.userdosen 
+
+    # Initialize empty querysets
+    proposal = Proposal.objects.none()
+    hasil = Hasil.objects.none()
+    ujian = Ujian.objects.none()
+
+    if filter == 'Pembimbing1':
+        proposal = Proposal.objects.filter(pembimbing1=userdosen)
+        hasil = Hasil.objects.filter(pembimbing1=userdosen)
+        ujian = Ujian.objects.filter(pembimbing1=userdosen)
+        
+    elif filter == 'Pembimbing2':
+        proposal = Proposal.objects.filter(pembimbing2=userdosen)
+        hasil = Hasil.objects.filter(pembimbing2=userdosen)
+        ujian = Ujian.objects.filter(pembimbing2=userdosen)
+        
+    elif filter == 'Penguji1':
+        proposal = Proposal.objects.filter(penguji1=userdosen)
+        hasil = Hasil.objects.filter(penguji1=userdosen)
+        ujian = Ujian.objects.filter(penguji1=userdosen)
+        
+    elif filter == 'Penguji2':
+        proposal = Proposal.objects.filter(penguji2=userdosen)
+        hasil = Hasil.objects.filter(penguji2=userdosen)
+        ujian = Ujian.objects.filter(penguji2=userdosen)
+        
+    elif filter == 'PimpinanSidang':
+        # Hanya ujian yang memiliki pimpinan sidang
+        ujian = Ujian.objects.filter(wd__pejabat=userdosen)
+        
+    elif filter == 'SekretarisSidang':
+        # Hanya ujian yang memiliki sekretaris sidang
+        ujian = Ujian.objects.filter(kaprodi__pejabat=userdosen)
+        
+    else:  # filter == 'Semua'
+        proposal = Proposal.objects.filter(
+            Q(pembimbing1=userdosen) | Q(pembimbing2=userdosen) |
+            Q(penguji1=userdosen) | Q(penguji2=userdosen)
+        )
+        hasil = Hasil.objects.filter(
+            Q(pembimbing1=userdosen) | Q(pembimbing2=userdosen) |
+            Q(penguji1=userdosen) | Q(penguji2=userdosen)
+        )
+        ujian = Ujian.objects.filter(
+            Q(pembimbing1=userdosen) | Q(pembimbing2=userdosen) |
+            Q(penguji1=userdosen) | Q(penguji2=userdosen) |
+            Q(wd__pejabat=userdosen) | Q(kaprodi__pejabat=userdosen)
+        )
+
+    context = {
+        'title': 'Undangan',
+        'heading': f'Undangan ({filter})',
+        'userdosen': userdosen,
+        'photo': userdosen.photo,
+        'proposal': proposal,
+        'hasil': hasil,
+        'ujian': ujian,
+        'filter': filter,
+    }
+    return render(request, 'dosen/undangan_dsn.html', context)
 
 @dosen_required
 @check_userdosen

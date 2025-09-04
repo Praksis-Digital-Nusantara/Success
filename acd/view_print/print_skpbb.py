@@ -145,14 +145,14 @@ def print_skpbb(request, id):
 
         pos_y -= dl(p, pos_x_ttd, pos_y, 10, "Ditetapkan di : " + context.get("address_ttd", ""), 'N', 'L')
         pos_y -= dl(p, pos_x_ttd, pos_y, 10, "pada tanggal : " +  tanggal_indo(sk.date_in), 'NU', 'L')
-        p.drawImage(ImageReader(context.get("api_qrcode", "") + context.get("baseurl", "") + 't/skpbb/' + str(sk.id)), pos_x_ttd+10, pos_y-50, width=40, height=40)
+        if sk.ttd_status == 'QRcode' :
+            p.drawImage(ImageReader(context.get("api_qrcode", "") + context.get("baseurl", "") + 't/skpbb/' + str(sk.id)), pos_x_ttd+10, pos_y-50, width=40, height=40)
         pos_y -= dl(p, pos_x_ttd, pos_y, 70, sk.ttd.pejabat.nip.first_name, 'BU', 'L')
         pos_y -= dl(p, pos_x_ttd, pos_y, 10, "NIP. " + sk.ttd.pejabat.nip.username, 'B', 'L')
     else:
         pos_x_ttd = A4[0] - 200 
         pos_y -= dl(p, pos_x_ttd, pos_y, 10, "Ditetapkan di : " + context.get("address_ttd", ""), 'N', 'L')
         pos_y -= dl(p, pos_x_ttd, pos_y, 10, "pada tanggal : " +  tanggal_indo(sk.date_in), 'NU', 'L')
-        p.drawImage(ImageReader(context.get("api_qrcode", "") + context.get("baseurl", "") + 't/skpbb/' + str(sk.id)), pos_x_ttd+10, pos_y-50, width=40, height=40)
         pos_y -= 70 
         pos_y -= dl(p, pos_x_ttd, pos_y, 10, "[Tanda Tangan Dibatalkan]", 'B', 'L')
 

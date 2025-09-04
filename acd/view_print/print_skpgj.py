@@ -147,5 +147,5 @@ def print_skpgj(request, id):
     p.setTitle("SK Penguji " + str(sk.proposal.mhs_judul.mhs))
     p.showPage()
     p.save()
-    response["Content-Disposition"] = f'inline; filename="SK Pembimbing { str(sk.proposal.mhs_judul.mhs) }.pdf"'
+    response["Content-Disposition"] = f'inline; filename="SK Penguji { str(sk.proposal.mhs_judul.mhs) }.pdf"'
     return response

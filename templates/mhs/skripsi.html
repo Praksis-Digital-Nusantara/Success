@@ -302,7 +302,7 @@
 									<p>Izin Penelitian Anda telah terbit, silahkan download di tautan berikut:</p>
 								</div>
 								<div class="timeline-actions">
-									{% for datatb in izinpenelitian %}
+									{% for datatb in izinpenelitian  %}
 									<a target="_blank" href="{% url 'acd:print_izinpenelitian' datatb.id %}" class="action-btn success">
 										<i class="ri-download-line"></i>
 										Cetak Izin Penelitian
@@ -314,7 +314,7 @@
 								<i class="ri-check-line"></i>
 								<span>Selesai</span>
 							</div>
-						{% elif proposal is None %}
+						{% elif not proposal %}
 							<div class="timeline-body">
 								<div class="timeline-description">
 									<p>Maaf Anda belum melaksanakan Proposal</p>
@@ -324,31 +324,42 @@
 								<i class="ri-time-line"></i>
 								<span>Menunggu Tahap 4</span>
 							</div>
-						{% else %}
-							<div class="timeline-body">
+						{% elif not proposal.seminar_tgl %}
+								<div class="timeline-body">
 								<div class="timeline-description">
-									<p>Lakukan revisi proposal sebelum melaksanakan penelitian, berikut adalah lembar persetujuan penelitian:</p>
-								</div>
-								<div class="timeline-actions">
-									<a target="_blank" href="{% url 'acd:print_persetujuan_penelitian' proposal.id %}" class="action-btn success">
-										<i class="ri-printer-line"></i>
-										Cetak Lembar Izin Penelitian
-									</a>
-									<a target="_blank" href="{% url 'acd:print_permohonan_penerbitan_sip' proposal.id %}" class="action-btn success">
-										<i class="ri-printer-line"></i>
-										Permohonan Penerbitan Izin Penelitian
-									</a>
-									<a href="{% url 'acd:layanan_add' %}" class="action-btn primary">
-										<i class="ri-customer-service-line"></i>
-										Layanan Akademik
-									</a>
+									<p>Lakukan revisi proposal sebelum melaksanakan penelitian.</p>
 								</div>
 							</div>
 							<div class="timeline-status active">
 								<i class="ri-time-line"></i>
 								<span>In Progress</span>
 							</div>
-						{% endif %}
+						{% else %}
+						<!-- Jika proposal sudah ada dan seminar_tgl ada -->
+	<div class="timeline-body">
+		<div class="timeline-description">
+			<p>Lembar persetujuan dan permohonan penerbitan izin penelitian tersedia:</p>
+		</div>
+		<div class="timeline-actions">
+			<a target="_blank" href="{% url 'acd:print_persetujuan_penelitian' proposal.id %}" class="action-btn success">
+				<i class="ri-printer-line"></i>
+				Cetak Lembar Pengesahan Penelitian
+			</a>
+			<a target="_blank" href="{% url 'acd:print_permohonan_penerbitan_sip' proposal.id %}" class="action-btn success">
+				<i class="ri-printer-line"></i>
+				Cetak Permohonan Penerbitan Izin Penelitian
+			</a>
+			<a href="{% url 'acd:layanan_add' %}" class="action-btn primary">
+				<i class="ri-customer-service-line"></i>
+				Layanan Akademik
+			</a>
+		</div>
+	</div>
+	<div class="timeline-status active">
+		<i class="ri-time-line"></i>
+		<span>In Progress</span>
+	</div>
+{% endif %}
 					</div>
 				</div>
 
