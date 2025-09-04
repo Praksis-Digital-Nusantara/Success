@@ -16,12 +16,12 @@
 			<table id="layananTable" class="display" style="width:100%">
 				<thead>
 				<tr>
-					<th>No</th>
-					<th>Date In</th>
-					<th>Mahasiswa</th>
-					<th>Prodi</th>
-					<th>Persyaratan</th>
-					<th>Aksi</th>
+					<th style="white-space: nowrap;">No</th>
+					<th style="white-space: nowrap;">Date In</th>
+					<th style="white-space: nowrap;">Mahasiswa</th>
+					<th style="white-space: nowrap;">Prodi</th>
+					<th style="white-space: nowrap;">Persyaratan</th>
+					<th style="white-space: nowrap;">Aksi</th>
 				</tr>
 				</thead>
 				<tfoot>
@@ -41,8 +41,8 @@
 						<td>{{ datatb.date_in|date:"d M Y H:i"  }}</td>
 						<td>{{ datatb.mhs }}</td>					  
 						<td>{{ datatb.mhs.prodi }}</td>					  
-						<td>{{ datatb.layanan_isi }}
-							<a target="_blank" href="/{{ datatb.layanan_file }}">
+						<td><div class="response-text">{{ datatb.layanan_isi|truncatechars:230 }}</div>
+							<a target="_blank" href="/media/{{ datatb.layanan_file }}">
 								<button class="btn secondary x-small"><i class="ri-link"></i>Lampiran</button>	
 							</a>
 						</td>						  
