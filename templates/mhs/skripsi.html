@@ -270,6 +270,10 @@
 										<i class="ri-download-line"></i>
 										Cetak Undangan
 									</a>
+										<a target="_blank" href="/" class="action-btn success">
+											<i class="ri-printer-line"></i>
+										Download Template Matriks Perbaikan
+									</a>
 								</div>
 							</div>
 							<div class="timeline-status completed">
@@ -430,6 +434,10 @@
 										<i class="ri-download-line"></i>
 										Cetak Undangan
 									</a>
+									<a target="_blank" href="/" class="action-btn success">
+											<i class="ri-printer-line"></i>
+										Download Template Matriks Perbaikan
+									</a>
 								</div>
 							</div>
 							<div class="timeline-status completed">
@@ -441,66 +449,83 @@
 				</div>
 
 				<!-- Tahap 7: Ujian Skripsi -->
-				<div class="timeline-item">
-					<div class="timeline-marker">
-						<div class="timeline-dot"></div>
-					</div>
-					<div class="timeline-content">
-						<div class="timeline-header">
-							<div class="timeline-badge">Tahap 7</div>
-							<h3>Ujian Tutup</h3>
-						</div>
-						
-						{% if not ujian.no_surat %}
-							<div class="timeline-body">
-								<div class="timeline-description">
-									<p>Konsultasikan ke pembimbing untuk melaksanakan ujian tutup skripsi, berikut adalah format lembar pengesahan</p>
-								</div>
-								<div class="timeline-actions">
-									{% if skripsi is None %}
-										<div class="warning-message">
-											<i class="ri-error-warning-line"></i>
-											<span>Ajukan Judul Terlebih Dahulu!</span>
-										</div>
-									{% else %}
-										<a target="_blank" href="{% url 'acd:print_pengesahan' 'Ujian' skripsi.id %}" class="action-btn success">
-											<i class="ri-printer-line"></i>
-											Cetak Lembar Pengesahan
-										</a>
-										<a href="{% url 'acd:ujian_reg' %}" class="action-btn primary">
-											<i class="ri-file-add-line"></i>
-											Registrasi Ujian
-										</a>
-									{% endif %}
-								</div>
-							</div>
-							<div class="timeline-status active">
-								<i class="ri-time-line"></i>
-								<span>In Progress</span>
-							</div>
-						{% else %}
-							<div class="timeline-body">
-								<div class="timeline-description">
-									<div class="notification-time">
-										<i class="ri-calendar-line"></i>
-										<span>{{ ujian.ujian_tgl }}</span>
-									</div>
-									<p>Undangan ujian tutup Anda telah terbit, silahkan download di tautan berikut:</p>
-								</div>
-								<div class="timeline-actions">
-									<a target="_blank" href="{% url 'acd:print_undangan_ujian' ujian.id %}" class="action-btn success">
-										<i class="ri-download-line"></i>
-										Cetak Undangan Ujian
-									</a>
-								</div>
-							</div>
-							<div class="timeline-status completed">
-								<i class="ri-check-line"></i>
-								<span>Selesai</span>
-							</div>
-						{% endif %}
-					</div>
-				</div>
+				<!-- Tahap 7: Ujian Skripsi -->
+<div class="timeline-item">
+    <div class="timeline-marker">
+        <div class="timeline-dot"></div>
+    </div>
+    <div class="timeline-content">
+        <div class="timeline-header">
+            <div class="timeline-badge">Tahap 7</div>
+            <h3>Ujian Tutup</h3>
+        </div>
+
+        {% if not hasil or not hasil.seminar_tgl %}
+            <!-- Kalau seminar hasil belum dilaksanakan -->
+            <div class="timeline-body">
+                <div class="timeline-description">
+                    <p>Anda belum melaksanakan Seminar Hasil, silahkan selesaikan Tahap 6 terlebih dahulu.</p>
+                </div>
+            </div>
+            <div class="timeline-status pending">
+                <i class="ri-time-line"></i>
+                <span>Menunggu Tahap 6</span>
+            </div>
+
+        {% elif not ujian.no_surat %}
+            <!-- Kalau seminar hasil sudah ada, tapi ujian tutup belum -->
+            <div class="timeline-body">
+                <div class="timeline-description">
+                    <p>Konsultasikan ke pembimbing untuk melaksanakan ujian tutup skripsi, berikut adalah format lembar pengesahan</p>
+                </div>
+                <div class="timeline-actions">
+                    {% if skripsi is None %}
+                        <div class="warning-message">
+                            <i class="ri-error-warning-line"></i>
+                            <span>Ajukan Judul Terlebih Dahulu!</span>
+                        </div>
+                    {% else %}
+                        <a target="_blank" href="{% url 'acd:print_pengesahan' 'Ujian' skripsi.id %}" class="action-btn success">
+                            <i class="ri-printer-line"></i>
+                            Cetak Lembar Pengesahan
+                        </a>
+                        <a href="{% url 'acd:ujian_reg' %}" class="action-btn primary">
+                            <i class="ri-file-add-line"></i>
+                            Registrasi Ujian
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="timeline-status active">
+                <i class="ri-time-line"></i>
+                <span>In Progress</span>
+            </div>
+
+        {% else %}
+            <!-- Kalau ujian tutup sudah terbit -->
+            <div class="timeline-body">
+                <div class="timeline-description">
+                    <div class="notification-time">
+                        <i class="ri-calendar-line"></i>
+                        <span>{{ ujian.ujian_tgl }}</span>
+                    </div>
+                    <p>Undangan ujian tutup Anda telah terbit, silahkan download di tautan berikut:</p>
+                </div>
+                <div class="timeline-actions">
+                    <a target="_blank" href="{% url 'acd:print_undangan_ujian' ujian.id %}" class="action-btn success">
+                        <i class="ri-download-line"></i>
+                        Cetak Undangan Ujian
+                    </a>
+                </div>
+            </div>
+            <div class="timeline-status completed">
+                <i class="ri-check-line"></i>
+                <span>Selesai</span>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
 			</div>
 		</div>
 </div>

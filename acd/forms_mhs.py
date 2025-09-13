@@ -229,6 +229,7 @@ class formHasilReg(forms.ModelForm):
                 # Hapus file lama
                 if old_instance.krs and hasattr(old_instance.krs, 'path') and os.path.isfile(old_instance.krs.path):
                     os.remove(old_instance.krs.path)
+                
         if commit:
             instance.save()
             self.save_m2m()
@@ -237,11 +238,17 @@ class formHasilReg(forms.ModelForm):
 class formUjianReg(forms.ModelForm):
     class Meta:
         model = Ujian
-        fields = ['persetujuan_ujian', 'transkrip', 'ijaza_terakhir', 'krs_berjalan', 'rekomendasi_akademik']
+        fields = ['persetujuan_ujian', 'transkrip', 'ijaza_terakhir', 'ukt_terakhir', 'bebas_pustaka_univ', 'krs_berjalan', 'ktp', 'usulan_baak', 'matriks_perbaikan', 'persetujuan_waktu', 'foto_latar_biru']
         widgets = {
             'persetujuan_ujian': forms.FileInput(attrs={'class': 'form-control'}),
             'transkrip': forms.FileInput(attrs={'class': 'form-control'}),
             'ijaza_terakhir': forms.FileInput(attrs={'class': 'form-control'}),
             'krs_berjalan': forms.FileInput(attrs={'class': 'form-control'}),
-            'rekomendasi_akademik': forms.FileInput(attrs={'class': 'form-control'}),
+            'ukt_terakhir': forms.FileInput(attrs={'class': 'form-control'}),
+            'bebas_pustaka_univ': forms.FileInput(attrs={'class': 'form-control'}),
+            'ktp': forms.FileInput(attrs={'class': 'form-control'}),
+            'usulan_baak': forms.FileInput(attrs={'class': 'form-control'}),
+            'matriks_perbaikan': forms.FileInput(attrs={'class': 'form-control'}),
+            'persetujuan_waktu': forms.FileInput(attrs={'class': 'form-control'}),
+            'foto_latar_biru': forms.FileInput(attrs={'class': 'form-control'}),
         }

@@ -1,0 +1,379 @@
+{% extends "prodi/base.html" %}
+
+{% block content1 %}
+<div class="layanan-form-container">
+	<div class="profile-section-ujian">
+		<div class="student-table">
+			<div class="table-responsive">
+				<table>
+					<tbody>
+						<tr>
+							<td width="20%">Mahasiswa</td>
+							<td width="5%">:</td>
+							<td>{{ mhs.nim }}</td>					  
+						</tr>
+						<tr>
+							<td >Program Studi</td>
+							<td >:</td>
+							<td>{{ mhs.prodi }}</td>					  
+						</tr>
+						<tr>
+							<td >Tempat/Tanggal Lahir</td>
+							<td >:</td>
+							<td>{{ mhs.tempat_lahir }}, {{ mhs.tgl_lahir }}</td>					  
+						</tr>
+						<tr>
+							<td width="10%">Jenis Layanan</td>
+							<td width="5%">:</td>
+							<td>{{ layanan.layanan_jenis.nama_layanan }}</td>			  
+						</tr>
+						<tr>
+							<td width="10%">Status</td>
+							<td width="5%">:</td>
+							<td>{{ layanan.status }}</td>			  
+						</tr>
+						<tr>
+							<td>Lampiran Layanan Usulan Ujian</td>
+							<td>:</td>
+							<td>{% if layanan.layanan_file %}
+									<a target="_blank" href="/media/{{ layanan.layanan_file }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File</p>
+									{% endif %}
+							</td>					  
+						</tr>
+						<!-- Suket Persetujuan Ujian -->
+						<tr>
+							<td>Surat Persetujuan Ujian</td>
+							<td>:</td>
+							<td>{% if ujian.persetujuan_ujian %}
+									<a target="_blank" href="/media/{{ ujian.persetujuan_ujian }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+						<!-- Matriks Perbaikan -->
+							<tr>
+							<td>Matriks Perbaikan</td>
+							<td>:</td>
+							<td>{% if ujian.matriks_perbaikan %}
+									<a target="_blank" href="/media/{{ ujian.matriks_perbaikan }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+						<!-- Bebas Plagiasi -->
+							<tr>
+							<td>Surat Bebas Plagiasi</td>
+							<td>:</td>
+							<td>{% if bebasplagiasi %}
+									<a target="_blank" href="{% url 'acd:print_suket_bebasplagiasi' bebasplagiasi.id %}"><button class="btn success small">Lihat File</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+
+						<!-- Surat Berkelakuan Baik -->
+						 <tr>
+							<td>Surat Berkelakuan Baik</td>
+							<td>:</td>
+							<td>{% if berkelakuanbaik %}
+									<a target="_blank" href="{% url 'acd:print_suket_berkelakuanbaik' berkelakuanbaik.id %}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+
+						<!-- Ijazah Terakhir -->
+						 <tr>
+							<td>Ijazah Terakhir</td>
+							<td>:</td>
+							<td>{% if ujian.ijaza_terakhir %}
+									<a target="_blank" href="/media/{{ ujian.ijaza_terakhir }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+						<!-- UKT Terakhir -->
+						<tr>
+							<td>Pembayaran UKT Terakhir</td>
+							<td>:</td>
+							<td>{% if ujian.ukt_terakhir %}
+									<a target="_blank" href="/media/{{ ujian.ukt_terakhir }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+						<!-- Surat Bebas Pustaka Universitas -->
+						<tr>
+							<td>Bebas Pustaka Universitas</td>
+							<td>:</td>
+							<td>{% if ujian.bebas_pustaka_univ %}
+									<a target="_blank" href="/media/{{ ujian.bebas_pustaka_univ }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+
+						<!-- Surat Bebas Pustaka Fakultas -->
+						<tr>
+							<td>Bebas Pustaka Fakultas</td>
+							<td>:</td>
+							<td>{% if bebaspustaka %}
+									<a target="_blank" href="{% url 'acd:print_suket_bebaspustaka' bebaspustaka.id %}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+						<!-- ktp mahasiswa -->
+						<tr>
+							<td>KTP Mahasiswa</td>
+							<td>:</td>
+							<td>{% if ujian.ktp %}
+									<a target="_blank" href="/media/{{ ujian.ktp }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+
+						<!-- Usulan BAAK -->
+						 <tr>
+							<td>Usulan BAAK</td>
+							<td>:</td>
+							<td>{% if ujian.usulan_baak %}
+									<a target="_blank" href="/media/{{ ujian.usulan_baak }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+						<!-- SK Pembimbing -->
+						<tr> 
+							<td>SK Pembimbing</td>
+							<td>:</td>
+							<td>
+									{% for skpbb_data in skpbb %}
+									<a target="_blank" href="{% url 'acd:print_skpbb' skpbb_data.id %}"><button class="btn success small">SK {{ skpbb_data.date_in }}</button></a>
+									{% endfor %}
+								</td>					  
+						</tr>
+
+						<!-- Undangan Seminar Proposal -->
+						 <tr>
+							<td>Undangan Seminar Proposal</td>
+							<td>:</td>
+							<td>{% if proposal %}
+									<a target="_blank" href="{% url 'acd:print_undangan' 'Proposal' proposal.id %}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+
+						<!-- Undangan Seminar Hasil -->
+						 <tr>
+							<td>Undangan Seminar Hasil</td>
+							<td>:</td>
+							<td>{% if hasil %}
+									<a target="_blank" href="{% url 'acd:print_undangan' 'Hasil' hasil.id %}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+						<!-- Transkrip Nilai -->
+						<tr>
+							<td>Transkrip Nilai</td>
+							<td>:</td>
+							<td>{% if ujian.transkrip %}
+									<a target="_blank" href="/media/{{ ujian.transkrip }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+						<!-- Surat Persetujuan Waktu Ujian -->
+						<tr>
+							<td>Surat Persetujuan Waktu Ujian</td>
+							<td>:</td>
+							<td>{% if ujian.persetujuan_waktu %}
+									<a target="_blank" href="/media/{{ ujian.persetujuan_waktu }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+						<!-- KRS Berjalan -->
+						<tr>
+							<td>KRS Berjalan</td>
+							<td>:</td>
+							<td>{% if ujian.krs_berjalan %}
+									<a target="_blank" href="/media/{{ ujian.krs_berjalan }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+					
+					
+						<tr>
+							<td>Foto Latar Biru</td>
+							<td>:</td>
+							<td>{% if ujian.foto_latar_biru %}
+									<a target="_blank" href="/media/{{ ujian.foto_latar_biru }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+
+
+						<table style="border-collapse: collapse; width: 100%; border: 1px solid #ddd; font-size: 14px;">
+							{% for key, value in layanan_isi_parsed.items %}
+							<tr>
+								<!-- Nomor urut -->
+								<td style="padding: 8px; border: 1px solid #ddd; width: 5%; text-align: center;">
+									{{ forloop.counter }}
+								</td>
+								<td style="background: #f9fafb; font-weight: 600; padding: 8px; border: 1px solid #ddd; width: 30%;">
+									{{ key }}
+								</td>
+								<td style="padding: 8px; border: 1px solid #ddd; color: #2563eb;">
+									{% if value|slice:":4" == "http" %}
+										<a href="{{ value }}" target="_blank" style="color:#2563eb; text-decoration:none;">
+											File Berkas
+										</a>
+									{% else %}
+										{{ value }}
+									{% endif %}
+								</td>
+							</tr>
+							{% endfor %}
+
+						</table>		
+					</tbody>
+				</table>	
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="form-card">
+
+	<div class="form-header">
+		<div class="form-header-icon">
+			<i class="ri-file-text-line"></i>
+		</div>
+		<div class="form-header-content">
+			<h2>{{ heading }}</h2>
+			<p>Silahkan edit data berikut ini</p>
+		</div>
+	</div>
+
+	<form method="post" enctype="multipart/form-data"  class="layanan-form">
+	{% csrf_token %}
+	
+			<div class="form-group">
+				<label for="id_no_surat">Nomor Surat</label>
+				{{ form.no_surat }}
+			</div>
+			<div class="form-row">
+		<div class="form-group">
+			<label for="id_usul_tgl">Tanggal Seminar</label>
+			{{ form.usul_tgl }}
+		</div>
+		<div class="form-group">
+			<label for="id_usul_jam">Jam Seminar</label>
+			{{ form.usul_jam }}
+		</div>
+		</div>
+		<div class="form-group">
+			<label for="id_usul_tempat">Tempat Seminar</label>
+			{{ form.usul_tempat }}
+		</div>
+		<div class="form-row">
+		<div class="form-group">
+			<label for="id_ketua">Ketua</label>
+			{{ form.ketua }}
+		</div>
+		<div class="form-group">
+			<label for="id_wakil">Wakil</label>
+			{{ form.wakil }}
+		</div>
+		<div class="form-group">
+			<label for="id_sekretaris">Sekretaris</label>
+			{{ form.sekretaris }}
+		</div>
+		</div>
+
+		<div class="form-row">
+		<div class="form-group">
+			<label for="id_penguji1">Penguji I</label>
+			{{ form.penguji1 }}
+		</div>	
+		<div class="form-group">
+			<label for="id_penguji2">Penguji II</label>
+			{{ form.penguji2 }}
+		</div>	
+		</div>
+		<div class="form-row">
+			<div class="form-group">
+				<label for="id_ttd">Pejabat Bertandatangan</label>
+				{{ form.ttd }}
+			</div>
+			<div class="form-group">
+				<label for="id_ttd_status">Jenis TTD</label>
+				{{ form.ttd_status }}
+			</div>
+		</div>
+		<div class="form-actions">
+			<button type="submit" class="btn primary">Proses</button>
+		</div>
+	</form>
+</div>
+
+{% endblock content1 %}
+
+
+{% block script_costum %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+	  var elementIds = ['id_penguji1', 'id_penguji2', 'id_ketua','id_wakil','id_sekretaris'];
+	  elementIds.forEach(function(elementId) {
+		var element = document.getElementById(elementId);
+		if (element) {
+		  new Choices(element, {
+			searchEnabled: true,
+			itemSelectText: '',
+			shouldSort: false,
+			removeItemButton: true,
+			searchResultLimit: 10,
+			searchFields: ['label', 'value'],
+			position: 'bottom',
+			searchPlaceholderValue: 'Cari Dosen',
+			noResultsText: 'Tidak ditemukan',
+			noChoicesText: 'Tidak ada pilihan',
+		  });
+		}
+	  });
+	});
+</script>
+{% endblock script_costum %}
+
+
+
+
+
+
+
+
+

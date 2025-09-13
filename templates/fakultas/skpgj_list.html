@@ -38,10 +38,10 @@
 					<tr>
 						<td>{{ forloop.counter }}</td>
 						<td>{{ datatb.date_in|date:"d M Y H:i"  }}</td>
-						<td>{{ datatb.proposal.mhs_judul.mhs }}</td>					  
-						<td>{{ datatb.proposal.mhs_judul.prodi }}</td>					  
-						<td>1. {{ datatb.proposal.penguji1.nip.first_name }}					  
-								<br>2. {{ datatb.proposal.penguji2.nip.first_name }}
+						<td>{{ datatb.usulan.mhs_judul.mhs }}</td>					  
+						<td>{{ datatb.usulan.mhs_judul.prodi }}</td>					  
+						<td>1. {{ datatb.usulan.penguji1.nip.first_name }}					  
+								<br>2. {{ datatb.usulan.penguji2.nip.first_name }}
 								</td>							  
 						<td>
 							<a href="{% url "acd:print_skpgj" datatb.id %}" target="_blank"> 

@@ -40,14 +40,14 @@
 								{% for std in datatb.std_surat.all %}
 										{{ std.dosen }} {{ std.mhs }}<br>
 								{% endfor %}
-								{{ datatb.mhs_judul.mhs.nim }}
+								{{ datatb.mhs_judul.mhs.nim }} {{ datatb.usulan.mhs_judul.mhs.nim }}
 							</td>
 							<td>{{ datatb.date_in }}</td>
 							<td>{{ datatb.mhs.prodi }}
 								{% for std in datatb.std_surat.all %}
 								{{ std.dosen.prodi }}<br>
 								{% endfor %}
-								{{ datatb.mhs_judul.prodi }}
+								{{ datatb.mhs_judul.prodi }} {{ datatb.usulan.mhs_judul.prodi }}
 							</td>
 							<td>
 								{% if datatb.jenis_dokumen|lower == "sk_pembimbing" %}
@@ -59,11 +59,29 @@
 								{% if datatb.jenis_dokumen|lower == "undangan_proposal" %}
 									Undangan Proposal
 								{% endif %}
+								{% if datatb.jenis_dokumen|lower == "undangan_hasil" %}
+									Undangan Hasil
+								{% endif %}
+								{% if datatb.jenis_dokumen|lower == "suket_bebasplagiasi" %}
+									SK Bebas Plagiasi
+								{% endif %}
+								{% if datatb.jenis_dokumen|lower == "suket_bebaspustaka" %}
+									Surat Bebas Pustaka
+								{% endif %}
 								{% if datatb.jenis_dokumen|lower == "surat_tugas" %}
 									Surat Tugas
 								{% endif %}
 								{% if datatb.jenis_dokumen|lower == "suket_berkelakuanbaik" %}
 									SK Berkelakuan Baik
+								{% endif %}
+								{% if datatb.jenis_dokumen|lower == "izin_penelitian" %}
+									Izin Penelitian
+								{% endif %}
+								{% if datatb.jenis_dokumen|lower == "suket_usulanujianskripsi" %}
+									Suket Usulan Ujian Skripsi
+								{% endif %}
+								{% if datatb.jenis_dokumen|lower == "sk_penguji" %}
+									SK Penguji
 								{% endif %}
 							</td>							
 							<td>

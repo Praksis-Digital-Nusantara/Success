@@ -52,8 +52,25 @@
 		<form method="post" enctype="multipart/form-data" class="layanan-form">
 			{% csrf_token %}
 			<div class="requirements-list">
-				
-				<!-- Persetujuan Ujian -->
+
+				<div class="requirement-item">
+					<div class="requirement-info">
+						<div class="requirement-icon"><i class="ri-shield-star-line"></i></div>
+						<div class="requirement-text">
+							<h4 class="requirement-title">Suket Usulan Ujian Skripsi</h4>
+							<p class="requirement-desc">Sebelum Ajukan layanan ini, pastikan berkas di bawah ini telah diselesaikan</p>
+						</div>
+					</div>
+					<div class="requirement-actions">
+						{% if usulanujianskripsi %}
+							<a target="_blank" href="{% url 'acd:print_suket_usulanujianskripsi' usulanujianskripsi.id %}" class="btn primary small"><i class="ri-eye-line"></i> Lihat File</a>
+						{% else %}
+							<a href="{% url 'acd:layanan_add' %}" class="btn success small"><i class="ri-add-line"></i> Ajukan Layanan</a>
+						{% endif %}
+					</div>
+				</div>
+
+				<!--Bukti Persetujuan (Acc) Naskah Skripsi -->
 				<div class="requirement-item">
 					<div class="requirement-info">
 						<div class="requirement-icon"><i class="ri-file-shield-2-line"></i></div>
@@ -71,23 +88,61 @@
 					</div>
 				</div>
 
-				<!-- Transkrip Nilai -->
+
+				<!-- Matriks Perbaikan -->
 				<div class="requirement-item">
 					<div class="requirement-info">
-						<div class="requirement-icon"><i class="ri-file-list-3-line"></i></div>
+						<div class="requirement-icon"><i class="ri-file-edit-line"></i></div>
 						<div class="requirement-text">
-							<h4 class="requirement-title">Transkrip Nilai</h4>
-							<p class="requirement-desc">Transkrip nilai terakhir yang telah disahkan.</p>
+							<h4 class="requirement-title">Matriks Perbaikan</h4>
+							<p class="requirement-desc">Upload matriks perbaikan Seminar Hasil.</p>
 						</div>
 					</div>
 					<div class="requirement-actions">
-						{% if ujian.transkrip %}
-						<a target="_blank" href="/media/{{ ujian.transkrip }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
+						{% if ujian.matriks_perbaikan %}
+						<a target="_blank" href="/media/{{ ujian.matriks_perbaikan }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
 						{% endif %}
-						{{ form.transkrip }}
+						{{ form.matriks_perbaikan }}
 						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
 					</div>
 				</div>
+
+				<!-- Surat Bebas Plagiasi -->
+				<div class="requirement-item">
+					<div class="requirement-info">
+						<div class="requirement-icon"><i class="ri-shield-star-line"></i></div>
+						<div class="requirement-text">
+							<h4 class="requirement-title">Surat Bebas Plagiasi</h4>
+							<p class="requirement-desc">Dibuat oleh sistem. Ajukan layanan jika belum ada.</p>
+						</div>
+					</div>
+					<div class="requirement-actions">
+						{% if bebasplagiasi %}
+							<a target="_blank" href="{% url 'acd:print_suket_bebasplagiasi' bebasplagiasi.id %}" class="btn primary small"><i class="ri-eye-line"></i> Lihat File</a>
+						{% else %}
+							<a href="{% url 'acd:layanan_add' %}" class="btn success small"><i class="ri-add-line"></i> Ajukan Layanan</a>
+						{% endif %}
+					</div>
+				</div>
+
+				<!-- Surat Berkelakuan Baik -->
+				<div class="requirement-item">
+					<div class="requirement-info">
+						<div class="requirement-icon"><i class="ri-shield-star-line"></i></div>
+						<div class="requirement-text">
+							<h4 class="requirement-title">Surat Berkelakuan Baik</h4>
+							<p class="requirement-desc">Dibuat oleh sistem. Ajukan layanan jika belum ada.</p>
+						</div>
+					</div>
+					<div class="requirement-actions">
+						{% if berkelakuanbaik %}
+							<a target="_blank" href="{% url 'acd:print_suket_berkelakuanbaik' berkelakuanbaik.id %}" class="btn primary small"><i class="ri-eye-line"></i> Lihat File</a>
+						{% else %}
+							<a href="{% url 'acd:layanan_add' %}" class="btn success small"><i class="ri-add-line"></i> Ajukan Layanan</a>
+						{% endif %}
+					</div>
+				</div>
+
 
 				<!-- Ijaza Terakhir -->
 				<div class="requirement-item">
@@ -107,77 +162,102 @@
 					</div>
 				</div>
 
-				<!-- KRS Berjalan -->
+
+				<!-- UKT Terakhir -->
 				<div class="requirement-item">
 					<div class="requirement-info">
-						<div class="requirement-icon"><i class="ri-calendar-check-line"></i></div>
+						<div class="requirement-icon"><i class="ri-award-line"></i></div>
 						<div class="requirement-text">
-							<h4 class="requirement-title">KRS Berjalan</h4>
-							<p class="requirement-desc">Kartu Rencana Studi semester berjalan.</p>
+							<h4 class="requirement-title">Pembayaran UKT Terakhir</h4>
+							<p class="requirement-desc">Fotokopi pembayaran UKT terakhir.</p>
 						</div>
 					</div>
 					<div class="requirement-actions">
-						{% if ujian.krs_berjalan %}
-						<a target="_blank" href="/media/{{ ujian.krs_berjalan }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
+						{% if ujian.ukt_terakhir %}
+						<a target="_blank" href="/media/{{ ujian.ukt_terakhir }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
 						{% endif %}
-						{{ form.krs_berjalan }}
+						{{ form.ukt_terakhir }}
 						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
 					</div>
 				</div>
 
-				<!-- Rekomendasi dari Akademik -->
+
+				<!-- Bebas Pustaka Universitas -->
+				<div class="requirement-item">
+					<div class="requirement-info">
+						<div class="requirement-icon"><i class="ri-award-line"></i></div>
+						<div class="requirement-text">
+							<h4 class="requirement-title">Bebas Pustaka tingkat Universitas</h4>
+							<p class="requirement-desc">Fotokopi bebas pustaka tingkat universitas.</p>
+						</div>
+					</div>
+					<div class="requirement-actions">
+						{% if ujian.bebas_pustaka_univ %}
+						<a target="_blank" href="/media/{{ ujian.bebas_pustaka_univ }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
+						{% endif %}
+						{{ form.bebas_pustaka_univ }}
+						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
+					</div>
+				</div>
+
+				<!-- Pustaka Fakultas  -->
+					<div class="requirement-item">
+					<div class="requirement-info">
+						<div class="requirement-icon"><i class="ri-shield-check-line"></i></div>
+						<div class="requirement-text">
+							<h4 class="requirement-title">Surat Bebas Pustaka Fakultas</h4>
+							<p class="requirement-desc">Dibuat oleh sistem. Ajukan layanan jika belum ada.</p>
+						</div>
+					</div>
+					<div class="requirement-actions">
+						{% if bebaspustaka %}
+							<a target="_blank" href="{% url 'acd:print_suket_bebaspustaka' bebaspustaka.id %}" class="btn primary small"><i class="ri-eye-line"></i> Lihat File</a>
+						{% else %}
+							<a href="{% url 'acd:layanan_add' %}" class="btn success small"><i class="ri-add-line"></i> Ajukan Layanan</a>
+						{% endif %}
+					</div>
+				</div>
+
+
+				<!-- KTP -->
 				<div class="requirement-item">
 					<div class="requirement-info">
 						<div class="requirement-icon"><i class="ri-file-edit-line"></i></div>
 						<div class="requirement-text">
-							<h4 class="requirement-title">Rekomendasi dari Akademik</h4>
-							<p class="requirement-desc">Surat rekomendasi dari bagian akademik.</p>
+							<h4 class="requirement-title">KTP</h4>
+							<p class="requirement-desc">Upload KTP Mahasiswa.</p>
 						</div>
 					</div>
 					<div class="requirement-actions">
-						{% if ujian.rekomendasi_akademik %}
-						<a target="_blank" href="/media/{{ ujian.rekomendasi_akademik }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
+						{% if ujian.ktp %}
+						<a target="_blank" href="/media/{{ ujian.ktp }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
 						{% endif %}
-						{{ form.rekomendasi_akademik }}
+						{{ form.ktp }}
 						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
 					</div>
 				</div>
 
-				<!-- Bebas Beban Kuliah -->
+
+
+
+				<!-- Usulan BAAK -->
 				<div class="requirement-item">
 					<div class="requirement-info">
-						<div class="requirement-icon"><i class="ri-shield-check-line"></i></div>
+						<div class="requirement-icon"><i class="ri-file-edit-line"></i></div>
 						<div class="requirement-text">
-							<h4 class="requirement-title">Surat Bebas Beban Kuliah</h4>
-							<p class="requirement-desc">Dibuat oleh sistem. Ajukan layanan jika belum ada.</p>
+							<h4 class="requirement-title">Usulan BAAK</h4>
+							<p class="requirement-desc">Usulan Ujian Skripsi/ TA dari BAAK Universitas (simawa.unm.ac.id)</p>
 						</div>
 					</div>
 					<div class="requirement-actions">
-						{% if bebasbebankuliah %}
-							<a target="_blank" href="{% url 'acd:print_suket_bebaskuliah' bebasbebankuliah.id %}" class="btn primary small"><i class="ri-eye-line"></i> Lihat File</a>
-						{% else %}
-							<a href="{% url 'acd:layanan_add' %}" class="btn success small"><i class="ri-add-line"></i> Ajukan Layanan</a>
+						{% if ujian.usulan_baak %}
+						<a target="_blank" href="/media/{{ ujian.usulan_baak }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
 						{% endif %}
+						{{ form.usulan_baak }}
+						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
 					</div>
 				</div>
-				
-				<!-- Bebas Plagiasi -->
-				<div class="requirement-item">
-					<div class="requirement-info">
-						<div class="requirement-icon"><i class="ri-shield-star-line"></i></div>
-						<div class="requirement-text">
-							<h4 class="requirement-title">Surat Bebas Plagiasi</h4>
-							<p class="requirement-desc">Dibuat oleh sistem. Ajukan layanan jika belum ada.</p>
-						</div>
-					</div>
-					<div class="requirement-actions">
-						{% if bebasplagiasi %}
-							<a target="_blank" href="{% url 'acd:print_suket_bebasplagiasi' bebasplagiasi.id %}" class="btn primary small"><i class="ri-eye-line"></i> Lihat File</a>
-						{% else %}
-							<a href="{% url 'acd:layanan_add' %}" class="btn success small"><i class="ri-add-line"></i> Ajukan Layanan</a>
-						{% endif %}
-					</div>
-				</div>
+
 				
 				<!-- SK Pembimbing -->
 				<div class="requirement-item">
@@ -196,6 +276,126 @@
 						{% endif %}
 					</div>
 				</div>
+				<!-- Undangan Seminar Proposal -->
+				 <div class="requirement-item">
+					<div class="requirement-info">
+						<div class="requirement-icon"><i class="ri-user-star-line"></i></div>
+						<div class="requirement-text">
+							<h4 class="requirement-title">Undangan Seminar Proposal</h4>
+							<p class="requirement-desc">Undangan Seminar Proposal Mahasiswa.</p>
+						</div>
+					</div>
+					<div class="requirement-actions">
+						{% if proposal %}
+							<a target="_blank" href="{% url 'acd:print_undangan' 'Proposal' proposal.id %}" class="btn primary small"><i class="ri-eye-line"></i> Lihat File</a>
+						{% else %}
+							<p>Undangan Seminar Proposal Belum Disetujui</p>
+						{% endif %}
+					</div>
+				</div>
+
+				<!-- Undangan Seminar Hasil -->
+ 			<div class="requirement-item">
+					<div class="requirement-info">
+						<div class="requirement-icon"><i class="ri-user-star-line"></i></div>
+						<div class="requirement-text">
+							<h4 class="requirement-title">Undangan Seminar Hasil</h4>
+							<p class="requirement-desc">Undangan Seminar Hasil Mahasiswa.</p>
+						</div>
+					</div>
+					<div class="requirement-actions">
+						{% if hasil %}
+							<a target="_blank" href="{% url 'acd:print_undangan' 'Hasil' hasil.id %}" class="btn primary small"><i class="ri-eye-line"></i> Lihat File</a>
+						{% else %}
+							<p>Undangan Seminar Hasil Belum Disetujui</p>
+						{% endif %}
+					</div>
+				</div>
+
+
+
+				<!-- Transkrip Nilai -->
+				<div class="requirement-item">
+					<div class="requirement-info">
+						<div class="requirement-icon"><i class="ri-file-list-3-line"></i></div>
+						<div class="requirement-text">
+							<h4 class="requirement-title">Transkrip Nilai</h4>
+							<p class="requirement-desc">Transkrip Nilai Sebelum Ujian (Sudah di tanda tangani/verifikasi oleh BAAK Universitas)</p>
+						</div>
+					</div>
+					<div class="requirement-actions">
+						{% if ujian.transkrip %}
+						<a target="_blank" href="/media/{{ ujian.transkrip }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
+						{% endif %}
+						{{ form.transkrip }}
+						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
+					</div>
+				</div>
+
+
+				<!-- Persetujuan Waktu Ujian -->
+				 <div class="requirement-item">
+					<div class="requirement-info">
+						<div class="requirement-icon"><i class="ri-file-shield-2-line"></i></div>
+						<div class="requirement-text">
+							<h4 class="requirement-title">Persetujuan Waktu Ujian</h4>
+							<p class="requirement-desc">Persetujuan Waktu ACC dari masing-masing dosen..</p>
+						</div>
+					</div>
+					<div class="requirement-actions">
+						{% if ujian.persetujuan_waktu %}
+						<a target="_blank" href="/media/{{ ujian.persetujuan_waktu }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
+						{% endif %}
+						{{ form.persetujuan_waktu }}
+						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
+					</div>
+				</div>
+				
+
+
+				
+				
+
+				
+
+					
+
+
+				<!-- KRS Berjalan -->
+				<div class="requirement-item">
+					<div class="requirement-info">
+						<div class="requirement-icon"><i class="ri-calendar-check-line"></i></div>
+						<div class="requirement-text">
+							<h4 class="requirement-title">KRS Berjalan</h4>
+							<p class="requirement-desc">Kartu Rencana Studi semester berjalan.</p>
+						</div>
+					</div>
+					<div class="requirement-actions">
+						{% if ujian.krs_berjalan %}
+						<a target="_blank" href="/media/{{ ujian.krs_berjalan }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
+						{% endif %}
+						{{ form.krs_berjalan }}
+						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
+					</div>
+				</div>
+				<!-- Foto Latar Biru -->
+				 <div class="requirement-item">
+					<div class="requirement-info">
+						<div class="requirement-icon"><i class="ri-user-star-line"></i></div>
+						<div class="requirement-text">
+							<h4 class="requirement-title">Foto Latar Biru</h4>
+							<p class="requirement-desc">Foto latar biru mahasiswa. Dimensi maksimal 800x600, <a href="https://registrasi.unm.ac.id/wisuda/panduaneditphoto.docx">Berikut panduan </a></p>
+						</div>
+					</div>
+					<div class="requirement-actions">
+						{% if ujian.foto_latar_biru %}
+						<a target="_blank" href="/media/{{ ujian.foto_latar_biru }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
+						{% endif %}
+						{{ form.foto_latar_biru }}
+						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
+					</div>
+				</div>
+
 
 				<!-- SK Penguji -->
 				<div class="requirement-item">
@@ -206,10 +406,24 @@
 							<p class="requirement-desc">Dibuat oleh sistem. Ajukan layanan jika belum ada.</p>
 						</div>
 					</div>
-					<div class="requirement-actions">
-						<a href="{% url 'acd:layanan_add' %}" class="btn success small"><i class="ri-add-line"></i> Ajukan Layanan</a>
-					</div>
+
+			<div class="requirement-actions">
+				{% if skpgj %}
+					<a target="_blank" href="{% url 'acd:print_skpgj' skpgj.id %}" class="btn primary small">
+						<i class="ri-eye-line"></i> Lihat File
+					</a>
+				{% else %}
+					<a href="{% url 'acd:layanan_add' %}" class="btn success small">
+						<i class="ri-add-line"></i> Ajukan Layanan
+					</a>
+				{% endif %}
+			</div>
+
+
 				</div>
+			
+
+				
 
 			</div>
 		</form>
@@ -234,7 +448,7 @@
 <div id="modal_001" class="modal-edit">
 	<div class="modal-content-edit">
 		<span class="close" onclick="closeModal('modal_001')">&times;</span>
-		<h2>Pengajuan Ujian</h2>
+		<h2 style="text-align: left;">Pengajuan Ujian</h2>
 		<form method="post" action='/acd/ujian_reg_up' enctype="multipart/form-data">
 			{% csrf_token %}
 			<div class="form-group" style="text-align: left;">
@@ -242,7 +456,7 @@
 				<input type="text" class="form-control" id="layanan_isi" name="layanan_isi" required>
 			</div>
 			<div class="form-actions">
-				<button type="submit" class="btn primary">
+				<button type="submit" class="btn primary btn-block" style="margin-top: -10px;">
 					<i class="ri-save-line"></i>
 					Daftar Sekarang
 				</button>

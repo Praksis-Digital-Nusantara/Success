@@ -40,7 +40,7 @@ def print_undangan(request, jn, id):
         canvas.drawString(posd_x, pos_y, label1)
         canvas.drawString(posd_x + 50, pos_y, ':')
         canvas.drawString(posd_x + 60, pos_y, label2)
-        canvas.drawString(posd_x + 400, pos_y, label3)
+        canvas.drawString(posd_x + 350, pos_y, label3)
         return pos_y 
     
 
@@ -71,8 +71,8 @@ def print_undangan(request, jn, id):
     pos_y = draw_aligned_text(p, "", "Pembimbing I", undangan.pembimbing1.nip.first_name,  15)   
     pos_y = draw_aligned_text(p, "", "Pembimbing II", undangan.pembimbing2.nip.first_name,  15)   
     pos_y = draw_aligned_text(p, "", "Penanggap I", undangan.penguji1.nip.first_name,  15)   
-    if jn == "Hasil":
-        pos_y = draw_aligned_text(p, "", "Penanggap II", undangan.penguji2.nip.first_name,  15)   
+    if undangan.penguji2:
+        pos_y = draw_aligned_text(p, "", "Penanggap II", undangan.penguji2.nip.first_name, 15)
     pos_y = draw_aligned_text(p, "", "Moderator", undangan.pembimbing1.nip.first_name,  15)   
 
     pos_y -= dl(p, posd_x, pos_y, 30, "Dengan Hormat", 'N', 'L')
@@ -99,7 +99,7 @@ def print_undangan(request, jn, id):
     pos_y = draw_aligned_text(p, "Program Studi", undangan.mhs_judul.prodi.nama_prodi,  15) 
     pos_y = draw_aligned_text(p, "Judul", undangan.mhs_judul.judul,  15) 
 
-    pos_y -= dl(p, posd_x, pos_y, 15, "Seminar tersebut akan diselenggarakan pada:", 'N', 'L')
+    pos_y -= dl(p, posd_x, pos_y, 30, "Seminar tersebut akan diselenggarakan pada:", 'N', 'L')
     pos_y = draw_aligned_text(p, "Hari/Tanggal", tanggal_indo(undangan.seminar_tgl, undangan.seminar_tgl),  15) 
     pos_y = draw_aligned_text(p, "Pukul", str(undangan.seminar_jam) + " WITA - Selesai",  15) 
     pos_y = draw_aligned_text(p, "Tempat", undangan.seminar_tempat,  15) 
@@ -118,7 +118,10 @@ def print_undangan(request, jn, id):
         pos_y -= dl(p, pos_x_ttd, pos_y, 50, "Makassar, " + tanggal_indo(undangan.date_in), 'N', 'L')
         pos_y -= dl(p, pos_x_ttd, pos_y, 15, str(undangan.ttd.label or ""), 'N', 'L')
         if undangan.ttd_status == 'QRcode' :
-            p.drawImage(ImageReader(context.get("api_qrcode", "") + context.get("baseurl", "") + 't/upr/' + str(undangan.id)), pos_x_ttd+10, pos_y-50, width=40, height=40)
+            if jn == "Proposal":
+                p.drawImage(ImageReader(context.get("api_qrcode", "") + context.get("baseurl", "") + 't/upr/' + str(undangan.id)), pos_x_ttd+10, pos_y-50, width=40, height=40)
+            else:
+                p.drawImage(ImageReader(context.get("api_qrcode", "") + context.get("baseurl", "") + 't/uhs/' + str(undangan.id)), pos_x_ttd+10, pos_y-50, width=40, height=40)
         pos_y -= dl(p, pos_x_ttd, pos_y, 70, undangan.ttd.pejabat.nip.first_name, 'BU', 'L')
         pos_y -= dl(p, pos_x_ttd, pos_y, 15, "NIP. " + undangan.ttd.pejabat.nip.username, 'B', 'L')
     else:

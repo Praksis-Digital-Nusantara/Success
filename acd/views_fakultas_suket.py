@@ -6,11 +6,11 @@ from datetime import datetime
 from django.utils import timezone
 
 from .models import NoSuratFakultas, UserMhs, UserDosen, KodeSurat, Layanan, SkripsiJudul
-from .models import SuketAktifKuliah, SuketIzinObservasi, SuketRekomendasi, SuketIzinLab, SuketBerkelakuanBaik, SuketCutiAkademik
+from .models import SuketAktifKuliah, SuketIzinObservasi, SuketRekomendasi, SuketIzinLab, SuketBerkelakuanBaik, SuketCutiAkademik, SuketBebasPustaka
 from .models import SuratTugas, SuratTugas_NamaDosen, SuratTugas_NamaMhs
 
 
-from .forms_fakultas import formSuketAktifKuliah, formSuketIzinObservasi, formSuketRekomendasi, formSuketIzinLab, formSuketBerkelakuanBaik, formSuketCutiAkademik
+from .forms_fakultas import formSuketAktifKuliah, formSuketIzinObservasi, formSuketRekomendasi, formSuketIzinLab, formSuketBerkelakuanBaik, formSuketCutiAkademik, formSuketBebasPustaka
 from .forms_fakultas import formSuratTugas, formSuratTugas_NamaDosen, formSuratTugas_NamaMhs
 
 from .decorators_fakultas import check_userfakultas
@@ -703,4 +703,91 @@ def surat_tugas_delnamamhs(request, id, surat):
     return redirect('acd:surat_tugas_edit', id=surat)     
 
 
+
+#################### BEBAS PUSTAKA FAKULTAS ####################
+@fakultas_required
+@check_userfakultas
+def suket_bebaspustaka(request):
+    userfakultas = request.userfakultas
+    data = SuketBebasPustaka.objects.all().order_by('-date_in')
+
+    context = {
+        'title': 'Suket Bebas Pustaka',
+        'heading': 'Suket Bebas Pustaka',
+        'userfakultas' : userfakultas,
+        'photo' : userfakultas.photo,
+        'data': data,
+    }
+    return render(request, 'fakultas/suket_bebaspustaka.html', context)    
+
+
+@fakultas_required
+@check_userfakultas
+def suket_bebaspustaka_edit(request, nim):      
+    userfakultas = request.userfakultas
+    mhs = get_object_or_404(UserMhs, nim__username = nim)
+    datasuket = SuketBebasPustaka.objects.filter(mhs=mhs).first()
+
+    if request.method == 'POST':
+        form = formSuketBebasPustaka(request.POST, instance=datasuket)
+        if form.is_valid():
+            suket = form.save(commit=False)  
+            suket.adminp = request.user   
+            suket.mhs = mhs
+            if suket.no_surat is None:
+                tahun = datetime.now().year
+                nosurat_cek = NoSuratFakultas.objects.filter(tahun=tahun).order_by('-nomor').first()
+                if nosurat_cek:
+                    nosurat_baru = nosurat_cek.nomor + 1
+                else:
+                    nosurat_baru = 1  
+                kodesurat = KodeSurat.objects.get(jenis='Suket Bebas Pustaka')
+
+                addnosurat = NoSuratFakultas.objects.create(
+                    adminp = request.user,
+                    tahun = tahun,
+                    nomor = nosurat_baru, 
+                    tujuan = 'Mahasiswa'  + str(mhs),
+                    kode = kodesurat.kode
+                )
+                nosurat =  str(nosurat_baru) + str(kodesurat.kode) + str(tahun) 
+                suket.no_surat = nosurat 
+            suket.save()
+            messages.success(request, 'Berhasil Menerbitkan Surat')
+            #update layanan agar status DIPROSES            
+            layanan = Layanan.objects.filter(mhs=mhs, layanan_jenis__nama_layanan='Surat Keterangan Bebas Pustaka', status__in=['Processing', 'Waiting']).first()
+            if layanan:
+                context_pro = web_name(request)
+                layanan.status = 'Completed'
+                layanan.hasil_test = 'Surat Keterangan Bebas Pustaka telah terbit, download di tautan berikut:'
+                layanan.hasil_link = context_pro.get("baseurl", "") + "acd/print_suket_bebaspustaka/" + str(suket.id)
+                layanan.save()                  
+                messages.success(request, 'Berhasil Mengupdate Layanan')
+            
+        else:
+            messages.error(request, 'periksa kembali isian data anda!')
+        return redirect('acd:suket_bebaspustaka_edit', nim=nim)
+    else:
+        form = formSuketBebasPustaka(instance=datasuket)
+    layanan = Layanan.objects.filter().order_by('-date_in').first()
+    context = {
+        'title': 'Surat Bebas Pustaka',
+        'heading': 'Edit Surat Bebas Pustaka',
+        'userfakultas' : userfakultas,
+        'photo' : userfakultas.photo,
+        'mhs' : mhs,
+        'form': form,
+        'layanan': layanan,
+        "layanan_isi_parsed": json.loads(layanan.layanan_isi),
+    }
+    return render(request, 'fakultas/suket_bebaspustaka_edit.html', context)  
+
+
+@fakultas_required
+@check_userfakultas
+def suket_bebaspustaka_del(request, id):      
+    data = get_object_or_404(SuketBebasPustaka, id=id)
+    data.delete()
+    messages.info(request, 'Berhasil Menghapus Surat Bebas Pustaka')
+    return redirect('acd:suket_bebaspustaka')  
 

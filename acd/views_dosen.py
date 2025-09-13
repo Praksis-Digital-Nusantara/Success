@@ -9,7 +9,7 @@ from uuid import UUID
 
 from .utils import cek_kemiripan_judul  
 
-from .models import UserMhs, SkripsiJudul, chatPA, Proposal, ProposalNilai,  Hasil, HasilNilai,  Ujian, UjianNilai, UserDosen, Pejabat, SuketIzinObservasi, SuketRekomendasi, SuratTugas, SuketIzinLab, SuketAktifKuliah, SuketBerkelakuanBaik, SuketCutiAkademik
+from .models import UserMhs, SkripsiJudul, chatPA, Proposal, ProposalNilai,  Hasil, HasilNilai,  Ujian, UjianNilai, UserDosen, Pejabat, SuketIzinObservasi, SuketRekomendasi, SuratTugas, SuketIzinLab, SuketAktifKuliah, SuketBerkelakuanBaik, SuketCutiAkademik, SuketBebasPlagiasi, SuketBebasPustaka, SuketUsulanUjianSkripsi
 from .models import skPembimbing, skPenguji, IzinPenelitian
 from .forms_dosen import formProfile, formChatPA, formProposalNilai, formHasilNilai, formUjianNilai
 from django.utils import timezone
@@ -182,10 +182,10 @@ def dsn_skpbb(request):
 @check_userdosen
 def dsn_skpgj(request):      
     userdosen = request.userdosen 
-    data = skPenguji.objects.filter(Q(proposal__penguji1=userdosen) | Q(proposal__penguji2=userdosen)).order_by('-date_in')
+    data = skPenguji.objects.filter(Q(usulan__penguji1=userdosen) | Q(usulan__penguji2=userdosen) | Q(usulan__mhs_judul__pembimbing1=userdosen) | Q(usulan__mhs_judul__pembimbing2=userdosen) ).order_by('-date_in')
     context = {
-        'title': 'SK Penguji',
-        'heading': 'SK Penguji',
+        'title': 'SK Ujian Tutup',
+        'heading': 'SK Ujian Tutup',
         'userdosen' : userdosen,
         'photo' : userdosen.photo,
         'data': data,
@@ -466,7 +466,9 @@ def ujian_dsn(request, filter):
             Q(pembimbing1=userdosen) |
             Q(pembimbing2=userdosen) |
             Q(penguji1=userdosen) |
-            Q(penguji2=userdosen)
+            Q(penguji2=userdosen) |
+            Q(wd__pejabat=userdosen) |
+            Q(kaprodi__pejabat=userdosen)
         )
 
     context = {
@@ -684,13 +686,18 @@ def list_ttd_pejabat(request):
         ('observasi', SuketIzinObservasi),
         ('rekomendasi', SuketRekomendasi),
         ('sk_pembimbing', skPembimbing),
+        ('sk_penguji', skPenguji),
         ('surat_tugas', SuratTugas),
         ('suket_izinlab', SuketIzinLab),
         ('suket_aktifkuliah', SuketAktifKuliah),
         ('undangan_proposal', Proposal),
+        ('undangan_hasil', Hasil),
         ('izin_penelitian', IzinPenelitian),
         ('suket_berkelakuanbaik', SuketBerkelakuanBaik),
         ('suket_cutiakademik', SuketCutiAkademik),
+        ('suket_bebasplagiasi', SuketBebasPlagiasi),
+        ('suket_bebaspustaka', SuketBebasPustaka),
+        ('suket_usulanujianskripsi', SuketUsulanUjianSkripsi),
     ]
 
     dokumen_ttd_pejabat = []
@@ -719,26 +726,36 @@ def kelola_ttd(request, model_name, id, action):
         'observasi': SuketIzinObservasi,
         'rekomendasi': SuketRekomendasi,
         'sk_pembimbing': skPembimbing,
+        'sk_penguji': skPenguji,
         'surat_tugas': SuratTugas,
         'suket_izinlab': SuketIzinLab,
         'suket_aktifkuliah': SuketAktifKuliah,
         'undangan_proposal': Proposal,
+        'undangan_hasil': Hasil,
         'izin_penelitian': IzinPenelitian,
         'suket_berkelakuanbaik': SuketBerkelakuanBaik,
         'suket_cutiakademik': SuketCutiAkademik,
+        'suket_bebasplagiasi': SuketBebasPlagiasi,
+        'suket_bebaspustaka': SuketBebasPustaka,
+        'suket_usulanujianskripsi': SuketUsulanUjianSkripsi,
 
     }
     model_name_map = {
         'observasi': 'Suket Izin Observasi',
         'rekomendasi': 'Suket Rekomendasi',
         'sk_pembimbing': 'SK Pembimbing',
+        'sk_penguji': 'SK Penguji',
         'surat_tugas': 'Surat Tugas',
         'suket_izinlab': 'Suket Izin Lab',
         'suket_aktifkuliah': 'Suket Aktif Kuliah',
         'undangan_proposal': 'Undangan Proposal',
+        'undangan_hasil': 'Undangan Hasil',
         'izin_penelitian': 'Izin Penelitian',
         'suket_berkelakuanbaik': 'Suket Berkelakuan Baik',
         'suket_cutiakademik': 'Suket Cuti Akademik',
+        'suket_bebasplagiasi': 'Suket Bebas Plagiasi',
+        'suket_bebaspustaka': 'Suket Bebas Pustaka',
+        'suket_usulanujianskripsi': 'Suket Usulan Ujian Skripsi',
     }
 
     model = models_map.get(model_name)

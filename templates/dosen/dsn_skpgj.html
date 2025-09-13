@@ -18,6 +18,7 @@
 					<th>Mahasiswa</th>
 					<th style="white-space: nowrap;">Prodi</th>
 					<th>Penguji</th>
+					<th>Pembimbing</th>
 					<th>Aksi</th>
 				</tr>
 				</thead>
@@ -27,6 +28,7 @@
 					<th>Mahasiswa</th>
 					<th>Prodi</th>
 					<th>Penguji</th>
+					<th>Pembimbing</th>
 					<th width="10%">Aksi</th>
 				</tr>
 				</tfoot>
@@ -34,11 +36,14 @@
 				{% for datatb in data %}
 					<tr>
 						<td>{{ forloop.counter }}</td>
-						<td>{{ datatb.proposal.mhs_judul.mhs }}</td>
-						<td>{{ datatb.proposal.mhs_judul.prodi }}</td>						  				
-						<td>1. {{ datatb.proposal.penguji1 }}
-							<br> 2. {{ datatb.proposal.penguji2 }}
-						</td>								  				
+						<td>{{ datatb.usulan.mhs_judul.mhs }}</td>
+						<td>{{ datatb.usulan.mhs_judul.prodi }}</td>						  				
+						<td>1. {{ datatb.usulan.penguji1 }}
+							<br> 2. {{ datatb.usulan.penguji2 }}
+						</td>	
+						<td>1. {{ datatb.usulan.mhs_judul.pembimbing1 }}
+							<br> 2. {{ datatb.usulan.mhs_judul.pembimbing2 }}
+						</td>				  				
 						<td>
 							<a target="_blank" href="{% url 'acd:print_skpgj' datatb.id %}" class="btn primary small"><i class="ri-printer-line"></i>Cetak</a>						
 						</td>					  

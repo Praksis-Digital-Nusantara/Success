@@ -36,37 +36,37 @@
 						<td>Ketua Sidang</td>
 						<td>:</td>
 						<td>{{ data.dekan }}</td>					  
-						<td>{{ data.nilai5.nilai_angka|floatformat:"2" }}</td>					  
+						<td>{{ data.nilai5.nilai_angka|floatformat:"2"|default:"Belum ada nilai" }}</td>					  
 					</tr>
 					<tr>
 						<td>Sekretaris Sidang</td>
 						<td>:</td>
 						<td>{{ data.kaprodi }}</td>					  
-						<td>{{ data.nilai6.nilai_angka|floatformat:"2" }}</td>					  
+						<td>{{ data.nilai6.nilai_angka|floatformat:"2"|default:"Belum ada nilai" }}</td>					  
 					</tr>
 					<tr>
 						<td>Pembimbing I</td>
 						<td>:</td>
 						<td>{{ data.pembimbing1 }}</td>					  
-						<td>{{ data.nilai1.nilai_angka|floatformat:"2" }}</td>					  
+						<td>{{ data.nilai1.nilai_angka|floatformat:"2"|default:"Belum ada nilai" }}</td>					  
 					</tr>
 					<tr>
 						<td>Pembimbing II</td>
 						<td>:</td>
 						<td>{{ data.pembimbing2 }}</td>		
-						<td>{{ data.nilai2.nilai_angka|floatformat:"2" }}</td>			  
+						<td>{{ data.nilai2.nilai_angka|floatformat:"2"|default:"Belum ada nilai" }}</td>			  
 					</tr>						
 					<tr>
 						<td>Penguji I</td>
 						<td>:</td>
 						<td>{{ data.penguji1 }}</td>		
-						<td>{{ data.nilai3.nilai_angka|floatformat:"2" }}</td>			  
+						<td>{{ data.nilai3.nilai_angka|floatformat:"2"|default:"Belum ada nilai" }}</td>			  
 					</tr>
 					<tr>
 						<td>Penguji II</td>
 						<td>:</td>
 						<td>{{ data.penguji2 }}</td>	
-						<td>{{ data.nilai4.nilai_angka|floatformat:"2" }}</td>				  
+						<td>{{ data.nilai4.nilai_angka|floatformat:"2"|default:"Belum ada nilai" }}</td>				  
 					</tr>						
 				</tbody>
 			</table>				
@@ -100,8 +100,7 @@
 				<label for="id_catatan">Catatan</label>
 				{{ form.catatan }}
 			</div>
-		</div>
-		<div class="form-row">
+
 			<div class="form-group">
 				<label for="id_ttd">Pejabat Bertandatangan</label>
 				{{ form.ttd }}
@@ -109,7 +108,7 @@
 		</div>
 
 		<div class="form-actions">
-			{% if form.no_surat %}
+			{% if form.no_surat and form.ipk %}
 				<a target="_blank" href="{% url 'acd:print_yudisium_nilai' id=data.id %}" class="btn primary">Rekapitulasi Nilai</a>
 				<a target="_blank" href="{% url 'acd:print_yudisium' id=data.id %}" class="btn primary">Cetak Berita Acara</a>
 			{% endif %}

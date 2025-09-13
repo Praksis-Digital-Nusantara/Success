@@ -15,17 +15,17 @@
 			<table id="layananTable" class="display" style="width:100%">
 				<thead>
 				<tr>
-					<th>No</th>
-					<th>Date In</th>
-					<th>Mahasiswa</th>
-					<th>Waktu Ujian</th>
-					<th>Tempat Ujian</th>
-					<th>Aksi</th>
+					<th style="white-space: nowrap;">No</th>
+					<th style="white-space: nowrap;">Date In</th>
+					<th style="white-space: nowrap;">Mahasiswa</th>
+					<th style="white-space: nowrap;">Waktu Ujian</th>
+					<th style="white-space: nowrap;">Tempat Ujian</th>
+					<th style="white-space: nowrap;">Aksi</th>
 				</tr>
 				</thead>
 				<tfoot>
 				<tr>
-					<th>No</th>
+					<th >No</th>
 					<th>Date In</th>
 					<th>Mahasiswa</th>
 					<th>Waktu Ujian</th>
@@ -43,16 +43,16 @@
 						<td>{{ datatb.ujian_tempat }}	</td>				  
 						<td>
 							<a href="{% url 'acd:ujian_proses' datatb.id %}"> 
-								<button class="btn warning x-small"><i class="ri-pencil-fill"></i></button>
+								<button class="btn primary small"><i class="ri-loader-4-line"></i>Proses</button>
 							</a>
 							{% if datatb.no_surat %}
 							<br>			
 							<a href="{% url 'acd:print_undangan_ujian' datatb.id %}" target="_blank"> 
-								<button class="btn primary x-small"><i class="ri-printer-line"></i></button>	
+								<button class="btn danger small"><i class="ri-printer-line"></i>Print Undangan</button>	
 							</a>
 							<br>			
 							<a href="{% url 'acd:ujian_yudisium' datatb.id %}"> 
-								<button class="btn success x-small"><i class="ri-award-line"></i></button>
+								<button class="btn success small"><i class="ri-award-line"></i>Yudisium</button>
 							</a>
 							{% endif %}			
 						</td>					

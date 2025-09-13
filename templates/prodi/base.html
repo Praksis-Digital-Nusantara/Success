@@ -59,6 +59,9 @@
                     <li class="{% if title == 'Ujian' %}active{% endif %}">
                         <a href="{% url "acd:ujian" %}"><i class="ri-award-line"></i> Ujian</a>
                     </li>
+                    <li class="{% if title == 'Suket Usulan Ujian Skripsi' %}active{% endif %}">
+                        <a href="{% url "acd:usulanujianskripsi" %}"><i class="ri-award-line"></i> Suket Usulan Ujian Skripsi</a>
+                    </li>
                     <li class="{% if title == 'Suket Bebas Kuliah' %}active{% endif %}">
                         <a href="{% url "acd:suket_bebaskuliah" %}"><i class="ri-award-line"></i> Suket Bebas Kuliah</a>
                     </li>

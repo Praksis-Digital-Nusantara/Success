@@ -7,8 +7,8 @@ from django.utils import timezone
 
 from .models import Prodi, Pejabat, UserFakultas
 from .models import NoSuratFakultas, Layanan, KodeSurat
-from .models import SkripsiJudul, Proposal, skPembimbing, skPenguji, IzinPenelitian, Ujian, Yudisium
-from .models import SuketBebasKuliah, SuketBebasPlagiasi
+from .models import SkripsiJudul, Proposal, skPembimbing, skPenguji, IzinPenelitian, Ujian, Yudisium, Hasil
+from .models import SuketBebasKuliah, SuketBebasPlagiasi, SuketBerkelakuanBaik, SuketBebasPustaka
 
 
 from .forms_fakultas import formLayananFakultasEdit
@@ -279,7 +279,7 @@ def skpgj_pengajuan(request):
                 adminp = request.user,
                 tahun = tahun,
                 nomor = nosurat_baru, 
-                perihal = 'SK Penguji ' + str(skpgj.proposal.mhs_judul.mhs),
+                perihal = 'SK Penguji ' + str(skpgj.usulan.mhs_judul.mhs),
                 tujuan = 'Dosen Penguji Skripsi',
                 kode = kodesurat.kode
             )
@@ -488,7 +488,12 @@ def ujian_proses(request, id):
         'ujian' : ujian,
         'bebaskuliah' : SuketBebasKuliah.objects.filter(mhs=ujian.mhs_judul.mhs).first(),
         'bebasplagiasi' : SuketBebasPlagiasi.objects.filter(mhs=ujian.mhs_judul.mhs).first(),
+        'berkelakuanbaik': SuketBerkelakuanBaik.objects.filter(mhs=ujian.mhs_judul.mhs).first(),
+        'bebaspustaka': SuketBebasPustaka.objects.filter(mhs=ujian.mhs_judul.mhs).first(),
         'skpbb' : skPembimbing.objects.filter(mhs=ujian.mhs_judul.mhs).order_by('-date_in').first(),
+        'skpgj' : skPenguji.objects.filter(usulan__mhs_judul__mhs=ujian.mhs_judul.mhs).order_by('-date_in').first(),
+        'proposal': Proposal.objects.get(mhs_judul__mhs=ujian.mhs_judul.mhs),
+        'hasil': Hasil.objects.get(mhs_judul__mhs=ujian.mhs_judul.mhs),
         'form' : form,
     }
     return render(request, 'fakultas/ujian_proses.html', context)

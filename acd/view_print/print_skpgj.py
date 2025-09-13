@@ -29,65 +29,17 @@ def print_skpgj(request, id):
     text_x = A4[0] / 2
     pos_y -= 5
 
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "KEPUTUSAN DEKAN FAKULTAS KEGURUAN DAN ILMU PENDIDIKAN:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "UNIVERSITAS SULAWESI BARAT:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 20, "Nomor : " + sk.nosurat, 'N', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 20, "TENTANG:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "PENETAPAN PENGUJI PROPOSAL, HASIL PENELITIAN:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "DAN UJIAN SKRIPSI MAHASISWA FAKULTAS KEGURUAN DAN:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "ILMU PENDIDIKAN UNIVERSITAS SULAWESI BARAT:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 25, "DEKAN FAKULTAS KEGURUAN DAN ILMU PENDIDIKAN:", 'B', 'C')
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "UNIVERSITAS SULAWESI BARAT:", 'B', 'C')
-
-
-    def draw_aligned_text(canvas, label1, label2, label3, value, y_offset):
-        canvas.setFont("Times-Roman", 12)
-        nonlocal pos_y
-        pos_y -= y_offset  # Update pos_y for the labels
-        canvas.drawString(posd_x, pos_y, label1)
-        canvas.drawString(posd_x + 70, pos_y, label2)
-        canvas.drawString(posd_x + 80, pos_y, label3)
-        
-        # Membuat style untuk teks yang diratakan (justified)
-        style = ParagraphStyle(
-            'JustifyStyle',
-            fontName="Times-Roman",
-            fontSize=12,
-            leading=14,
-            alignment=TA_JUSTIFY,
-            textColor=colors.black
-        )
-        # Membuat paragraph untuk teks yang akan diratakan
-        paragraph = Paragraph(value, style)
-        # Tentukan posisi teks dan lebar area teks
-        text_width = 400  # Sesuaikan lebar teks agar hasil justification terlihat rapi
-        text_height = paragraph.wrap(text_width, 0)[1]
-        # Gambar teks pada canvas, pastikan Y disesuaikan dengan benar
-        paragraph.drawOn(canvas, posd_x + 90, pos_y - text_height + 12)
-        # Perbarui posisi Y setelah teks value
-        pos_y -= text_height + 2  # Beri jarak antar baris setelah teks        
-        return pos_y
-
-    
-    # print (judul)
-    pos_y = draw_aligned_text(p, "Menimbang", ":", "a.", "bahwa untuk membantu mahasiswa Fakultas Keguruan dan Ilmu Pendidikan Universitas Sulawesi Barat dalam menyelesaikan  Skripsinya, maka perlu mengangkat Pembimbing Proposal, Hasil Penelitian dan Ujian Skripsi Mahasiswa", 20)   
-    pos_y = draw_aligned_text(p, "", "", "b.", "bahwa untuk keperluan dimaksud, maka mereka yang tersebut namanya dalam surat Keputusan ini dianggap memenuhi syarat akademik dan dipandang cakap sebagai Pembimbing Proposal, Hasil Penelitian dan Ujian Skripsi Mahasiswa",  0)   
-    pos_y = draw_aligned_text(p, "", "", "c.", "bahwa sehubungan dengan point a dan b di atas, perlu diterbitkan Surat Keputusan sebagai Pembimbing Proposal, Hasil Penelitian dan Ujian Skripsi  mahasiswa.",  0)
-
-    pos_y = draw_aligned_text(p, "Mengingat", ":", "1.", "Undang – Undang Nomor 20 Tahun 2003 tentang Sistem Pendidikan Nasional", 20)   
-    pos_y = draw_aligned_text(p, "", "", "2.", "Undang – Undang Nomor 12 Tahun 2012 tentang Pendidikan Tinggi",  0)   
-    pos_y = draw_aligned_text(p, "", "", "3.", "Peraturan Pemerintah Nomor 4 Tahun 2014 tentang Pengelolaan dan Penyelenggaraan Pendidikan.",  0)
-    pos_y = draw_aligned_text(p, "", "", "4.", "Peraturan Presiden Republik Indonesia Nomor 8 Tahun 2012 tentang Kerangka Kualifikasi Nasional Indonesia",  0)
-    pos_y = draw_aligned_text(p, "", "", "5.", "Peraturan Pemerintah Nomor 36 Tahun 2013, tentang Pendirian Universitas Sulawesi Barat Tanggal 13 Mei 2013",  0)
-    pos_y = draw_aligned_text(p, "", "", "6.", "Surat Keputusan Rektor Unsulbar 12451/M/KP/2019, tentang pengangkatan Dekan Fakultas Keguruan dan Ilmu Pendidikan Universitas Sulawesi Barat",  0)
-
+    pos_y -= dl(p, A4[0] / 2, pos_y, 6, "SURAT KEPUTUSAN", 'B', 'C')
+    pos_y -= dl(p, A4[0] / 2, pos_y, 12, "Nomor : " + sk.nosurat, 'B', 'C')
+    pos_y -= dl(p, A4[0] / 2, pos_y, 20, "DEKAN FAKULTAS EKONOMI DAN BISNIS", 'B', 'C')
+    pos_y -= dl(p, A4[0] / 2, pos_y, 12, "UNIVERSITAS NEGERI MAKASSAR", 'B', 'C')
 
     def draw_aligned_text(canvas, label1, label2, value, y_offset):
         canvas.setFont("Times-Roman", 12)
         nonlocal pos_y
         pos_y -= y_offset  # Update pos_y for the labels
         canvas.drawString(posd_x, pos_y, label1)
-        canvas.drawString(posd_x + 70, pos_y, label2)
+        canvas.drawString(posd_x + 100, pos_y, label2)
         
         # Membuat style untuk teks yang diratakan (justified)
         style = ParagraphStyle(
@@ -101,51 +53,159 @@ def print_skpgj(request, id):
         # Membuat paragraph untuk teks yang akan diratakan
         paragraph = Paragraph(value, style)
         # Tentukan posisi teks dan lebar area teks
-        text_width = 410  # Sesuaikan lebar teks agar hasil justification terlihat rapi
+        text_width = 380  # Sesuaikan lebar teks agar hasil justification terlihat rapi
         text_height = paragraph.wrap(text_width, 0)[1]
         # Gambar teks pada canvas, pastikan Y disesuaikan dengan benar
-        paragraph.drawOn(canvas, posd_x + 80, pos_y - text_height + 12)
+        paragraph.drawOn(canvas, posd_x + 110, pos_y - text_height + 12)
         # Perbarui posisi Y setelah teks value
         pos_y -= text_height + 2  # Beri jarak antar baris setelah teks        
         return pos_y
 
-    pos_y = draw_aligned_text(p, "Menetapkan", ":", "KEPUTUSAN DEKAN FAKULTAS KEGURUAN DAN ILMU PENDIDIKAN",  20)
+    # Bagian Membacakan (diringkas)
+    pos_y = draw_aligned_text(p, "Membacakan", ":", "Surat Keputusan Program Studi " + sk.usulan.mhs_judul.prodi.nama_prodi, 18)   
+    pos_y = draw_aligned_text(p, "", "", "Nomor : " + sk.nosurat,  0)
+    # Bagian Mengingat (diringkas)
+     # Bagian Mengingat 
+    p.setFont("Times-Roman", 12)
+    pos_y -= 15
+    p.drawString(posd_x, pos_y, "Mengingat")
+    p.drawString(posd_x + 100, pos_y, ":")
+    p.drawString(posd_x + 110, pos_y, "1. Undang-undang Nomor 20 Tahun 2003")
+    pos_y -= 12
+    p.drawString(posd_x + 110, pos_y, "2. Peraturan Pemerintah Nomor 60 Tahun 1999")
+    pos_y -= 12
+    p.drawString(posd_x + 110, pos_y, "3. Keputusan Presiden Nomor 93 Tahun 1999")
+    pos_y -= 12
+    p.drawString(posd_x + 110, pos_y, "4. Keputusan Mendikbud Nomor 277/0/Tahun 1999")
+    pos_y -= 12
+    p.drawString(posd_x + 110, pos_y, "5. Keputusan Mendiknas Nomor 025/0/Tahun 2002")
+    pos_y -= 12
+    p.drawString(posd_x + 110, pos_y, "6. Keputusan Rektor UNM Nomor 1073/PP/2010")
+    pos_y -= 12
+    p.drawString(posd_x + 110, pos_y, "7. Keputusan Kemendikbud Nomor 48 Tahun 2011")
+    
+    pos_y -= 12
+    p.drawString(posd_x + 110, pos_y, "8. Keputusan Rektor UNM Nomor 05/ UN 36/ KP/ 2012")   
 
-    p.showPage()
-    pos_y = 750
+    pos_y -= dl(p, A4[0] / 2, pos_y, 17, "MEMUTUSKAN", 'B', 'C')
 
-    pos_y -= dl(p, A4[0] / 2, pos_y, 15, "MEMUTUSKAN:", 'B', 'C')
+    pos_y = draw_aligned_text(p, "Menetapkan", ":", "Dosen yang tersebut namanya di bawah ini sebagai Panitia Ujian Skripsi Mahasiswa:",  15)
 
-    pos_y = draw_aligned_text(p, "Memperhatikan", ":", "Usulan dari Program Studi tentang nama mahasiswa yang menyusun proposal dan  nama  penguji I dan penguji II",  20)
+    # Data Mahasiswa - Posisi titik dua diperbaiki
+    p.setFont("Times-Roman", 12)
+    pos_y -= 7
+    p.drawString(posd_x + 110, pos_y, "Nama")
+    p.drawString(posd_x + 190, pos_y, ":")
+    p.drawString(posd_x + 210, pos_y, sk.usulan.mhs_judul.mhs.nim.first_name)
+    
+    pos_y -= 15
+    p.drawString(posd_x + 110, pos_y, "NIM")
+    p.drawString(posd_x + 190, pos_y, ":")
+    p.drawString(posd_x + 210, pos_y, sk.usulan.mhs_judul.mhs.nim.username)
+    
+    pos_y -= 15
+    p.drawString(posd_x + 110, pos_y, "Program Studi")
+    p.drawString(posd_x + 190, pos_y, ":")
+    p.drawString(posd_x + 210, pos_y, sk.usulan.mhs_judul.prodi.nama_prodi)  # sesuaikan dengan field yang ada
+    
+    pos_y -= 15
+    p.drawString(posd_x + 110, pos_y, "Fakultas")
+    p.drawString(posd_x + 190, pos_y, ":")
+    p.drawString(posd_x + 210, pos_y, "Fakultas Ekonomi dan Bisnis")
+    
+    pos_y -= 15
+    p.drawString(posd_x + 110, pos_y, "Judul Skripsi")
+    p.drawString(posd_x + 190, pos_y, ":")
+    # Gunakan textwrap untuk judul yang panjang
+    judul_wrapped = textwrap.fill(sk.usulan.mhs_judul.judul if hasattr(sk.usulan.mhs_judul, 'judul') else "Judul Skripsi", width=50)
+    judul_lines = judul_wrapped.split('\n')
+    for i, line in enumerate(judul_lines):
+        if i == 0:
+            p.drawString(posd_x + 210, pos_y, line)
+        else:
+            pos_y -= 12
+            p.drawString(posd_x + 210, pos_y, line)
 
+    pos_y -= 20
+    p.drawString(posd_x, pos_y, "Dengan susunan Panitia Ujian Skripsi sebagai berikut:")
 
+    # Susunan Panitia - Posisi titik dua diperbaiki
+    pos_y -= 20
+    p.setFont("Times-Roman", 12)
+    p.drawString(posd_x + 97, pos_y, "1. Ketua")
+    p.drawString(posd_x + 190, pos_y, ":")
+    p.drawString(posd_x + 210, pos_y, sk.usulan.ketua.pejabat.nip.first_name)  # sesuaikan dengan field yang ada
 
-    pos_y = draw_aligned_text(p, "KESATU", ":", "Mengangkat saudara (i) :",  20)
-    pos_y = draw_aligned_text(p, "", "", "1." + sk.proposal.penguji1.nip.first_name,  0)
-    pos_y = draw_aligned_text(p, "", "", "2." + sk.proposal.penguji2.nip.first_name,  0)
-    pos_y = draw_aligned_text(p, "", "", "Sebagai Penguji Proposal, Hasil,Penelitian dan Ujian Skripsi mahasiswa atas nama  : " + sk.proposal.mhs_judul.mhs.nim.first_name + "  Nim : " + sk.proposal.mhs_judul.mhs.nim.username,  0)
+    pos_y -= 15
+    p.drawString(posd_x + 97, pos_y, "2. Anggota")
+    
+    pos_y -= 15
+    p.drawString(posd_x + 110, pos_y, "Wakil Ketua")
+    p.drawString(posd_x + 190, pos_y, ":")
+    p.drawString(posd_x + 210, pos_y, sk.usulan.wakil.pejabat.nip.first_name)
+    
+    pos_y -= 15
+    p.drawString(posd_x + 110, pos_y, "Sekretaris")
+    p.drawString(posd_x + 190, pos_y, ":")
+    p.drawString(posd_x + 210, pos_y, sk.usulan.sekretaris.nip.first_name)
+    
+    pos_y -= 15
+    p.drawString(posd_x + 110, pos_y, "Pembimbing I")
+    p.drawString(posd_x + 190, pos_y, ":")
+    p.drawString(posd_x + 210, pos_y, sk.usulan.mhs_judul.pembimbing1.nip.first_name)
+    
+    pos_y -= 15
+    p.drawString(posd_x + 110, pos_y, "Pembimbing II")
+    p.drawString(posd_x + 190, pos_y, ":")
+    p.drawString(posd_x + 210, pos_y, sk.usulan.mhs_judul.pembimbing2.nip.first_name)
+    
+    pos_y -= 15
+    p.drawString(posd_x + 110, pos_y, "Penguji I")
+    p.drawString(posd_x + 190, pos_y, ":")
+    p.drawString(posd_x + 210, pos_y, sk.usulan.penguji1.nip.first_name)
+    
+    pos_y -= 15
+    p.drawString(posd_x + 110, pos_y, "Penguji II")
+    p.drawString(posd_x + 190, pos_y, ":")
+    p.drawString(posd_x + 210, pos_y, sk.usulan.penguji2.nip.first_name)
 
-    pos_y = draw_aligned_text(p, "KEDUA", ":", "Saudara (i) yang tercantum dalam Surat Keputusan ini diberikan wewenang dan tanggung jawab untuk membimbing mahasiswa dalam Seminar Proposal, Seminar Hasil Penelitian dan Ujian Skripsi.",  20)
-    pos_y = draw_aligned_text(p, "KETIGA", ":", "Surat Keputusan ini disampaikan kepada masing-masing yang bersangkutan untuk diketahui dan dilaksanakan dengan penuh rasa tanggung jawab.",  20)
-    pos_y = draw_aligned_text(p, "KEEMPAT", ":", "Surat Keputusan ini berlaku sejak tanggal ditetapkan dengan ketentuan, apabila dikemudian hari ternyata terdapat kekeliruan dalam penetapan Surat Keputusan ini, maka akan diperbaiki sebagaiman mestinya.",  20)
+    pos_y -= 20
+    # Gunakan textwrap untuk memecah teks panjang
+    teks_tugas = "Panitia Ujian Skripsi bertugas memeriksa dan menilai mahasiswa tersebut sesuai dengan peraturan dan pedoman penilaian."
+    teks_wrapped = textwrap.fill(teks_tugas, width=100)  # 80 karakter per baris
+    teks_lines = teks_wrapped.split('\n')
+    for line in teks_lines:
+        p.drawString(posd_x, pos_y, line)
+        pos_y -= 12
 
+    # Tempat dan tanggal
     panjang_nama_dekan = A4[0] - ( p.stringWidth(sk.ttd.pejabat.nip.first_name, "Times-Bold", 12) + 60)
-    panjang_tanggal = A4[0] - ( p.stringWidth("pada tanggal : " + tanggal_indo(sk.date_in), "Times-Bold", 12) + 60)
+    panjang_tanggal = A4[0] - ( p.stringWidth("Pada Tanggal : " + tanggal_indo(sk.date_in), "Times-Bold", 12) + 60)
     if panjang_nama_dekan < panjang_tanggal :
         pos_x_ttd = panjang_nama_dekan
     else :
         pos_x_ttd = panjang_tanggal
 
-    pos_y -= dl(p, pos_x_ttd, pos_y, 15, "Ditetapkan di : " + context.get("address_ttd", ""), 'N', 'L')
-    pos_y -= dl(p, pos_x_ttd, pos_y, 15, "pada tanggal : " +  tanggal_indo(sk.date_in), 'NU', 'L')
+    pos_y -= 10
+    p.drawString(pos_x_ttd, pos_y, "Ditetapkan di : " + context.get("address_ttd", ""))
+    pos_y -= 12
+    p.drawString(pos_x_ttd, pos_y, "Pada Tanggal : " + tanggal_indo(sk.date_in))
+    
+    pos_y -= 15
+    p.drawString(pos_x_ttd, pos_y, "Dekan,")
+    
+    # QR Code
     p.drawImage(ImageReader(context.get("api_qrcode", "") + context.get("baseurl", "") + 't/skpgj/' + str(sk.id)), pos_x_ttd+10, pos_y-50, width=40, height=40)
-    pos_y -= dl(p, pos_x_ttd, pos_y, 70, sk.ttd.pejabat.nip.first_name, 'BU', 'L')
-    pos_y -= dl(p, pos_x_ttd, pos_y, 15, "NIP. " + sk.ttd.pejabat.nip.username, 'B', 'L')
-
+    
+    pos_y -= 60
+    p.setFont("Times-Bold", 12)
+    p.drawString(pos_x_ttd, pos_y, sk.ttd.pejabat.nip.first_name)
+    pos_y -= 15
+    p.drawString(pos_x_ttd, pos_y, "NIP. " + sk.ttd.pejabat.nip.username)
 
     # Menutup halaman dan menyimpan PDF
-    p.setTitle("SK Penguji " + str(sk.proposal.mhs_judul.mhs))
+    p.setTitle("SK Penguji " + str(sk.usulan.mhs_judul.mhs))
     p.showPage()
     p.save()
-    response["Content-Disposition"] = f'inline; filename="SK Penguji { str(sk.proposal.mhs_judul.mhs) }.pdf"'
+    response["Content-Disposition"] = f'inline; filename="SK Penguji { str(sk.usulan.mhs_judul.mhs) }.pdf"'
     return response

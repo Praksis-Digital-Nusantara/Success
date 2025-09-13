@@ -87,7 +87,8 @@ def print_pengesahan(request, jn, id):
     # ============================
     # POSISI PEMBIMBING
     # ============================
-    pos_y_pemb = pos_y - 80
+    pos_y_pemb = pos_y - 50
+    
 
     # Pembimbing I (kiri)
     pos_x_pemb1 = 80
@@ -97,7 +98,7 @@ def print_pengesahan(request, jn, id):
     pos_y_pemb1 -= dl(p, pos_x_pemb1, pos_y_pemb1, 15, "NIP. " + skripsi.pembimbing1.nip.username, 'B', 'L')
 
     # Pembimbing II (kanan)
-    pos_x_pemb2 = pos_y_pemb
+    pos_x_pemb2 = 360
     pos_y_pemb2 = pos_y_pemb
     pos_y_pemb2 -= dl(p, pos_x_pemb2, pos_y_pemb2, 15, "Pembimbing II", 'N', 'L')
     pos_y_pemb2 -= dl(p, pos_x_pemb2, pos_y_pemb2, 70, skripsi.pembimbing2.nip.first_name, 'BU', 'L')
@@ -106,26 +107,27 @@ def print_pengesahan(request, jn, id):
     # ============================
     # POSISI KAJUR & KAPRODI
     # ============================
-    pos_y_ttd = pos_y_pemb - 150
-    pos_y_ttd -= dl(p, A4[0] / 2, pos_y_ttd, 20, "Mengetahui:", 'N', 'C')
+    if jn != 'Seminar Proposal':
+        pos_y_ttd = pos_y_pemb - 150
+        pos_y_ttd -= dl(p, A4[0] / 2, pos_y_ttd, 20, "Mengetahui:", 'N', 'C')
 
 
-    # Kajur (kiri)
-    if kajur:
-        pos_x_kajur = 80
-        pos_y_kajur = pos_y_ttd
-        pos_y_kajur -= dl(p, pos_x_kajur, pos_y_kajur, 15, kajur.jabatan, 'N', 'L')
-        pos_y_kajur -= dl(p, pos_x_kajur, pos_y_kajur, 15, kajur.label if getattr(kajur, 'label', None) else "", 'N', 'L')
-        pos_y_kajur -= dl(p, pos_x_kajur, pos_y_kajur, 70, kajur.pejabat.nip.first_name, 'BU', 'L')
-        pos_y_kajur -= dl(p, pos_x_kajur, pos_y_kajur, 15, "NIP. " + kajur.pejabat.nip.username, 'B', 'L')
+        # Kajur (kiri)
+        if kajur:
+            pos_x_kajur = 360
+            pos_y_kajur = pos_y_ttd
+            # pos_y_kajur -= dl(p, pos_x_kajur, pos_y_kajur, 15, kajur.jabatan, 'N', 'L')
+            pos_y_kajur -= dl(p, pos_x_kajur, pos_y_kajur, 15, kajur.label if getattr(kajur, 'label', None) else "", 'N', 'L')
+            pos_y_kajur -= dl(p, pos_x_kajur, pos_y_kajur, 70, kajur.pejabat.nip.first_name, 'BU', 'L')
+            pos_y_kajur -= dl(p, pos_x_kajur, pos_y_kajur, 15, "NIP. " + kajur.pejabat.nip.username, 'B', 'L')
 
-    # Kaprodi (kanan)
-    pos_x_kaprodi = pos_y_pemb
-    pos_y_kaprodi = pos_y_ttd
-    pos_y_kaprodi -= dl(p, pos_x_kaprodi, pos_y_kaprodi, 15, kaprodi.jabatan, 'N', 'L')
-    pos_y_kaprodi -= dl(p, pos_x_kaprodi, pos_y_kaprodi, 15, str(kaprodi.prodi), 'N', 'L')
-    pos_y_kaprodi -= dl(p, pos_x_kaprodi, pos_y_kaprodi, 70, kaprodi.pejabat.nip.first_name, 'BU', 'L')
-    pos_y_kaprodi -= dl(p, pos_x_kaprodi, pos_y_kaprodi, 15, "NIP. " + kaprodi.pejabat.nip.username, 'B', 'L')
+        # Kaprodi (kanan)
+        pos_x_kaprodi = 80
+        pos_y_kaprodi = pos_y_ttd
+        # pos_y_kaprodi -= dl(p, pos_x_kaprodi, pos_y_kaprodi, 15, kaprodi.jabatan, 'N', 'L')
+        pos_y_kaprodi -= dl(p, pos_x_kaprodi, pos_y_kaprodi, 15, "Ketua Prodi " +  str(kaprodi.prodi), 'N', 'L')
+        pos_y_kaprodi -= dl(p, pos_x_kaprodi, pos_y_kaprodi, 70, kaprodi.pejabat.nip.first_name, 'BU', 'L')
+        pos_y_kaprodi -= dl(p, pos_x_kaprodi, pos_y_kaprodi, 15, "NIP. " + kaprodi.pejabat.nip.username, 'B', 'L')
 
     # ============================
     # SELESAI
@@ -191,49 +193,66 @@ def print_persetujuan_penelitian(request, id):
 
     pos_y -= dl(p, A4[0] / 2, pos_y, 20, "Disetujui Oleh:", 'N', 'C')
 
-    def draw_aligned_text(canvas, label, value, y_offset):
-        canvas.setFont("Times-Roman", 12)
-        nonlocal pos_y
-        pos_y -= y_offset 
-        canvas.drawString(posd_x + 70, pos_y, label)
-        wrapped_text = textwrap.wrap(value, width=100)
-        for i, line in enumerate(wrapped_text):
-            if i == 0:
-                canvas.drawString(posd_x + 250, pos_y, line) 
-            else:
-                pos_y -= 15 
-                canvas.drawString(posd_x + 250, pos_y, line)
-        return pos_y  
+
+
+    # ============================
+    # POSISI PEMBIMBING
+    # ============================
+    pos_y_pemb = pos_y - 50
     
-  
-    pos_y = draw_aligned_text(p, "Pembimbing I : ", skripsi.pembimbing1.nip.first_name,  90)   
-    pos_y = draw_aligned_text(p, "", "NIP. " + skripsi.pembimbing1.nip.username,  15)   
-    pos_y = draw_aligned_text(p, "Pembimbing II : ", skripsi.pembimbing2.nip.first_name,  75)   
-    pos_y = draw_aligned_text(p, "", "NIP. " + skripsi.pembimbing2.nip.username,  15)   
-    pos_y = draw_aligned_text(p, "Penguji I : ", skripsi.penguji1.nip.first_name,  75)   
-    pos_y = draw_aligned_text(p, "", "NIP. " + skripsi.penguji1.nip.username,  15)   
 
-    kaprodi = Pejabat.objects.get(jabatan='Ketua Prodi', prodi=skripsi.mhs_judul.prodi)
+    # Pembimbing I (kiri)
+    pos_x_pemb1 = 80
+    pos_y_pemb1 = pos_y_pemb
+    pos_y_pemb1 -= dl(p, pos_x_pemb1, pos_y_pemb1, 15, "Pembimbing I", 'N', 'L')
+    pos_y_pemb1 -= dl(p, pos_x_pemb1, pos_y_pemb1, 70, skripsi.pembimbing1.nip.first_name, 'BU', 'L')
+    pos_y_pemb1 -= dl(p, pos_x_pemb1, pos_y_pemb1, 15, "NIP. " + skripsi.pembimbing1.nip.username, 'B', 'L')
 
-    panjang_nama_pejabat = A4[0] - ( p.stringWidth(kaprodi.pejabat.nip.first_name, "Times-Bold", 12) + 55)
-    if panjang_nama_pejabat < 250 :
-        pos_x_ttd = panjang_nama_pejabat
-    else :
-        pos_x_ttd = 300
-
-    pos_y -= dl(p, pos_x_ttd, pos_y, 30, context.get("address_ttd", "") + ", ......................", 'N', 'L')
-    # pos_y -= dl(p, pos_x_ttd, pos_y, 15, kaprodi.jabatan, 'N', 'L')
-    pos_y -= dl(p, pos_x_ttd, pos_y, 15, kaprodi.label, 'N', 'L')
-    # p.drawImage(ImageReader(context.get("api_qrcode", "") + context.get("baseurl", "") + 't/skpbb/' + str(sk.id)), pos_x_ttd+10, pos_y-50, width=40, height=40)
-    pos_y -= dl(p, pos_x_ttd, pos_y, 95, kaprodi.pejabat.nip.first_name, 'BU', 'L')
-    pos_y -= dl(p, pos_x_ttd, pos_y, 15, "NIP. " + kaprodi.pejabat.nip.username, 'B', 'L')
+    # Pembimbing II (kanan)
+    pos_x_pemb2 = 360
+    pos_y_pemb2 = pos_y_pemb
+    pos_y_pemb2 -= dl(p, pos_x_pemb2, pos_y_pemb2, 15, "Pembimbing II", 'N', 'L')
+    pos_y_pemb2 -= dl(p, pos_x_pemb2, pos_y_pemb2, 70, skripsi.pembimbing2.nip.first_name, 'BU', 'L')
+    pos_y_pemb2 -= dl(p, pos_x_pemb2, pos_y_pemb2, 15, "NIP. " + skripsi.pembimbing2.nip.username, 'B', 'L')
 
 
+    # # ============================
+    # # POSISI PENGUJI
+    # # ============================
+    # pos_y_pemb = pos_y - 170
+    
 
- 
+    # # Penguji I (kiri)
+    # pos_x_pemb1 = 80
+    # pos_y_pemb1 = pos_y_pemb
+    # pos_y_pemb1 -= dl(p, pos_x_pemb1, pos_y_pemb1, 15, "Penguji I", 'N', 'L')
+    # pos_y_pemb1 -= dl(p, pos_x_pemb1, pos_y_pemb1, 70, skripsi.penguji1.nip.first_name, 'BU', 'L')
+    # pos_y_pemb1 -= dl(p, pos_x_pemb1, pos_y_pemb1, 15, "NIP. " + skripsi.penguji1.nip.username, 'B', 'L')
+
+    # # Penguji II (kanan)
+    # if skripsi.penguji2:
+    #     pos_x_pemb2 = 360
+    #     pos_y_pemb2 = pos_y_pemb
+    #     pos_y_pemb2 -= dl(p, pos_x_pemb2, pos_y_pemb2, 15, "Penguji II", 'N', 'L')
+    #     pos_y_pemb2 -= dl(p, pos_x_pemb2, pos_y_pemb2, 70, skripsi.penguji2.nip.first_name, 'BU', 'L')
+    #     pos_y_pemb2 -= dl(p, pos_x_pemb2, pos_y_pemb2, 15, "NIP. " + skripsi.penguji2.nip.username, 'B', 'L')
+    # else:
+    #     pass
 
 
+    # kaprodi = Pejabat.objects.get(jabatan='Ketua Prodi', prodi=skripsi.mhs_judul.prodi)
+    # panjang_nama_pejabat = A4[0] - ( p.stringWidth(kaprodi.pejabat.nip.first_name, "Times-Bold", 12) + 55)
+    # if panjang_nama_pejabat < 250 :
+    #     pos_x_ttd = panjang_nama_pejabat
+    # else :
+    #     pos_x_ttd = 80
 
+    # pos_y -= dl(p, pos_x_ttd, pos_y, 320, context.get("address_ttd", "") + ", ......................", 'N', 'L')
+    # # pos_y -= dl(p, pos_x_ttd, pos_y, 15, kaprodi.jabatan, 'N', 'L')
+    # pos_y -= dl(p, pos_x_ttd, pos_y, 15, kaprodi.label, 'N', 'L')
+    # # p.drawImage(ImageReader(context.get("api_qrcode", "") + context.get("baseurl", "") + 't/skpbb/' + str(sk.id)), pos_x_ttd+10, pos_y-50, width=40, height=40)
+    # pos_y -= dl(p, pos_x_ttd, pos_y, 95, kaprodi.pejabat.nip.first_name, 'BU', 'L')
+    # pos_y -= dl(p, pos_x_ttd, pos_y, 15, "NIP. " + kaprodi.pejabat.nip.username, 'B', 'L')
 
     # Menutup halaman dan menyimpan PDF
     p.setTitle("Persetujuan Penelitian " + str(skripsi.mhs_judul.mhs))

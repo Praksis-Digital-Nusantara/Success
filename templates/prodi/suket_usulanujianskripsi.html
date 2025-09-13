@@ -1,0 +1,103 @@
+{% extends "prodi/base.html" %}
+
+{% block content1 %}
+<div class="dashboard-content">
+	<div class="student-list-container">
+		<div class="list-header">
+			<div class="list-title">
+				<h2>{{ heading }}</h2>
+				<p>{{web_name}}</p>
+			</div>
+				<div class="list-filters">
+					<div class="table-actions">
+						<div class="action-group">
+							<button class="btn primary small" onclick="openModal('tambah_data')">
+								<i class="ri-add-line"></i>
+								<span>Add</span>
+							</button>
+						</div>
+					</div>
+				</div>
+
+		</div>
+
+		<div class="student-table">
+			<div class="table-responsive">
+				<table id="layananTable" class="display" style="width:100%">
+					<thead>
+					<tr>
+						<th>No</th>
+						<th>Date In</th>
+						<th>Mahasiswa</th>
+						<th>Aksi</th>
+					</tr>
+					</thead>
+					<tfoot>
+					<tr>
+						<th>No</th>
+						<th>Date In</th>
+						<th>Mahasiswa</th>
+						<th>Aksi Nyata</th>
+					</tr>
+					</tfoot>
+					<tbody>
+					{% for datatb in data %}
+						<tr>
+							<td>{{ forloop.counter }}</td>
+							<td>{{ datatb.date_in }}</td> 
+							<td> {{ datatb.mhs_judul.mhs.nim.username }} - {{ datatb.mhs_judul.mhs.nim.first_name }}</td>							  				
+							<td><a href="{% url 'acd:usulanujianskripsi_edit' datatb.mhs_judul.mhs.nim.username %}">
+									<button class="btn primary small"><i class="ri-pencil-fill"></i></button>
+									</a>
+								<a target="_blank" href="{% url 'acd:print_suket_usulanujianskripsi' datatb.id %}">
+										<button class="btn success small"><i class="ri-printer-line"></i></button>
+									</a>
+								<a onclick="return confirm('Yakin ingin menghapus data ini?');" href="{% url 'acd:usulanujianskripsi_del' datatb.id %}">
+										<button class="btn danger small"><i class="ri-delete-bin-line"></i></button>
+									</a>
+							</td>					  
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>	
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- OPENING ELEMEN MODAL -->
+<div id="tambah_data" class="modal-edit">
+	<div class="modal-content-edit">
+		<span class="close" onclick="closeModal('tambah_data')">&times;</span>
+		<h2 style="text-align: left;">Perihal dan Tujuan</h2>
+		<form onsubmit="return redirectToNim()">
+			{% csrf_token %}
+			<div class="form-group">
+				<label for="nim" style="text-align: left;">Masukkan NIM Mahasiswa</label>
+				<input type="text" class="form-control" id="nim" name="nim" required>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn primary btn-block">
+					<i class="ri-save-line"></i>
+					Update Data
+				</button>
+			</div>		
+		</form>
+	</div>
+</div>
+<!-- OPENING ELEMENT MODAL -->
+
+
+<script>
+    function redirectToNim() {
+        const nim = document.getElementById('nim').value;
+        if (nim) {
+            window.location.href = `/acd/usulanujianskripsi_edit/${nim}`; // arahkan ke URL yang diinginkan
+        }
+        return false; // cegah form submit default
+    }
+</script>
+
+
+{% endblock content1 %}
+

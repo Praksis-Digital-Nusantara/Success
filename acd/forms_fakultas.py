@@ -4,7 +4,7 @@ from .models import Prodi, Pejabat, Layanan, LayananJenis
 from .models import UserFakultas, UserDosen
 from .models import NoSuratFakultas, KodeSurat
 from .models import Ujian, Yudisium
-from .models import SuketAktifKuliah, SuketIzinObservasi, SuketRekomendasi, SuketIzinLab, SuketBerkelakuanBaik, SuketCutiAkademik
+from .models import SuketAktifKuliah, SuketIzinObservasi, SuketRekomendasi, SuketIzinLab, SuketBerkelakuanBaik, SuketCutiAkademik, SuketBebasPustaka
 from .models import SuratTugas, SuratTugas_NamaDosen, SuratTugas_NamaMhs
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -511,6 +511,35 @@ class formSuketBerkelakuanBaik(forms.ModelForm):
             'tujuan': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Misal: Untuk Keperluan Ujian Tutup'
+            }),
+            'ttd_status': forms.Select(
+                choices=[
+                    ('QRcode', 'QRcode'),
+                    ('Manual', 'Manual'),
+                ],
+                attrs={'class': 'form-control'}
+            ),
+            # 'ttd' dikustomisasi di luar Meta
+        }
+
+class formSuketBebasPustaka(forms.ModelForm):
+    ttd = forms.ModelChoiceField(
+        queryset=Pejabat.objects.filter(tgl_selesai__gte=tgl_now, jabatan__in=['Pustakawan']),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Pejabat"
+    )
+
+    class Meta:
+        model = SuketBebasPustaka
+        fields = [
+            'no_surat',
+            'ttd_status',
+            'ttd',
+        ]
+        widgets = {
+            'no_surat': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '*kosongkan jika ambil nomor dari sistem'
             }),
             'ttd_status': forms.Select(
                 choices=[

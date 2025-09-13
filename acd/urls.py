@@ -25,7 +25,9 @@ from .view_print import (print_skpbb,
                         print_suket_izinlab,
                         print_surat_tugas,
                         print_suket_berkelakuanbaik,
-                        print_suket_cutiakademik
+                        print_suket_cutiakademik,
+                        print_suket_bebaspustaka,
+                        print_suket_usulanujianskripsi
                         )
 
 
@@ -69,6 +71,9 @@ urlpatterns = [
     path('suket_cutiakademik', views_fakultas_suket.suket_cutiakademik, name='suket_cutiakademik'),  
     path('suket_cutiakademik_edit/<str:nim>', views_fakultas_suket.suket_cutiakademik_edit, name='suket_cutiakademik_edit'),  
     path('suket_cutiakademik_del/<str:id>', views_fakultas_suket.suket_cutiakademik_del, name='suket_cutiakademik_del'), 
+    path('suket_bebaspustaka', views_fakultas_suket.suket_bebaspustaka, name='suket_bebaspustaka'),  
+    path('suket_bebaspustaka_edit/<str:nim>', views_fakultas_suket.suket_bebaspustaka_edit, name='suket_bebaspustaka_edit'),  
+    path('suket_bebaspustaka_del/<str:id>', views_fakultas_suket.suket_bebaspustaka_del, name='suket_bebaspustaka_del'), 
 
     ###### ADMIN PRODI ######   
     path('notif_prodi', views_prodi.notif_prodi, name='notif_prodi'),
@@ -101,7 +106,9 @@ urlpatterns = [
     path('suket_bebasplagiasi', views_prodi.suket_bebasplagiasi, name='suket_bebasplagiasi'),   
     path('suket_bebasplagiasi_edit/<str:nim>', views_prodi.suket_bebasplagiasi_edit, name='suket_bebasplagiasi_edit'),   
     path('suket_bebasplagiasi_del/<str:id>', views_prodi.suket_bebasplagiasi_del, name='suket_bebasplagiasi_del'),   
-
+    path('usulanujianskripsi', views_prodi.usulanujianskripsi, name='usulanujianskripsi'),   
+    path('usulanujianskripsi_edit/<str:nim>', views_prodi.usulanujianskripsi_edit, name='usulanujianskripsi_edit'),   
+    path('usulanujianskripsi_del/<str:id>', views_prodi.usulanujianskripsi_del, name='usulanujianskripsi_del'),   
 
 
     ###### MAHASISWA ######
@@ -156,6 +163,8 @@ urlpatterns = [
     path('print_surat_tugas/<uuid:id>', print_surat_tugas.print_surat_tugas, name='print_surat_tugas'),
     path('print_suket_berkelakuanbaik/<uuid:id>', print_suket_berkelakuanbaik.print_suket_berkelakuanbaik, name='print_suket_berkelakuanbaik'),
     path('print_suket_cutiakademik/<uuid:id>', print_suket_cutiakademik.print_suket_cutiakademik, name='print_suket_cutiakademik'),
+    path('print_suket_bebaspustaka/<uuid:id>', print_suket_bebaspustaka.print_suket_bebaspustaka, name='print_suket_bebaspustaka'),
+    path('print_suket_usulanujianskripsi/<uuid:id>', print_suket_usulanujianskripsi.print_suket_usulanujianskripsi, name='print_suket_usulanujianskripsi'),
 
     ###### ALL ######
     path('changepass', views.changepass, name='changepass'),     

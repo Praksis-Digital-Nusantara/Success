@@ -34,30 +34,47 @@
 							<td>{{ ujian.mhs_judul.pembimbing2 }}</td>					  
 						</tr>
 						<tr>
-							<td>KRS</td>
-							<td>:</td>
-							<td>{% if ujian.krs_berjalan %}
-									<a target="_blank" href="/media/{{ ujian.krs_berjalan }}"><button class="btn success small">Lihat File</button></a>
-								{% endif %}
-							</td>					  
-						</tr>
-						<tr>
-							<td>Transkrip Nilai</td>
-							<td>:</td>
-							<td>{% if ujian.transkrip %}
-									<a target="_blank" href="/media/{{ ujian.transkrip }}"><button class="btn success small">Lihat File</button></a>
-								{% endif %}
-							</td>					  
-						</tr>
-						<tr>
-							<td>Persetujuan ujian</td>
+							<td>Surat Persetujuan Ujian</td>
 							<td>:</td>
 							<td>{% if ujian.persetujuan_ujian %}
 									<a target="_blank" href="/media/{{ ujian.persetujuan_ujian }}"><button class="btn success small">Lihat File</button></a>
-								{% endif %}
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+							<!-- Matriks Perbaikan -->
+							<tr>
+							<td>Matriks Perbaikan</td>
+							<td>:</td>
+							<td>{% if ujian.matriks_perbaikan %}
+									<a target="_blank" href="/media/{{ ujian.matriks_perbaikan }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
 							</td>					  
 						</tr>
 						<tr>
+							<td>Surat Bebas Plagiasi</td>
+							<td>:</td>
+							<td>{% if bebasplagiasi %}
+									<a target="_blank" href="/acd/print_suket_bebasplagiasi/{{ bebasplagiasi.id }}"><button class="btn success small">Lihat File</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+						<!-- Surat Berkelakuan Baik -->
+						 <tr>
+							<td>Surat Berkelakuan Baik</td>
+							<td>:</td>
+							<td>{% if berkelakuanbaik %}
+									<a target="_blank" href="{% url 'acd:print_suket_berkelakuanbaik' berkelakuanbaik.id %}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+						<!-- Ijaza Terakhir -->
+							<tr>
 							<td>Ijaza Terakhir</td>
 							<td>:</td>
 							<td>{% if ujian.ijaza_terakhir %}
@@ -65,38 +82,153 @@
 								{% endif %}
 							</td>					  
 						</tr>
+
+						<!-- UKT Terakhir -->
 						<tr>
-							<td>Rekomendasi dari Akademik</td>
+							<td>Pembayaran UKT Terakhir</td>
 							<td>:</td>
-							<td>{% if ujian.rekomendasi_akademik %}
-									<a target="_blank" href="/media/{{ ujian.rekomendasi_akademik }}"><button class="btn success small">Lihat File</button></a>
-								{% endif %}
+							<td>{% if ujian.ukt_terakhir %}
+									<a target="_blank" href="/media/{{ ujian.ukt_terakhir }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
 							</td>					  
 						</tr>
+
+						<!-- Surat Bebas Pustaka Universitas -->
+						<tr>
+							<td>Bebas Pustaka Universitas</td>
+							<td>:</td>
+							<td>{% if ujian.bebas_pustaka_univ %}
+									<a target="_blank" href="/media/{{ ujian.bebas_pustaka_univ }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+
+
+						<!-- Surat Bebas Pustaka Fakultas -->
+						<tr>
+							<td>Bebas Pustaka Fakultas</td>
+							<td>:</td>
+							<td>{% if bebaspustaka %}
+									<a target="_blank" href="{% url 'acd:print_suket_bebaspustaka' bebaspustaka.id %}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+					<!-- ktp mahasiswa -->
+						<tr>
+							<td>KTP Mahasiswa</td>
+							<td>:</td>
+							<td>{% if ujian.ktp %}
+									<a target="_blank" href="/media/{{ ujian.ktp }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+
+						<!-- Usulan BAAK -->
+						 <tr>
+							<td>Usulan BAAK</td>
+							<td>:</td>
+							<td>{% if ujian.usulan_baak %}
+									<a target="_blank" href="/media/{{ ujian.usulan_baak }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+
 						<tr>
 							<td>SK Pembimbing</td>
 							<td>:</td>
 							<td>{% if skpbb %}
-									<a target="_blank" href="/acd/print_skpbb/{{ skpbb.id }}"><button class="btn success small">Lihat File</button></a>
+									<a target="_blank" href="/acd/print_skpbb/{{ skpbb.id }}"><button class="btn success small">SK {{ skpbb.date_in }}</button></a>
 								{% endif %}
 							</td>					  
 						</tr>
-						<tr>
-							<td>Bebas Beban Kuliah</td>
+
+							<tr>
+							<td>SK Ujian Tutup</td>
 							<td>:</td>
-							<td>{% if bebaskuliah %}
-									<a target="_blank" href="/acd/print_suket_bebaskuliah/{{ bebaskuliah.id }}"><button class="btn success small">Lihat File</button></a>
-								{% endif %}
+							<td>{% if skpgj %}
+									<a target="_blank" href="/acd/print_skpgj/{{ skpgj.id }}"><button class="btn success small">SK {{ skpgj.date_in }}</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
 							</td>					  
 						</tr>
-						<tr>
-							<td>Bebas Plagiasi</td>
+
+						<!-- Undangan Seminar Proposal -->
+						 <tr>
+							<td>Undangan Seminar Proposal</td>
 							<td>:</td>
-							<td>{% if bebasplagiasi %}
-									<a target="_blank" href="/acd/print_suket_bebasplagiasi/{{ bebasplagiasi.id }}"><button class="btn success small">Lihat File</button></a>
+							<td>{% if proposal %}
+									<a target="_blank" href="{% url 'acd:print_undangan' 'Proposal' proposal.id %}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+
+						<!-- Undangan Seminar Hasil -->
+						 <tr>
+							<td>Undangan Seminar Hasil</td>
+							<td>:</td>
+							<td>{% if hasil %}
+									<a target="_blank" href="{% url 'acd:print_undangan' 'Hasil' hasil.id %}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+
+									<tr>
+							<td>Transkrip Nilai</td>
+							<td>:</td>
+							<td>{% if ujian.transkrip %}
+									<a target="_blank" href="/media/{{ ujian.transkrip }}"><button class="btn success small">Lihat File</button></a>
 								{% endif %}
 							</td>					  
 						</tr>
+
+
+						<!-- Surat Persetujuan Waktu Ujian -->
+						<tr>
+							<td>Surat Persetujuan Waktu Ujian</td>
+							<td>:</td>
+							<td>{% if ujian.persetujuan_waktu %}
+									<a target="_blank" href="/media/{{ ujian.persetujuan_waktu }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+
+
+						<tr>
+							<td>KRS</td>
+							<td>:</td>
+							<td>{% if ujian.krs_berjalan %}
+									<a target="_blank" href="/media/{{ ujian.krs_berjalan }}"><button class="btn success small">Lihat File</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+
+						<tr>
+							<td>Foto Latar Biru</td>
+							<td>:</td>
+							<td>{% if ujian.foto_latar_biru %}
+									<a target="_blank" href="/media/{{ ujian.foto_latar_biru }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>	
 					</tbody>
 				</table>	
 			</div>

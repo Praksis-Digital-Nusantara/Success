@@ -50,13 +50,13 @@
 							<td>{{ datatb.mhs }}</td>
 							<td>{{ datatb.nilai_plagiasi }} %</td>									  				
 							<td><a href="{% url 'acd:suket_bebasplagiasi_edit' datatb.mhs.nim.username %}">
-									<button class="btn warning x-small">Edit</button>
+									<button class="btn primary small"><i class="ri-pencil-fill"></i></button>
 									</a>
 								<a target="_blank" href="{% url 'acd:print_suket_bebasplagiasi' datatb.id %}">
-									<button class="btn success x-small">Cetak</button>
+										<button class="btn success small"><i class="ri-printer-line"></i></button>
 									</a>
 								<a onclick="return confirm('Yakin ingin menghapus data ini?');" href="{% url 'acd:suket_bebasplagiasi_del' datatb.id %}">
-									<button class="btn danger x-small">Hapus</button>
+										<button class="btn danger small"><i class="ri-delete-bin-line"></i></button>
 									</a>
 							</td>					  
 						</tr>

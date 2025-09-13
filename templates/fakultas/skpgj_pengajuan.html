@@ -38,13 +38,13 @@
 					<tr>
 						<td>{{ forloop.counter }}</td>
 						<td>{{ datatb.date_in|date:"d M Y H:i"  }}</td>
-						<td>{{ datatb.proposal.mhs_judul.mhs }}</td>					  
-						<td>{{ datatb.proposal.mhs_judul.mhs.prodi }}</td>					  
-						<td>1. {{ datatb.proposal.penguji1.nip.first_name }}					  
-								<br>2. {{ datatb.proposal.penguji2.nip.first_name  }}
+						<td>{{ datatb.usulan.mhs_judul.mhs }}</td>					  
+						<td>{{ datatb.usulan.mhs_judul.mhs.prodi }}</td>					  
+						<td>1. {{ datatb.usulan.penguji1.nip.first_name }}					  
+								<br>2. {{ datatb.usulan.penguji2.nip.first_name  }}
 								</td>								  
 						<td>
-							<button class="btn primary x-small" onclick="openModal('terbitkanSK', '{{ datatb.id }}')">Proses</button>					
+							<button class="btn primary small" onclick="openModal('terbitkanSK', '{{ datatb.id }}')"><i class="ri-loader-4-line"></i>Proses</button>					
 						</td>					
 					</tr>
 				{% endfor %}
@@ -59,7 +59,7 @@
 <div id="terbitkanSK" class="modal-edit"> 
     <div class="modal-content-edit">
         <span class="close" onclick="closeModal('terbitkanSK')">&times;</span>
-        <h2>Perihal dan Tujuan</h2>
+        <h2 style="text-align: left;">Perihal dan Tujuan</h2>
 		<form method="post">
 			{% csrf_token %}
 			<input type="hidden" name="id" id="dataID">
@@ -67,9 +67,12 @@
 					<label for="nosurat">Nomor Surat </label>
 					<input type="text" class="form-control" id="nosurat" name="nosurat" placeholder="Kosongkan Jika Ambil Nomor Otomatis">
 				</div>
-			<div class="modal-footer">
-				<button type="submit" class="btn btn-primary">Terbitkan SK</button>
-			</div>		
+			<div class="form-group">
+					<button type="submit" class="btn primary">
+						<i class="ri-save-line"></i>
+						Terbitkan SK Penguji
+					</button>
+				</div>	
 		</form>
     </div>
 </div>

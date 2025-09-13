@@ -51,6 +51,7 @@
 					<th style="white-space: nowrap;">Jenis Seminar</th>
 					<th style="white-space: nowrap;">Mahasiswa</th>
 					<th style="white-space: nowrap;">Prodi</th>
+					<th style="white-space: nowrap;">Judul Tugas Akhir/Skripsi Mahasiswa</th>
 					<th style="white-space: nowrap;">Pembimbing</th>
 					<th style="white-space: nowrap;">Penguji</th>
 					<th style="white-space: nowrap;">Aksi</th>
@@ -62,6 +63,7 @@
 					<th>Jenis Seminar</th>
 					<th>Mahasiswa</th>
 					<th>Prodi</th>
+					<th>Judul Tugas Akhir/Skripsi Mahasiswa</th>
 					<th>Pembimbing</th>
 					<th>Penguji</th>
 					<th width="10%">Aksi</th>
@@ -78,6 +80,7 @@
 						<td><span class="badge badge-info">Proposal</span></td>
 						<td>{{ item.mhs_judul.mhs }}</td>
 						<td>{{ item.mhs_judul.mhs.prodi }}</td>
+						<td><div class="response-text">{{ item.mhs_judul.judul }}</div></td>
 						<td>
 							{% if item.pembimbing1 %}{{ item.pembimbing1 }}{% endif %}
 							{% if item.pembimbing2 %}<br>{{ item.pembimbing2 }}{% endif %}
@@ -103,6 +106,7 @@
 						<td><span class="badge badge-warning">Hasil</span></td>
 						<td>{{ item.mhs_judul.mhs }}</td>
 						<td>{{ item.mhs_judul.mhs.prodi }}</td>
+						<td><div class="response-text">{{ item.mhs_judul.judul }}</div></td>
 						<td>
 							{% if item.pembimbing1 %}{{ item.pembimbing1 }}{% endif %}
 							{% if item.pembimbing2 %}<br>{{ item.pembimbing2 }}{% endif %}
@@ -126,9 +130,9 @@
 					<tr>
 						<td>{{ proposal|length|add:hasil|length|add:forloop.counter }}</td>
 						<td><span class="badge badge-danger">Ujian</span></td>
-						<td>{{ item.mhs }}</td>
-						<td>{{ item.mhs.prodi }}</td>
-						<td>{{ item.judul }}</td>
+						<td>{{ item.mhs_judul.mhs }}</td>
+						<td>{{ item.mhs_judul.mhs.prodi }}</td>
+						<td><div class="response-text">{{ item.mhs_judul.judul }}</div></td>
 						<td>
 							{% if item.pembimbing1 %}{{ item.pembimbing1 }}{% endif %}
 							{% if item.pembimbing2 %}<br>{{ item.pembimbing2 }}{% endif %}
@@ -138,21 +142,14 @@
 							{% if item.penguji2 %}<br>{{ item.penguji2 }}{% endif %}
 						</td>
 						<td>
-							<a target="_blank" href="{% url 'acd:print_undangan' 'Ujian' item.id %}">
-								<button class="btn success x-small">
-									<i class="ri-download-line"></i> Cetak
+							<a target="_blank" href="{% url 'acd:print_undangan_ujian' item.id %}">
+								<button class="btn success small">
+									<i class="ri-download-line"></i> Download
 								</button>
 							</a>
 						</td>
 					</tr>
 				{% endfor %}
-
-				{% comment %} Jika tidak ada data {% endcomment %}
-				{% if not proposal and not hasil and not ujian %}
-					<tr>
-						<td colspan="8" class="text-center"><em>Tidak ada undangan</em></td>
-					</tr>
-				{% endif %}
 				</tbody>
 			</table>
 			</div>

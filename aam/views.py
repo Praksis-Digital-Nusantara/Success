@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from acd.models import Proposal, Hasil, Ujian, IzinPenelitian, SuketIzinObservasi, skPembimbing, skPenguji, SkripsiJudul, SuketAktifKuliah, SuketBerkelakuanBaik, SuketCutiAkademik
+from acd.models import Proposal, Hasil, Ujian, IzinPenelitian, SuketIzinObservasi, skPembimbing, skPenguji, SkripsiJudul, SuketAktifKuliah, SuketBerkelakuanBaik, SuketCutiAkademik, SuketBebasPlagiasi, SuketBebasPustaka, SuketUsulanUjianSkripsi
 from datetime import datetime
 from django.shortcuts import get_object_or_404
 
@@ -101,6 +101,16 @@ def verTTD(request, jenis, id):
         title = "e-TTD Izin Observasi"
         heading = "e-TTD Izin Observasi"
 
+    elif jenis == "sbp":
+        data = get_object_or_404(SuketBebasPlagiasi, id=id)
+        title = "e-TTD Suket Bebas Plagiasi"
+        heading = "e-TTD Suket Bebas Plagiasi"
+
+    elif jenis == "sbpe":
+        data = get_object_or_404(SuketBebasPustaka, id=id)
+        title = "e-TTD Suket Bebas Pustaka"
+        heading = "e-TTD Suket Bebas Pustaka"
+
     elif jenis == "skpbb":
         data = get_object_or_404(skPembimbing, id=id)
         title = "e-TTD SK Pembimbing"
@@ -115,6 +125,11 @@ def verTTD(request, jenis, id):
         data = get_object_or_404(Proposal, id=id)
         title = "e-TTD Undangan Proposal"
         heading = "e-TTD Undangan Proposal"
+        
+    elif jenis == "uhs":
+        data = get_object_or_404(Hasil, id=id)
+        title = "e-TTD Undangan Hasil"
+        heading = "e-TTD Undangan Hasil"
 
     elif jenis == "pgj_mhs":
         data = get_object_or_404(SkripsiJudul, id=id)
@@ -129,6 +144,12 @@ def verTTD(request, jenis, id):
         data = get_object_or_404(SuketCutiAkademik, id=id)
         title = "e-TTD Suket Cuti Akademik"
         heading = "e-TTD Suket Cuti Akademik"
+
+    elif jenis == "suus":
+        data = get_object_or_404(SuketUsulanUjianSkripsi, id=id)
+        title = "e-TTD Suket Usulan Ujian Skripsi"
+        heading = "e-TTD Suket Usulan Ujian Skripsi"
+
     else:
         return render(request, "404.html", status=404)
 

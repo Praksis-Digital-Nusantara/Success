@@ -5,8 +5,8 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from .models import UserMhs, UserDosen
 from .models import Layanan, LayananJenis
-from .models import SuketBebasPlagiasi, SuketBebasKuliah
-from .models import SkripsiJudul, chatPA, skPembimbing, Proposal, Hasil, IzinPenelitian, Ujian
+from .models import SuketBebasPlagiasi, SuketBebasKuliah, SuketBerkelakuanBaik, SuketBebasPustaka, SuketUsulanUjianSkripsi
+from .models import SkripsiJudul, chatPA, skPembimbing, Proposal, Hasil, IzinPenelitian, Ujian, skPenguji
 
 from .forms_mhs import formAddLayanan
 from .forms_mhs import formProfile
@@ -398,9 +398,15 @@ def ujian_reg(request):
         'photo': usermhs.photo,
         'judul': judul,
         'ujian': ujian,
+        'berkelakuanbaik': SuketBerkelakuanBaik.objects.filter(mhs=usermhs).order_by('-date_in').first(),
         'bebasbebankuliah': SuketBebasKuliah.objects.filter(mhs=usermhs).order_by('-date_in').first(),
         'bebasplagiasi': SuketBebasPlagiasi.objects.filter(mhs=usermhs).order_by('-date_in').first(),
+        'bebaspustaka': SuketBebasPustaka.objects.filter(mhs=usermhs).order_by('-date_in').first(),
         'skpbb': skPembimbing.objects.filter(mhs=usermhs).order_by('-date_in').first(),
+        'skpgj': skPenguji.objects.filter(usulan__mhs_judul__mhs=usermhs).order_by('-date_in').first(),
+        'proposal': Proposal.objects.get(mhs_judul__mhs=usermhs),
+        'usulanujianskripsi': SuketUsulanUjianSkripsi.objects.filter(mhs_judul__mhs=usermhs).order_by('-date_in').first(),
+        'hasil': Hasil.objects.get(mhs_judul__mhs=usermhs),
         'form': form,
     }
     return render(request, 'mhs/ujian_reg.html', context)
@@ -413,19 +419,36 @@ def ujian_reg_up(request):
     ujian = Ujian.objects.get(mhs_judul__mhs=usermhs)
 
     # Cek apakah semua berkas sudah diupload
-    bebaskuliah = SuketBebasKuliah.objects.filter(mhs=usermhs).order_by('-date_in').first()
+    # bebaskuliah = SuketBebasKuliah.objects.filter(mhs=usermhs).order_by('-date_in').first()
     bebasplagiasi = SuketBebasPlagiasi.objects.filter(mhs=usermhs).order_by('-date_in').first()
     skpbb = skPembimbing.objects.filter(mhs=usermhs).order_by('-date_in').first()
+    skpgj = skPenguji.objects.filter(usulan__mhs_judul__mhs=usermhs).order_by('-date_in').first()
+    berkelakuanbaik = SuketBerkelakuanBaik.objects.filter(mhs=usermhs).order_by('-date_in').first()
+    bebaspustaka = SuketBebasPustaka.objects.filter(mhs=usermhs).order_by('-date_in').first()
+    usulanujianskripsi = SuketUsulanUjianSkripsi.objects.filter(mhs_judul__mhs=usermhs).order_by('-date_in').first()
+    proposal = Proposal.objects.get(mhs_judul__mhs=usermhs)
+    hasil = Hasil.objects.get(mhs_judul__mhs=usermhs)
     if request.method == 'POST':
         if (
-                not bebaskuliah or
                 not bebasplagiasi or
                 not skpbb or
+                not berkelakuanbaik or
+                not bebaspustaka or
+                not usulanujianskripsi or
+                not skpgj or
+                not proposal or
+                not hasil or
                 not ujian.persetujuan_ujian or
+                not ujian.matriks_perbaikan or
                 not ujian.transkrip or
                 not ujian.ijaza_terakhir or
+                not ujian.ukt_terakhir or
+                not ujian.bebas_pustaka_univ or
+                not ujian.ktp or
                 not ujian.krs_berjalan or
-                not ujian.rekomendasi_akademik
+                not ujian.usulan_baak or
+                not ujian.persetujuan_waktu or
+                not ujian.foto_latar_biru
             ):
             messages.error(request, 'Berkas persyaratan belum lengkap, silakan lengkapi terlebih dahulu.')
             return redirect('/acd/ujian_reg')

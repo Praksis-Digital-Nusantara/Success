@@ -26,20 +26,20 @@
 				<table id="layananTable" class="display" style="width:100%">
 					<thead>
 					<tr>
-						<th>No</th>
-						<th>Mahasiswa</th>
-						<th>Judul</th>
-						<th>Waktu Ujian</th>
-						<th>Prmbimbing</th>
-						<th>Penguji</th>
-						<th>Aksi</th>
+						<th style="white-space: nowrap;">No</th>
+						<th style="white-space: nowrap;">Mahasiswa</th>
+						<th style="white-space: nowrap;">Judul Skripsi Mahasiswa </th>
+						<th style="white-space: nowrap;">Waktu Ujian</th>
+						<th style="white-space: nowrap;">Prmbimbing</th>
+						<th style="white-space: nowrap;">Penguji</th>
+						<th style="white-space: nowrap;">Aksi</th>
 					</tr>
 					</thead>
 					<tfoot>
 					<tr>
 						<th>No</th>
 						<th>Mahasiswa</th>
-						<th>Judul</th>
+						<th>Judul Skripsi Mahasiswa </th>
 						<th>Waktu Ujian</th>
 						<th>Prmbimbing</th>
 						<th>Penguji</th>
@@ -77,14 +77,14 @@
 							<td>
 								{% if datatb.no_surat %}
 									<a target="_blank" href="{% url 'acd:print_undangan_ujian' datatb.id %}">
-									<button class="btn primary x-small"><i class="ri-mail-star-line"></i>Undangan</button>
+									<button class="btn primary small"><i class="ri-mail-star-line"></i>Undangan</button>
 									</a>
 									<br>
 									<a target="_blank" href="{% url 'acd:ujian_nilai' datatb.id %}">
-									<button class="btn success x-small"><i class="ri-award-line"></i>Nilai</button>
+									<button class="btn success small"><i class="ri-award-line"></i>Nilai</button>
 								</a>
 								{% else  %}									
-									<button class="btn warning x-small">Menunggu Fakultas</button>
+									<button class="btn primary small"><i class="ri-loader-4-line"></i>Menunggu Fakultas</button>
 								{% endif %}								
 								</td>					  
 						</tr>

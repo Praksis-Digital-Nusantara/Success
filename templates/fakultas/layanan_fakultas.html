@@ -40,6 +40,11 @@
 								<button class="btn secondary x-small"><i class="ri-file-line"></i> File</button>
 							</a>
 						{% endif %}
+						{% if layanan.layanan_jenis.nama_layanan == 'Surat Keterangan Bebas Pustaka' %}
+							<a href="/acd/suket_bebaspustaka_edit/{{layanan.mhs.nim.username}}">
+								<button class="btn secondary x-small"><i class="ri-ball-pen-fill"></i>Proses Layanan</button>
+							</a>
+						{% endif %}
 						{% if layanan.layanan_jenis.nama_layanan == 'Surat Keterangan Aktif Kuliah' %}
 							<a href="/acd/suket_aktifkuliah_edit/{{layanan.mhs.nim.username}}">
 								<button class="btn secondary x-small"><i class="ri-ball-pen-fill"></i>Proses Layanan</button>
@@ -71,7 +76,7 @@
 							</a>
 						{% endif %}
 						<br>
-						<div class="response-text">{{ layanan.layanan_isi|truncatechars:130 }}</div>
+						<div class="response-text">{{ layanan.layanan_isi|slice:"2:122" }}</div>
 					</td>				  
 					<td>
 						{% if layanan.status == 'Waiting'  %}

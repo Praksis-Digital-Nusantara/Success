@@ -25,6 +25,9 @@ from .models import (UserMhs, Layanan,
                      SuketBebasKuliah,
                      SuketBebasPlagiasi,
                      IzinPenelitian,
+                     SuketUsulanUjianSkripsi,
+                     SuketBerkelakuanBaik,
+                     SuketBebasPustaka,
                      )
 
 
@@ -37,9 +40,12 @@ from .forms_prodi import (formLayananEdit,
                           formUjian,
                           formSuketBebasKuliah,
                           formSuketBebasPlagiasi,
+                          formSuketUsulanUjianSkripsi,
                           )
+
 from .decorators_prodi import admin_prodi_required, check_userprodi
 
+import json
 
 ########### NOMOR SURAT #####################################################
 
@@ -650,6 +656,11 @@ def ujian_edit(request, nim):
         'bebaskuliah': SuketBebasKuliah.objects.filter(mhs=judul.mhs).first(),
         'bebasplagiasi': SuketBebasPlagiasi.objects.filter(mhs=judul.mhs).first(),
         'skpbb': skPembimbing.objects.filter(mhs=judul.mhs).order_by('-date_in').first(),
+        'skpgj': skPenguji.objects.filter(usulan__mhs_judul__mhs=judul.mhs).order_by('-date_in').first(),
+        'berkelakuanbaik': SuketBerkelakuanBaik.objects.filter(mhs=judul.mhs).first(),
+        'bebaspustaka': SuketBebasPustaka.objects.filter(mhs=judul.mhs).first(),
+        'proposal': Proposal.objects.get(mhs_judul__mhs=judul.mhs),
+        'hasil': Hasil.objects.get(mhs_judul__mhs=judul.mhs),
         'form': form,
     }
     return render(request, 'prodi/ujian_edit.html', context)
@@ -822,7 +833,8 @@ def suket_bebasplagiasi_edit(request, nim):
         return redirect('acd:suket_bebasplagiasi_edit', nim=nim)
     else:
         form = formSuketBebasPlagiasi(instance=datasuket)
-
+    
+    layanan = Layanan.objects.filter(mhs=mhs, layanan_jenis__nama_layanan='Surat Keterangan Bebas Plagiasi') .order_by('-date_in').first()
     context = {
         'title': 'Suket Bebas Plagiasi',
         'heading': 'Edit Surat Keterangan Bebas Plagiasi',
@@ -830,6 +842,7 @@ def suket_bebasplagiasi_edit(request, nim):
         'photo' : userprodi.photo,
         'mhs' : mhs,
         'form': form,
+        "layanan_isi_parsed": json.loads(layanan.layanan_isi) if layanan else {},
     }
     return render(request, 'prodi/suket_bebasplagiasi_edit.html', context)
 
@@ -843,3 +856,120 @@ def suket_bebasplagiasi_del(request, id):
     return redirect('acd:suket_bebasplagiasi')
 
 
+################ USULAN UJIAN SKRIPSI ########################
+@check_userprodi
+@admin_prodi_required
+def usulanujianskripsi(request):
+    userprodi = request.userprodi      
+    data = SuketUsulanUjianSkripsi.objects.filter(mhs_judul__prodi=userprodi.prodi).order_by('-date_in')
+    context = {
+        'title': 'Suket Usulan Ujian Skripsi',
+        'heading': 'Surat Usulan Ujian Skripsi',
+        'userprodi' : userprodi,
+        'photo' : userprodi.photo,
+        'data': data,
+    }
+    return render(request, 'prodi/suket_usulanujianskripsi.html', context)
+
+
+
+@check_userprodi
+@admin_prodi_required
+def usulanujianskripsi_edit(request, nim):
+    userprodi = request.userprodi
+    mhs = get_object_or_404(UserMhs, nim__username = nim)
+    datasuket = SuketUsulanUjianSkripsi.objects.filter(mhs_judul__mhs=mhs).first()
+
+    if request.method == 'POST':
+        form = formSuketUsulanUjianSkripsi(request.POST, instance=datasuket)
+        if form.is_valid():
+            suket = form.save(commit=False)  
+            suket.adminp = request.user   
+            suket.jurusan = userprodi.prodi.jurusan   
+
+            skripsi_judul = SkripsiJudul.objects.filter(mhs=mhs).first()
+            if skripsi_judul:
+                suket.mhs_judul = skripsi_judul
+
+            if suket.no_surat is None:
+                tahun = datetime.now().year
+                nosurat_cek = NoSuratFakultas.objects.filter(tahun=tahun).order_by('-nomor').first()
+                nosurat_baru = nosurat_cek.nomor + 1 if nosurat_cek else 1  
+                kodesurat = KodeSurat.objects.get(jenis='Suket Usulan Ujian Skripsi')
+
+                NoSuratFakultas.objects.create(
+                    adminp=request.user,
+                    tahun=tahun,
+                    nomor=nosurat_baru, 
+                    perihal=f'Suket Usulan Ujian Skripsi {mhs}',
+                    tujuan=f'Mahasiswa {mhs}',
+                    kode=kodesurat.kode
+                )
+                suket.no_surat = f"{nosurat_baru}{kodesurat.kode}{tahun}" 
+
+            suket.save()
+
+            skpenguji, created = skPenguji.objects.get_or_create(
+                usulan=suket,
+                defaults={
+                    'usulan': suket,
+                }
+            )
+
+
+
+            messages.success(request, 'Berhasil Menerbitkan Surat')
+
+            layanan = Layanan.objects.filter(
+                mhs=mhs,
+                layanan_jenis__nama_layanan='Suket Usulan Ujian Skripsi',
+                status__in=['Processing', 'Waiting']
+            ).first()
+
+            if layanan:
+                context_pro = web_name(request)
+                layanan.status = 'Completed'
+                layanan.hasil_test = 'Surat Usulan Ujian Skripsi telah terbit, download di tautan berikut:'
+                layanan.hasil_link = context_pro.get("baseurl", "") + "acd/print_suket_usulanujianskripsi/" + str(suket.id)
+                layanan.save()                  
+                messages.success(request, 'Berhasil Mengupdate Layanan')
+            
+        else:
+            messages.error(request, 'periksa kembali isian data anda!')
+        return redirect('acd:usulanujianskripsi_edit', nim=nim)
+
+    else:
+        # GET request, tidak ada suket
+        form = formSuketUsulanUjianSkripsi(instance=datasuket)
+    
+    layanan = Layanan.objects.filter(mhs=mhs, layanan_jenis__nama_layanan='Suket Usulan Ujian Skripsi') .order_by('-date_in').first()
+    ujian = Ujian.objects.filter(mhs_judul__mhs=mhs).order_by('-date_in').first()
+
+    context = {
+        'title': 'Suket Usulan Ujian Skripsi',
+        'heading': 'Edit Surat Usulan Ujian Skripsi',
+        'userprodi' : userprodi,
+        'photo' : userprodi.photo,
+        'mhs' : mhs,
+        'form': form,
+        'layanan': layanan,
+        'ujian': ujian,
+        'skpbb': skPembimbing.objects.filter(mhs=mhs).order_by('-date_in'),
+        'bebasplagiasi': SuketBebasPlagiasi.objects.filter(mhs=mhs).first(),
+        'bebaspustaka': SuketBebasPustaka.objects.filter(mhs=mhs).first(),
+        'berkelakuanbaik': SuketBerkelakuanBaik.objects.filter(mhs=mhs).order_by('-date_in').first(),
+        "layanan_isi_parsed": json.loads(layanan.layanan_isi) if layanan else {},
+        'proposal': Proposal.objects.get(mhs_judul__mhs=mhs),
+        'hasil': Hasil.objects.get(mhs_judul__mhs=mhs),
+    }
+    return render(request, 'prodi/suket_usulanujianskripsi_edit.html', context)
+
+
+
+@check_userprodi
+@admin_prodi_required
+def usulanujianskripsi_del(request, id):
+    data = get_object_or_404(SuketUsulanUjianSkripsi, id=id)
+    data.delete()
+    messages.info(request, 'Berhasil Menghapus Surat')
+    return redirect('acd:usulanujianskripsi')

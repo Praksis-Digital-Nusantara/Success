@@ -16,7 +16,8 @@ from .models import (Layanan,
                      Ujian,
                      Pejabat,
                      SuketBebasKuliah,
-                     SuketBebasPlagiasi
+                     SuketBebasPlagiasi,
+                     SuketUsulanUjianSkripsi
                     )
 
 class formProfile(forms.ModelForm):
@@ -175,6 +176,12 @@ class formProposal(forms.ModelForm):
         widget=forms.Select(attrs={'class': 'form-control'}),
         empty_label="Pilih Dosen"
     )
+    penguji2 = forms.ModelChoiceField(
+        queryset=UserDosen.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        required=False,
+        empty_label="Pilih Dosen"
+    )
     
     class Meta:
         model = Proposal
@@ -185,16 +192,19 @@ class formProposal(forms.ModelForm):
             'seminar_tempat',
             'seminar_link',
             'penguji1',
+            'penguji2',
             'ttd_status',
             'ttd',
         ]
+        
         widgets = {
             'no_surat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '*kosongkan jika ambil nomor dari sistem'}),
             'seminar_tgl': forms.DateInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'date'}),
             'seminar_jam': forms.TimeInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'time'}),
-            'seminar_tempat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Zoom Meeting ID : 00000000 Passcode: xxxxx', 'required': 'required'}),
+            'seminar_tempat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Zoom Meeting ID : 00000000 Passcode: xxxxx / Ruang Seminar Prodi...', 'required': 'required'}),
             'seminar_link': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'link zoom jika ada'}),
             'penguji1': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'penguji2': forms.TextInput(attrs={'class': 'form-control',}),
             'ttd_status': forms.Select(
                                 choices=[
                                     ('QRcode', 'QRcode'),
@@ -335,6 +345,78 @@ class formSuketBebasPlagiasi(forms.ModelForm):
         widgets = {
             'no_surat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '*kosongkan jika ambil nomor dari sistem'}),
             'nilai_plagiasi': forms.NumberInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'ttd_status': forms.Select(
+                                choices=[
+                                    ('QRcode', 'QRcode'),
+                                    ('Manual', 'Manual'),
+                                ],
+                                attrs={'class': 'form-control'}
+                            ),
+            'ttd': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+        }
+
+
+class formSuketUsulanUjianSkripsi(forms.ModelForm):
+    ttd = forms.ModelChoiceField(
+        queryset=Pejabat.objects.filter(tgl_selesai__gte=tgl_now, jabatan__in=['Ketua Jurusan']),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Pejabat"
+    )
+    ketua = forms.ModelChoiceField(
+        queryset=Pejabat.objects.filter(tgl_selesai__gte=tgl_now),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Pejabat"
+    )
+
+    wakil = forms.ModelChoiceField(
+        queryset=Pejabat.objects.filter(tgl_selesai__gte=tgl_now),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Pejabat"
+    )
+
+    sekretaris = forms.ModelChoiceField(
+        queryset=UserDosen.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Dosen"
+    )
+
+
+    penguji1 = forms.ModelChoiceField(
+        queryset=UserDosen.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Dosen"
+    )
+    penguji2 = forms.ModelChoiceField(
+        queryset=UserDosen.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Dosen"
+    )
+    
+    class Meta:
+        model = SuketUsulanUjianSkripsi
+        fields = [    
+            'no_surat',
+            'penguji1',
+            'penguji2',
+            'ketua',
+            'wakil',
+            'sekretaris',
+            'usul_tgl',
+            'usul_jam',
+            'usul_tempat',
+            'ttd_status',
+            'ttd',
+        ]
+        widgets = {
+            'no_surat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '*kosongkan jika ambil nomor dari sistem'}),
+            'penguji1': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'penguji2': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'ketua': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'wakil': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'sekretaris': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'usul_tgl': forms.DateInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'date'}),
+            'usul_jam': forms.TimeInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'time'}),
+            'usul_tempat': forms.TextInput(attrs={'class': 'form-control', 'required': 'required', 'placeholder': 'Zoom Meeting ID : 00000000 Passcode: xxxxx'}),
             'ttd_status': forms.Select(
                                 choices=[
                                     ('QRcode', 'QRcode'),
