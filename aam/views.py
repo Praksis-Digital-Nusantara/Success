@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from acd.models import Proposal, Hasil, Ujian, IzinPenelitian, SuketIzinObservasi, skPembimbing, skPenguji, SkripsiJudul, SuketAktifKuliah, SuketBerkelakuanBaik, SuketCutiAkademik, SuketBebasPlagiasi, SuketBebasPustaka, SuketUsulanUjianSkripsi
+from acd.models import Proposal, Hasil, Ujian, IzinPenelitian, SuketIzinObservasi, skPembimbing, skUjian, SkripsiJudul, SuketAktifKuliah, SuketBerkelakuanBaik, SuketCutiAkademik, SuketBebasPlagiasi, SuketBebasPustaka, SuketUsulanUjianSkripsi
 from datetime import datetime
 from django.shortcuts import get_object_or_404
 
@@ -117,9 +117,9 @@ def verTTD(request, jenis, id):
         heading = "e-TTD SK Pembimbing"
 
     elif jenis == "skpgj":
-        data = get_object_or_404(skPenguji, id=id)
-        title = "e-TTD SK Penguji"
-        heading = "e-TTD SK Penguji"
+        data = get_object_or_404(skUjian, id=id)
+        title = "e-TTD SK Ujian"
+        heading = "e-TTD SK Ujian"
 
     elif jenis == "upr":
         data = get_object_or_404(Proposal, id=id)

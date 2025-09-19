@@ -75,7 +75,7 @@
 						</a>
 						{% endif %}
 						<br>
-						<div class="response-text">{{ layanan.layanan_isi|slice:"2:130" }}</div>
+						<div class="response-text">{{ layanan.layanan_isi|slice:"0:130" }}</div>
 					</td>					  
 					<td>
 					{% if layanan.status == 'Waiting'  %}
@@ -87,7 +87,7 @@
 					{% elif layanan.status == 'Completed'  %}
 						<span class="status-badge completed">{{ layanan.status }}</span>
 					{% endif %}
-					<div class="response-text">{% if layanan.status == "Waiting" or layanan.status == "Processing" %}Mohon menunggu...{% elif layanan.status == "Completed" or layanan.status == "Rejected" %}{{ layanan.hasil_test|default:"-" }}
+					<div class="response-text">{% if layanan.status == "Waiting" or layanan.status == "Processing" %}{{ layanan.hasil_test|default:"Layanan masuk daftar tunggu.." }}{% elif layanan.status == "Completed" or layanan.status == "Rejected" %}{{ layanan.hasil_test|default:"-" }}
 						{% endif %}
 					</div>
 					{% if layanan.hasil_link %}

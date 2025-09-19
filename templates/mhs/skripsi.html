@@ -457,7 +457,7 @@
     <div class="timeline-content">
         <div class="timeline-header">
             <div class="timeline-badge">Tahap 7</div>
-            <h3>Ujian Tutup</h3>
+            <h3>Pengusulan Ujian Tutup</h3>
         </div>
 
         {% if not hasil or not hasil.seminar_tgl %}
@@ -472,7 +472,7 @@
                 <span>Menunggu Tahap 6</span>
             </div>
 
-        {% elif not ujian.no_surat %}
+        {% elif not ujian.wd and not ujian.dekan %}
             <!-- Kalau seminar hasil sudah ada, tapi ujian tutup belum -->
             <div class="timeline-body">
                 <div class="timeline-description">
@@ -489,6 +489,78 @@
                             <i class="ri-printer-line"></i>
                             Cetak Lembar Pengesahan
                         </a>
+                        <a href="{% url 'acd:usulan_ujian_reg' %}" class="action-btn primary">
+                            <i class="ri-file-add-line"></i>
+                            Pengusulan Ujian Tutup
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="timeline-status active">
+                <i class="ri-time-line"></i>
+                <span>In Progress</span>
+            </div>
+
+        {% else %}
+            <!-- Kalau ujian tutup sudah terbit -->
+            <div class="timeline-body">
+                <div class="timeline-description">
+                    <div class="notification-time">
+                        <i class="ri-calendar-line"></i>
+                        <span>{{ ujian.ujian_tgl }}</span>
+                    </div>
+                    <p>Silahkan cetak lembar persetujuan waktu untuk di ttd masing-masing Dosen</p>
+                </div>
+                <div class="timeline-actions">
+                    <a target="_blank" href="{% url 'acd:print_persetujuan_waktu_ujian' ujian.id %}" class="action-btn success">
+                        <i class="ri-download-line"></i>
+                        Cetak Persetujuan Waktu Ujian
+                    </a>
+                </div>
+            </div>
+            <div class="timeline-status completed">
+                <i class="ri-check-line"></i>
+                <span>Selesai</span>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="timeline-item">
+    <div class="timeline-marker">
+        <div class="timeline-dot"></div>
+    </div>
+    <div class="timeline-content">
+        <div class="timeline-header">
+            <div class="timeline-badge">Tahap 8</div>
+            <h3>Ujian Tutup/Ujian Skripsi</h3>
+        </div>
+
+        {% if not ujian or not ujian.wd or not ujian.dekan %}
+            <!-- Kalau seminar hasil belum dilaksanakan -->
+            <div class="timeline-body">
+                <div class="timeline-description">
+                    <p>Anda belum menyelaikan pemberkasan Pengusulan Ujian Tutup, silahkan selesaikan Tahap 7 terlebih dahulu.</p>
+                </div>
+            </div>
+            <div class="timeline-status pending">
+                <i class="ri-time-line"></i>
+                <span>Menunggu Tahap 7</span>
+            </div>
+
+        {% elif not ujian.no_surat %}
+            <!-- Kalau seminar hasil sudah ada, tapi ujian tutup belum -->
+            <div class="timeline-body">
+                <div class="timeline-description">
+                    <p>Setelah mencetak lembar persetujuan waktu untuk dikonfirmasi ke masing-masing dosen, mahasiswa dapat melanjutkan tahap 8</p>
+                </div>
+                <div class="timeline-actions">
+                    {% if skripsi is None %}
+                        <div class="warning-message">
+                            <i class="ri-error-warning-line"></i>
+                            <span>Ajukan Judul Terlebih Dahulu!</span>
+                        </div>
+                    {% else %}
                         <a href="{% url 'acd:ujian_reg' %}" class="action-btn primary">
                             <i class="ri-file-add-line"></i>
                             Registrasi Ujian
@@ -517,6 +589,20 @@
                         Cetak Undangan Ujian
                     </a>
                 </div>
+				<!-- cetak sk ujian -->
+				{% if skujian.ttd %}
+				<div class="timeline-actions">
+					<a target="_blank" href="{% url 'acd:print_skpgj' skujian.id %}" class="action-btn success">
+						<i class="ri-download-line"></i>
+						Cetak SK Ujian
+					</a>
+				</div>
+				{% else %}
+				<div class="timeline-status active" style="margin-top: 5px;">
+								<i class="ri-time-line"></i>
+								<span>SK Ujian Belum Disetujui, Mohon menunggu!</span>
+				</div>
+				{% endif %}
             </div>
             <div class="timeline-status completed">
                 <i class="ri-check-line"></i>

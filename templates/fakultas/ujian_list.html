@@ -42,9 +42,19 @@
 						<td>{{ datatb.ujian_tgl }} {{ datatb.ujian_jam }}</td>					  
 						<td>{{ datatb.ujian_tempat }}	</td>				  
 						<td>
-							<a href="{% url 'acd:ujian_proses' datatb.id %}"> 
-								<button class="btn primary small"><i class="ri-loader-4-line"></i>Proses</button>
+							
+							{% if datatb.status_ujian == 'Usulan' %}
+							<a href="{% url 'acd:usulan_ujian' datatb.id %}"> 
+								<button class="btn primary small"><i class="ri-loader-4-line"></i>Proses Usulan</button>
 							</a>
+							{% endif %}
+							
+							{% if datatb.status_ujian == 'Pengajuan' %}
+							<a href="{% url 'acd:ujian_proses' datatb.id %}"> 
+									<button class="btn primary small"><i class="ri-loader-4-line"></i>Proses Ujian</button>
+							</a>
+							{% endif %}
+
 							{% if datatb.no_surat %}
 							<br>			
 							<a href="{% url 'acd:print_undangan_ujian' datatb.id %}" target="_blank"> 

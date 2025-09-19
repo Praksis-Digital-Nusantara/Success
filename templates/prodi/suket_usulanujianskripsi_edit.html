@@ -33,12 +33,12 @@
 							<td>{{ layanan.status }}</td>			  
 						</tr>
 						<tr>
-							<td>Lampiran Layanan Usulan Ujian</td>
+							<td>Persetujuan Ujian Waktu yang telah diTTD</td>
 							<td>:</td>
-							<td>{% if layanan.layanan_file %}
-									<a target="_blank" href="/media/{{ layanan.layanan_file }}"><button class="btn success small">Lihat File</button></a>
+							<td>{% if ujian.persetujuan_waktu %}
+									<a target="_blank" href="/media/{{ ujian.persetujuan_waktu }}"><button class="btn success small">Lihat File</button></a>
 									{% else %}
-									<p>Tidak ada lampiran File</p>
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
 									{% endif %}
 							</td>					  
 						</tr>
@@ -199,17 +199,6 @@
 									{% endif %}
 							</td>					  
 						</tr>
-						<!-- Surat Persetujuan Waktu Ujian -->
-						<tr>
-							<td>Surat Persetujuan Waktu Ujian</td>
-							<td>:</td>
-							<td>{% if ujian.persetujuan_waktu %}
-									<a target="_blank" href="/media/{{ ujian.persetujuan_waktu }}"><button class="btn success small">Lihat File</button></a>
-									{% else %}
-									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
-									{% endif %}
-							</td>					  
-						</tr>
 						<!-- KRS Berjalan -->
 						<tr>
 							<td>KRS Berjalan</td>
@@ -273,7 +262,7 @@
 		</div>
 		<div class="form-header-content">
 			<h2>{{ heading }}</h2>
-			<p>Silahkan edit data berikut ini</p>
+			<p>Jika lampiran berkas telah lengkap dan benar, admin dapat mengajukan surat usulan ujian skripsi</p>
 		</div>
 	</div>
 

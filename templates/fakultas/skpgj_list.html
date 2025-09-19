@@ -15,10 +15,11 @@
 			<table id="layananTable" class="display" style="width:100%">
 				<thead>
 				<tr>
-					<th>No</th>
-					<th>Date In</th>
+					<th style="white-space: nowrap;">No</th>
+					<th style="white-space: nowrap;">Date In</th>
 					<th>Mahasiswa</th>
 					<th>Prodi</th>
+					<th>Pembimbing</th>
 					<th>Penguji</th>
 					<th>Aksi</th>
 				</tr>
@@ -29,6 +30,7 @@
 					<th>Date In</th>
 					<th>Mahasiswa</th>
 					<th>Prodi</th>
+					<th>Pembimbing</th>
 					<th>Penguji</th>
 					<th width="10%">Aksi</th>
 				</tr>
@@ -38,10 +40,13 @@
 					<tr>
 						<td>{{ forloop.counter }}</td>
 						<td>{{ datatb.date_in|date:"d M Y H:i"  }}</td>
-						<td>{{ datatb.usulan.mhs_judul.mhs }}</td>					  
-						<td>{{ datatb.usulan.mhs_judul.prodi }}</td>					  
-						<td>1. {{ datatb.usulan.penguji1.nip.first_name }}					  
-								<br>2. {{ datatb.usulan.penguji2.nip.first_name }}
+						<td>{{ datatb.ujian.mhs_judul.mhs }}</td>					  
+						<td>{{ datatb.ujian.mhs_judul.prodi }}</td>	
+						<td>1. {{ datatb.ujian.pembimbing1.nip.first_name }}					  
+								<br>2. {{ datatb.ujian.pembimbing2.nip.first_name }}
+								</td>		
+						<td>1. {{ datatb.ujian.penguji1.nip.first_name }}					  
+								<br>2. {{ datatb.ujian.penguji2.nip.first_name }}
 								</td>							  
 						<td>
 							<a href="{% url "acd:print_skpgj" datatb.id %}" target="_blank"> 

@@ -7,13 +7,13 @@ from django.utils import timezone
 
 from .models import Prodi, Pejabat, UserFakultas
 from .models import NoSuratFakultas, Layanan, KodeSurat
-from .models import SkripsiJudul, Proposal, skPembimbing, skPenguji, IzinPenelitian, Ujian, Yudisium, Hasil
+from .models import SkripsiJudul, Proposal, skPembimbing, skUjian, IzinPenelitian, Ujian, Yudisium, Hasil
 from .models import SuketBebasKuliah, SuketBebasPlagiasi, SuketBerkelakuanBaik, SuketBebasPustaka
 
 
 from .forms_fakultas import formLayananFakultasEdit
 from .forms_fakultas import formProfile, formProdiEdit
-from .forms_fakultas import formNoSurat, formUjian, formYudisium
+from .forms_fakultas import formNoSurat, formUjian, formYudisium, formUsulanUjian
 
 from .decorators_fakultas import check_userfakultas
 from .decorators_fakultas import fakultas_required
@@ -240,15 +240,15 @@ def skpbb_pengajuan(request):
 
 
 
-########### SK PENGUJI #####################################################
+########### SK UJIAN #####################################################
 @fakultas_required
 @check_userfakultas
-def skpgj_list(request):           
+def skujian_list(request):           
     userfakultas = request.userfakultas
-    data = skPenguji.objects.filter(nosurat__isnull=False).order_by('-date_in')
+    data = skUjian.objects.filter(nosurat__isnull=False).order_by('-date_in')
     context = {
-        'title': 'SK Penguji - List',
-        'heading': 'Daftar SK Penguji',
+        'title': 'SK Ujian - List',
+        'heading': 'Daftar SK Ujian',
         'userfakultas' : userfakultas,
         'photo' : userfakultas.photo,
         'data' : data,
@@ -258,12 +258,12 @@ def skpgj_list(request):
 
 @fakultas_required
 @check_userfakultas
-def skpgj_pengajuan(request):           
+def skujian_pengajuan(request):           
     userfakultas = request.userfakultas
 
     if request.method == "POST":
         id = request.POST.get("id")
-        skpgj = skPenguji.objects.filter(id=id).first()
+        skpgj = skUjian.objects.filter(id=id).first()
         # Ambil nosurat, jika kosong ambil di sistem
         nosurat = request.POST.get("nosurat")
         if nosurat == "" :
@@ -279,7 +279,7 @@ def skpgj_pengajuan(request):
                 adminp = request.user,
                 tahun = tahun,
                 nomor = nosurat_baru, 
-                perihal = 'SK Penguji ' + str(skpgj.usulan.mhs_judul.mhs),
+                perihal = 'SK Ujian ' + str(skpgj.ujian.mhs_judul.mhs),
                 tujuan = 'Dosen Penguji Skripsi',
                 kode = kodesurat.kode
             )
@@ -290,20 +290,18 @@ def skpgj_pengajuan(request):
             skpgj.date_in = tgl_now
             skpgj.ttd = Pejabat.objects.get(jabatan='Dekan', tgl_selesai__gte=tgl_now)
             skpgj.save()
-            messages.success(request, f"SK Penguji berhasil diterbitkan ")
+            messages.success(request, f"SK Ujian berhasil diterbitkan ")
 
 
-    data = skPenguji.objects.filter(nosurat__isnull=True).order_by('-date_in')
+    data = skUjian.objects.filter(nosurat__isnull=True).order_by('-date_in')
     context = {
-        'title': 'SK Penguji - Pengajuan',
-        'heading': 'Pengajuan SK Penguji',
+        'title': 'SK Ujian - Pengajuan',
+        'heading': 'Pengajuan SK Ujian',
         'userfakultas' : userfakultas,
         'photo' : userfakultas.photo,
         'data' : data,
     }
     return render(request, 'fakultas/skpgj_pengajuan.html', context)
-
-
 
 
 ##########################  IZIN PENELITIAN ######################################
@@ -401,9 +399,12 @@ def izinpenelitian_pengajuan(request):
 @check_userfakultas
 def ujian_list(request, filter):           
     userfakultas = request.userfakultas
-    if filter == 'pengajuan':
+    if filter == 'usulan':
+        title = 'Ujian Tutup - Usulan'
+        data = Ujian.objects.filter(dekan__isnull=True, wd__isnull=True, status_ujian='Usulan').order_by('-date_in')
+    elif filter == 'pengajuan':
         title = 'Ujian Tutup - Pengajuan'
-        data = Ujian.objects.filter(ujian_tgl__isnull=False, no_surat__isnull=True).order_by('-date_in')
+        data = Ujian.objects.filter(no_surat__isnull=True, dekan__isnull=False, wd__isnull=False, status_ujian='Pengajuan' ).order_by('-date_in')
     elif filter == 'terbit':
         title = 'Ujian Tutup - Terbit'
         data = Ujian.objects.filter(ujian_tgl__isnull=False, no_surat__isnull=False).order_by('-date_in')
@@ -420,6 +421,62 @@ def ujian_list(request, filter):
         'data' : data,
     }
     return render(request, 'fakultas/ujian_list.html', context)
+
+
+@fakultas_required
+@check_userfakultas
+def usulan_ujian(request, id):     
+    userfakultas = request.userfakultas
+    ujian = Ujian.objects.get(id=id)
+
+    if request.method == "POST":
+        form = formUsulanUjian(request.POST, instance=ujian)
+        if form.is_valid():
+            # Ambil nosurat, jika kosong ambil di sistem
+            ujian = form.save(commit=False)
+            ujian.adminp = request.userfakultas
+            ujian.save()
+            messages.success(request, 'Ketua dan Wakil Ketua telah berhasil Ditambahkan')
+
+            try:
+                layanan = Layanan.objects.get(
+                    mhs=ujian.mhs_judul.mhs,
+                    layanan_jenis__nama_layanan='Usulan Ujian Tutup',
+                    status__in=['Processing', 'Waiting']
+                )
+                context_pro = web_name(request)
+                layanan.status = 'Completed'
+                layanan.hasil_test = 'Usulan Ujian untuk Ketua, Wakil Ketua, telah diterbitkan, unduh di tautan berikut:'
+                layanan.hasil_link = context_pro.get("baseurl", "") + "acd/print_pwu/" + str(ujian.id)
+                layanan.adminp = request.user
+                layanan.save()
+                messages.info(request, f"Layanan Mahasiswa {ujian.mhs_judul.mhs} Berhasil diperbaharui ")
+            except Layanan.DoesNotExist:
+                messages.info(request, f"Tidak ada layanan yang ditemukan untuk mahasiswa {ujian.mhs_judul.mhs} ")
+
+
+        else:
+            messages.error(request, 'Periksa kembali isian data anda!')
+            print(form.errors)
+    else:
+        form = formUsulanUjian(instance=ujian)
+
+    context = {
+        'title': "Ujian Tutup - Proses",
+        'heading': "Ujian Tutup - Proses",
+        'userfakultas' : userfakultas,
+        'photo' : userfakultas.photo,
+        'ujian' : ujian,
+        'bebaskuliah' : SuketBebasKuliah.objects.filter(mhs=ujian.mhs_judul.mhs).first(),
+        'bebasplagiasi' : SuketBebasPlagiasi.objects.filter(mhs=ujian.mhs_judul.mhs).first(),
+        'berkelakuanbaik': SuketBerkelakuanBaik.objects.filter(mhs=ujian.mhs_judul.mhs).first(),
+        'bebaspustaka': SuketBebasPustaka.objects.filter(mhs=ujian.mhs_judul.mhs).first(),
+        'skpbb' : skPembimbing.objects.filter(mhs=ujian.mhs_judul.mhs).order_by('-date_in').first(),
+        'proposal': Proposal.objects.get(mhs_judul__mhs=ujian.mhs_judul.mhs),
+        'hasil': Hasil.objects.get(mhs_judul__mhs=ujian.mhs_judul.mhs),
+        'form' : form,
+    }
+    return render(request, 'fakultas/usulan_ujian.html', context)
 
 
 @fakultas_required
@@ -456,6 +513,7 @@ def ujian_proses(request, id):
             ujian = form.save(commit=False)
             ujian.adminp = request.userfakultas
             ujian.no_surat = nosurat
+            ujian.status_ujian = "Terbit"
             ujian.save()
             messages.success(request, 'Data Ujian berhasil diperbarui!')
 
@@ -491,7 +549,6 @@ def ujian_proses(request, id):
         'berkelakuanbaik': SuketBerkelakuanBaik.objects.filter(mhs=ujian.mhs_judul.mhs).first(),
         'bebaspustaka': SuketBebasPustaka.objects.filter(mhs=ujian.mhs_judul.mhs).first(),
         'skpbb' : skPembimbing.objects.filter(mhs=ujian.mhs_judul.mhs).order_by('-date_in').first(),
-        'skpgj' : skPenguji.objects.filter(usulan__mhs_judul__mhs=ujian.mhs_judul.mhs).order_by('-date_in').first(),
         'proposal': Proposal.objects.get(mhs_judul__mhs=ujian.mhs_judul.mhs),
         'hasil': Hasil.objects.get(mhs_judul__mhs=ujian.mhs_judul.mhs),
         'form' : form,

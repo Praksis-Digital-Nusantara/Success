@@ -119,6 +119,16 @@
 									{% endif %}
 							</td>					  
 						</tr>
+						<tr>
+							<td>Usulan Ujian Skripsi</td>
+							<td>:</td>
+							<td>{% if usulanujian %}
+									<a target="_blank" href="{% url 'acd:print_suket_usulanujianskripsi' usulanujian.id %}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+								{% endif %}
+							</td>					  
+						</tr>
 					<!-- ktp mahasiswa -->
 						<tr>
 							<td>KTP Mahasiswa</td>
@@ -151,18 +161,8 @@
 								{% endif %}
 							</td>					  
 						</tr>
-						<tr>
-							<td>SK Ujian Tutup</td>
-							<td>:</td>
-							<td>{% if skpgj %}
-									<a target="_blank" href="/acd/print_skpgj/{{ skpgj.id }}"><button class="btn success small">SK {{ skpgj.date_in }}</button></a>
-									{% else %}
-									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
-									{% endif %}
-							</td>					  
-						</tr>
 						<!-- Undangan Seminar Proposal -->
-						 <tr>
+						<tr>
 							<td>Undangan Seminar Proposal</td>
 							<td>:</td>
 							<td>{% if proposal %}
@@ -226,7 +226,8 @@
 									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
 									{% endif %}
 							</td>					  
-						</tr>				
+						</tr>
+
 					
 					</tbody>
 				</table>	
@@ -278,7 +279,17 @@
 				<label for="id_penguji2">Penguji II</label>
 				{{ form.penguji2 }}
 			</div>
-		</div>			
+		</div>
+		<div class="form-row">
+		<div class="form-group">
+				<label for="id_sekretaris">Sekretaris</label>
+				{{ form.sekretaris }}
+		</div>
+		<div class="form-group">
+				<label for="id_kaprodi">Ketua Program Studi</label>
+				{{ form.kaprodi }}
+		</div>
+		</div>	
 		<div class="form-actions">
 			<button type="submit" class="btn primary">Proses</button>
 		</div>
@@ -293,7 +304,7 @@
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
-	  var elementIds = ['id_penguji1', 'id_penguji2'];
+	  var elementIds = ['id_penguji1', 'id_penguji2', 'id_sekretaris'];
 	  elementIds.forEach(function(elementId) {
 		var element = document.getElementById(elementId);
 		if (element) {

@@ -10,7 +10,7 @@ from uuid import UUID
 from .utils import cek_kemiripan_judul  
 
 from .models import UserMhs, SkripsiJudul, chatPA, Proposal, ProposalNilai,  Hasil, HasilNilai,  Ujian, UjianNilai, UserDosen, Pejabat, SuketIzinObservasi, SuketRekomendasi, SuratTugas, SuketIzinLab, SuketAktifKuliah, SuketBerkelakuanBaik, SuketCutiAkademik, SuketBebasPlagiasi, SuketBebasPustaka, SuketUsulanUjianSkripsi
-from .models import skPembimbing, skPenguji, IzinPenelitian
+from .models import skPembimbing, skUjian, IzinPenelitian
 from .forms_dosen import formProfile, formChatPA, formProposalNilai, formHasilNilai, formUjianNilai
 from django.utils import timezone
 
@@ -182,7 +182,7 @@ def dsn_skpbb(request):
 @check_userdosen
 def dsn_skpgj(request):      
     userdosen = request.userdosen 
-    data = skPenguji.objects.filter(Q(usulan__penguji1=userdosen) | Q(usulan__penguji2=userdosen) | Q(usulan__mhs_judul__pembimbing1=userdosen) | Q(usulan__mhs_judul__pembimbing2=userdosen) ).order_by('-date_in')
+    data = skUjian.objects.filter(Q(ujian__penguji1=userdosen) | Q(ujian__penguji2=userdosen) | Q(ujian__mhs_judul__pembimbing1=userdosen) | Q(ujian__mhs_judul__pembimbing2=userdosen) ).order_by('-date_in')
     context = {
         'title': 'SK Ujian Tutup',
         'heading': 'SK Ujian Tutup',
@@ -686,7 +686,7 @@ def list_ttd_pejabat(request):
         ('observasi', SuketIzinObservasi),
         ('rekomendasi', SuketRekomendasi),
         ('sk_pembimbing', skPembimbing),
-        ('sk_penguji', skPenguji),
+        ('sk_ujian', skUjian),
         ('surat_tugas', SuratTugas),
         ('suket_izinlab', SuketIzinLab),
         ('suket_aktifkuliah', SuketAktifKuliah),
@@ -726,7 +726,7 @@ def kelola_ttd(request, model_name, id, action):
         'observasi': SuketIzinObservasi,
         'rekomendasi': SuketRekomendasi,
         'sk_pembimbing': skPembimbing,
-        'sk_penguji': skPenguji,
+        'sk_ujian': skUjian,
         'surat_tugas': SuratTugas,
         'suket_izinlab': SuketIzinLab,
         'suket_aktifkuliah': SuketAktifKuliah,

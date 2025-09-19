@@ -484,17 +484,6 @@ class SuketUsulanUjianSkripsi(models.Model):
     ttd_status = models.CharField(max_length=20, default='QRcode')
 
 
-##########################  SK PENGUJI  ########################################
-class skPenguji(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    date_in = models.DateTimeField(auto_now_add=True)
-    nosurat = models.CharField(max_length=50, blank=True, null=True)
-    usulan = models.ForeignKey(SuketUsulanUjianSkripsi, on_delete=models.SET_NULL, related_name="skpgj_usulan", null=True) 
-    ttd = models.ForeignKey(Pejabat, on_delete=models.SET_NULL, related_name="skpgj_pejabatttd", null=True)
-    ttd_status = models.CharField(max_length=20, default='QRcode')
-
-
-
 ##########################  PENELITIAN  ########################################
 class IzinPenelitian(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -587,6 +576,7 @@ class Ujian(models.Model):
     ujian_jam = models.TimeField(blank=True, null=True)
     ujian_tempat = models.CharField(max_length=255, blank=False, null=False)
     ujian_link = models.CharField(max_length=255, blank=True, null=True)
+    sekretaris = models.ForeignKey(UserDosen, on_delete=models.SET_NULL, related_name="ujian_sekretaris", blank=True, null=True)
     pembimbing1 = models.ForeignKey(UserDosen, on_delete=models.SET_NULL, related_name="ujian_pbb1", blank=True, null=True)
     pembimbing2 = models.ForeignKey(UserDosen, on_delete=models.SET_NULL, related_name="ujian_pbb2", blank=True, null=True)
     penguji1 = models.ForeignKey(UserDosen, on_delete=models.SET_NULL, related_name="ujian_pgj1", blank=True, null=True)
@@ -613,7 +603,19 @@ class Ujian(models.Model):
     matriks_perbaikan = models.FileField(upload_to='layanan/syaratujian/', null=True, blank=True)
     persetujuan_waktu = models.FileField(upload_to='layanan/syaratujian/', null=True, blank=True)
     foto_latar_biru = models.FileField(upload_to='layanan/syaratujian/', null=True, blank=True)
+    status_ujian = models.CharField(max_length=15,  default='-', choices=[
+        ('-', '-'),
+        ('Usulan', 'Usulan'),
+        ('Pengajuan', 'Pengajuan'), 
+        ('Terbit', 'Terbit'), 
+        ])
 
+class skUjian(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    date_in = models.DateTimeField(auto_now_add=True)
+    nosurat = models.CharField(max_length=50, blank=True, null=True)
+    ujian = models.ForeignKey(Ujian, on_delete=models.SET_NULL, related_name="skujian_ujian", null=True) 
+    ttd = models.ForeignKey(Pejabat, on_delete=models.SET_NULL, related_name="skujian_pejabatttd", null=True)
 
 class Yudisium(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

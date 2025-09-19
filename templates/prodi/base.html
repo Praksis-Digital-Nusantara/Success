@@ -56,9 +56,20 @@
                    <li class="{% if title == 'Hasil' %}active{% endif %}">
                         <a href="{% url "acd:hasil" %}"><i class="ri-award-line"></i> Hasil</a>
                     </li>
-                    <li class="{% if title == 'Ujian' %}active{% endif %}">
-                        <a href="{% url "acd:ujian" %}"><i class="ri-award-line"></i> Ujian</a>
-                    </li>
+                    <li class="has-dropdown  {% if title == 'Ujian Tutup - Pengajuan' or title == 'Ujian Tutup - Terbit' or title == 'Ujian Tutup - Usulan' %}active{% endif %}">
+                        <a href="#"><i class="ri-book-open-line"></i>Ujian Tutup Skripsi<i class="ri-arrow-down-s-line dropdown-icon"></i></a>
+                        <ul class="submenu">
+                             <li class="{% if title == 'Ujian Tutup - Usulan' %}active{% endif %}">
+                                <a href="{% url 'acd:ujian' 'usulan' %}"><i class="ri-add-box-line"></i> Usulan Ketua/Wakil</a>
+                            </li>
+                            <li class="{% if title == 'Ujian Tutup - Pengajuan' %}active{% endif %}">
+                                <a href="{% url 'acd:ujian' 'pengajuan' %}"><i class="ri-list-check-2"></i> Pengajuan</a>
+                            </li>
+                            <li class="{% if title == 'Ujian Tutup - Terbit' %}active{% endif %}">
+                                <a href="{% url 'acd:ujian' 'terbit' %}"><i class="ri-list-check-2"></i>Terbit</a>
+                            </li>
+                        </ul>
+                    </li>  
                     <li class="{% if title == 'Suket Usulan Ujian Skripsi' %}active{% endif %}">
                         <a href="{% url "acd:usulanujianskripsi" %}"><i class="ri-award-line"></i> Suket Usulan Ujian Skripsi</a>
                     </li>

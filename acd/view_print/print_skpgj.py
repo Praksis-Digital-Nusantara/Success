@@ -9,18 +9,18 @@ from reportlab.lib import colors
 
 from aam.context_processors import web_name
 from ..print_utils import tanggal_indo, draw_kop_surat_fakultas, dl
-from ..models import skPenguji
+from ..models import skUjian
 import textwrap
 
 
 def print_skpgj(request, id):
     context = web_name(request)  
-    sk = skPenguji.objects.get(id=id)
+    sk = skUjian.objects.get(id=id)
 
     response = HttpResponse(content_type="application/pdf")    
     p = canvas.Canvas(response, pagesize=A4)
     posd_x = 50 #posisi default x untuk bagian kiri
-  
+
     # AMBIL KOP DI UTILS
     pos_y = draw_kop_surat_fakultas(p, context)
 
@@ -62,10 +62,10 @@ def print_skpgj(request, id):
         return pos_y
 
     # Bagian Membacakan (diringkas)
-    pos_y = draw_aligned_text(p, "Membacakan", ":", "Surat Keputusan Program Studi " + sk.usulan.mhs_judul.prodi.nama_prodi, 18)   
+    pos_y = draw_aligned_text(p, "Membacakan", ":", "Surat Keputusan Program Studi " + sk.ujian.mhs_judul.prodi.nama_prodi, 18)   
     pos_y = draw_aligned_text(p, "", "", "Nomor : " + sk.nosurat,  0)
     # Bagian Mengingat (diringkas)
-     # Bagian Mengingat 
+    # Bagian Mengingat 
     p.setFont("Times-Roman", 12)
     pos_y -= 15
     p.drawString(posd_x, pos_y, "Mengingat")
@@ -94,37 +94,37 @@ def print_skpgj(request, id):
     # Data Mahasiswa - Posisi titik dua diperbaiki
     p.setFont("Times-Roman", 12)
     pos_y -= 7
-    p.drawString(posd_x + 110, pos_y, "Nama")
-    p.drawString(posd_x + 190, pos_y, ":")
-    p.drawString(posd_x + 210, pos_y, sk.usulan.mhs_judul.mhs.nim.first_name)
+    p.drawString(posd_x + 60, pos_y, "Nama")
+    p.drawString(posd_x + 140, pos_y, ":")
+    p.drawString(posd_x + 150, pos_y, sk.ujian.mhs_judul.mhs.nim.first_name)
     
     pos_y -= 15
-    p.drawString(posd_x + 110, pos_y, "NIM")
-    p.drawString(posd_x + 190, pos_y, ":")
-    p.drawString(posd_x + 210, pos_y, sk.usulan.mhs_judul.mhs.nim.username)
+    p.drawString(posd_x + 60, pos_y, "NIM")
+    p.drawString(posd_x + 140, pos_y, ":")
+    p.drawString(posd_x + 150, pos_y, sk.ujian.mhs_judul.mhs.nim.username)
     
     pos_y -= 15
-    p.drawString(posd_x + 110, pos_y, "Program Studi")
-    p.drawString(posd_x + 190, pos_y, ":")
-    p.drawString(posd_x + 210, pos_y, sk.usulan.mhs_judul.prodi.nama_prodi)  # sesuaikan dengan field yang ada
+    p.drawString(posd_x + 60, pos_y, "Program Studi")
+    p.drawString(posd_x + 140, pos_y, ":")
+    p.drawString(posd_x + 150, pos_y, sk.ujian.mhs_judul.prodi.nama_prodi)  # sesuaikan dengan field yang ada
     
     pos_y -= 15
-    p.drawString(posd_x + 110, pos_y, "Fakultas")
-    p.drawString(posd_x + 190, pos_y, ":")
-    p.drawString(posd_x + 210, pos_y, "Fakultas Ekonomi dan Bisnis")
+    p.drawString(posd_x + 60, pos_y, "Fakultas")
+    p.drawString(posd_x + 140, pos_y, ":")
+    p.drawString(posd_x + 150, pos_y, "Fakultas Ekonomi dan Bisnis")
     
     pos_y -= 15
-    p.drawString(posd_x + 110, pos_y, "Judul Skripsi")
-    p.drawString(posd_x + 190, pos_y, ":")
+    p.drawString(posd_x + 60, pos_y, "Judul Skripsi")
+    p.drawString(posd_x + 140, pos_y, ":")
     # Gunakan textwrap untuk judul yang panjang
-    judul_wrapped = textwrap.fill(sk.usulan.mhs_judul.judul if hasattr(sk.usulan.mhs_judul, 'judul') else "Judul Skripsi", width=50)
+    judul_wrapped = textwrap.fill(sk.ujian.mhs_judul.judul if hasattr(sk.ujian.mhs_judul, 'judul') else "Judul Skripsi", width=50)
     judul_lines = judul_wrapped.split('\n')
     for i, line in enumerate(judul_lines):
         if i == 0:
-            p.drawString(posd_x + 210, pos_y, line)
+            p.drawString(posd_x + 150, pos_y, line)
         else:
             pos_y -= 12
-            p.drawString(posd_x + 210, pos_y, line)
+            p.drawString(posd_x + 150, pos_y, line)
 
     pos_y -= 20
     p.drawString(posd_x, pos_y, "Dengan susunan Panitia Ujian Skripsi sebagai berikut:")
@@ -132,42 +132,42 @@ def print_skpgj(request, id):
     # Susunan Panitia - Posisi titik dua diperbaiki
     pos_y -= 20
     p.setFont("Times-Roman", 12)
-    p.drawString(posd_x + 97, pos_y, "1. Ketua")
-    p.drawString(posd_x + 190, pos_y, ":")
-    p.drawString(posd_x + 210, pos_y, sk.usulan.ketua.pejabat.nip.first_name)  # sesuaikan dengan field yang ada
+    p.drawString(posd_x + 49, pos_y, "1. Ketua")
+    p.drawString(posd_x + 140, pos_y, ":")
+    p.drawString(posd_x + 150, pos_y, sk.ujian.dekan.pejabat.nip.first_name)  # sesuaikan dengan field yang ada
 
     pos_y -= 15
-    p.drawString(posd_x + 97, pos_y, "2. Anggota")
+    p.drawString(posd_x + 49, pos_y, "2. Anggota")
     
     pos_y -= 15
-    p.drawString(posd_x + 110, pos_y, "Wakil Ketua")
-    p.drawString(posd_x + 190, pos_y, ":")
-    p.drawString(posd_x + 210, pos_y, sk.usulan.wakil.pejabat.nip.first_name)
+    p.drawString(posd_x + 60, pos_y, "Wakil Ketua")
+    p.drawString(posd_x + 140, pos_y, ":")
+    p.drawString(posd_x + 150, pos_y, sk.ujian.wd.pejabat.nip.first_name)
     
     pos_y -= 15
-    p.drawString(posd_x + 110, pos_y, "Sekretaris")
-    p.drawString(posd_x + 190, pos_y, ":")
-    p.drawString(posd_x + 210, pos_y, sk.usulan.sekretaris.nip.first_name)
+    p.drawString(posd_x + 60, pos_y, "Sekretaris")
+    p.drawString(posd_x + 140, pos_y, ":")
+    p.drawString(posd_x + 150, pos_y, sk.ujian.sekretaris.nip.first_name)
     
     pos_y -= 15
-    p.drawString(posd_x + 110, pos_y, "Pembimbing I")
-    p.drawString(posd_x + 190, pos_y, ":")
-    p.drawString(posd_x + 210, pos_y, sk.usulan.mhs_judul.pembimbing1.nip.first_name)
+    p.drawString(posd_x + 60, pos_y, "Pembimbing I")
+    p.drawString(posd_x + 140, pos_y, ":")
+    p.drawString(posd_x + 150, pos_y, sk.ujian.mhs_judul.pembimbing1.nip.first_name)
     
     pos_y -= 15
-    p.drawString(posd_x + 110, pos_y, "Pembimbing II")
-    p.drawString(posd_x + 190, pos_y, ":")
-    p.drawString(posd_x + 210, pos_y, sk.usulan.mhs_judul.pembimbing2.nip.first_name)
+    p.drawString(posd_x + 60, pos_y, "Pembimbing II")
+    p.drawString(posd_x + 140, pos_y, ":")
+    p.drawString(posd_x + 150, pos_y, sk.ujian.mhs_judul.pembimbing2.nip.first_name)
     
     pos_y -= 15
-    p.drawString(posd_x + 110, pos_y, "Penguji I")
-    p.drawString(posd_x + 190, pos_y, ":")
-    p.drawString(posd_x + 210, pos_y, sk.usulan.penguji1.nip.first_name)
+    p.drawString(posd_x + 60, pos_y, "Penguji I")
+    p.drawString(posd_x + 140, pos_y, ":")
+    p.drawString(posd_x + 150, pos_y, sk.ujian.penguji1.nip.first_name)
     
     pos_y -= 15
-    p.drawString(posd_x + 110, pos_y, "Penguji II")
-    p.drawString(posd_x + 190, pos_y, ":")
-    p.drawString(posd_x + 210, pos_y, sk.usulan.penguji2.nip.first_name)
+    p.drawString(posd_x + 60, pos_y, "Penguji II")
+    p.drawString(posd_x + 140, pos_y, ":")
+    p.drawString(posd_x + 150, pos_y, sk.ujian.penguji2.nip.first_name)
 
     pos_y -= 20
     # Gunakan textwrap untuk memecah teks panjang
@@ -204,8 +204,8 @@ def print_skpgj(request, id):
     p.drawString(pos_x_ttd, pos_y, "NIP. " + sk.ttd.pejabat.nip.username)
 
     # Menutup halaman dan menyimpan PDF
-    p.setTitle("SK Penguji " + str(sk.usulan.mhs_judul.mhs))
+    p.setTitle("SK Ujian " + str(sk.ujian.mhs_judul.mhs))
     p.showPage()
     p.save()
-    response["Content-Disposition"] = f'inline; filename="SK Penguji { str(sk.usulan.mhs_judul.mhs) }.pdf"'
+    response["Content-Disposition"] = f'inline; filename="SK Penguji { str(sk.ujian.mhs_judul.mhs) }.pdf"'
     return response

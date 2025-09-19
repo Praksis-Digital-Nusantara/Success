@@ -60,13 +60,19 @@
 								<button class="btn secondary x-small"><i class="ri-file-line"></i> Proses Layanan</button>
 							</a>
 						{% endif %}
+						{% if layanan.layanan_jenis.nama_layanan == 'Usulan Ujian Tutup' %}
+							<a href="/acd/usulan_ujian_edit/{{layanan.mhs.nim.username}}">
+								<button class="btn secondary x-small"><i class="ri-file-line"></i>Proses Layanan</button>
+							</a>
+						{% endif %}
 						{% if layanan.layanan_jenis.nama_layanan == 'Undangan Ujian Tutup' %}
 							<a href="/acd/ujian_edit/{{layanan.mhs.nim.username}}">
 								<button class="btn secondary x-small"><i class="ri-file-line"></i>Proses Layanan</button>
 							</a>
 						{% endif %}
+						
 						<br>
-						<div class="response-text">{{ layanan.layanan_isi|slice:"2:122" }}</div>
+						<div class="response-text">{{ layanan.layanan_isi|slice:"0:122" }}</div>
 					</td>				  
 					<td>
 						{% if layanan.status == 'Waiting'  %}

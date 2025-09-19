@@ -9,7 +9,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import logout, login, authenticate
 
 from .models import UserMhs, UserProdi, UserFakultas, UserDosen, Layanan, Pejabat
-from .models import SkripsiJudul, Proposal, Hasil, Ujian, SkripsiJudul, skPenguji
+from .models import SkripsiJudul, Proposal, Hasil, Ujian, SkripsiJudul, skUjian
 
 from .forms import RoleChangeForm, CustomPasswordChangeForm
 
@@ -94,7 +94,7 @@ def index(request):
             userC = UserFakultas.objects.get(username=request.user)
             data = {
                     'skpbb': SkripsiJudul.objects.filter(status_sk='Pengajuan').count() or 0,
-                    'skpgj': skPenguji.objects.filter(nosurat__isnull=True).count() or 0,
+                    'skujian': skUjian.objects.filter(nosurat__isnull=True).count() or 0,
                     'izinpenelitian': Layanan.objects.filter(status__in=['Processing','Waiting'], layanan_jenis__nama_layanan='Izin Penelitian').count() or 0,
                     'ujian': Layanan.objects.filter(status__in=['Processing','Waiting'], layanan_jenis__nama_layanan='Undangan Ujian Tutup').count() or 0,
                     'layanan_rejected': Layanan.objects.filter(status='Rejected').count() or 0,
@@ -125,7 +125,7 @@ def index(request):
         # return render(request,'mhs/index.html', context)
         return HttpResponse("Hello, world!")
 
- 
+
 @login_required
 def changepass(request):
     if request.method == 'POST':

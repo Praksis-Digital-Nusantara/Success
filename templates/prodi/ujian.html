@@ -30,7 +30,7 @@
 						<th style="white-space: nowrap;">Mahasiswa</th>
 						<th style="white-space: nowrap;">Judul Skripsi Mahasiswa </th>
 						<th style="white-space: nowrap;">Waktu Ujian</th>
-						<th style="white-space: nowrap;">Prmbimbing</th>
+						<th style="white-space: nowrap;">Pembimbing</th>
 						<th style="white-space: nowrap;">Penguji</th>
 						<th style="white-space: nowrap;">Aksi</th>
 					</tr>
@@ -41,7 +41,7 @@
 						<th>Mahasiswa</th>
 						<th>Judul Skripsi Mahasiswa </th>
 						<th>Waktu Ujian</th>
-						<th>Prmbimbing</th>
+						<th>Pembimbing</th>
 						<th>Penguji</th>
 						<th width="10%">Aksi</th>
 					</tr>
@@ -83,9 +83,10 @@
 									<a target="_blank" href="{% url 'acd:ujian_nilai' datatb.id %}">
 									<button class="btn success small"><i class="ri-award-line"></i>Nilai</button>
 								</a>
-								{% else  %}									
+								{% else %}
 									<button class="btn primary small"><i class="ri-loader-4-line"></i>Menunggu Fakultas</button>
-								{% endif %}								
+								{% endif %}		
+												
 								</td>					  
 						</tr>
 					{% endfor %}

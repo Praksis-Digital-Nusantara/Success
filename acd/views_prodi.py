@@ -17,7 +17,7 @@ from .models import (UserMhs, Layanan,
                      Hasil,
                      Ujian,
                      Proposal, 
-                     skPenguji, 
+                     skUjian,
                      skPembimbing, 
                      TTDProdi,
                      NoSuratFakultas,
@@ -434,15 +434,6 @@ def proposal_edit(request, nim):
                 tosave.no_surat =  str(nosurat_baru) + str(kodesurat.kode) + str(tahun)               
             tosave.save()
 
-            #update untuk pembuatan SK Penguji
-            # skpenguji, created = skPenguji.objects.get_or_create(
-            #     proposal=proposal,
-            #     defaults={
-            #         'proposal': proposal,
-            #     }
-            # )
-
-
             #update layanan agar status DIPROSES            
             layanan = Layanan.objects.filter(mhs=judul.mhs, layanan_jenis__nama_layanan='Undangan Seminar Proposal', status__in=['Processing', 'Waiting']).first()
             if layanan:
@@ -494,7 +485,7 @@ def proposal_nilai(request, id):
 @admin_prodi_required
 def hasil(request):
     userprodi = request.userprodi      
-    data = Hasil.objects.filter(mhs_judul__prodi=userprodi.prodi).order_by('-date_in')
+    data = Hasil.objects.filter(mhs_judul__prodi=userprodi.prodi, seminar_tgl__isnull=False).order_by('-date_in')
 
     context = {
         'title': 'Hasil',
@@ -572,6 +563,7 @@ def hasil_edit(request, nim):
         'userprodi' : userprodi,
         'photo' : userprodi.photo,
         'judul': judul,
+        'proposal': Proposal.objects.get(mhs_judul__mhs=judul.mhs),
         'hasil': hasil,
         'form': form,
         'skpbb': skpbb,
@@ -595,19 +587,87 @@ def hasil_nilai(request, id):
     return render(request, 'prodi/hasil_nilai.html', context)
 
 
-######################### UJIAN ########################
+
+######################### USULAN UJIAN ########################
 @check_userprodi
 @admin_prodi_required
-def ujian(request):
-    userprodi = request.userprodi      
-    data = Ujian.objects.filter(mhs_judul__prodi=userprodi.prodi, ujian_tgl__isnull=False).order_by('-date_in')
+def usulan_ujian_edit(request, nim):
+    userprodi = request.userprodi  
+    judul = get_object_or_404(SkripsiJudul, mhs__nim__username = nim)
+    ujian, create = Ujian.objects.get_or_create(
+        mhs_judul__mhs__nim__username=nim,
+        defaults={
+            'mhs_judul': judul,
+            'pembimbing1': judul.pembimbing1,
+            'pembimbing2': judul.pembimbing2,
+        }
+    )
+
+    if request.method == 'POST':
+        form = formUjian(request.POST, instance=ujian)
+        if form.is_valid():
+            tosave = form.save(commit=False)
+            tosave.mhs_judul = judul
+            tosave.pembimbing1 = judul.pembimbing1
+            tosave.pembimbing2 = judul.pembimbing2    
+            tosave.status_ujian = "Usulan"
+            tosave.save()
+
+            #update layanan agar status DIPROSES            
+            layanan = Layanan.objects.filter(mhs=judul.mhs, layanan_jenis__nama_layanan='Usulan Ujian Tutup', status__in=['Processing', 'Waiting']).first()
+            if layanan:
+                context_pro = web_name(request)
+                layanan.status = 'Processing'
+                layanan.hasil_test = 'Usulan Ujian Telah Disetujui Prodi, menunggu bagian fakultas menerbitkan Ketua, Wakil Ketua'
+                layanan.save()
+
+            messages.success(request, "Usulan Berhasil Diproses")
+    else:
+        form = formUjian(instance=ujian)  
 
     context = {
         'title': 'Ujian',
-        'heading': 'Ujian Hasil Penelitian',
+        'heading': 'Set Lembar Persetujuan Waktu',
         'userprodi' : userprodi,
         'photo' : userprodi.photo,
-        'data': data,
+        'judul': judul,
+        'ujian': ujian,
+        'bebaskuliah': SuketBebasKuliah.objects.filter(mhs=judul.mhs).first(),
+        'bebasplagiasi': SuketBebasPlagiasi.objects.filter(mhs=judul.mhs).first(),
+        'skpbb': skPembimbing.objects.filter(mhs=judul.mhs).order_by('-date_in').first(),
+        'berkelakuanbaik': SuketBerkelakuanBaik.objects.filter(mhs=judul.mhs).first(),
+        'bebaspustaka': SuketBebasPustaka.objects.filter(mhs=judul.mhs).first(),
+        'proposal': Proposal.objects.get(mhs_judul__mhs=judul.mhs),
+        'hasil': Hasil.objects.get(mhs_judul__mhs=judul.mhs),
+        'form': form,
+    }
+    return render(request, 'prodi/usulan_ujian_edit.html', context)
+
+######################### UJIAN ########################
+@check_userprodi
+@admin_prodi_required
+def ujian(request, filter):           
+    userprodi = request.userprodi    
+    if filter == 'usulan':
+        title = 'Ujian Tutup - Usulan'
+        data = Ujian.objects.filter(mhs_judul__prodi=userprodi.prodi, status_ujian='-', no_surat__isnull=True, ujian_tgl__isnull=False).order_by('-date_in')
+    elif filter == 'pengajuan':
+        title = 'Ujian Tutup - Pengajuan'
+        data = Ujian.objects.filter(mhs_judul__prodi=userprodi.prodi, ujian_tgl__isnull=False, no_surat__isnull=True, status_ujian='Pengajuan').order_by('-date_in')
+    elif filter == 'terbit':
+        title = 'Ujian Tutup - Terbit'
+        data = Ujian.objects.filter(mhs_judul__prodi=userprodi.prodi, ujian_tgl__isnull=False, no_surat__isnull=False).order_by('-date_in')
+    else:
+        title = 'Ujian Tutup'
+        data = Ujian.objects.all().order_by('-date_in')
+
+    
+    context = {
+        'title': title,
+        'heading': title,
+        'userprodi' : userprodi,
+        'photo' : userprodi.photo,
+        'data' : data,
     }
     return render(request, 'prodi/ujian.html', context)
 
@@ -631,18 +691,27 @@ def ujian_edit(request, nim):
             tosave = form.save(commit=False)
             tosave.mhs_judul = judul
             tosave.pembimbing1 = judul.pembimbing1
-            tosave.pembimbing2 = judul.pembimbing2             
+            tosave.pembimbing2 = judul.pembimbing2   
+            tosave.status_ujian = "Pengajuan"          
             tosave.save()
 
-            #update layanan agar status DIPROSES            
+            #update layanan agar status DIPROSES    
+                    
+            skujian, created = skUjian.objects.get_or_create(
+                ujian=ujian,
+                defaults={
+                    'ujian': ujian
+                }
+            )
+
             layanan = Layanan.objects.filter(mhs=judul.mhs, layanan_jenis__nama_layanan='Undangan Ujian Tutup', status__in=['Processing', 'Waiting']).first()
             if layanan:
                 context_pro = web_name(request)
                 layanan.status = 'Processing'
-                layanan.hasil_test = 'Undangan Telah Disetujui Prodi, menunggu bagian fakultas menerbitkan undangan'
+                layanan.hasil_test = 'Berkas Telah Disetujui Prodi, menunggu bagian fakultas menerbitkan undangan dan SK Ujian'
                 layanan.save()
 
-            messages.success(request, "Undangan Berhasil Diproses")
+            messages.success(request, "Undangan dan SK Ujian Segera Diproses")
     else:
         form = formUjian(instance=ujian)  
 
@@ -655,8 +724,8 @@ def ujian_edit(request, nim):
         'ujian': ujian,
         'bebaskuliah': SuketBebasKuliah.objects.filter(mhs=judul.mhs).first(),
         'bebasplagiasi': SuketBebasPlagiasi.objects.filter(mhs=judul.mhs).first(),
+        'usulanujian': SuketUsulanUjianSkripsi.objects.filter(mhs_judul__mhs=judul.mhs).first(),
         'skpbb': skPembimbing.objects.filter(mhs=judul.mhs).order_by('-date_in').first(),
-        'skpgj': skPenguji.objects.filter(usulan__mhs_judul__mhs=judul.mhs).order_by('-date_in').first(),
         'berkelakuanbaik': SuketBerkelakuanBaik.objects.filter(mhs=judul.mhs).first(),
         'bebaspustaka': SuketBebasPustaka.objects.filter(mhs=judul.mhs).first(),
         'proposal': Proposal.objects.get(mhs_judul__mhs=judul.mhs),
@@ -886,37 +955,31 @@ def usulanujianskripsi_edit(request, nim):
             suket = form.save(commit=False)  
             suket.adminp = request.user   
             suket.jurusan = userprodi.prodi.jurusan   
-
             skripsi_judul = SkripsiJudul.objects.filter(mhs=mhs).first()
             if skripsi_judul:
                 suket.mhs_judul = skripsi_judul
-
-            if suket.no_surat is None:
                 tahun = datetime.now().year
-                nosurat_cek = NoSuratFakultas.objects.filter(tahun=tahun).order_by('-nomor').first()
-                nosurat_baru = nosurat_cek.nomor + 1 if nosurat_cek else 1  
+                nosurat_baru = None  
+                if suket.no_surat is None:
+                    nosurat_cek = NoSuratFakultas.objects.filter(tahun=tahun).order_by('-nomor').first()
+                    if nosurat_cek:
+                        nosurat_baru = nosurat_cek.nomor + 1
+                    else:
+                        nosurat_baru = 1  
+                
                 kodesurat = KodeSurat.objects.get(jenis='Suket Usulan Ujian Skripsi')
-
-                NoSuratFakultas.objects.create(
-                    adminp=request.user,
-                    tahun=tahun,
-                    nomor=nosurat_baru, 
-                    perihal=f'Suket Usulan Ujian Skripsi {mhs}',
-                    tujuan=f'Mahasiswa {mhs}',
-                    kode=kodesurat.kode
-                )
-                suket.no_surat = f"{nosurat_baru}{kodesurat.kode}{tahun}" 
-
+                if suket.no_surat is None:
+                    addnosurat = NoSuratFakultas.objects.create(
+                        adminp = request.user,
+                        tahun = tahun,
+                        nomor = nosurat_baru, 
+                        perihal = 'Suket Usulan Ujian Skripsi',
+                        tujuan = str(skripsi_judul.mhs.nim.username) + ' - ' + str(skripsi_judul.mhs.nim.first_name) + ' - Program Studi ' + str(skripsi_judul.prodi.nama_prodi),
+                        kode = kodesurat.kode
+                    )
+                    suket.no_surat = str(nosurat_baru) + str(kodesurat.kode) + str(tahun)
+                    
             suket.save()
-
-            skpenguji, created = skPenguji.objects.get_or_create(
-                usulan=suket,
-                defaults={
-                    'usulan': suket,
-                }
-            )
-
-
 
             messages.success(request, 'Berhasil Menerbitkan Surat')
 
@@ -963,7 +1026,6 @@ def usulanujianskripsi_edit(request, nim):
         'hasil': Hasil.objects.get(mhs_judul__mhs=mhs),
     }
     return render(request, 'prodi/suket_usulanujianskripsi_edit.html', context)
-
 
 
 @check_userprodi

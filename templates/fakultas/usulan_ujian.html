@@ -1,0 +1,315 @@
+{% extends "fakultas/base.html" %}
+
+{% block content1 %}
+
+<div class="layanan-form-container">
+	<div class="profile-section-ujian">
+		<div class="student-table">
+			<div class="table-responsive">
+				<table>
+					<tbody>
+						<tr>
+							<td width="20%">Mahasiswa</td>
+							<td width="5%">:</td>
+							<td>{{ ujian.mhs_judul.mhs }}</td>					  
+						</tr>
+						<tr>
+							<td>Program Studi</td>
+							<td>:</td>
+							<td>{{ ujian.mhs_judul.prodi }}</td>					  
+						</tr>
+						<tr>
+							<td>Judul</td>
+							<td>:</td>
+							<td><div class="response-text">{{ ujian.mhs_judul.judul}}</div></td>					  
+						</tr>
+						<tr>
+							<td>Pembimbing I</td>
+							<td>:</td>
+							<td>{{ ujian.mhs_judul.pembimbing1 }}</td>					  
+						</tr>
+						<tr>
+							<td>Pembimbing II</td>
+							<td>:</td>
+							<td>{{ ujian.mhs_judul.pembimbing2 }}</td>					  
+						</tr>
+						<tr>
+							<td>Surat Persetujuan Ujian (ACC)</td>
+							<td>:</td>
+							<td>{% if ujian.persetujuan_ujian %}
+									<a target="_blank" href="/media/{{ ujian.persetujuan_ujian }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+							<!-- Matriks Perbaikan -->
+							<tr>
+							<td>Matriks Perbaikan</td>
+							<td>:</td>
+							<td>{% if ujian.matriks_perbaikan %}
+									<a target="_blank" href="/media/{{ ujian.matriks_perbaikan }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+						<tr>
+							<td>Surat Bebas Plagiasi</td>
+							<td>:</td>
+							<td>{% if bebasplagiasi %}
+									<a target="_blank" href="/acd/print_suket_bebasplagiasi/{{ bebasplagiasi.id }}"><button class="btn success small">Lihat File</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+						<!-- Surat Berkelakuan Baik -->
+						 <tr>
+							<td>Surat Berkelakuan Baik</td>
+							<td>:</td>
+							<td>{% if berkelakuanbaik %}
+									<a target="_blank" href="{% url 'acd:print_suket_berkelakuanbaik' berkelakuanbaik.id %}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+						<!-- Ijaza Terakhir -->
+							<tr>
+							<td>Ijaza Terakhir</td>
+							<td>:</td>
+							<td>{% if ujian.ijaza_terakhir %}
+									<a target="_blank" href="/media/{{ ujian.ijaza_terakhir }}"><button class="btn success small">Lihat File</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+
+						<!-- UKT Terakhir -->
+						<tr>
+							<td>Pembayaran UKT Terakhir</td>
+							<td>:</td>
+							<td>{% if ujian.ukt_terakhir %}
+									<a target="_blank" href="/media/{{ ujian.ukt_terakhir }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+
+						<!-- Surat Bebas Pustaka Universitas -->
+						<tr>
+							<td>Bebas Pustaka Universitas</td>
+							<td>:</td>
+							<td>{% if ujian.bebas_pustaka_univ %}
+									<a target="_blank" href="/media/{{ ujian.bebas_pustaka_univ }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+
+
+						<!-- Surat Bebas Pustaka Fakultas -->
+						<tr>
+							<td>Bebas Pustaka Fakultas</td>
+							<td>:</td>
+							<td>{% if bebaspustaka %}
+									<a target="_blank" href="{% url 'acd:print_suket_bebaspustaka' bebaspustaka.id %}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+					<!-- ktp mahasiswa -->
+						<tr>
+							<td>KTP Mahasiswa</td>
+							<td>:</td>
+							<td>{% if ujian.ktp %}
+									<a target="_blank" href="/media/{{ ujian.ktp }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+
+						<!-- Usulan BAAK -->
+						 <tr>
+							<td>Usulan BAAK</td>
+							<td>:</td>
+							<td>{% if ujian.usulan_baak %}
+									<a target="_blank" href="/media/{{ ujian.usulan_baak }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+
+						<tr>
+							<td>SK Pembimbing</td>
+							<td>:</td>
+							<td>{% if skpbb %}
+									<a target="_blank" href="/acd/print_skpbb/{{ skpbb.id }}"><button class="btn success small">SK {{ skpbb.date_in }}</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+						<!-- Undangan Seminar Proposal -->
+						 <tr>
+							<td>Undangan Seminar Proposal</td>
+							<td>:</td>
+							<td>{% if proposal %}
+									<a target="_blank" href="{% url 'acd:print_undangan' 'Proposal' proposal.id %}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+
+						<!-- Undangan Seminar Hasil -->
+						 <tr>
+							<td>Undangan Seminar Hasil</td>
+							<td>:</td>
+							<td>{% if hasil %}
+									<a target="_blank" href="{% url 'acd:print_undangan' 'Hasil' hasil.id %}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+
+									<tr>
+							<td>Transkrip Nilai</td>
+							<td>:</td>
+							<td>{% if ujian.transkrip %}
+									<a target="_blank" href="/media/{{ ujian.transkrip }}"><button class="btn success small">Lihat File</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+						<tr>
+							<td>KRS</td>
+							<td>:</td>
+							<td>{% if ujian.krs_berjalan %}
+									<a target="_blank" href="/media/{{ ujian.krs_berjalan }}"><button class="btn success small">Lihat File</button></a>
+								{% endif %}
+							</td>					  
+						</tr>
+
+						<tr>
+							<td>Foto Latar Biru</td>
+							<td>:</td>
+							<td>{% if ujian.foto_latar_biru %}
+									<a target="_blank" href="/media/{{ ujian.foto_latar_biru }}"><button class="btn success small">Lihat File</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>	
+					</tbody>
+				</table>	
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="form-card">
+	<div class="form-header">
+		<div class="form-header-icon">
+			<i class="ri-edit-line"></i>
+		</div>
+		<div class="form-header-content">
+			<h2>Form Edit Ujian</h2>
+			<p>Silahkan isi form dibawah ini untuk mengedit undangan ujian.</p>
+		</div>
+	</div>
+
+	<form method="post" enctype="multipart/form-data" class="layanan-form">
+		{% csrf_token %}		
+		<div class="form-row">
+			<div class="form-group">
+				<label for="id_ujian_tgl">Tanggal Ujian</label>
+				{{ form.ujian_tgl }}
+			</div>
+			<div class="form-group">
+				<label for="id_ujian_jam">Jam Ujian</label>
+				{{ form.ujian_jam }}
+			</div>
+		</div>
+		
+		<div class="form-row">
+			<div class="form-group">
+				<label for="id_ujian_tempat">Tempat Ujian</label>
+				{{ form.ujian_tempat }}
+			</div>
+			<div class="form-group">
+				<label for="id_ujian_link">Link Ujian</label>
+				{{ form.ujian_link }}
+			</div>
+		</div>
+		
+		<div class="form-row">
+			<div class="form-group">
+				<label for="id_penguji1">Penguji I</label>
+				{{ form.penguji1 }}
+			</div>
+			<div class="form-group">
+				<label for="id_penguji2">Penguji II</label>
+				{{ form.penguji2 }}
+			</div>
+		</div>
+		
+		<div class="form-row">
+			<div class="form-group">
+				<label for="id_wd">Ketua Sidang</label>
+				{{ form.dekan }}
+			</div>
+			<div class="form-group">
+				<label for="id_kaprodi">Wakil Sidang</label>
+				{{ form.wd }}
+			</div>
+		</div>
+		<div class="form-group">
+				<label for="id_kaprodi">Sekretaris Sidang</label>
+				{{ form.sekretaris }}
+		</div>
+		<div class="form-actions">
+			<a href="{% url 'acd:ujian_list' 'terbit' %}">
+			<button type="button" class="btn btn-secondary">
+				<i class="ri-arrow-left-line"></i>
+				Kembali
+			</button>
+		</a>
+			<button type="submit" class="btn btn-primary">
+				<i class="ri-save-line"></i>
+				Update Layanan
+			</button>
+		</div>
+	</form>
+
+<style>
+
+.form-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20px;
+	margin-bottom: 20px;
+}
+
+.form-row:first-child {
+	grid-template-columns: 1fr;
+}
+
+
+@media (max-width: 768px) {
+	.form-row {
+		grid-template-columns: 1fr;
+	}
+}
+</style>
+
+{% endblock content1 %}
+
+
+
+
+
+
+
+

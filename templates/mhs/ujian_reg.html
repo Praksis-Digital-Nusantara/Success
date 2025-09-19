@@ -70,6 +70,24 @@
 					</div>
 				</div>
 
+							<!-- Persetujuan Waktu Ujian -->
+				 <div class="requirement-item">
+					<div class="requirement-info">
+						<div class="requirement-icon"><i class="ri-file-shield-2-line"></i></div>
+						<div class="requirement-text">
+							<h4 class="requirement-title">Persetujuan Waktu Ujian</h4>
+							<p class="requirement-desc">Persetujuan Waktu ACC dari masing-masing dosen..</p>
+						</div>
+					</div>
+					<div class="requirement-actions">
+						{% if ujian.persetujuan_waktu %}
+						<a target="_blank" href="/media/{{ ujian.persetujuan_waktu }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
+						{% endif %}
+						{{ form.persetujuan_waktu }}
+						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
+					</div>
+				</div>
+
 				<!--Bukti Persetujuan (Acc) Naskah Skripsi -->
 				<div class="requirement-item">
 					<div class="requirement-info">
@@ -331,36 +349,6 @@
 						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
 					</div>
 				</div>
-
-
-				<!-- Persetujuan Waktu Ujian -->
-				 <div class="requirement-item">
-					<div class="requirement-info">
-						<div class="requirement-icon"><i class="ri-file-shield-2-line"></i></div>
-						<div class="requirement-text">
-							<h4 class="requirement-title">Persetujuan Waktu Ujian</h4>
-							<p class="requirement-desc">Persetujuan Waktu ACC dari masing-masing dosen..</p>
-						</div>
-					</div>
-					<div class="requirement-actions">
-						{% if ujian.persetujuan_waktu %}
-						<a target="_blank" href="/media/{{ ujian.persetujuan_waktu }}" class="btn primary small"><i class="ri-eye-line"></i> Lihat</a>
-						{% endif %}
-						{{ form.persetujuan_waktu }}
-						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
-					</div>
-				</div>
-				
-
-
-				
-				
-
-				
-
-					
-
-
 				<!-- KRS Berjalan -->
 				<div class="requirement-item">
 					<div class="requirement-info">
@@ -394,37 +382,7 @@
 						{{ form.foto_latar_biru }}
 						<button type="submit" class="btn success small"><i class="ri-save-line"></i> Simpan</button>
 					</div>
-				</div>
-
-
-				<!-- SK Penguji -->
-				<div class="requirement-item">
-					<div class="requirement-info">
-						<div class="requirement-icon"><i class="ri-user-voice-line"></i></div>
-						<div class="requirement-text">
-							<h4 class="requirement-title">SK Penguji</h4>
-							<p class="requirement-desc">Dibuat oleh sistem. Ajukan layanan jika belum ada.</p>
-						</div>
-					</div>
-
-			<div class="requirement-actions">
-				{% if skpgj %}
-					<a target="_blank" href="{% url 'acd:print_skpgj' skpgj.id %}" class="btn primary small">
-						<i class="ri-eye-line"></i> Lihat File
-					</a>
-				{% else %}
-					<a href="{% url 'acd:layanan_add' %}" class="btn success small">
-						<i class="ri-add-line"></i> Ajukan Layanan
-					</a>
-				{% endif %}
-			</div>
-
-
-				</div>
-			
-
-				
-
+				</div>		
 			</div>
 		</form>
 	</div>

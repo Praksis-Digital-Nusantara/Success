@@ -105,6 +105,20 @@
 							</td>					  
 						</tr>
 						{% endfor %}
+
+						<!-- Undangan Seminar Proposal -->
+						<tr>
+							<td>Undangan Seminar Proposal</td>
+							<td>:</td>
+							<td>{% if proposal %}
+									<a target="_blank" href="{% url 'acd:print_undangan' 'Proposal' proposal.id %}"><button class="btn success small">Undangan Proposal {{ proposal.seminar_tgl }}</button></a>
+									{% else %}
+									<p>Tidak ada lampiran File/ Mahasiswa Belum Menyelesaikan Layanan</p>
+									{% endif %}
+							</td>					  
+						</tr>
+
+
 			
 							<tr>
 								<td>Izin Penelitian</td>
@@ -131,8 +145,8 @@
 			<i class="ri-edit-line"></i>
 		</div>
 		<div class="form-header-content">
-			<h2>Form Edit Proposal</h2>
-			<p>Silahkan isi form dibawah ini untuk mengedit proposal seminar.</p>
+			<h2>Form Edit {{ heading }}</h2>
+			<p>Silahkan isi form dibawah ini untuk mengedit {{ heading }}.</p>
 		</div>
 	</div>
 

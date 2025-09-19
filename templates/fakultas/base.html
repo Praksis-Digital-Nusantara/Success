@@ -43,11 +43,11 @@
                             <li class="{% if title == 'SK Pembimbing - List' %}active{% endif %}"><a href="{% url 'acd:skpbb_list' %}"><i class="ri-list-check-2"></i> SK Terbit</a></li>
                         </ul>
                     </li>                    
-                    <li class="has-dropdown  {% if title == 'SK Penguji - Pengajuan' or title == 'SK Penguji - List' %}active{% endif %}">
-                        <a href="#"><i class="ri-user-search-line"></i>SK Penguji<i class="ri-arrow-down-s-line dropdown-icon"></i></a>
+                    <li class="has-dropdown  {% if title == 'SK Ujian - Pengajuan' or title == 'SK Ujian - List' %}active{% endif %}">
+                        <a href="#"><i class="ri-user-search-line"></i>SK Ujian<i class="ri-arrow-down-s-line dropdown-icon"></i></a>
                         <ul class="submenu">
-                            <li class="{% if title == 'SK Penguji - Pengajuan' %}active{% endif %}"><a href="{% url 'acd:skpgj_pengajuan' %}"><i class="ri-add-box-line"></i> Pengajuan</a></li>
-                            <li class="{% if title == 'SK Penguji - List' %}active{% endif %}"><a href="{% url 'acd:skpgj_list' %}"><i class="ri-list-check-2"></i> SK Terbit</a></li>
+                            <li class="{% if title == 'SK Ujian - Pengajuan' %}active{% endif %}"><a href="{% url 'acd:skujian_pengajuan' %}"><i class="ri-add-box-line"></i> Pengajuan</a></li>
+                            <li class="{% if title == 'SK Ujian - List' %}active{% endif %}"><a href="{% url 'acd:skujian_list' %}"><i class="ri-list-check-2"></i> SK Terbit</a></li>
                         </ul>
                     </li>                    
                     <li class="has-dropdown  {% if title == 'Izin Penelitian - Pengajuan' or title == 'Izin Penelitian - List' %}active{% endif %}">
@@ -57,9 +57,12 @@
                             <li class="{% if title == 'Izin Penelitian - List' %}active{% endif %}"><a href="{% url 'acd:izinpenelitian_list' %}"><i class="ri-list-check-2"></i>Terbit</a></li>
                         </ul>
                     </li>                
-                    <li class="has-dropdown  {% if title == 'Ujian Tutup - Pengajuan' or title == 'Ujian Tutup - Terbit' %}active{% endif %}">
+                    <li class="has-dropdown  {% if title == 'Ujian Tutup - Pengajuan' or title == 'Ujian Tutup - Terbit' or title == 'Ujian Tutup - Usulan' %}active{% endif %}">
                         <a href="#"><i class="ri-book-open-line"></i>Ujian Tutup Skripsi<i class="ri-arrow-down-s-line dropdown-icon"></i></a>
                         <ul class="submenu">
+                             <li class="{% if title == 'Ujian Tutup - Usulan' %}active{% endif %}">
+                                <a href="{% url 'acd:ujian_list' 'usulan' %}"><i class="ri-add-box-line"></i> Usulan Ketua/Wakil</a>
+                            </li>
                             <li class="{% if title == 'Ujian Tutup - Pengajuan' %}active{% endif %}">
                                 <a href="{% url 'acd:ujian_list' 'pengajuan' %}"><i class="ri-add-box-line"></i> Pengajuan</a>
                             </li>

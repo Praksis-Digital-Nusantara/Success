@@ -2128,12 +2128,12 @@ td {
 }
 
 .status-badge.waiting {
-    background-color: #e3d588;
+    background-color: #ffd900;
     color: #ffffff;
 }
 
 .status-badge.rejected {
-    background-color: #c4930a;
+    background-color: #e30000;
     color: #ffffff;
 }
 

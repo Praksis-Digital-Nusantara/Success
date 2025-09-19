@@ -36,13 +36,13 @@
 				{% for datatb in data %}
 					<tr>
 						<td>{{ forloop.counter }}</td>
-						<td>{{ datatb.usulan.mhs_judul.mhs }}</td>
-						<td>{{ datatb.usulan.mhs_judul.prodi }}</td>						  				
-						<td>1. {{ datatb.usulan.penguji1 }}
-							<br> 2. {{ datatb.usulan.penguji2 }}
+						<td>{{ datatb.ujian.mhs_judul.mhs }}</td>
+						<td>{{ datatb.ujian.mhs_judul.prodi }}</td>						  				
+						<td>1. {{ datatb.ujian.penguji1 }}
+							<br> 2. {{ datatb.ujian.penguji2 }}
 						</td>	
-						<td>1. {{ datatb.usulan.mhs_judul.pembimbing1 }}
-							<br> 2. {{ datatb.usulan.mhs_judul.pembimbing2 }}
+						<td>1. {{ datatb.ujian.mhs_judul.pembimbing1 }}
+							<br> 2. {{ datatb.ujian.mhs_judul.pembimbing2 }}
 						</td>				  				
 						<td>
 							<a target="_blank" href="{% url 'acd:print_skpgj' datatb.id %}" class="btn primary small"><i class="ri-printer-line"></i>Cetak</a>						

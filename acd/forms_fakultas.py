@@ -136,6 +136,59 @@ class formNoSurat(forms.ModelForm):
             instance.save()
         return instance
 
+class formUsulanUjian(forms.ModelForm):
+    dekan = forms.ModelChoiceField(
+        queryset=Pejabat.objects.filter(
+            tgl_selesai__gte=tgl_now, jabatan__in=['Dekan', 'Wakil Dekan I', 'Wakil Dekan II', 'Wakil Dekan III', 'Wakil Dekan IV']
+        ),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Pejabat"
+    )
+    wd = forms.ModelChoiceField(
+        queryset=Pejabat.objects.filter(tgl_selesai__gte=tgl_now),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Pejabat"
+    )
+    sekretaris = forms.ModelChoiceField(
+        queryset=UserDosen.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Dosen"
+    )
+    penguji1 = forms.ModelChoiceField(
+        queryset=UserDosen.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Dosen"
+    )
+    penguji2 = forms.ModelChoiceField(
+        queryset=UserDosen.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Dosen"
+    )
+    
+    class Meta:
+        model = Ujian
+        fields = [    
+            'ujian_tgl',
+            'ujian_jam',
+            'ujian_tempat',
+            'ujian_link',
+            'penguji1',
+            'penguji2',
+            'wd',
+            'dekan',
+            'sekretaris',
+        ]
+        widgets = {
+            'ujian_tgl': forms.DateInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'date'}),
+            'ujian_jam': forms.TimeInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'time'}),
+            'ujian_tempat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Zoom Meeting ID : 00000000 Passcode: xxxxx', 'required': 'required'}),
+            'ujian_link': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'link zoom jika ada'}),
+            'penguji1': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'penguji2': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'sekretaris': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'wd': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'dekan': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+        }
 
 class formUjian(forms.ModelForm):
     dekan = forms.ModelChoiceField(

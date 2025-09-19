@@ -250,7 +250,7 @@ class formHasil(forms.ModelForm):
             'no_surat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '*kosongkan jika ambil nomor dari sistem'}),
             'seminar_tgl': forms.DateInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'date'}),
             'seminar_jam': forms.TimeInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'time'}),
-            'seminar_tempat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Zoom Meeting ID : 00000000 Passcode: xxxxx', 'required': 'required'}),
+            'seminar_tempat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Zoom Meeting ID : 00000000 Passcode: xxxxx / Ruang Seminar Prodi...', 'required': 'required'}),
             'seminar_link': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'link zoom jika ada'}),
             'penguji1': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
             'penguji2': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
@@ -276,6 +276,16 @@ class formUjian(forms.ModelForm):
         widget=forms.Select(attrs={'class': 'form-control'}),
         empty_label="Pilih Dosen"
     )
+    sekretaris = forms.ModelChoiceField(
+        queryset=UserDosen.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Dosen"
+    )
+    kaprodi = forms.ModelChoiceField(
+        queryset=Pejabat.objects.filter(tgl_selesai__gte=tgl_now),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Pilih Pejabat"
+    )
     
     class Meta:
         model = Ujian
@@ -286,14 +296,18 @@ class formUjian(forms.ModelForm):
             'ujian_link',
             'penguji1',
             'penguji2',
+            'sekretaris',
+            'kaprodi',
         ]
         widgets = {
             'ujian_tgl': forms.DateInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'date'}),
             'ujian_jam': forms.TimeInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'time'}),
-            'ujian_tempat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Zoom Meeting ID : 00000000 Passcode: xxxxx', 'required': 'required'}),
+            'ujian_tempat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Zoom Meeting ID : 00000000 Passcode: xxxxx / Ruang Seminar Prodi...', 'required': 'required'}),
             'ujian_link': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'link zoom jika ada'}),
             'penguji1': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
             'penguji2': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'sekretaris': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'kaprodi': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
         }
 
 
