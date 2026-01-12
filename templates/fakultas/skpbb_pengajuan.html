@@ -45,10 +45,14 @@
 						<td>1. {{ datatb.pembimbing1 }}					  
 								<br>2. {{ datatb.pembimbing2 }}
 								</td>					  
-						<td>{{ datatb.judul }}</td>					  
+						<td>{{ datatb.judul }}</td>				  
 						<td>
+							<a href="{% url 'acd:print_persetujuan_judul' datatb.id %}" target="_blank" title="Cetak Persetujuan">
+								<button class="btn info small"><i class="ri-printer-fill"></i></button>
+							</a>
 							<button class="btn primary small" onclick="openModal('terbitkanSK', '{{ datatb.id }}')"><i class="ri-loader-4-line"></i>Proses</button>					
-						</td>					
+						</td>	
+										
 					</tr>
 				{% endfor %}
 				</tbody>

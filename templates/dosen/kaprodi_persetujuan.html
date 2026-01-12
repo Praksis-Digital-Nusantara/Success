@@ -1,0 +1,124 @@
+{% extends "dosen/base.html" %}
+
+{% block content1 %}
+<div class="dashboard-content">
+	<div class="student-list-container">
+		<div class="list-header">
+			<div class="list-title">
+				<h2>{{ heading }}</h2>
+				<p>{{web_name}}</p>
+			</div>
+		</div>
+
+		<div class="student-table">
+			<div class="table-responsive">
+			<table id="layananTable" class="display" style="width:100%">
+				<thead>
+				<tr>
+					<th style="white-space: nowrap;">No</th>
+					<th style="white-space: nowrap;">Mahaasiswa</th>
+					<th style="white-space: nowrap;">Prodi</th>
+					<th style="white-space: nowrap;">Judul</th>
+                    <th style="white-space: nowrap;">Pembimbing</th>
+					<th style="white-space: nowrap;">Aksi</th>
+				</tr>
+				</thead>
+				<tfoot>
+				<tr>
+					<th>No</th>
+					<th>Mahaasiswa</th>
+					<th>Prodi</th>
+					<th>Judul</th>
+                    <th>Pembimbing</th>
+					<th>Aksi</th>
+				</tr>
+				</tfoot>
+				<tbody>
+				{% for datatb in data %}
+					<tr>
+						<td>{{ forloop.counter }}</td>
+						<td>{{ datatb.mhs }}</td>
+						<td>{{ datatb.prodi }}</td>
+						<td><div class="response-text">{{ datatb.judul }}</div></td>	
+                        <td>1. {{ datatb.pembimbing1.nip.first_name }}					  
+							<br>2. {{ datatb.pembimbing2.nip.first_name }} 	
+							
+							</td>						  				
+						<td>
+							{% if datatb.kaprodi_persetujuan == 'Rejected' %}
+							<button class="btn danger small" onclick="openModal('ModalProses', '{{ datatb.id }}')">
+								<i class="ri-loader-4-line"></i> Proses Kembali
+							</button>
+                            {% else %}
+                            <button class="btn primary small" onclick="openModal('ModalProses', '{{ datatb.id }}')">
+								<i class="ri-loader-4-line"></i> Proses
+							</button>
+                            {% endif %}
+						</td>					  
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="ModalProses" class="modal-edit"> 
+    <div class="modal-content-edit">
+        <span class="close" onclick="closeModal('ModalProses')">&times;</span>
+        <h2 style="text-align: left;">Persetujuan Kaprodi</h2>
+		<form method="post">
+			{% csrf_token %}
+			<input type="hidden" name="skripsi_id" id="skripsiId">
+				<div class="form-group">
+					<label for="status" style="text-align: left;">Status</label>
+					<select class="form-control" id="status" name="status" required>
+						<option value="">Pilih Status</option>
+						<option value="Approved" >Diterima</option>
+						<option value="Rejected" >Ditolak</option>
+					</select>						
+				</div>
+				<div class="form-group">
+					<label for="status_ket" style="text-align: left;">Keterangan / Komentar / Alasan Jika Ditolak</label>
+					<input type="text" class="form-control" id="status_ket" name="status_ket" required>
+				</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn primary btn-block">
+					<i class="ri-save-line"></i>
+					Update Data
+				</button>
+			</div>		
+		</form>
+    </div>
+</div>
+
+{% endblock content1 %}
+
+{% block script_costum %} 
+<script>
+	function openModal(modalId, skripsiId) {
+		document.getElementById(modalId).style.display = 'block'; // Tampilkan modal
+		document.getElementById('skripsiId').value = skripsiId; // Masukkan userId ke input hidden
+		var modal = document.getElementById(modalId);
+        modal.style.display = "block";
+	}
+	
+    function closeModal(modalId) {
+        var modal = document.getElementById(modalId);
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        var modals = document.getElementsByClassName('modal-edit');
+        for (var i = 0; i < modals.length; i++) {
+            if (event.target == modals[i]) {
+                modals[i].style.display = "none";
+            }
+        }
+    }
+</script>
+{% endblock script_costum %} 
+
+

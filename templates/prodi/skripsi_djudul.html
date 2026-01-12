@@ -36,6 +36,8 @@
 					<th style="white-space: nowrap;">Judul yang Disetujui</th>
 					<th style="white-space: nowrap;">Pembimbing</th>
 					<th style="white-space: nowrap;">Status SK</th>
+					<th style="white-space: nowrap;">Persetujuan Kajur</th>
+					<th style="white-space: nowrap;">Persetujuan Kaprodi</th>
 					<th style="white-space: nowrap;">Aksi</th>
 				</tr>
 				</thead>
@@ -46,6 +48,8 @@
 					<th>Judul yang Disetujui</th>
 					<th>Pembimbing</th>
 					<th>Status SK</th>
+					<th>Persetujuan Kaprodi</th>
+					<th>Persetujuan Kajur</th>
 					<th>Aksi</th>
 				</tr>
 				</tfoot>
@@ -54,12 +58,12 @@
 					<tr>
 						<td>{{ forloop.counter }}</td>
 						<td>{{ datatb.mhs }}</td>						  
-						<td><div class="response-text">{% if datatb.judul %} {{ datatb.judul }} {% else %} Judul Belum Disetujui.. {% endif %}</div></td>					  
+						<td><div class="response-text">{% if datatb.judul %} {{ datatb.judul }} {% else %} Judul Belum Disetujui oleh Penasehat Akademik.. {% endif %}</div></td>					  
 						<td>1. {{ datatb.pembimbing1.nip.first_name }}					  
 							<br>2. {% if datatb.pembimbing2_persetujuan == 'Waiting'  %}
-								<button class="btn warning x-small">
+								<!-- <button class="btn warning x-small">
 									<i class="ri-loader-4-line"></i>									
-								</button>
+								</button> -->
 								{% elif datatb.pembimbing2_persetujuan == 'Rejected' %}
 								<button class="btn danger x-small">Ditolak : {{ datatb.pembimbing2_komentar }}</button>
 									{% endif %} 
@@ -67,11 +71,72 @@
 							{{ datatb.pembimbing2.nip.first_name }} 	
 							
 							</td>					  
-						<td> {{ datatb.status_sk }}		</td>		  
+						<td> {{ datatb.status_sk }}		</td>	
 						<td>
-							<a href="{% url "acd:skripsi_ejudul" datatb.mhs.nim.username %}">
-							<button class="btn primary x-small"><i class="ri-pencil-fill"></i></button>		
+						{% if datatb.kajur_persetujuan == 'Approved' %}
+							<button class="btn success x-small">
+								<i class="ri-check-double-line"></i> Disetujui
+							</button>
+
+						{% elif datatb.kajur_persetujuan == 'Waiting'  %}
+								<button class="btn warning x-small" style="background-color: white;">
+									<i class="ri-loader-4-line"></i> Menunggu ACC									
+								</button>
+
+						{% elif datatb.kajur_persetujuan == 'Rejected' %}
+							<div class="btn warning x-small"  style="background-color: white;" title="{{ datatb.kajur_komentar }}">
+								<i class="ri-close-line"></i> Ditolak
+							</div>
+							<p style="font-size: 10px;">{{ datatb.kajur_komentar }}</p>
+
+						{% else %}
+							<div class="btn warning x-small" style="background-color: white">
+								<i class="ri-loader-4-line"></i> Siap Diajukan
+							</div>
+						{% endif %}
+						</td>  
+						<td>
+						{% if datatb.kaprodi_persetujuan == 'Approved' %}
+							<button class="btn success x-small">
+								<i class="ri-check-double-line"></i> Disetujui
+							</button>
+
+						{% elif datatb.kaprodi_persetujuan == 'Waiting'  %}
+								<button class="btn warning x-small" style="background-color: white;">
+									<i class="ri-loader-4-line"></i> Menunggu ACC									
+								</button>
+
+						{% elif datatb.kaprodi_persetujuan == 'Rejected' %}
+							<div class="btn warning x-small"  style="background-color: white;" title="{{ datatb.kajur_komentar }}">
+								<i class="ri-close-line"></i> Ditolak
+							</div>
+							<p style="font-size: 10px;">{{ datatb.kaprodi_komentar }}</p>
+
+						{% else %}
+							<div class="btn warning x-small" style="background-color: white">
+								<i class="ri-loader-4-line"></i> Siap Diajukan
+							</div>
+						{% endif %}
+						</td>  
+
+						<td>
+							{% if datatb.judul %}
+								<a href="{% url 'acd:skripsi_ejudul' datatb.mhs.nim.username %}">
+									<button class="btn primary x-small">
+										<i class="ri-pencil-fill"></i>
+									</button>     
+								</a>
+							{% else %}
+								<button class="btn secondary x-small" disabled style="cursor: not-allowed; opacity: 0.5;" title="Judul Belum Disetujui / Kosong">
+									<i class="ri-pencil-fill"></i>
+								</button>
+							{% endif %}
+							{% if datatb.kajur_persetujuan == 'Approved' %}
+							<a href="{% url 'acd:print_persetujuan_judul' datatb.id %}" target="_blank" title="Cetak Persetujuan">
+								<button class="btn info x-small"><i class="ri-printer-fill"></i></button>
 							</a>
+							{% endif %}
+							
 							<br>
 							{% if datatb.status_sk != 'Pengajuan'  %}			
 							<button class="action-btn primary" onclick="openModal('olahJudulModal', '{{ datatb.id }}')">

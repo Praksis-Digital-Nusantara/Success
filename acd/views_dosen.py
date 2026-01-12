@@ -161,6 +161,71 @@ def pbb2_persetujuan(request):
     return render(request, 'dosen/pbb2_persetujuan.html', context)
 
 
+@dosen_required
+@check_userdosen 
+
+def kaprodi_persetujuan(request):      
+    userdosen = request.userdosen  
+
+    pejabat_aktif = Pejabat.objects.filter(
+        pejabat=userdosen,
+        jabatan='Ketua Prodi'
+    ).first()
+
+
+    data = SkripsiJudul.objects.filter(mhs__prodi=pejabat_aktif.prodi, kaprodi_persetujuan__in=['Waiting', 'Rejected']).order_by('-date_in')
+    
+    if request.method == 'POST':
+        skripsi_id = request.POST.get('skripsi_id')
+        judul = SkripsiJudul.objects.get(id=skripsi_id)
+        judul.kaprodi_persetujuan = request.POST.get('status')
+        judul.kaprodi_komentar = request.POST.get('status_ket')
+        judul.save()
+        messages.success(request, 'Persetujuan Kaprodi berhasil disimpan!')
+
+    context = {
+        'title': 'Persetujuan Kaprodi',
+        'heading': 'Persetujuan Kaprodi',
+        'userdosen' : userdosen,
+        'photo' : userdosen.photo,
+        'data': data,
+    }
+    return render(request, 'dosen/kaprodi_persetujuan.html', context)
+
+
+
+@dosen_required
+@check_userdosen 
+
+def kajur_persetujuan(request):      
+    userdosen = request.userdosen  
+
+    pejabat_aktif = Pejabat.objects.filter(
+        pejabat=userdosen,
+        jabatan='Ketua Jurusan'
+    ).first()
+
+
+    data = SkripsiJudul.objects.filter(mhs__prodi__jurusan=pejabat_aktif.jurusan, kajur_persetujuan__in=['Waiting', 'Rejected'], kaprodi_persetujuan='Approved').order_by('-date_in')
+    
+    if request.method == 'POST':
+        skripsi_id = request.POST.get('skripsi_id')
+        judul = SkripsiJudul.objects.get(id=skripsi_id)
+        judul.kajur_persetujuan = request.POST.get('status')
+        judul.kajur_komentar = request.POST.get('status_ket')
+        judul.save()
+        messages.success(request, 'Persetujuan Kajur berhasil disimpan!')
+
+    context = {
+        'title': 'Persetujuan Kajur',
+        'heading': 'Persetujuan Kajur',
+        'userdosen' : userdosen,
+        'photo' : userdosen.photo,
+        'data': data,
+    }
+    return render(request, 'dosen/kajur_persetujuan.html', context)
+
+
 ################################ SK PENGUJI / PEMBIMBING ####################################
 
 @dosen_required

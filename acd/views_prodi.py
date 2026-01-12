@@ -273,8 +273,9 @@ def skripsi_djudul(request):
         skripsi = get_object_or_404(SkripsiJudul, id=skripsi_id)
         
         # Cek apakah pbb1 dan pbb2 kosong
-        if not skripsi.pembimbing1 or not skripsi.pembimbing2 or skripsi.pembimbing2_persetujuan in['Waiting', 'Rejected']:
-            messages.error(request, "Pengajuan SK gagal! Pembimbing 1 dan Pembimbing 2 harus diisi.")
+        # if not skripsi.pembimbing1 or not skripsi.pembimbing2 or skripsi.pembimbing2_persetujuan in['Waiting', 'Rejected']:
+        if not skripsi.pembimbing1 or not skripsi.pembimbing2 or skripsi.kajur_persetujuan in['Waiting', 'Rejected']:
+            messages.error(request, "Pengajuan SK gagal! Pembimbing 1, 2 Belum Diisi / Persetujuan Kaprodi & Kajur belum diberikan")
         else:
             skripsi.status_sk = "Pengajuan"
             skripsi.save()
@@ -334,7 +335,9 @@ def skripsi_ejudul(request, nim):
             print(pbb2_baru, pbb2_lama)
             if pbb2_baru != pbb2_lama:
                 judulform.pembimbing2_persetujuan = 'Waiting' 
-                messages.info(request, 'Pembimbing 2 menunggu persetujuan') 
+                judulform.kajur_persetujuan = 'Waiting'
+                judulform.kaprodi_persetujuan = 'Waiting'
+                messages.info(request, 'Menunggu persetujuan dari pembimbing 2, kaprodi dan kajur') 
             judulform.save()  
             messages.success(request, 'Berhasil Mengupdate Judul Skripsi')
             return redirect('acd:skripsi_ejudul', nim=nim)

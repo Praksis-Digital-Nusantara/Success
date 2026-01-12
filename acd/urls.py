@@ -11,6 +11,7 @@ from . import views_mhs
 from .view_print import print_pengajuanjudul
 from . import views_dosen
 from .view_print import (print_skpbb, 
+                        print_persetujuan_judul,
                         print_skpgj,
                         print_pengesahan,
                         print_undangan,
@@ -137,6 +138,8 @@ urlpatterns = [
     ###### DOSEN ######   
     path('profile_dosen', views_dosen.profile_dosen, name='profile_dosen'),
     path('judul_seleksi', views_dosen.judul_seleksi, name='judul_seleksi'),
+    path('kajur_persetujuan', views_dosen.kajur_persetujuan, name='kajur_persetujuan'),
+    path('kaprodi_persetujuan', views_dosen.kaprodi_persetujuan, name='kaprodi_persetujuan'),
     path('pbb2_persetujuan', views_dosen.pbb2_persetujuan, name='pbb2_persetujuan'),
     path('dsn_skpbb', views_dosen.dsn_skpbb, name='dsn_skpbb'),
     path('dsn_skpgj', views_dosen.dsn_skpgj, name='dsn_skpgj'),
@@ -151,6 +154,7 @@ urlpatterns = [
     path('kelola_ttd/<str:model_name>/<uuid:id>/<str:action>/',views_dosen.kelola_ttd,name='kelola_ttd'),
     path('undangan_dsn/<str:filter>', views_dosen.undangan_dsn, name='undangan_dsn'),
     ###### PRINT ######   
+    path('print_persetujuan_judul/<uuid:id>', print_persetujuan_judul.print_persetujuan_judul, name='print_persetujuan_judul'),
     path('print_skpbb/<uuid:id>', print_skpbb.print_skpbb, name='print_skpbb'),
     path('print_skpgj/<uuid:id>', print_skpgj.print_skpgj, name='print_skpgj'),
     path('print_pengesahan/<str:jn>/<uuid:id>', print_pengesahan.print_pengesahan, name='print_pengesahan'),

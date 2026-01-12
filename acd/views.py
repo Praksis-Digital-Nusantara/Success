@@ -16,7 +16,7 @@ from .forms import RoleChangeForm, CustomPasswordChangeForm
 from django.utils import timezone
 
 from datetime import date
-
+from django.db.models import Count
 
 
 now = timezone.now()
@@ -92,7 +92,58 @@ def index(request):
     elif request.user.last_name == 'Admin Fakultas':  
         try:
             userC = UserFakultas.objects.get(username=request.user)
+            total_dosen = UserDosen.objects.count() or 0
+            total_profesor = UserDosen.objects.filter(jafung='Guru Besar').count() or 0
+            total_lektor_kepala = UserDosen.objects.filter(jafung='Lektor Kepala').count() or 0
+            total_lektor = UserDosen.objects.filter(jafung='Lektor').count() or 0
+            total_asisten_ahli = UserDosen.objects.filter(jafung='Asisten Ahli').count() or 0
+            
+            persen_profesor = 0
+            persen_asisten_ahli = 0
+            persen_lektor_kepala = 0
+            persen_lektor = 0
+            if total_dosen > 0:
+                persen_profesor = round((total_profesor / total_dosen) * 100, 1)
+                persen_lektor_kepala = round((total_lektor_kepala / total_dosen) * 100, 1)
+                persen_asisten_ahli = round((total_asisten_ahli / total_dosen) * 100, 1)
+                persen_lektor = round((total_lektor / total_dosen) * 100, 1)
+
+            
+            total_mahasiswa = UserMhs.objects.count() or 0
+            mhs_per_prodi_query = UserMhs.objects.values('prodi__nama_prodi') \
+                                         .annotate(jumlah=Count('nim')) \
+                                         .order_by('-jumlah')
+            
+            list_mhs_prodi = []
+            for item in mhs_per_prodi_query:
+                nama_prodi = item['prodi__nama_prodi'] if item['prodi__nama_prodi'] else "Tanpa Prodi"
+                jumlah = item['jumlah']
+                persen = 0
+                if total_mahasiswa > 0:
+                    persen = round((jumlah / total_mahasiswa) * 100, 1)
+                
+                list_mhs_prodi.append({
+                    'nama': nama_prodi,
+                    'jumlah': jumlah,
+                    'persen': persen
+                })
+
             data = {
+                    'dosen': UserDosen.objects.count() or 0,
+                    'profesor': total_profesor,
+                    'lektor_kepala': total_lektor_kepala,
+                    'asisten_ahli': total_asisten_ahli,
+                    'lektor': total_lektor,
+
+                    'persen_profesor': persen_profesor,
+                    'persen_asisten_ahli': persen_asisten_ahli,
+                    'persen_lektor_kepala': persen_lektor_kepala,
+                    'persen_lektor': persen_lektor,
+
+                    'mahasiswa': total_mahasiswa,
+                    'list_mhs_prodi': list_mhs_prodi,
+
+
                     'skpbb': SkripsiJudul.objects.filter(status_sk='Pengajuan').count() or 0,
                     'skujian': skUjian.objects.filter(nosurat__isnull=True).count() or 0,
                     'izinpenelitian': Layanan.objects.filter(status__in=['Processing','Waiting'], layanan_jenis__nama_layanan='Izin Penelitian').count() or 0,

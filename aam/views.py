@@ -150,6 +150,11 @@ def verTTD(request, jenis, id):
         title = "e-TTD Suket Usulan Ujian Skripsi"
         heading = "e-TTD Suket Usulan Ujian Skripsi"
 
+    elif jenis == "puj":
+        data = get_object_or_404(SkripsiJudul, id=id)
+        title = "e-TTD Persetujuan Usulan Judul Tugas Akhir"
+        heading = "e-TTD Persetujuan Usulan Judul Tugas Akhir"
+
     else:
         return render(request, "404.html", status=404)
 

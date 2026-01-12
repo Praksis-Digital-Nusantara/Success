@@ -3,7 +3,7 @@
 {% block content1 %}
 <div class="dashboard-content">
 		<!-- Enhanced Header Section -->
-		<!-- <div class="skripsi-header">
+		<div class="skripsi-header">
 			<div class="header-content">
 				<div class="header-icon">
 						<div class="student-photo-placeholder">
@@ -12,19 +12,10 @@
 				</div>
 				<div class="header-text">
 					<h1>Alur Pengajuan Skripsi</h1>
-					<p>Ikuti tahapan yang telah ditentukan untuk menyelesaikan proses pengajuan skripsi Anda</p>
+					<p>Ikuti tahapan yang telah ditentukan untuk menyelesaikan proses pengajuan skripsi</p>
 				</div>
 			</div>
-			<div class="header-progress">
-				<div class="progress-info">
-					<span class="progress-text">Progress Keseluruhan</span>
-					<span class="progress-percentage">75%</span>
-				</div>
-				<div class="progress-bar">
-					<div class="progress-fill" style="width: 75%"></div>
-				</div>
-			</div>
-		</div> -->
+		</div>
 
 		<!-- Enhanced Timeline Container -->
 		<div class="timeline-container">
@@ -51,10 +42,6 @@
 										<i class="ri-file-add-line"></i>
 										Form Pengajuan Judul
 									</a>
-									<a target="_blank" href="{% url 'acd:print_pengajuanjudul' %}" class="action-btn success">
-										<i class="ri-printer-line"></i>
-										Cetak Pengajuan Judul
-									</a>
 									<a href="{% url 'acd:layanan_add' %}" class="action-btn primary">
 										<i class="ri-customer-service-line"></i>
 										Layanan Akademik
@@ -75,9 +62,9 @@
 										<i class="ri-file-add-line"></i>
 										Form Pengajuan Judul
 									</a>
-									<a target="_blank" href="{% url 'acd:print_pengajuanjudul' %}" class="action-btn success">
+									<a target="_blank" href="{% url 'acd:print_persetujuan_judul' skripsi.id %}" class="action-btn success">
 										<i class="ri-printer-line"></i>
-										Cetak Pengajuan Judul
+										Cetak Rekomendasi Pengajuan Judul
 									</a>
 									<a href="{% url 'acd:layanan_add' %}" class="action-btn primary">
 										<i class="ri-customer-service-line"></i>
@@ -98,61 +85,83 @@
 										<span>"{{ skripsi.judul }}"</span>
 									</div>
 								</div>
-							</div>
-							<div class="timeline-status completed">
+
+								<div class="timeline-status completed">
 								<i class="ri-check-line"></i>
 								<span>{{ skripsi.status }}</span>
 							</div>
+							</div>
+						
+							
+
+								
 						{% endif %}
 					</div>
 				</div>
 
-				<!-- Tahap 2: Penentuan Pembimbing -->
 				<div class="timeline-item">
-					<div class="timeline-marker">
-						<div class="timeline-dot"></div>
-						<div class="timeline-line"></div>
+				<div class="timeline-marker">
+					<div class="timeline-dot"></div>
+					<div class="timeline-line"></div>
+				</div>
+				<div class="timeline-content">
+					<div class="timeline-header">
+						<div class="timeline-badge">Tahap 2</div>
+						<h3>Penentuan Pembimbing</h3>
 					</div>
-					<div class="timeline-content">
-						<div class="timeline-header">
-							<div class="timeline-badge">Tahap 2</div>
-							<h3>Penentuan Pembimbing</h3>
+					
+					{% if skripsi is None %}
+						<div class="timeline-body">
+							<div class="timeline-description">
+								<p>Penentuan dosen pembimbing skripsi oleh Program Studi.</p>
+							</div>
 						</div>
-						
-						{% if skripsi is None %}
-							<div class="timeline-body">
-								<div class="timeline-description">
-									<p>Penentuan dosen pembimbing skripsi oleh Program Studi.</p>
-								</div>
+						<div class="timeline-status pending">
+							<i class="ri-time-line"></i>
+							<span>Menunggu Tahap 1</span>
+						</div>
+					{% elif not skripsi.pembimbing1 or not skripsi.pembimbing2 or skripsi.kajur_persetujuan == 'Waiting' or skripsi.kaprodi_persetujuan == 'Waiting' %}
+						<div class="timeline-body">
+							<div class="timeline-description">
+								<p>Judul sedang diverifikasi. Menunggu penetapan pembimbing oleh Pimpinan Prodi dan Jurusan.</p>
 							</div>
-							<div class="timeline-status active">
-								<i class="ri-time-line"></i>
-								<span>Menunggu Tahap 1</span>
-							</div>
-						{% else %}
-							<div class="timeline-body">
-								<div class="timeline-description">
-									<p>Pembimbing telah ditetapkan:</p>
-									<div class="supervisor-list">
-										<div class="supervisor-item">
-											<i class="ri-user-star-line"></i>
-											<span>{{ skripsi.pembimbing1 }}</span>
-										</div>
-										<div class="supervisor-item">
-											<i class="ri-user-star-line"></i>
-											<span>{{ skripsi.pembimbing2 }}</span>
-										</div>
+						</div>
+						<div class="timeline-status active">
+							<i class="ri-loader-4-line"></i>
+							<span>Proses Penetapan</span>
+						</div>
+
+					{% else %}
+						<div class="timeline-body">
+							<div class="timeline-description">
+								<p>Pembimbing telah ditetapkan:</p>
+								<div class="supervisor-list">
+									<div class="supervisor-item">
+										<i class="ri-user-star-line"></i>
+										<span>{{ skripsi.pembimbing1.nip.first_name }} </span>
+									</div>
+									<div class="supervisor-item">
+										<i class="ri-user-star-line"></i>
+										<span>{{ skripsi.pembimbing2.nip.first_name }}</span>
 									</div>
 								</div>
 							</div>
-							<div class="timeline-status completed">
-								<i class="ri-check-line"></i>
-								<span>Selesai</span>
-							</div>
-						{% endif %}
-					</div>
-				</div>
+								<a target="_blank" href="{% url 'acd:print_persetujuan_judul' skripsi.id %}" class="action-btn success">
+											<i class="ri-printer-line"></i>
+											Cetak Rekomendasi Pengajuan Judul
+										</a>
+						
+						</div>
 
+									
+
+						<div class="timeline-status completed">
+							<i class="ri-check-line"></i>
+							<span>Selesai</span>
+						</div>
+					{% endif %}
+				</div>
+			</div>
 				<!-- Tahap 3: Penerbitan SK Pembimbing -->
 				<div class="timeline-item">
 					<div class="timeline-marker">

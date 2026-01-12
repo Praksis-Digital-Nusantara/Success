@@ -384,7 +384,11 @@ class SkripsiJudul(models.Model):
     pembimbing1 = models.ForeignKey(UserDosen, on_delete=models.SET_NULL, to_field="nip", related_name="skripsi_pbb1", blank=True, null=True)    
     pembimbing2 = models.ForeignKey(UserDosen, on_delete=models.SET_NULL, to_field="nip", related_name="skripsi_pbb2", blank=True, null=True)   
     pembimbing2_persetujuan = models.CharField(max_length=50, blank=True, null=True)     
-    pembimbing2_komentar = models.CharField(max_length=255, blank=True, null=True)     
+    pembimbing2_komentar = models.CharField(max_length=255, blank=True, null=True)  
+    kajur_persetujuan = models.CharField(max_length=50, blank=True, null=True)
+    kajur_komentar = models.CharField(max_length=255, blank=True, null=True)   
+    kaprodi_persetujuan = models.CharField(max_length=50, blank=True, null=True)
+    kaprodi_komentar = models.CharField(max_length=255, blank=True, null=True)
     status_sk = models.CharField(max_length=15,  default='-', choices=[
         ('-', '-'),
         ('Pengajuan', 'Pengajuan'), 

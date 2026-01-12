@@ -51,7 +51,8 @@ def draw_kop_surat_fakultas(p, context):
 def draw_kop_surat(p, context, usermhs):
 
     width, height = A4
-    logo_path = "static/img/logo.png"
+    logo_path = context.get("baseurl", "") + "static/img/logo.png"
+
 
     # Tambahkan logo
     p.drawImage(ImageReader(logo_path), 50, height - 120, width=80, height=80)

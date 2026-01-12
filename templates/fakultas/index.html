@@ -1,153 +1,262 @@
 {% extends "fakultas/base.html" %}
 
 {% block content1 %}
+
+<style>
+    .progress-container {
+        width: 100%;
+        background-color: #e0e0e0; 
+        border-radius: 10px;
+        height: 8px; 
+        margin-top: 10px;
+        overflow: hidden;
+    }
+
+    .progress-bar-fill {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.6s ease;
+    }
+
+    /* Warna spesifik berdasarkan level (bisa disesuaikan) */
+    .bg-prof { background-color: #d9534f; } /* Merah Tua */
+    .bg-lk   { background-color: #f0ad4e; } /* Orange */
+    .bg-l    { background-color: #5bc0de; } /* Biru Muda */
+    .bg-aa   { background-color: #5cb85c; } /* Hijau */
+
+
+    .stat-info h3 {
+        margin-bottom: 5px;
+        font-size: 1.5rem;
+    }
+    .stat-info small {
+        color: #666;
+        font-size: 0.85rem;
+    }
+</style>
+
+
 <div class="dashboard-content">
-	<!-- Hero Profile Section -->
-	<div  class="hero-profile-elegant">
-		<div class="hero-photo-elegant">
-			<img src="/media/{{ photo }}" alt="Profile Picture">
-		</div>
-		<div class="hero-info-elegant">
-			<p class="hero-welcome-text">Selamat Datang..</p>
-			<h1 class="hero-name-display">{{ userdetail.username.first_name }}</h1>
-			<div class="hero-details-grid">
-				<div class="detail-item">
-					<span class="detail-label">Kontak</span>
-					<span class="detail-value"> {{ userdetail.telp }}</span>
-				</div>
-				<div class="detail-item">
-					<span class="detail-label">Jenis Kelamin</span>
-					<span class="detail-value">{{ userdetail.gender }}</span>
-				</div>
-			</div>
-			<div class="hero-action-area">
-				<a href="{% url 'acd:profile_fakultas' %}">
-					{% if userdetail.photo is none %}
-						<button class="btn danger small">
-							<i class="ri-alert-line"></i> Lengkapi profil Anda untuk melanjutkan!
-						</button>
-					{% else %}
-						<button class="btn primary medium">
-							<i class="ri-user-line"></i> Detail Profil
-						</button>
-					{% endif %}
-				</a>
-			</div>
-		</div>
-	</div>
-	<!-- Stats Cards -->
-	<div class="stats-cards">
-		<h4>Info Ajuan Layanan Mahasiswa</h4>
-	</div>
-	
-	
-	<div class="stats-cards">		
-		<div class="stat-card orange">			
-			<i class="ri-article-line"></i>
-			<div class="stat-info">
-				<p>SK Pembimbing</p>
-				<h1>{{ data.skpbb }}</h1>
-				<a href="{% url 'acd:skpbb_pengajuan' %}"><button class="btn warning x-small">Details</button></a>				
-			</div>			
-		</div>		
-		<div class="stat-card orange">			
-			<i class="ri-article-line"></i>
-			<div class="stat-info">
-				<p>SK Ujian</p>
-				<h1>{{ data.skujian }}</h1>
-				<a href="{% url 'acd:skujian_pengajuan' %}"><button class="btn warning x-small">Details</button></a>				
-			</div>			
-		</div>		
-		<div class="stat-card blue">
-			<i class="ri-survey-fill"></i> <!-- Dalam Proses -->
-			<div class="stat-info">
-				<p>Izin Penelitian</p>
-				<h1>{{ data.izinpenelitian }}</h1>
-				<a href="{% url 'acd:izinpenelitian_pengajuan' %}"><button class="btn primary x-small">Details</button></a>
-			</div>
-		</div>
-		<div class="stat-card green">
-			<i class="ri-checkbox-circle-line"></i> <!-- Selesai -->
-			<div class="stat-info">
-				<p>Ujian Skripsi</p>
-				<h1>{{ data.ujian}}</h1>
-				<a href="{% url 'acd:ujian_list' 'pengajuan'  %}"><button class="btn success x-small">Details</button></a>
-			</div>
-		</div>
-		<div class="stat-card red">
-			<i class="ri-close-circle-line"></i> <!-- Ditolak -->
-			<div class="stat-info">
-				<p>Ditolak</p>
-				<h1>{{ data.layanan_rejected }}</h1>
-				<a href="{% url 'acd:layanan_fakultas' 'Rejected'  %}"><button class="btn danger x-small">Details</button></a>
-			</div>
-		</div>
-	</div>
-	
-<div class="stats-cards">
-		<h4>Info Layanan Surat</h4>
-	</div>
-	
-	<div class="stats-cards">		
-			
-		<div class="stat-card orange">			
-			<i class="ri-article-line"></i>
-			<div class="stat-info">
-				<p>SK Keterangan Berkelakuan Baik</p>
-				<h1>{{ data.suket_berkelakuanbaik }}</h1>
-				<a href="{% url 'acd:suket_berkelakuanbaik' %}"><button class="btn warning x-small">Details</button></a>				
-			</div>			
-		</div>		
-		<div class="stat-card orange">			
-			<i class="ri-article-line"></i>
-			<div class="stat-info">
-				<p>SK Keterangan Aktif Kuliah</p>
-				<h1>{{ data.suket_aktifkuliah }}</h1>
-				<a href="{% url 'acd:suket_aktifkuliah' %}"><button class="btn warning x-small">Details</button></a>				
-			</div>			
-		</div>
-		<div class="stat-card orange">			
-			<i class="ri-article-line"></i>
-			<div class="stat-info">
-				<p>SK Keterangan Cuti Akademik</p>
-				<h1>{{ data.suket_cuti_akademik }}</h1>
-				<a href="{% url 'acd:suket_cutiakademik' %}"><button class="btn warning x-small">Details</button></a>				
-			</div>			
-		</div>	
-	</div>
-	
+    <div  class="hero-profile-elegant">
+        <div class="hero-photo-elegant">
+            <img src="/media/{{ photo }}" alt="Profile Picture">
+        </div>
+        <div class="hero-info-elegant">
+            <p class="hero-welcome-text">Selamat Datang..</p>
+            <h1 class="hero-name-display">{{ userdetail.username.first_name }}</h1>
+            <div class="hero-details-grid">
+                <div class="detail-item">
+                    <span class="detail-label">Kontak</span>
+                    <span class="detail-value"> {{ userdetail.telp }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Jenis Kelamin</span>
+                    <span class="detail-value">{{ userdetail.gender }}</span>
+                </div>
+            </div>
+            <div class="hero-action-area">
+                <a href="{% url 'acd:profile_fakultas' %}">
+                    {% if userdetail.photo is none %}
+                        <button class="btn danger small">
+                            <i class="ri-alert-line"></i> Lengkapi profil Anda untuk melanjutkan!
+                        </button>
+                    {% else %}
+                        <button class="btn primary medium">
+                            <i class="ri-user-line"></i> Detail Profil
+                        </button>
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+    </div>
 
-	<div class="stats-cards">
-		<h4>Info Jumlah Layanan</h4>
-	</div>
-	
-	<div class="stats-cards">
-		<div class="stat-card purple">
-			<i class="ri-book-open-line"></i>
-			<div class="stat-info">
-				<h3>Bulan Ini</h3>
-				<p>{{ data.layanan_month }}</p>
-			</div>
-		</div>
-		<div class="stat-card indigo">
-			<i class="ri-task-line"></i>
-			<div class="stat-info">
-				<h3>Tahun Ini</h3>
-				<p>{{ data.layanan_year }}</p>
-			</div>
-		</div>
-		<div class="stat-card purple">
-			<i class="ri-task-line"></i>
-			<div class="stat-info">
-				<h3>Semua</h3>
-				<p>{{ data.layanan_all }}</p>
-			</div>
-		</div>
-	</div>
-	
+    <div class="stats-cards">
+        <h4>Info Ajuan Layanan Mahasiswa</h4>
+    </div>
+    
+    <div class="stats-cards">       
+        <div class="stat-card orange">          
+            <i class="ri-article-line"></i>
+            <div class="stat-info">
+                <p>SK Pembimbing</p>
+                <h1>{{ data.skpbb }}</h1>
+                <a href="{% url 'acd:skpbb_pengajuan' %}"><button class="btn warning x-small">Details</button></a>              
+            </div>          
+        </div>      
+        <div class="stat-card orange">          
+            <i class="ri-article-line"></i>
+            <div class="stat-info">
+                <p>SK Ujian</p>
+                <h1>{{ data.skujian }}</h1>
+                <a href="{% url 'acd:skujian_pengajuan' %}"><button class="btn warning x-small">Details</button></a>                
+            </div>          
+        </div>      
+        <div class="stat-card blue">
+            <i class="ri-survey-fill"></i>
+            <div class="stat-info">
+                <p>Izin Penelitian</p>
+                <h1>{{ data.izinpenelitian }}</h1>
+                <a href="{% url 'acd:izinpenelitian_pengajuan' %}"><button class="btn primary x-small">Details</button></a>
+            </div>
+        </div>
+        <div class="stat-card green">
+            <i class="ri-checkbox-circle-line"></i>
+            <div class="stat-info">
+                <p>Ujian Skripsi</p>
+                <h1>{{ data.ujian}}</h1>
+                <a href="{% url 'acd:ujian_list' 'pengajuan'  %}"><button class="btn success x-small">Details</button></a>
+            </div>
+        </div>
+        <div class="stat-card red">
+            <i class="ri-close-circle-line"></i>
+            <div class="stat-info">
+                <p>Ditolak</p>
+                <h1>{{ data.layanan_rejected }}</h1>
+                <a href="{% url 'acd:layanan_fakultas' 'Rejected'  %}"><button class="btn danger x-small">Details</button></a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="stats-cards">
+        <h4>Info Layanan Surat</h4>
+    </div>
+    
+    <div class="stats-cards">       
+        <div class="stat-card orange">          
+            <i class="ri-article-line"></i>
+            <div class="stat-info">
+                <p>SK Ket. Berkelakuan Baik</p>
+                <h1>{{ data.suket_berkelakuanbaik }}</h1>
+                <a href="{% url 'acd:suket_berkelakuanbaik' %}"><button class="btn warning x-small">Details</button></a>                
+            </div>          
+        </div>      
+        <div class="stat-card orange">          
+            <i class="ri-article-line"></i>
+            <div class="stat-info">
+                <p>SK Ket. Aktif Kuliah</p>
+                <h1>{{ data.suket_aktifkuliah }}</h1>
+                <a href="{% url 'acd:suket_aktifkuliah' %}"><button class="btn warning x-small">Details</button></a>                
+            </div>          
+        </div>
+        <div class="stat-card orange">          
+            <i class="ri-article-line"></i>
+            <div class="stat-info">
+                <p>SK Ket. Cuti Akademik</p>
+                <h1>{{ data.suket_cuti_akademik }}</h1>
+                <a href="{% url 'acd:suket_cutiakademik' %}"><button class="btn warning x-small">Details</button></a>               
+            </div>          
+        </div>  
+    </div>
 
-	
+    <div class="stats-cards">
+        <h4>Angka dan Rekapitulasi</h4>
+    </div>
+    
+    <div class="stats-cards">
+        <div class="stat-card green">
+            <i class="ri-book-open-line"></i>
+            <div class="stat-info">
+                <h3>Total Dosen</h3>
+                <p>{{ data.dosen }} Orang</p>
+            </div>
+        </div>
+        <div class="stat-card green">
+            <i class="ri-task-line"></i>
+            <div class="stat-info">
+                <h3>Total Mahasiwa</h3>
+                <p>{{ data.mahasiswa }} Orang</p> 
+            </div>
+        </div>
+    </div>
+
+    <div class="stats-cards">
+        
+        <div class="stat-card red" style="display: block;"> <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <i class="ri-medal-fill"></i>
+                    <span style="font-weight: bold; color: #555;">Guru Besar</span>
+                </div>
+                <div class="text-right">
+                    <h3>{{ data.profesor }} <small style="font-size: 0.8rem;">({{ data.persen_profesor }}%)</small></h3>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar-fill bg-prof" style="width: {{ data.persen_profesor }}%;"></div>
+            </div>
+        </div>
+
+        <div class="stat-card red" style="display: block;">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <i class="ri-award-fill"></i>
+                    <span style="font-weight: bold; color: #555;">Lektor Kepala</span>
+                </div>
+                <div class="text-right">
+                    <h3>{{ data.lektor_kepala }} <small style="font-size: 0.8rem;">({{ data.persen_lektor_kepala }}%)</small></h3>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar-fill bg-lk" style="width: {{ data.persen_lektor_kepala }}%;"></div>
+            </div>
+        </div>
+
+        <div class="stat-card red" style="display: block;">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <i class="ri-user-star-fill"></i>
+                    <span style="font-weight: bold; color: #555;">Lektor</span>
+                </div>
+                <div class="text-right">
+                    <h3>{{ data.lektor }} <small style="font-size: 0.8rem;">({{ data.persen_lektor }}%)</small></h3>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar-fill bg-l" style="width: {{ data.persen_lektor }}%;"></div>
+            </div>
+        </div>
+
+        <div class="stat-card red" style="display: block;">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <i class="ri-user-line"></i>
+                    <span style="font-weight: bold; color: #555;">Asisten Ahli</span>
+                </div>
+                <div class="text-right">
+                    <h3>{{ data.asisten_ahli }} <small style="font-size: 0.8rem;">({{ data.persen_asisten_ahli }}%)</small></h3>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar-fill bg-aa" style="width: {{ data.persen_asisten_ahli }}%;"></div>
+            </div>
+        </div>
+
+    </div>
+
+<div class="stats-cards" style="margin-top: 20px;">
+        <h4>Distribusi Mahasiswa per Prodi</h4>
+    </div>
+	<div class="stats-cards">
+        {% for prodi in data.list_mhs_prodi %}
+        <div class="stat-card blue" style="display: block;">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span style="font-weight: bold; color: #555;">{{ prodi.nama }}</span>
+                </div>
+                <div class="text-right">
+                    <h3>{{ prodi.jumlah }} <small style="font-size: 0.8rem;">({{ prodi.persen }}%)</small></h3>
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar-fill bg-l" style="width: {{ prodi.persen }}%;"></div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="stat-card" style="display: block; text-align: center;">
+            <p>Belum ada data mahasiswa.</p>
+        </div>
+        {% endfor %}
+    </div>
 
 </div>
-{% endblock content1 %} 
-
+{% endblock content1 %}

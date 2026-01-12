@@ -29,15 +29,31 @@
                     <li class="{% if title == 'Dashboard' %}active{% endif %}">
                         <a href="{% url "acd:dashboard" %}"><i class="ri-dashboard-line"></i> Dashboard</a>
                     </li>  
-                   {% if request.is_pejabat_aktif %}
+                    {% for pejabat in user.userdosen.pejabat_pejabat.all %}
+                    {% if pejabat.jabatan == 'Dekan' or pejabat.jabatan == 'Wakil Dekan I' or pejabat.jabatan == 'Wakil Dekan II' or pejabat.jabatan == 'Wakil Dekan III' %}
                     <li class="{% if title == 'Dokumen Ditandatangani' %}active{% endif %}">
                         <a href="{% url 'acd:list_ttd_pejabat' %}">
                             <i class="ri-qr-code-fill"></i> Dokumen yang di TTD
                         </a>
                     </li>
                     {% endif %}
+                    {% if pejabat.jabatan == 'Ketua Jurusan' %}
+                     <li class="{% if title == 'Persetujuan Judul Kajur' %}active{% endif %}">
+                        <a href="{% url 'acd:kajur_persetujuan' %}">
+                            <i class="ri-qr-code-fill"></i>Persetujuan Judul [Kajur]
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if pejabat.jabatan == 'Ketua Prodi' %}
+                    <li class="{% if title == 'Persetujuan Judul Kaprodi' %}active{% endif %}">
+                        <a href="{% url 'acd:kaprodi_persetujuan' %}">
+                            <i class="ri-qr-code-fill"></i>Persetujuan Judul [Kaprodi]
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}    
                     <li class="{% if title == 'Seleksi Judul' %}active{% endif %}">
-                        <a href="{% url "acd:judul_seleksi" %}"><i class="ri-filter-line"></i> Seleksi Judul</a>
+                        <a href="{% url 'acd:judul_seleksi' %}"><i class="ri-filter-line"></i> Seleksi Judul [Dosen PA]</a>
                     </li>  
                     <li class="{% if title == 'Persetujuan Pembimbing 2' %}active{% endif %}">
                         <a href="{% url "acd:pbb2_persetujuan" %}"><i class="ri-chat-check-line"></i> Persetujuan Pembimbing 2</a>
