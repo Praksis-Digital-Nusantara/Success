@@ -5896,7 +5896,7 @@ body.dark-mode .warning-message {
     font-size: 14px;
     color: #6c757d;
     margin: 0;
-    white-space: nowrap;
+    white-space: normal !important;
     overflow: hidden;
     text-overflow: ellipsis;
 }
