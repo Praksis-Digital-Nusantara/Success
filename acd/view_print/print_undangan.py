@@ -63,11 +63,13 @@ def print_undangan(request, jn, id):
 
     # Pengecekan apakah ttd ada atau None untuk bagian daftar undangan
     if undangan.ttd and undangan.ttd.pejabat:
-        ketua_prodi_nama = undangan.ttd.pejabat.nip.first_name
+        pejabat_berttd = undangan.ttd.pejabat.nip.first_name
     else:
-        ketua_prodi_nama = "[Belum Ditentukan]"
+        pejabat_berttd = "[Belum Ditentukan]"
 
-    pos_y = draw_aligned_text(p, "", "Ketua Prodi", ketua_prodi_nama, 30)
+    label_jabatan = "Ketua Jurusan" if jn == 'Hasil' else "Ketua Prodi"
+
+    pos_y = draw_aligned_text(p, "", label_jabatan, pejabat_berttd, 30)
     pos_y = draw_aligned_text(p, "", "Pembimbing I", undangan.pembimbing1.nip.first_name,  15)   
     pos_y = draw_aligned_text(p, "", "Pembimbing II", undangan.pembimbing2.nip.first_name,  15)   
     pos_y = draw_aligned_text(p, "", "Penanggap I", undangan.penguji1.nip.first_name,  15)   
@@ -84,7 +86,7 @@ def print_undangan(request, jn, id):
         pos_y -= y_offset 
         canvas.drawString(posd_x + 20, pos_y, label)
         canvas.drawString(posd_x + 100, pos_y, ':')
-        wrapped_text = textwrap.wrap(value, width=80)
+        wrapped_text = textwrap.wrap(value, width=70)
         for i, line in enumerate(wrapped_text):
             if i == 0:
                 canvas.drawString(posd_x + 110, pos_y, line) 
@@ -97,7 +99,7 @@ def print_undangan(request, jn, id):
     pos_y = draw_aligned_text(p, "NIM", undangan.mhs_judul.mhs.nim.username,  15) 
     pos_y = draw_aligned_text(p, "Jurusan", undangan.mhs_judul.prodi.jurusan.nama_jurusan, 15)
     pos_y = draw_aligned_text(p, "Program Studi", undangan.mhs_judul.prodi.nama_prodi,  15) 
-    pos_y = draw_aligned_text(p, "Judul", undangan.mhs_judul.judul,  15) 
+    pos_y = draw_aligned_text(p, "Judul", undangan.mhs_judul.judul.title(),  15) 
 
     pos_y -= dl(p, posd_x, pos_y, 30, "Seminar tersebut akan diselenggarakan pada:", 'N', 'L')
     pos_y = draw_aligned_text(p, "Hari/Tanggal", tanggal_indo(undangan.seminar_tgl, undangan.seminar_tgl),  15) 
@@ -142,12 +144,6 @@ def print_undangan(request, jn, id):
     p.save()
     response["Content-Disposition"] = f'inline; filename="Undangan {jn} {str(undangan.mhs_judul.mhs)}.pdf"'
     return response
-
-###################################################################################################################################################################
-###################################################################################################################################################################
-###################################################################################################################################################################
-###################################################################################################################################################################
-###################################################################################################################################################################
 
 
 def print_undangan_ujian(request, id):

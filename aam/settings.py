@@ -86,7 +86,7 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'esuh2918_db_success',  # Ganti dengan nama database yang Anda buat di phpMyAdmin /bisdigun_app_success
+        'NAME': 'esuh2918_db_success_v2',  # Ganti dengan nama database yang Anda buat di phpMyAdmin /bisdigun_app_success
         'USER': 'root',  # Nama pengguna MySQL, biasanya 'root' di XAMPP /bisdigun_app_root
         'PASSWORD': 'root',  # Kata sandi pengguna MySQL, jika tidak ada, biarkan kosong
         'HOST': '127.0.0.1',  # Host server database, localhost untuk XAMPP
