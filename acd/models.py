@@ -442,7 +442,7 @@ class ProposalNilai(models.Model):
 
 class Proposal(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    date_in = models.DateTimeField(auto_now_add=True)
+    date_in = models.DateField(blank=True, null=True)
     adminp = models.ForeignKey(UserProdi, on_delete=models.SET_NULL, related_name="proposal_admin", blank=True, null=True)
     no_surat = models.CharField(max_length=50, blank=True, null=True)
     mhs_judul = models.ForeignKey(SkripsiJudul, on_delete=models.SET_NULL, related_name="proposal_mhs", blank=True, null=True)
@@ -522,7 +522,7 @@ class HasilNilai(models.Model):
 
 class Hasil(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    date_in = models.DateTimeField(auto_now_add=True)
+    date_in = models.DateField(blank=True, null=True)
     adminp = models.ForeignKey(UserProdi, on_delete=models.SET_NULL, related_name="hasil_admin", blank=True, null=True)
     no_surat = models.CharField(max_length=50, blank=True, null=True)
     mhs_judul = models.ForeignKey(SkripsiJudul, on_delete=models.SET_NULL, related_name="hasil_mhs", blank=True, null=True)

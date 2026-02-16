@@ -186,6 +186,7 @@ class formProposal(forms.ModelForm):
     class Meta:
         model = Proposal
         fields = [    
+            'date_in',
             'no_surat',
             'seminar_tgl',
             'seminar_jam',
@@ -198,6 +199,7 @@ class formProposal(forms.ModelForm):
         ]
         
         widgets = {
+            'date_in': forms.DateInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'date'}),
             'no_surat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '*kosongkan jika ambil nomor dari sistem'}),
             'seminar_tgl': forms.DateInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'date'}),
             'seminar_jam': forms.TimeInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'time'}),
@@ -236,6 +238,7 @@ class formHasil(forms.ModelForm):
     class Meta:
         model = Hasil
         fields = [    
+            'date_in',
             'no_surat',
             'seminar_tgl',
             'seminar_jam',
@@ -247,6 +250,7 @@ class formHasil(forms.ModelForm):
             'ttd',
         ]
         widgets = {
+            'date_in': forms.DateInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'date'}),
             'no_surat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '*kosongkan jika ambil nomor dari sistem'}),
             'seminar_tgl': forms.DateInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'date'}),
             'seminar_jam': forms.TimeInput(attrs={'class': 'form-control', 'required': 'required', 'type': 'time'}),
