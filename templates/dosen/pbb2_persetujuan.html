@@ -16,6 +16,7 @@
 				<thead>
 				<tr>
 					<th style="white-space: nowrap;">No</th>
+					<th style="white-space: nowrap;">Date In</th>
 					<th style="white-space: nowrap;">Mahaasiswa</th>
 					<th style="white-space: nowrap;">Prodi</th>
 					<th style="white-space: nowrap;">Judul</th>
@@ -25,7 +26,8 @@
 				<tfoot>
 				<tr>
 					<th>No</th>
-					<th>Mahaasiswa</th>
+					<th>Date In</th>
+					<th>Mahasiswa</th>
 					<th>Prodi</th>
 					<th>Judul</th>
 					<th>Aksi</th>
@@ -35,6 +37,7 @@
 				{% for datatb in data %}
 					<tr>
 						<td>{{ forloop.counter }}</td>
+						<td>{{ datatb.date_in}}</td>
 						<td>{{ datatb.mhs }}</td>
 						<td>{{ datatb.prodi }}</td>
 						<td>{{ datatb.judul }}</td>							  				
